@@ -57,7 +57,9 @@ HRESULT CLight::Init(void)
 
 	//ライトを有効にする
 	pDevice->LightEnable(0, TRUE);
-
+	////////////////////////
+	//テスト
+	///////////////////////
 	return S_OK;
 }
 

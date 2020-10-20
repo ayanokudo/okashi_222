@@ -26,7 +26,7 @@ public:
 	// ƒƒ“ƒoŠÖ”
 	CScene3d();
 	~CScene3d();
-	static CScene3d *Create(void);
+	static CScene3d *Create(D3DXVECTOR3 pos ,D3DXVECTOR3 size);
 	HRESULT Init(void);
 	void Uninit(void);
 	void Update(void);

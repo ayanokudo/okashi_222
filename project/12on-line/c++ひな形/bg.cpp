@@ -100,14 +100,11 @@ HRESULT CBg::Init(void)
 {
 	for (int nCntBg = 0; nCntBg < BG_PARTS_NUM; nCntBg++)
 	{
-		// ポリゴン生成
-		m_apScene3d[nCntBg] = CScene3d::Create();
+		
 		if (m_apScene3d[nCntBg] != NULL)
 		{
-			// 中心座標の設定
-			m_apScene3d[nCntBg]->SetPos(D3DXVECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 10));
-			// サイズの設定
-			m_apScene3d[nCntBg]->SetSize(D3DXVECTOR3(SCREEN_WIDTH/2, SCREEN_HEIGHT/2, 0));
+			// ポリゴン生成
+			m_apScene3d[nCntBg] = CScene3d::Create(D3DXVECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 10), D3DXVECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0));
 			// オブジェクトタイプの設定
 			m_apScene3d[nCntBg]->SetObjType(OBJTYPE_BG);
 

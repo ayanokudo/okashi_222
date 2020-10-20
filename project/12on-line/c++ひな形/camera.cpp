@@ -76,9 +76,8 @@ void CCamera::Release(void)
 //******************************
 HRESULT CCamera::Init(void)
 {
-
-
-	m_posV = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	// ‰Šú‰»
+	m_posV = D3DXVECTOR3(10.0f, 0.0f, 0.0f);
 	m_posR = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	m_vecU = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
 
@@ -100,7 +99,22 @@ void CCamera::Uninit(void)
 //******************************
 void CCamera::Update(void)
 {
-
+	if (CManager::GetKeyboard()->GetKeyPress(DIK_W))
+	{
+		m_posV.y += 10;
+	}
+	if (CManager::GetKeyboard()->GetKeyPress(DIK_S))
+	{
+		m_posV.y -= 10;
+	}
+	if (CManager::GetKeyboard()->GetKeyPress(DIK_A))
+	{
+		m_posV.z += 10;
+	}
+	if (CManager::GetKeyboard()->GetKeyPress(DIK_D))
+	{
+		m_posV.z -= 10;
+	}
 }
 
 //******************************

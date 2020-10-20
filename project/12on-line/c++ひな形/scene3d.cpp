@@ -47,14 +47,17 @@ CScene3d::~CScene3d()
 //===================================
 // クリエイト関数
 //===================================
-CScene3d * CScene3d::Create(void)
+CScene3d * CScene3d::Create(D3DXVECTOR3 pos, D3DXVECTOR3 size)
 {
 	// メモリの確保
 	CScene3d *pScene3d;
 	pScene3d = new CScene3d;
+	// 引数の代入
+	pScene3d->m_pos = pos;
+	pScene3d->m_size = size;
 	// 初期化
 	pScene3d->Init();
-
+	
 	return pScene3d;
 }
 
@@ -72,23 +75,16 @@ HRESULT CScene3d::Init(void)
 	pDevice->CreateVertexBuffer(sizeof(VERTEX_3D)*NUM_VERTEX, D3DUSAGE_WRITEONLY, FVF_VERTEX_3D, D3DPOOL_MANAGED, &m_pVtxBuff, NULL);
 
 	// メンバ変数の初期化
-	m_size = { POLYGON_SIZE,POLYGON_SIZE,0.0f };
+	/*m_size = { POLYGON_SIZE,POLYGON_SIZE,0.0f };*/
 	m_col = { 1.0f,1.0f,1.0f,1.0f };
 
 	m_pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);
 
-	// 中心から頂点の距離
-	float fDistance = sqrtf(powf(m_size.x, 2) + powf(m_size.y, 2));
-	// 中心から右上の頂点の角度
-	float fAngle = atan2f(m_size.y, m_size.x);
-	// 中心から左上の頂点の角度
-	float  fAngle2 = atan2f(m_size.y, -m_size.x);
-
 	// 頂点座標の設定
-	pVtx[0].pos = D3DXVECTOR3(m_pos.x + (cosf(fAngle2 + D3DXToRadian(m_fAngle)) * fDistance), m_pos.y + (sinf(fAngle2 + D3DXToRadian(m_fAngle)) * fDistance), 0);
-	pVtx[1].pos = D3DXVECTOR3(m_pos.x + (cosf(fAngle + D3DXToRadian(m_fAngle)) * fDistance), m_pos.y + (sinf(fAngle + D3DXToRadian(m_fAngle)) * fDistance), 0);
-	pVtx[2].pos = D3DXVECTOR3(m_pos.x + (cosf(-fAngle2 + D3DXToRadian(m_fAngle)) * fDistance), m_pos.y + (sinf(-fAngle2 + D3DXToRadian(m_fAngle)) * fDistance), 0);
-	pVtx[3].pos = D3DXVECTOR3(m_pos.x + (cosf(-fAngle + D3DXToRadian(m_fAngle))  * fDistance), m_pos.y + (sinf(-fAngle + D3DXToRadian(m_fAngle))  * fDistance), 0);
+	pVtx[0].pos = D3DXVECTOR3(m_pos.x - m_size.x, m_pos.y + m_size.y, m_pos.z - m_size.z);
+	pVtx[1].pos = D3DXVECTOR3(m_pos.x + m_size.x, m_pos.y + m_size.y, m_pos.z - m_size.z);
+	pVtx[2].pos = D3DXVECTOR3(m_pos.x - m_size.x, m_pos.y - m_size.y, m_pos.z + m_size.z);
+	pVtx[3].pos = D3DXVECTOR3(m_pos.x + m_size.x, m_pos.y - m_size.y, m_pos.z + m_size.z);
 
 	// テクスチャUV座標の設定
 	pVtx[0].tex = D3DXVECTOR2(0.0f, 0.0f);
@@ -198,24 +194,17 @@ void CScene3d::SetPos(const D3DXVECTOR3 pos)
 {
 	VERTEX_3D *pVtx;// 頂点情報ポインタ
 
-					//posの代入
+	//posの代入
 	m_pos = pos;
 
 	// ロック
 	m_pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);
 
-	// 中心から頂点の距離
-	float fDistance = sqrtf(powf(m_size.x, 2) + powf(m_size.y, 2));
-	// 中心から右上の頂点の角度
-	float fAngle = atan2f(m_size.y, m_size.x);
-	// 中心から左上の頂点の角度
-	float  fAngle2 = atan2f(m_size.y, -m_size.x);
-
 	// 頂点座標の設定
-	pVtx[0].pos = D3DXVECTOR3(m_pos.x + (cosf(fAngle2 + D3DXToRadian(m_fAngle)) * fDistance), m_pos.y + (sinf(fAngle2 + D3DXToRadian(m_fAngle)) * fDistance), 0);
-	pVtx[1].pos = D3DXVECTOR3(m_pos.x + (cosf(fAngle + D3DXToRadian(m_fAngle)) * fDistance), m_pos.y + (sinf(fAngle + D3DXToRadian(m_fAngle)) * fDistance), 0);
-	pVtx[2].pos = D3DXVECTOR3(m_pos.x + (cosf(-fAngle2 + D3DXToRadian(m_fAngle)) * fDistance), m_pos.y + (sinf(-fAngle2 + D3DXToRadian(m_fAngle)) * fDistance), 0);
-	pVtx[3].pos = D3DXVECTOR3(m_pos.x + (cosf(-fAngle + D3DXToRadian(m_fAngle))  * fDistance), m_pos.y + (sinf(-fAngle + D3DXToRadian(m_fAngle))  * fDistance), 0);
+	pVtx[0].pos = D3DXVECTOR3(m_pos.x + m_size.x, m_pos.y + m_size.y, m_pos.z + m_size.z);
+	pVtx[1].pos = D3DXVECTOR3(m_pos.x - m_size.x, m_pos.y + m_size.y, m_pos.z + m_size.z);
+	pVtx[2].pos = D3DXVECTOR3(m_pos.x + m_size.x, m_pos.y - m_size.y, m_pos.z - m_size.z);
+	pVtx[3].pos = D3DXVECTOR3(m_pos.x - m_size.x, m_pos.y - m_size.y, m_pos.z - m_size.z);
 
 	// アンロック
 	m_pVtxBuff->Unlock();

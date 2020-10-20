@@ -58,7 +58,8 @@ HRESULT CGame::Init(void)
 {
 	// カメラの生成
 	m_pCamera = CCamera::Create();
-
+	// ポリゴンの生成
+	CScene3d::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(1000.0f, 0.0f, 1000.0f));
 	// ポーズの初期化
 	CManager::SetActivePause(false);
 	return S_OK;

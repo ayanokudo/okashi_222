@@ -1,15 +1,3 @@
-﻿  mouse.cpp
-c:\users\gsp030\desktop\12on-line\c++ひな形\mouse.cpp(161): warning C4244: '引数': 'LONG' から 'FLOAT' への変換です。データが失われる可能性があります。
-c:\users\gsp030\desktop\12on-line\c++ひな形\mouse.cpp(170): warning C4244: '=': 'float' から 'LONG' への変換です。データが失われる可能性があります。
-c:\users\gsp030\desktop\12on-line\c++ひな形\mouse.cpp(171): warning C4244: '=': 'float' から 'LONG' への変換です。データが失われる可能性があります。
-  コードを生成中...
-  コンパイル中...
-  manager.cpp
-  コードを生成中...
-  スキップ中... (関連する変更は検出されませんでした)
-  tutorial.cpp
-  title.cpp
-  result.cpp
-  game.cpp
-  c++ひな形.vcxproj -> C:\Users\gsp030\Desktop\12on-line\Debug\12online.exe
-  c++ひな形.vcxproj -> C:\Users\gsp030\Desktop\12on-line\Debug\12online.pdb (Full PDB)
+﻿  game.cpp
+  c++ひな形.vcxproj -> C:\Users\gsp030\Desktop\git\okashi_222\project\12on-line\Debug\12online.exe
+  c++ひな形.vcxproj -> C:\Users\gsp030\Desktop\git\okashi_222\project\12on-line\Debug\12online.pdb (Full PDB)

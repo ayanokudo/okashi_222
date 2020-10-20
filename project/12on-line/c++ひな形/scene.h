@@ -42,6 +42,7 @@ public:
 		OBJTYPE_PARTICLE,   // パーティクル
 		OBJTYPE_BOMB,       // ボム
 		OBJTYPE_UI,         // UI
+		OBJTYPE_FLOOR,		// 床
 		OBJTYPE_MAX,        // タイプの最大数
 	}OBJTYPE;
 

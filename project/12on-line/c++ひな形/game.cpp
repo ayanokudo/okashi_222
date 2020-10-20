@@ -18,6 +18,7 @@
 #include "keyboard.h"
 #include "particle.h"
 #include "time.h"
+#include "floor.h"
 
 //=============================
 // 静的メンバ変数宣言
@@ -59,7 +60,9 @@ HRESULT CGame::Init(void)
 	// カメラの生成
 	m_pCamera = CCamera::Create();
 	// ポリゴンの生成
-	CScene3d::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(1000.0f, 0.0f, 1000.0f));
+	//CScene3d::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(1000.0f, 0.0f, 1000.0f));
+	// ポリゴン２ｄの生成
+	CFloor::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(1000.0f, 0.0f, 1000.0f),CFloor::FLOOR_FLOORING);
 	// ポーズの初期化
 	CManager::SetActivePause(false);
 	return S_OK;

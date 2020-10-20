@@ -150,6 +150,7 @@
     <ClCompile Include="bg.cpp" />
     <ClCompile Include="camera.cpp" />
     <ClCompile Include="fade.cpp" />
+    <ClCompile Include="floor.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="input.cpp" />
     <ClCompile Include="joypad.cpp" />
@@ -177,6 +178,7 @@
     <ClInclude Include="bg.h" />
     <ClInclude Include="camera.h" />
     <ClInclude Include="fade.h" />
+    <ClInclude Include="floor.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="input.h" />
     <ClInclude Include="joypad.h" />

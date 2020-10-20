@@ -1,3 +1,39 @@
-﻿  player.cpp
-  c++ひな形.vcxproj -> C:\Users\gsp030\Desktop\git\okashi_222\project\12on-line\Debug\12online.exe
-  c++ひな形.vcxproj -> C:\Users\gsp030\Desktop\git\okashi_222\project\12on-line\Debug\12online.pdb (Full PDB)
+﻿  tutorial.cpp
+  title.cpp
+  sound.cpp
+  score.cpp
+c:\users\gsp030\desktop\okashi_222\project\12on-line\c++ひな形\score.cpp(61): warning C4244: '引数': 'int' から 'FLOAT' への変換です。データが失われる可能性があります。
+c:\users\gsp030\desktop\okashi_222\project\12on-line\c++ひな形\score.cpp(99): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
+c:\users\gsp030\desktop\okashi_222\project\12on-line\c++ひな形\score.cpp(99): warning C4244: '引数': 'float' から 'const int' への変換です。データが失われる可能性があります。
+  scene3d.cpp
+  scene2d.cpp
+  scene.cpp
+  result.cpp
+  renderer.cpp
+  polygon.cpp
+  player.cpp
+  pause.cpp
+  particle.cpp
+c:\users\gsp030\desktop\okashi_222\project\12on-line\c++ひな形\particle.cpp(66): warning C4244: '引数': 'int' から 'const float' への変換です。データが失われる可能性があります。
+  number.cpp
+  mouse.cpp
+c:\users\gsp030\desktop\okashi_222\project\12on-line\c++ひな形\mouse.cpp(161): warning C4244: '引数': 'LONG' から 'FLOAT' への変換です。データが失われる可能性があります。
+c:\users\gsp030\desktop\okashi_222\project\12on-line\c++ひな形\mouse.cpp(170): warning C4244: '=': 'float' から 'LONG' への変換です。データが失われる可能性があります。
+c:\users\gsp030\desktop\okashi_222\project\12on-line\c++ひな形\mouse.cpp(171): warning C4244: '=': 'float' から 'LONG' への変換です。データが失われる可能性があります。
+  model.cpp
+  manager.cpp
+  main.cpp
+  keyboard.cpp
+  joypad.cpp
+  コードを生成中...
+  コンパイル中...
+  input.cpp
+  game.cpp
+  fade.cpp
+c:\users\gsp030\desktop\okashi_222\project\12on-line\c++ひな形\fade.cpp(25): warning C4244: '引数': 'float' から 'DWORD' への変換です。データが失われる可能性があります。
+  camera.cpp
+  bg.cpp
+  コードを生成中...
+  LINK : 前回のインクリメンタル リンクで C:\Users\gsp030\Desktop\okashi_222\project\12on-line\Debug\12online.exe が見つからなかったか、ビルドされませんでした。フル リンクを行います。
+  c++ひな形.vcxproj -> C:\Users\gsp030\Desktop\okashi_222\project\12on-line\Debug\12online.exe
+  c++ひな形.vcxproj -> C:\Users\gsp030\Desktop\okashi_222\project\12on-line\Debug\12online.pdb (Full PDB)

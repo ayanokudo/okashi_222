@@ -1,0 +1,299 @@
+#==============================================================================
+#
+# 『モデルビューワ』スクリプトファイル [model.txt]
+# Author : AKIRA TANAKA
+#
+#==============================================================================
+SCRIPT			# この行は絶対消さないこと！
+
+#------------------------------------------------------------------------------
+# モデル数
+#------------------------------------------------------------------------------
+NUM_MODEL = 21
+
+#------------------------------------------------------------------------------
+# モデルファイル名
+#------------------------------------------------------------------------------
+MODEL_FILENAME = data/MODEL/building000.x	# [0]ビル0(小) [40×40]
+MODEL_FILENAME = data/MODEL/building100.x	# [1]ビル1(小) [40×40]
+MODEL_FILENAME = data/MODEL/building200.x	# [2]ビル2(小) [40×40]
+MODEL_FILENAME = data/MODEL/building300.x	# [3]ビル3(小) [40×40]
+MODEL_FILENAME = data/MODEL/building400.x	# [4]ビル4(小) [40×40]
+MODEL_FILENAME = data/MODEL/building500.x	# [5]ビル5(小) [40×40]
+MODEL_FILENAME = data/MODEL/building001.x	# [6]ビル0(中) [60×60]
+MODEL_FILENAME = data/MODEL/building101.x	# [7]ビル1(中) [60×60]
+MODEL_FILENAME = data/MODEL/building201.x	# [8]ビル2(中) [60×60]
+MODEL_FILENAME = data/MODEL/building301.x	# [9]ビル3(中) [60×60]
+MODEL_FILENAME = data/MODEL/building401.x	# [10]ビル4(中) [60×60]
+MODEL_FILENAME = data/MODEL/building501.x	# [11]ビル5(中) [60×60]
+MODEL_FILENAME = data/MODEL/building002.x	# [12]ビル0(大) [80×80]
+MODEL_FILENAME = data/MODEL/building102.x	# [13]ビル1(大) [80×80]
+MODEL_FILENAME = data/MODEL/building202.x	# [14]ビル2(大) [80×80]
+MODEL_FILENAME = data/MODEL/building302.x	# [15]ビル3(大) [80×80]
+MODEL_FILENAME = data/MODEL/building402.x	# [16]ビル4(大) [80×80]
+MODEL_FILENAME = data/MODEL/building502.x	# [17]ビル5(大) [80×80]
+MODEL_FILENAME = data/MODEL/building600.x	# [18]ビル6(小) [80×80]
+MODEL_FILENAME = data/MODEL/building601.x	# [19]ビル6(中) [80×80]
+MODEL_FILENAME = data/MODEL/building602.x	# [20]ビル6(大) [80×80]
+
+#------------------------------------------------------------------------------
+# 配置情報
+#------------------------------------------------------------------------------
+#１列目
+MODELSET
+	TYPE = 0
+	POS = 220 0 280
+	ROT = 0 -90 0
+END_MODELSET
+
+MODELSET
+	TYPE = 1
+	POS = 220 0 240
+	ROT = 0 -90 0
+END_MODELSET
+
+MODELSET
+	TYPE = 3
+	POS = 220 0 200
+	ROT = 0 -90 0
+END_MODELSET
+
+MODELSET
+	TYPE = 2
+	POS = 220 0 160
+	ROT = 0 -90 0
+END_MODELSET
+
+MODELSET
+	TYPE = 7
+	POS = 210 0 30
+	ROT = 0 -90 0
+END_MODELSET
+
+MODELSET
+	TYPE = 9
+	POS = 210 0 -70
+	ROT = 0 -90 0
+END_MODELSET
+
+MODELSET
+	TYPE = 10
+	POS = 210 0 -170
+	ROT = 0 -90 0
+END_MODELSET
+
+MODELSET
+	TYPE = 11
+	POS = 210 0 -230
+	ROT = 0 -90 0
+END_MODELSET
+
+MODELSET
+	TYPE = 4
+	POS = 220 0 -280
+	ROT = 0 -90 0
+END_MODELSET
+
+
+#２列目
+MODELSET
+	TYPE = 8
+	POS = 130 0 290
+	ROT = 0 90 0
+END_MODELSET
+
+MODELSET
+	TYPE = 4
+	POS = 120 0 220
+	ROT = 0 90 0
+END_MODELSET
+
+MODELSET
+	TYPE = 7
+	POS = 130 0 170
+	ROT = 0 90 0
+END_MODELSET
+
+MODELSET
+	TYPE = 12
+	POS = 140 0 20
+	ROT = 0 90 0
+END_MODELSET
+
+MODELSET
+	TYPE = 16
+	POS = 140 0 -60
+	ROT = 0 90 0
+END_MODELSET
+
+MODELSET
+	TYPE = 1
+	POS = 120 0 -160
+	ROT = 0 90 0
+END_MODELSET
+
+MODELSET
+	TYPE = 2
+	POS = 120 0 -200
+	ROT = 0 90 0
+END_MODELSET
+
+MODELSET
+	TYPE = 5
+	POS = 120 0 -240
+	ROT = 0 90 0
+END_MODELSET
+
+MODELSET
+	TYPE = 0
+	POS = 120 0 -280
+	ROT = 0 90 0
+END_MODELSET
+
+
+#３列目
+MODELSET
+	TYPE = 0
+	POS = 0 0 280
+	ROT = 0 -90 0
+END_MODELSET
+
+MODELSET
+	TYPE = 5
+	POS = 0 0 240
+	ROT = 0 -90 0
+END_MODELSET
+
+MODELSET
+	TYPE = 13
+	POS = -20 0 180
+	ROT = 0 -90 0
+END_MODELSET
+
+MODELSET
+	TYPE = 6
+	POS = -10 0 30
+	ROT = 0 -90 0
+END_MODELSET
+
+MODELSET
+	TYPE = 5
+	POS = 0 0 -30
+	ROT = 0 -90 0
+END_MODELSET
+
+MODELSET
+	TYPE = 2
+	POS = 0 0 -80
+	ROT = 0 -90 0
+END_MODELSET
+
+MODELSET
+	TYPE = 8
+	POS = -10 0 -170
+	ROT = 0 -90 0
+END_MODELSET
+
+MODELSET
+	TYPE = 1
+	POS = 0 0 -230
+	ROT = 0 -90 0
+END_MODELSET
+
+MODELSET
+	TYPE = 3
+	POS = 0 0 -280
+	ROT = 0 -90 0
+END_MODELSET
+
+
+#４列目
+MODELSET
+	TYPE = 15
+	POS = -100 0 180
+	ROT = 0 0 0
+END_MODELSET
+
+MODELSET
+	TYPE = 10
+	POS = -100 0 30
+	ROT = 0 -180 0
+END_MODELSET
+
+MODELSET
+	TYPE = 7
+	POS = -100 0 -70
+	ROT = 0 0 0
+END_MODELSET
+
+MODELSET
+	TYPE = 4
+	POS = -110 0 -160
+	ROT = 0 -180 0
+END_MODELSET
+
+MODELSET
+	TYPE = 8
+	POS = -100 0 -270
+	ROT = 0 0 0
+END_MODELSET
+
+
+#５列目
+MODELSET
+	TYPE = 11
+	POS = -170 0 170
+	ROT = 0 0 0
+END_MODELSET
+
+MODELSET
+	TYPE = 0
+	POS = -180 0 40
+	ROT = 0 -180 0
+END_MODELSET
+
+MODELSET
+	TYPE = 17
+	POS = -180 0 -60
+	ROT = 0 0 0
+END_MODELSET
+
+
+#６列目
+MODELSET
+	TYPE = 7
+	POS = -250 0 170
+	ROT = 0 0 0
+END_MODELSET
+
+MODELSET
+	TYPE = 9
+	POS = -250 0 30
+	ROT = 0 -180 0
+END_MODELSET
+
+MODELSET
+	TYPE = 11
+	POS = -250 0 -70
+	ROT = 0 0 0
+END_MODELSET
+
+MODELSET
+	TYPE = 18
+	POS = -200 0 -250
+	ROT = 0 0 0
+END_MODELSET
+
+MODELSET
+	TYPE = 19
+	POS = -250 0 -250
+	ROT = 0 0 0
+END_MODELSET
+
+MODELSET
+	TYPE = 20
+	POS = -300 0 -250
+	ROT = 0 0 0
+END_MODELSET
+
+END_SCRIPT		# この行は絶対消さないこと！

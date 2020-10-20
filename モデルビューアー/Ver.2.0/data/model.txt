@@ -1,0 +1,370 @@
+#==============================================================================
+#
+# 『モデルビューワ』スクリプトファイル [model.txt]
+# Author : AKIRA TANAKA
+#
+#==============================================================================
+SCRIPT			# この行は絶対消さないこと！
+
+#------------------------------------------------------------------------------
+# 読み込むテクスチャ数
+#------------------------------------------------------------------------------
+NUM_TEXTURE = 7
+
+#------------------------------------------------------------------------------
+# 読み込むテクスチャファイル名
+#------------------------------------------------------------------------------
+TEXTURE_FILENAME = data/TEXTURE/field000.jpg		# [0]地面テクスチャ
+TEXTURE_FILENAME = data/TEXTURE/field001.jpg		# [1]地面テクスチャ
+TEXTURE_FILENAME = data/TEXTURE/field002.jpg		# [2]地面テクスチャ
+TEXTURE_FILENAME = data/TEXTURE/wall000.jpg			# [3]壁テクスチャ
+TEXTURE_FILENAME = data/TEXTURE/wall001.jpg			# [4]壁テクスチャ
+TEXTURE_FILENAME = data/TEXTURE/wall002.jpg			# [5]壁テクスチャ
+TEXTURE_FILENAME = data/TEXTURE/wall100.jpg			# [6]壁テクスチャ
+
+#------------------------------------------------------------------------------
+# 読み込むモデル数
+#------------------------------------------------------------------------------
+NUM_MODEL = 2
+
+#------------------------------------------------------------------------------
+# 読み込むモデルファイル名
+#------------------------------------------------------------------------------
+MODEL_FILENAME = data/MODEL/pillar000.x				# [0]柱
+MODEL_FILENAME = data/MODEL/fence000.x				# [1]フェンス
+
+#------------------------------------------------------------------------------
+# 表示する地面の配置情報
+#------------------------------------------------------------------------------
+#--------------------------------------
+# 芝生
+#--------------------------------------
+FIELDSET
+	TEXTYPE = 0
+	POS = -120 0 260
+	ROT = 0 0 0
+	BLOCK = 10 3
+	SIZE = 40 40
+END_FIELDSET
+
+FIELDSET
+	TEXTYPE = 0
+	POS = -120 0 -80
+	ROT = 0 0 0
+	BLOCK = 10 12
+	SIZE = 40 40
+END_FIELDSET
+
+FIELDSET
+	TEXTYPE = 0
+	POS = 240 0 260
+	ROT = 0 0 0
+	BLOCK = 4 3
+	SIZE = 40 40
+END_FIELDSET
+
+FIELDSET
+	TEXTYPE = 0
+	POS = 240 0 -80
+	ROT = 0 0 0
+	BLOCK = 4 12
+	SIZE = 40 40
+END_FIELDSET
+
+#--------------------------------------
+# 砂利
+#--------------------------------------
+FIELDSET
+	TEXTYPE = 1
+	POS = 120 0 0
+	ROT = 0 0 0
+	BLOCK = 2 16
+	SIZE = 40 40
+END_FIELDSET
+
+FIELDSET
+	TEXTYPE = 1
+	POS = -120 0 180
+	ROT = 0 0 0
+	BLOCK = 10 1
+	SIZE = 40 40
+END_FIELDSET
+
+FIELDSET
+	TEXTYPE = 1
+	POS = 240 0 180
+	ROT = 0 0 0
+	BLOCK = 4 1
+	SIZE = 40 40
+END_FIELDSET
+
+#------------------------------------------------------------------------------
+# 表示する壁の配置情報
+#------------------------------------------------------------------------------
+#--------------------------------------
+# 地面の断面壁
+#--------------------------------------
+WALLSET
+	TEXTYPE = 6
+	POS = 0 -40 -320
+	ROT = 0 0 0
+	BLOCK = 16 1
+	SIZE = 40 40
+END_WALLSET
+
+WALLSET
+	TEXTYPE = 6
+	POS = -320 -40 0
+	ROT = 0 90 0
+	BLOCK = 16 1
+	SIZE = 40 40
+END_WALLSET
+
+WALLSET
+	TEXTYPE = 6
+	POS = 0 -40 320
+	ROT = 0 180 0
+	BLOCK = 16 1
+	SIZE = 40 40
+END_WALLSET
+
+WALLSET
+	TEXTYPE = 6
+	POS = 320 -40 0
+	ROT = 0 -90 0
+	BLOCK = 16 1
+	SIZE = 40 40
+END_WALLSET
+
+#--------------------------------------
+# 地上の外壁
+#--------------------------------------
+WALLSET
+	TEXTYPE = 3
+	POS = 0 0 320
+	ROT = 0 0 0
+	BLOCK = 16 2
+	SIZE = 40 40
+END_WALLSET
+
+WALLSET
+	TEXTYPE = 3
+	POS = 320 0 0
+	ROT = 0 90 0
+	BLOCK = 16 2
+	SIZE = 40 40
+END_WALLSET
+
+WALLSET
+	TEXTYPE = 3
+	POS = 0 0 -320
+	ROT = 0 180 0
+	BLOCK = 16 2
+	SIZE = 40 40
+END_WALLSET
+
+WALLSET
+	TEXTYPE = 3
+	POS = -320 0 0
+	ROT = 0 270 0
+	BLOCK = 16 2
+	SIZE = 40 40
+END_WALLSET
+
+#--------------------------------------
+# 地上内にある壁
+#--------------------------------------
+WALLSET
+	TEXTYPE = 4
+	POS = -100 0 40
+	ROT = 0 0 0
+	BLOCK = 4 1
+	SIZE = 40 40
+END_WALLSET
+
+WALLSET
+	TEXTYPE = 4
+	POS = -100 0 40
+	ROT = 0 180 0
+	BLOCK = 4 1
+	SIZE = 40 40
+END_WALLSET
+
+#------------------------------------------------------------------------------
+# 表示するモデルの配置情報
+#------------------------------------------------------------------------------
+#--------------------------------------
+# 柱
+#--------------------------------------
+MODELSET
+	TYPE = 0
+	POS = -290 0 290
+	ROT = 0 0 0
+END_MODELSET
+
+MODELSET
+	TYPE = 0
+	POS = 290 0 290
+	ROT = 0 0 0
+END_MODELSET
+
+MODELSET
+	TYPE = 0
+	POS = -290 0 -290
+	ROT = 0 0 0
+END_MODELSET
+
+MODELSET
+	TYPE = 0
+	POS = 290 0 -290
+	ROT = 0 0 0
+END_MODELSET
+
+MODELSET
+	TYPE = 0
+	POS = -200 0 40
+	ROT = 0 0 0
+END_MODELSET
+
+MODELSET
+	TYPE = 0
+	POS = -200 0 -160
+	ROT = 0 0 0
+END_MODELSET
+
+MODELSET
+	TYPE = 0
+	POS = 0 0 40
+	ROT = 0 0 0
+END_MODELSET
+
+MODELSET
+	TYPE = 0
+	POS = 0 0 -160
+	ROT = 0 0 0
+END_MODELSET
+
+MODELSET
+	TYPE = 0
+	POS = 230 0 50
+	ROT = 0 0 0
+END_MODELSET
+
+MODELSET
+	TYPE = 0
+	POS = 230 0 -170
+	ROT = 0 0 0
+END_MODELSET
+
+#--------------------------------------
+# フェンス
+#--------------------------------------
+MODELSET
+	TYPE = 1
+	POS = 85 0 260
+	ROT = 0 90 0
+END_MODELSET
+
+MODELSET
+	TYPE = 1
+	POS = 85 0 100
+	ROT = 0 90 0
+END_MODELSET
+
+MODELSET
+	TYPE = 1
+	POS = 85 0 -20
+	ROT = 0 90 0
+END_MODELSET
+
+MODELSET
+	TYPE = 1
+	POS = 85 0 -140
+	ROT = 0 90 0
+END_MODELSET
+
+MODELSET
+	TYPE = 1
+	POS = 85 0 -260
+	ROT = 0 90 0
+END_MODELSET
+
+MODELSET
+	TYPE = 1
+	POS = 155 0 260
+	ROT = 0 90 0
+END_MODELSET
+
+MODELSET
+	TYPE = 1
+	POS = 155 0 100
+	ROT = 0 90 0
+END_MODELSET
+
+MODELSET
+	TYPE = 1
+	POS = 155 0 -20
+	ROT = 0 90 0
+END_MODELSET
+
+MODELSET
+	TYPE = 1
+	POS = 155 0 -140
+	ROT = 0 90 0
+END_MODELSET
+
+MODELSET
+	TYPE = 1
+	POS = 155 0 -260
+	ROT = 0 90 0
+END_MODELSET
+
+MODELSET
+	TYPE = 1
+	POS = -220 0 195
+	ROT = 0 0 0
+END_MODELSET
+
+MODELSET
+	TYPE = 1
+	POS = -100 0 195
+	ROT = 0 0 0
+END_MODELSET
+
+MODELSET
+	TYPE = 1
+	POS = 20 0 195
+	ROT = 0 0 0
+END_MODELSET
+
+MODELSET
+	TYPE = 1
+	POS = 220 0 195
+	ROT = 0 0 0
+END_MODELSET
+
+MODELSET
+	TYPE = 1
+	POS = -220 0 165
+	ROT = 0 0 0
+END_MODELSET
+
+MODELSET
+	TYPE = 1
+	POS = -100 0 165
+	ROT = 0 0 0
+END_MODELSET
+
+MODELSET
+	TYPE = 1
+	POS = 20 0 165
+	ROT = 0 0 0
+END_MODELSET
+
+MODELSET
+	TYPE = 1
+	POS = 220 0 165
+	ROT = 0 0 0
+END_MODELSET
+
+END_SCRIPT		# この行は絶対消さないこと！

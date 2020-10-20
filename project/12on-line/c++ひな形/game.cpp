@@ -18,13 +18,15 @@
 #include "keyboard.h"
 #include "particle.h"
 #include "time.h"
-#include "floor.h"
+#include "player.h"
+#include "light.h"
 
 //=============================
 // 静的メンバ変数宣言
 //=============================
-CCamera *CGame::m_pCamera = NULL;   // カメラ
-
+CCamera *CGame::m_pCamera = NULL;   // カメラクラスのポインタ変数
+CPlayer *CGame::m_pPlayer = NULL;
+CLight *CGame::m_pLight = NULL;		// ライトクラスのポインタ変数
 
 //=============================
 // コンストラクタ
@@ -56,13 +58,24 @@ CGame * CGame::Create(void)
 // 初期化処理
 //=============================
 HRESULT CGame::Init(void)
-{
+{	
+	//ライトクラスの生成
+	m_pLight = new CLight;
+
+	if (m_pLight != NULL)
+	{
+		if (FAILED(m_pLight->Init()))
+		{
+			return -1;
+		}
+	}
+
 	// カメラの生成
 	m_pCamera = CCamera::Create();
+	// プレイヤーの生成
+	m_pPlayer = CPlayer::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 	// ポリゴンの生成
-	//CScene3d::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(1000.0f, 0.0f, 1000.0f));
-	// ポリゴン２ｄの生成
-	CFloor::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(1000.0f, 0.0f, 1000.0f),CFloor::FLOOR_FLOORING);
+	CScene3d::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(1000.0f, 0.0f, 1000.0f))->SetColor(D3DXCOLOR(0.0f, 1.0f, 0.0f, 1.0f));
 	// ポーズの初期化
 	CManager::SetActivePause(false);
 	return S_OK;
@@ -75,7 +88,12 @@ void CGame::Uninit(void)
 {
 	// 開放処理
 	CCamera::Release();
-
+	if (m_pLight != NULL)
+	{
+		m_pLight->Uninit();
+		delete m_pLight;
+		m_pLight = NULL;
+	}
 	// 開放処理
 	Release();
 }

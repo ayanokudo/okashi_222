@@ -31,6 +31,7 @@ public:
 	{
 		OBJTYPE_NONE = 0,
 		OBJTYPE_BG,         // 背景
+		OBJTYPE_FLOOR,      // フロア
 		OBJTYPE_MAP,        // マップ
 		OBJTYPE_MANACIRCLE, // マナサークル
 		OBJTYPE_ITEM,       // アイテム
@@ -42,7 +43,6 @@ public:
 		OBJTYPE_PARTICLE,   // パーティクル
 		OBJTYPE_BOMB,       // ボム
 		OBJTYPE_UI,         // UI
-		OBJTYPE_FLOOR,		// 床
 		OBJTYPE_MAX,        // タイプの最大数
 	}OBJTYPE;
 

@@ -25,7 +25,7 @@
 #include "particle.h"
 #include "tutorial.h"
 #include "pause.h"
-#include "floor.h"
+#include "player.h"
 
 //=============================
 // 静的メンバ変数宣言
@@ -41,8 +41,9 @@ CTitle          *CManager::m_pTitle = NULL;          // タイトル
 CResult         *CManager::m_pResult = NULL;         // リザルト
 CFade           *CManager::m_pFade = NULL;           // フェード
 CTutorial       *CManager::m_pTutorial = NULL;       // チュートリアル
-CPause          *CManager::m_pPause = NULL;            // ポーズポインタ
+CPause          *CManager::m_pPause = NULL;          // ポーズポインタ
 bool             CManager::m_bPause = false;         // ポーズフラグ
+
 //=============================
 // コンストラクタ
 //=============================
@@ -113,9 +114,9 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, bool bWindow)
 	// テクスチャの読み込み
 	CBg::Load();        // 背景
 	CNumber::Load();	// ナンバー
-	CParticle::Load();	// パーティクル
-	CPause::Load();		// ポーズ
-	CFloor::Load();		// 床
+	CParticle::Load();
+	CPause::Load();
+	CPlayer::Load();
 
 	// ポーズ状態の時
 	return S_OK;
@@ -134,7 +135,7 @@ void CManager::Uninit(void)
 	CNumber::Unload();
 	CParticle::Unload();
 	CPause::UnLoad();
-	CFloor::Unload();
+	CPlayer::Unload();
 
 	if (m_pSound != NULL)
 	{

@@ -24,8 +24,8 @@ class CInputJoypad;
 class CInputMouse;
 class CSound;
 class CCamera;
-
-
+class CPlayer;
+class CLight;
 //*****************************
 //クラス定義
 //*****************************
@@ -45,12 +45,13 @@ public:
 	void Draw(void);
 
 
-	static CCamera *GetCamera(void) { return m_pCamera; }                  // カメラの取得処理
-	
+	static CCamera *GetCamera(void) { return m_pCamera; }  // カメラの取得処理
+	static CPlayer *GetPlayer(void) { return m_pPlayer; }  // プレイヤーの取得処理
 private:
 	// メンバ変数
-	static CCamera*m_pCamera;                // カメラ
-
-};
+	static CCamera*m_pCamera; // カメラ
+	static CPlayer*m_pPlayer; // プレイヤー
+	static CLight *m_pLight;   // ライト
+}; 
 
 #endif

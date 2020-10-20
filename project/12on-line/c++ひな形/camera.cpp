@@ -13,12 +13,13 @@
 #include "renderer.h"
 #include "keyboard.h"
 #include "game.h"
+#include "player.h"
 
 //******************************
 // マクロ定義
 //******************************
 #define CAMERA_DISTANCE 250    // カメラの距離
-
+#define CAMERA_LOCAL_POS D3DXVECTOR3(0.0f, 500.0f, 100.0f);
 //******************************
 // 静的メンバ変数宣言
 //******************************
@@ -77,7 +78,7 @@ void CCamera::Release(void)
 HRESULT CCamera::Init(void)
 {
 	// 初期化
-	m_posV = D3DXVECTOR3(10.0f, 0.0f, 0.0f);
+	m_posV = D3DXVECTOR3(0.0f, 500.0f, 100.0f);
 	m_posR = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	m_vecU = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
 
@@ -99,22 +100,26 @@ void CCamera::Uninit(void)
 //******************************
 void CCamera::Update(void)
 {
-	if (CManager::GetKeyboard()->GetKeyPress(DIK_W))
+	m_posV = CGame::GetPlayer()->GetPos() + CAMERA_LOCAL_POS;
+	m_posR = CGame::GetPlayer()->GetPos();
+#ifdef _DEBUG
+	if (CManager::GetKeyboard()->GetKeyPress(DIK_UP))
 	{
 		m_posV.y += 10;
 	}
-	if (CManager::GetKeyboard()->GetKeyPress(DIK_S))
+	if (CManager::GetKeyboard()->GetKeyPress(DIK_DOWN))
 	{
 		m_posV.y -= 10;
 	}
-	if (CManager::GetKeyboard()->GetKeyPress(DIK_A))
+	if (CManager::GetKeyboard()->GetKeyPress(DIK_LEFT))
 	{
 		m_posV.z += 10;
 	}
-	if (CManager::GetKeyboard()->GetKeyPress(DIK_D))
+	if (CManager::GetKeyboard()->GetKeyPress(DIK_RIGHT))
 	{
 		m_posV.z -= 10;
 	}
+#endif
 }
 
 //******************************

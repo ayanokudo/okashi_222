@@ -102,7 +102,6 @@ HRESULT CRenderer::Init(HWND hWnd, bool bWindow)
 	}
 
 	// レンダーステートの設定
-	m_pD3DDevice->SetRenderState(D3DRS_LIGHTING, FALSE);                 // ライトオフ
 
 	m_pD3DDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);           // カリング
 	m_pD3DDevice->SetRenderState(D3DRS_ZENABLE, TRUE);                   // Zバッファを使用

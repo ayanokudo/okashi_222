@@ -13,6 +13,7 @@
 //=============================================================================
 CModel::CModel()
 {
+	// 変数のクリア
 	m_pBuffMatModel = NULL;
 	m_pMeshModel = NULL;
 	m_nNumMatModel = 0;
@@ -59,22 +60,6 @@ CModel * CModel::Create(D3DXVECTOR3 pos)
 //=============================================================================
 HRESULT CModel::Init()
 {
-	//デバイス情報の取得
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
-
-	////Xファイルの読み込み
-	//D3DXLoadMeshFromX(xfile,
-	//	D3DXMESH_SYSTEMMEM,
-	//	pDevice,
-	//	NULL,
-	//	&m_pBuffMatModel,
-	//	NULL,
-	//	&m_nNumMatModel,
-	//	&m_pMeshModel);
-
-	////位置の初期化
-	//m_pos = pos;
-
 	//向きの初期化
 	m_rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 
@@ -86,19 +71,6 @@ HRESULT CModel::Init()
 //=============================================================================
 void CModel::Uninit(void)
 {
-	//メッシュの破棄
-	if (m_pMeshModel != NULL)
-	{
-		m_pMeshModel->Release();
-		m_pMeshModel = NULL;
-	}
-	//マテリアルの破棄
-	if (m_pBuffMatModel != NULL)
-	{
-		m_pBuffMatModel->Release();
-		m_pBuffMatModel = NULL;
-	}
-
 	//オブジェクトの破棄
 	Release();
 }
@@ -120,9 +92,9 @@ void CModel::Draw(void)
 
 	D3DXMATRIX mtxRot, mtxTrans;
 	D3DMATERIAL9 matDef;	//現在のマテリアル保持用
-	D3DXMATERIAL*pMat;	//マテリアルデータへのポインタ
+	D3DXMATERIAL*pMat;  	//マテリアルデータへのポインタ
 
-						//ワールドマトリックスの初期化
+	//ワールドマトリックスの初期化
 	D3DXMatrixIdentity(&m_mtxWorldModel);
 
 	//向きを反映
@@ -188,6 +160,14 @@ D3DXVECTOR3 CModel::GetPos(void) const
 void CModel::SetRot(const D3DXVECTOR3 rot)
 {
 	m_rot = rot;
+}
+
+//=============================================================================
+//モデルクラスの向きの取得
+//=============================================================================
+D3DXVECTOR3 CModel::GetRot(void) const
+{
+	return m_rot;
 }
 
 //=============================================================================

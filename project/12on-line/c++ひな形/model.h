@@ -36,6 +36,7 @@ public:
 	void SetPos(const D3DXVECTOR3 pos);
 	D3DXVECTOR3 GetPos(void)const;
 	void SetRot(const D3DXVECTOR3 rot);
+	D3DXVECTOR3 GetRot(void)const;
 	void BindModel(LPD3DXMESH pMeshModel, LPD3DXBUFFER pBuffMatModel, DWORD nNumMatModel);
 private:
 	//=========================================================================

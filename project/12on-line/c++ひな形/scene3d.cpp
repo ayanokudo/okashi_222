@@ -75,7 +75,6 @@ HRESULT CScene3d::Init(void)
 	pDevice->CreateVertexBuffer(sizeof(VERTEX_3D)*NUM_VERTEX, D3DUSAGE_WRITEONLY, FVF_VERTEX_3D, D3DPOOL_MANAGED, &m_pVtxBuff, NULL);
 
 	// メンバ変数の初期化
-	/*m_size = { POLYGON_SIZE,POLYGON_SIZE,0.0f };*/
 	m_col = { 1.0f,1.0f,1.0f,1.0f };
 
 	m_pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);
@@ -97,7 +96,7 @@ HRESULT CScene3d::Init(void)
 		// 色の設定
 		pVtx[nCnt].col = m_col;
 		// 法線
-		pVtx[nCnt].nor = D3DXVECTOR3(0.0f, 0.0f, -1.0f);
+		pVtx[nCnt].nor = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
 	}
 
 	// アンロック

@@ -26,6 +26,7 @@ class CSound;
 class CCamera;
 class CPlayer;
 class CLight;
+
 //*****************************
 //ƒNƒ‰ƒX’è‹`
 //*****************************

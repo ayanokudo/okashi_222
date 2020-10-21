@@ -19,6 +19,7 @@ CModel::CModel()
 	m_nNumMatModel = 0;
 	m_pos = D3DXVECTOR3();
 	m_rot = D3DXVECTOR3();
+	memset(&m_apTexture, 0, sizeof(m_apTexture));
 }
 
 //=============================================================================
@@ -60,6 +61,22 @@ CModel * CModel::Create(D3DXVECTOR3 pos)
 //=============================================================================
 HRESULT CModel::Init()
 {
+	//デバイス情報の取得
+	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+
+	////Xファイルの読み込み
+	//D3DXLoadMeshFromX(xfile,
+	//	D3DXMESH_SYSTEMMEM,
+	//	pDevice,
+	//	NULL,
+	//	&m_pBuffMatModel,
+	//	NULL,
+	//	&m_nNumMatModel,
+	//	&m_pMeshModel);
+
+	//位置の初期化
+	m_pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+
 	//向きの初期化
 	m_rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 
@@ -71,6 +88,19 @@ HRESULT CModel::Init()
 //=============================================================================
 void CModel::Uninit(void)
 {
+	////メッシュの破棄
+	//if (m_pMeshModel != NULL)
+	//{
+	//	m_pMeshModel->Release();
+	//	m_pMeshModel = NULL;
+	//}
+	////マテリアルの破棄
+	//if (m_pBuffMatModel != NULL)
+	//{
+	//	m_pBuffMatModel->Release();
+	//	m_pBuffMatModel = NULL;
+	//}
+
 	//オブジェクトの破棄
 	Release();
 }
@@ -92,9 +122,9 @@ void CModel::Draw(void)
 
 	D3DXMATRIX mtxRot, mtxTrans;
 	D3DMATERIAL9 matDef;	//現在のマテリアル保持用
-	D3DXMATERIAL*pMat;  	//マテリアルデータへのポインタ
+	D3DXMATERIAL*pMat;	//マテリアルデータへのポインタ
 
-	//ワールドマトリックスの初期化
+						//ワールドマトリックスの初期化
 	D3DXMatrixIdentity(&m_mtxWorldModel);
 
 	//向きを反映
@@ -121,7 +151,8 @@ void CModel::Draw(void)
 
 		//マテリアルの設定
 		pDevice->SetMaterial(&pMat[nCntMat].MatD3D);
-
+		// テクスチャ
+		pDevice->SetTexture(0, m_apTexture[nCntMat]);
 		//モデルパーツの描画
 		m_pMeshModel->DrawSubset(nCntMat);
 	}
@@ -170,6 +201,7 @@ D3DXVECTOR3 CModel::GetRot(void) const
 	return m_rot;
 }
 
+
 //=============================================================================
 // モデルの割り当て
 //=============================================================================
@@ -178,4 +210,12 @@ void CModel::BindModel(LPD3DXMESH pMeshModel, LPD3DXBUFFER pBuffMatModel, DWORD 
 	m_pMeshModel = pMeshModel;
 	m_pBuffMatModel = pBuffMatModel;
 	m_nNumMatModel = nNumMatModel;
+}
+
+//=============================================================================
+// モデルのテクスチャ割り当て
+//=============================================================================
+void CModel::BindTexture(const int nIndex, const LPDIRECT3DTEXTURE9 pTexture)
+{
+	m_apTexture[nIndex] = pTexture;
 }

@@ -62,7 +62,7 @@ HRESULT CGame::Init(void)
 {	
 	//ライトクラスの生成
 	m_pLight = new CLight;
-
+	// 初期化
 	if (m_pLight != NULL)
 	{
 		if (FAILED(m_pLight->Init()))
@@ -91,12 +91,15 @@ void CGame::Uninit(void)
 {
 	// 開放処理
 	CCamera::Release();
+
+	// ライト
 	if (m_pLight != NULL)
 	{
 		m_pLight->Uninit();
 		delete m_pLight;
 		m_pLight = NULL;
 	}
+
 	// 開放処理
 	Release();
 }

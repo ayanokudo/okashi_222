@@ -17,7 +17,7 @@
 //*****************************
 // マクロ定義
 //*****************************
-#define MODEL_PATH "./data/Models/cat V1.x"    //モデルのパス
+#define MODEL_PATH "./data/Models/cat_sakamoto.x"    //モデルのパス
 #define PLAYER_SPEED 10
 #define PLAYER_MOVE_RATE 0.05f
 

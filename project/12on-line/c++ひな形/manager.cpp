@@ -33,6 +33,8 @@
 #include "player.h"
 #include "floor.h"
 #include "wall.h"
+#include "bullet.h"
+#include "enemy.h"
 
 //=============================
 // 静的メンバ変数宣言
@@ -126,6 +128,8 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, bool bWindow)
 	CPlayer::Load();	// プレイヤー
 	CFloor::Load();		// 床
 	CWall::Load();		// 壁
+CBullet::Load();    // 弾
+CEnemy::Load();		// エネミー
 
 	// ポーズ状態の時
 	return S_OK;
@@ -140,13 +144,15 @@ void CManager::Uninit(void)
 	CScene::ReleaseAll();
 
 	// テクスチャのアンロード
-	CBg::Unload();
-	CNumber::Unload();
-	CParticle::Unload();
-	CPause::UnLoad();
-	CPlayer::Unload();
-	CFloor::Unload();
+	CBg::Unload();       // 背景
+	CNumber::Unload();	 // ナンバー
+	CParticle::Unload(); // パーティクル
+	CPause::UnLoad();	 // ポーズ
+	CPlayer::Unload();	 // プレイヤー
+	CFloor::Unload();	 // 床
+	CBullet::Unload();   // 弾
 	CWall::Unload();
+	CEnemy::Unload();
 
 	if (m_pSound != NULL)
 	{
@@ -214,6 +220,7 @@ void CManager::Update(void)
 	{
 		m_pJoypad->Update();
 	}
+	
 	// キーボードクラスの更新処理
 	if (m_pInputKeyboard != NULL)
 	{
@@ -225,8 +232,6 @@ void CManager::Update(void)
 	{
 		m_pInputMouse->Update();
 	}
-
-	
 
 	// レンダラークラスの更新処理
 	if (m_pRenderer != NULL)

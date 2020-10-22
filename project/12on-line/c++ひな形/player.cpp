@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////
 //
-//    particleクラスの処理[particle.cpp]
+//    playerクラスの処理[player.cpp]
 //    Author:増澤 未来
 //
 ////////////////////////////////////////////////////
@@ -13,6 +13,7 @@
 #include "renderer.h"
 #include "keyboard.h"
 #include "joypad.h"
+#include "bullet.h"
 
 //*****************************
 // マクロ定義
@@ -131,10 +132,10 @@ void CPlayer::Uninit(void)
 //******************************
 void CPlayer::Update(void)
 {
-	D3DXVECTOR3 rot = GetRot();
-	
-	SetRot(rot);
-	Controll();
+	// 移動
+	Move();
+	// 攻撃
+	Attack();
 }
 
 //******************************
@@ -146,10 +147,11 @@ void CPlayer::Draw(void)
 }
 
 //******************************
-// 操作の管理
+// 移動操作
 //******************************
-void CPlayer::Controll(void)
+void CPlayer::Move(void)
 {
+	// 移動処理
 	// 座標
 	D3DXVECTOR3 pos = GetPos();
 	//移動量の目標値
@@ -206,4 +208,25 @@ void CPlayer::Controll(void)
 
 	// 座標のセット
 	SetPos(pos);
+
+}
+
+//******************************
+// 攻撃操作
+//******************************
+void CPlayer::Attack(void)
+{
+	if (CManager::GetKeyboard()->GetKeyTrigger(DIK_SPACE))
+	{// 弾を撃つ
+		// プレイヤーの向いている方向の取得
+		float fRotY = GetRot().y /*+ D3DXToRadian(90)*/;
+		// 移動量
+		D3DXVECTOR3 bulletMove;
+		bulletMove.x = cosf(fRotY)*BULLET_SPEED_PLAYER;
+		bulletMove.y = 0;
+		bulletMove.z = sinf(fRotY)*BULLET_SPEED_PLAYER;
+		// 弾の生成
+		CBullet::Create(GetPos(), bulletMove, 300, CBullet::BULLETUSER_PLAYER)->
+			SetColor(D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f));
+	}
 }

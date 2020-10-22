@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////
 //
-//    scene3dクラスの処理[scene3d.cpp]
+//    billboardクラスの処理[billboard.cpp]
 //    Author:増澤 未来
 //
 ////////////////////////////////////////////////////
@@ -8,12 +8,14 @@
 //******************************
 // インクルード
 //******************************
-#include "scene3d.h"
+#include "billboard.h"
 #include "renderer.h"
 #include "scene.h"
 #include "manager.h"
 #include "keyboard.h"
 #include "joypad.h"
+#include "camera.h"
+#include "game.h"
 
 //******************************
 // マクロ定義
@@ -23,7 +25,7 @@
 //===================================
 // コンストラクタ
 //===================================
-CScene3d::CScene3d()
+CBillboard::CBillboard()
 {
 	m_pTexture = NULL;
 	m_pVtxBuff = NULL;
@@ -40,35 +42,35 @@ CScene3d::CScene3d()
 //===================================
 // デストラクタ
 //===================================
-CScene3d::~CScene3d()
+CBillboard::~CBillboard()
 {
 }
 
 //===================================
 // クリエイト関数
 //===================================
-CScene3d * CScene3d::Create(D3DXVECTOR3 pos, D3DXVECTOR3 size)
+CBillboard * CBillboard::Create(D3DXVECTOR3 pos, D3DXVECTOR3 size)
 {
 	// メモリの確保
-	CScene3d *pScene3d;
-	pScene3d = new CScene3d;
+	CBillboard *pScene3d;
+	pScene3d = new CBillboard;
 	// 引数の代入
 	pScene3d->m_pos = pos;
 	pScene3d->m_size = size;
 	// 初期化
 	pScene3d->Init();
-	
+
 	return pScene3d;
 }
 
 //===================================
 // 初期化処理
 //===================================
-HRESULT CScene3d::Init(void)
+HRESULT CBillboard::Init(void)
 {
 	VERTEX_3D *pVtx;// 頂点情報ポインタ
 
-	// デバイスの取得
+					// デバイスの取得
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
 
 	// 頂点バッファの生成
@@ -80,10 +82,10 @@ HRESULT CScene3d::Init(void)
 	m_pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);
 
 	// 頂点座標の設定
-	pVtx[0].pos = D3DXVECTOR3(m_pos.x - m_size.x, m_pos.y + m_size.y, m_pos.z - m_size.z);
-	pVtx[1].pos = D3DXVECTOR3(m_pos.x + m_size.x, m_pos.y + m_size.y, m_pos.z - m_size.z);
-	pVtx[2].pos = D3DXVECTOR3(m_pos.x - m_size.x, m_pos.y - m_size.y, m_pos.z + m_size.z);
-	pVtx[3].pos = D3DXVECTOR3(m_pos.x + m_size.x, m_pos.y - m_size.y, m_pos.z + m_size.z);
+	pVtx[0].pos = D3DXVECTOR3(+m_size.x, -m_size.y, 0.0f);
+	pVtx[1].pos = D3DXVECTOR3(m_size.x, -m_size.y, 0.0f);
+	pVtx[2].pos = D3DXVECTOR3(+m_size.x, m_size.y, 0.0f);
+	pVtx[3].pos = D3DXVECTOR3(m_size.x, m_size.y, 0.0f);
 
 	// テクスチャUV座標の設定
 	pVtx[0].tex = D3DXVECTOR2(0.0f, 0.0f);
@@ -96,7 +98,7 @@ HRESULT CScene3d::Init(void)
 		// 色の設定
 		pVtx[nCnt].col = m_col;
 		// 法線
-		pVtx[nCnt].nor = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
+		pVtx[nCnt].nor = D3DXVECTOR3(0.0f, 0.0f, -1.0f);
 	}
 
 	// アンロック
@@ -108,7 +110,7 @@ HRESULT CScene3d::Init(void)
 //===================================
 // 終了処理
 //===================================
-void CScene3d::Uninit(void)
+void CBillboard::Uninit(void)
 {
 	// 頂点バッファの破棄
 	if (m_pVtxBuff != NULL)
@@ -123,17 +125,17 @@ void CScene3d::Uninit(void)
 //===================================
 // 更新処理
 //===================================
-void CScene3d::Update(void)
+void CBillboard::Update(void)
 {
 }
 
 //===================================
 // 描画処理
 //===================================
-void CScene3d::Draw(void)
+void CBillboard::Draw(void)
 {
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
-	D3DXMATRIX mtxRot, mtxTrans,mtxScail;//行列計算用マトリクス
+	D3DXMATRIX mtxRot, mtxTrans, mtxScail;//行列計算用マトリクス
 
 	// 加算モードの時
 	if (m_bAddMode)
@@ -149,14 +151,28 @@ void CScene3d::Draw(void)
 	D3DXMatrixIdentity(&mtxRot);
 	D3DXMatrixIdentity(&mtxTrans);
 	D3DXMatrixIdentity(&mtxScail);
-
+	
 	// サイズ
 	D3DXMatrixScaling(&mtxScail, 1.0f, 1.0f, 1.0f);
 	D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxScail);
+	
+# if 1
+	// 向きを反映
+	// カメラの向きに向ける
+	pDevice->GetTransform(D3DTS_VIEW, &mtxRot);
+	D3DXMatrixInverse(&m_mtxWorld, NULL, &mtxRot);
+
+	m_mtxWorld._41 = 0;
+	m_mtxWorld._42 = 0;
+	m_mtxWorld._43 = 0;
+
+#else
 
 	// 向きを反映
 	D3DXMatrixRotationYawPitchRoll(&mtxRot, 0.0f, 0.0f, 0.0f);
 	D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxRot);
+	
+#endif
 
 	// 位置を反映
 	D3DXMatrixTranslation(&mtxTrans, m_pos.x, m_pos.y, m_pos.z);
@@ -174,6 +190,8 @@ void CScene3d::Draw(void)
 
 	//ポリゴンの描画
 	pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, NUM_POLYGON);
+
+	// テクスチャの初期化
 	pDevice->SetTexture(0, 0);
 
 	// 加算モードの時
@@ -189,7 +207,7 @@ void CScene3d::Draw(void)
 //===================================
 // 座標のセット
 //===================================
-void CScene3d::SetPos(const D3DXVECTOR3 pos)
+void CBillboard::SetPos(const D3DXVECTOR3 pos)
 {
 	VERTEX_3D *pVtx;// 頂点情報ポインタ
 
@@ -200,10 +218,10 @@ void CScene3d::SetPos(const D3DXVECTOR3 pos)
 	m_pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);
 
 	// 頂点座標の設定
-	pVtx[0].pos = D3DXVECTOR3(m_pos.x + m_size.x, m_pos.y + m_size.y, m_pos.z + m_size.z);
-	pVtx[1].pos = D3DXVECTOR3(m_pos.x - m_size.x, m_pos.y + m_size.y, m_pos.z + m_size.z);
-	pVtx[2].pos = D3DXVECTOR3(m_pos.x + m_size.x, m_pos.y - m_size.y, m_pos.z - m_size.z);
-	pVtx[3].pos = D3DXVECTOR3(m_pos.x - m_size.x, m_pos.y - m_size.y, m_pos.z - m_size.z);
+	pVtx[0].pos = D3DXVECTOR3(+ m_size.x, - m_size.y, 0);
+	pVtx[1].pos = D3DXVECTOR3(- m_size.x, - m_size.y, 0);
+	pVtx[2].pos = D3DXVECTOR3(+ m_size.x, + m_size.y, 0);
+	pVtx[3].pos = D3DXVECTOR3(- m_size.x, + m_size.y, 0);
 
 	// アンロック
 	m_pVtxBuff->Unlock();
@@ -212,71 +230,20 @@ void CScene3d::SetPos(const D3DXVECTOR3 pos)
 //===================================
 // 角度のセット
 //===================================
-void CScene3d::SetAngle(const float fAngle)
+void CBillboard::SetAngle(const float fAngle)
 {
-	m_fAngle = fAngle; 
+	m_fAngle = fAngle;
 	SetPos(m_pos);
-}
-
-//===================================
-// 当たり判定
-//===================================
-bool CScene3d::Colision(D3DXVECTOR3 * pPos, D3DXVECTOR3 * pPosOld, D3DXVECTOR3 size)
-{
-	bool bIsGround = false;
-
-	m_size = size;
-
-	D3DXVECTOR3 RectSceneMax = D3DXVECTOR3(size.x / 2,
-		size.y / 2, size.z / 2) + *pPos;
-	D3DXVECTOR3 RectSceneMin = D3DXVECTOR3(-size.x / 2,
-		-size.y / 2, -size.z / 2) + *pPos;
-	D3DXVECTOR3 RectModelMax = D3DXVECTOR3(m_size.x / 2,
-		m_size.y / 2, m_size.z / 2) + m_pos;
-	D3DXVECTOR3 RectModelMin = D3DXVECTOR3(-m_size.x / 2,
-		-m_size.y / 2, -m_size.z / 2) + m_pos;
-
-	if (RectSceneMax.x > RectModelMin.x &&//blockから見て左
-		RectSceneMin.x < RectModelMax.x &&//blockから見て右
-		RectSceneMax.z > RectModelMin.z &&//blockから見て下
-		RectSceneMin.z < RectModelMax.z) //blockから見て上
-	{
-		if (RectSceneMax.x > RectModelMin.x &&
-			pPosOld->x + (size.x / 2) <= RectModelMin.x)
-		{//左
-			pPos->x = RectModelMin.x - (size.x / 2);
-		}
-
-		if (RectSceneMin.x < RectModelMax.x &&
-			pPosOld->x + (size.x / 2) >= RectModelMax.x)
-		{//右
-			pPos->x = +RectModelMax.x + (size.x / 2);
-		}
-
-		if (RectSceneMax.z > RectModelMin.z &&
-			pPosOld->z + (size.z / 2) <= RectModelMin.z)
-		{//前
-			pPos->z = RectModelMin.z - (size.z / 2);
-		}
-
-		if (RectSceneMin.z < RectModelMax.z &&
-			pPosOld->z + (size.z / 2) >= RectModelMax.z)
-		{//上
-			pPos->z = RectModelMax.z + (size.z / 2);
-		}
-	}
-
-	return bIsGround;
 }
 
 //===================================
 // アニメーション情報のセット
 //===================================
-void CScene3d::SetTextureUV(const D3DXVECTOR2 uv[NUM_VERTEX])
+void CBillboard::SetTextureUV(const D3DXVECTOR2 uv[NUM_VERTEX])
 {
 	VERTEX_3D *pVtx;// 頂点情報ポインタ
 
-					// ロック
+	// ロック
 	m_pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);
 
 	pVtx[0].tex = uv[0];
@@ -291,7 +258,7 @@ void CScene3d::SetTextureUV(const D3DXVECTOR2 uv[NUM_VERTEX])
 //===================================
 // サイズのセット
 //===================================
-void CScene3d::SetSize(const D3DXVECTOR3 size)
+void CBillboard::SetSize(const D3DXVECTOR3 size)
 {
 	m_size = size;
 
@@ -302,7 +269,7 @@ void CScene3d::SetSize(const D3DXVECTOR3 size)
 //===================================
 // 色のセット
 //===================================
-void CScene3d::SetColor(const D3DXCOLOR col)
+void CBillboard::SetColor(const D3DXCOLOR col)
 {
 	VERTEX_3D *pVtx;// 頂点情報ポインタ
 

@@ -26,6 +26,7 @@ class CSound;
 class CCamera;
 class CPlayer;
 class CLight;
+class CEnemy;
 
 //*****************************
 //クラス定義
@@ -48,11 +49,13 @@ public:
 
 	static CCamera *GetCamera(void) { return m_pCamera; }  // カメラの取得処理
 	static CPlayer *GetPlayer(void) { return m_pPlayer; }  // プレイヤーの取得処理
+	static CEnemy  *GetEnemy(void)  { return m_pEnemy; }   // エネミーの取得処理
 private:
 	// メンバ変数
-	static CCamera*m_pCamera; // カメラ
-	static CPlayer*m_pPlayer; // プレイヤー
-	static CLight *m_pLight;   // ライト
+	static CCamera*m_pCamera;	// カメラ
+	static CPlayer*m_pPlayer;	// プレイヤー
+	static CEnemy*m_pEnemy;		// エネミー
+	static CLight *m_pLight;	// ライト
 }; 
 
 #endif

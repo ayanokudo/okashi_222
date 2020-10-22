@@ -1,13 +1,13 @@
 //=============================================================================
 //
-// scene3dヘッダ [scene3d.h]
+// billboardヘッダ [billboard.h]
 // Author : 増澤 未来
 //
 //=============================================================================
 
 //二重インクルード防止
-#ifndef _SCENE3D_H_
-#define _SCENE3D_H_
+#ifndef _BILLBOARD_H_
+#define _BILLBOARD_H_
 
 //*****************************
 //インクルード
@@ -20,13 +20,13 @@
 //*****************************
 
 //2dポリゴンクラス
-class CScene3d : public CScene
+class CBillboard : public CScene
 {
 public:
 	// メンバ関数
-	CScene3d();
-	~CScene3d();
-	static CScene3d *Create(D3DXVECTOR3 pos ,D3DXVECTOR3 size);
+	CBillboard();
+	~CBillboard();
+	static CBillboard *Create(D3DXVECTOR3 pos, D3DXVECTOR3 size);
 	HRESULT Init(void);
 	void Uninit(void);
 	void Update(void);
@@ -46,8 +46,6 @@ public:
 	// カラーのセット、取得
 	void SetColor(const D3DXCOLOR col);
 	D3DXCOLOR GetColor(void) { return m_col; }
-	//当たり判定
-	bool Colision(D3DXVECTOR3 *pPos, D3DXVECTOR3 *pPosOld, D3DXVECTOR3 size);
 
 	void SetTextureUV(const D3DXVECTOR2 uv[NUM_VERTEX]); // テクスチャのUV座標のセット
 
@@ -62,7 +60,7 @@ private:
 	D3DXCOLOR m_col;                     // 色
 	D3DXMATRIX m_mtxWorld;               // ワールドマトリックス
 	bool m_bAddMode;                     // 加算合成か
-	LPDIRECT3DINDEXBUFFER9 m_pldxBuff = NULL;
+	LPDIRECT3DINDEXBUFFER9 m_pldxBuff;
 };
 
 #endif

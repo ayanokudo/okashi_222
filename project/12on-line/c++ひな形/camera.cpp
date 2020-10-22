@@ -79,7 +79,7 @@ void CCamera::Release(void)
 HRESULT CCamera::Init(void)
 {
 	// 初期化
-	m_posV = D3DXVECTOR3(0.0f, 500.0f, 100.0f);
+	m_posV = D3DXVECTOR3(1.0f, 500.0f, 100.0f);
 	m_posR = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	m_vecU = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
 
@@ -101,24 +101,33 @@ void CCamera::Uninit(void)
 //******************************
 void CCamera::Update(void)
 {
+#if 0
 	m_posV = CGame::GetPlayer()->GetPos() + CAMERA_LOCAL_POS;
 	m_posR = CGame::GetPlayer()->GetPos();
-#ifdef _DEBUG
-	if (CManager::GetKeyboard()->GetKeyPress(DIK_UP))
+#else
+	if (CManager::GetKeyboard()->GetKeyPress(DIK_NUMPAD8))
 	{
 		m_posV.y += 10;
 	}
-	if (CManager::GetKeyboard()->GetKeyPress(DIK_DOWN))
+	if (CManager::GetKeyboard()->GetKeyPress(DIK_NUMPAD2))
 	{
 		m_posV.y -= 10;
 	}
-	if (CManager::GetKeyboard()->GetKeyPress(DIK_LEFT))
+	if (CManager::GetKeyboard()->GetKeyPress(DIK_NUMPAD4))
 	{
 		m_posV.z += 10;
 	}
-	if (CManager::GetKeyboard()->GetKeyPress(DIK_RIGHT))
+	if (CManager::GetKeyboard()->GetKeyPress(DIK_NUMPAD6))
 	{
 		m_posV.z -= 10;
+	}
+	if (CManager::GetKeyboard()->GetKeyPress(DIK_NUMPAD7))
+	{
+		m_posV.x += 10;
+	}
+	if (CManager::GetKeyboard()->GetKeyPress(DIK_NUMPAD9))
+	{
+		m_posV.x -= 10;
 	}
 #endif
 }
@@ -144,8 +153,7 @@ void CCamera::SetCamera(void)
 
 	D3DXMatrixPerspectiveFovLH(&m_pCamera->m_mtxProjection,
 		D3DXToRadian(100.0f), 
-		(float)SCREEN_WIDTH / (float)SCREEN_HEIGHT, 10.0f, 1000.0f);
-	
+		(float)SCREEN_WIDTH / (float)SCREEN_HEIGHT, 0.0f, 2000.0f);	
 	//プロジェクションマトリックスの設定
 	pDevice->SetTransform(D3DTS_PROJECTION, &m_pCamera->m_mtxProjection);
 

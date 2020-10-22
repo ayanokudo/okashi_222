@@ -172,7 +172,7 @@ void CRenderer::Draw(void)
 	// Direct3D‚É‚æ‚é•`‰æ‚ÌŠJŽn
 	if (SUCCEEDED(m_pD3DDevice->BeginScene()))
 	{
-		
+
 		CScene::DrawAll();
 		
 		

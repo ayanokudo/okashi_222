@@ -33,6 +33,7 @@
 #include "player.h"
 #include "floor.h"
 #include "wall.h"
+#include "enemy.h"
 
 //=============================
 // 静的メンバ変数宣言
@@ -126,6 +127,7 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, bool bWindow)
 	CPlayer::Load();	// プレイヤー
 	CFloor::Load();		// 床
 	CWall::Load();		// 壁
+	CEnemy::Load();		// エネミー
 
 	// ポーズ状態の時
 	return S_OK;
@@ -147,6 +149,7 @@ void CManager::Uninit(void)
 	CPlayer::Unload();
 	CFloor::Unload();
 	CWall::Unload();
+	CEnemy::Unload();
 
 	if (m_pSound != NULL)
 	{

@@ -219,6 +219,57 @@ void CScene3d::SetAngle(const float fAngle)
 }
 
 //===================================
+// 当たり判定
+//===================================
+bool CScene3d::Colision(D3DXVECTOR3 * pPos, D3DXVECTOR3 * pPosOld, D3DXVECTOR3 size)
+{
+	bool bIsGround = false;
+
+	m_size = size;
+
+	D3DXVECTOR3 RectSceneMax = D3DXVECTOR3(size.x / 2,
+		size.y / 2, size.z / 2) + *pPos;
+	D3DXVECTOR3 RectSceneMin = D3DXVECTOR3(-size.x / 2,
+		-size.y / 2, -size.z / 2) + *pPos;
+	D3DXVECTOR3 RectModelMax = D3DXVECTOR3(m_size.x / 2,
+		m_size.y / 2, m_size.z / 2) + m_pos;
+	D3DXVECTOR3 RectModelMin = D3DXVECTOR3(-m_size.x / 2,
+		-m_size.y / 2, -m_size.z / 2) + m_pos;
+
+	if (RectSceneMax.x > RectModelMin.x &&//blockから見て左
+		RectSceneMin.x < RectModelMax.x &&//blockから見て右
+		RectSceneMax.z > RectModelMin.z &&//blockから見て下
+		RectSceneMin.z < RectModelMax.z) //blockから見て上
+	{
+		if (RectSceneMax.x > RectModelMin.x &&
+			pPosOld->x + (size.x / 2) <= RectModelMin.x)
+		{//左
+			pPos->x = RectModelMin.x - (size.x / 2);
+		}
+
+		if (RectSceneMin.x < RectModelMax.x &&
+			pPosOld->x + (size.x / 2) >= RectModelMax.x)
+		{//右
+			pPos->x = +RectModelMax.x + (size.x / 2);
+		}
+
+		if (RectSceneMax.z > RectModelMin.z &&
+			pPosOld->z + (size.z / 2) <= RectModelMin.z)
+		{//前
+			pPos->z = RectModelMin.z - (size.z / 2);
+		}
+
+		if (RectSceneMin.z < RectModelMax.z &&
+			pPosOld->z + (size.z / 2) >= RectModelMax.z)
+		{//上
+			pPos->z = RectModelMax.z + (size.z / 2);
+		}
+	}
+
+	return bIsGround;
+}
+
+//===================================
 // アニメーション情報のセット
 //===================================
 void CScene3d::SetTextureUV(const D3DXVECTOR2 uv[NUM_VERTEX])

@@ -226,7 +226,7 @@ void CPlayer::Attack(void)
 		bulletMove.y = 0;
 		bulletMove.z = sinf(fRotY)*BULLET_SPEED_PLAYER;
 		// ’e‚Ì¶¬
-		CBullet::Create(GetPos()/2, bulletMove, 300, CBullet::BULLETUSER_PLAYER)->
+		CBullet::Create(GetPos(), bulletMove, 300, CBullet::BULLETUSER_PLAYER)->
 			SetColor(D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f));
 	}
 }

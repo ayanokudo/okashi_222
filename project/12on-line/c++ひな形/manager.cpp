@@ -27,6 +27,7 @@
 #include "pause.h"
 #include "player.h"
 #include "floor.h"
+#include "bullet.h"
 
 //=============================
 // 静的メンバ変数宣言
@@ -119,6 +120,7 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, bool bWindow)
 	CPause::Load();		// ポーズ
 	CPlayer::Load();	// プレイヤー
 	CFloor::Load();		// 床
+	CBullet::Load();    // 弾
 
 	// ポーズ状態の時
 	return S_OK;
@@ -133,12 +135,13 @@ void CManager::Uninit(void)
 	CScene::ReleaseAll();
 
 	// テクスチャのアンロード
-	CBg::Unload();
-	CNumber::Unload();
-	CParticle::Unload();
-	CPause::UnLoad();
-	CPlayer::Unload();
-	CFloor::Unload();
+	CBg::Unload();       // 背景
+	CNumber::Unload();	 // ナンバー
+	CParticle::Unload(); // パーティクル
+	CPause::UnLoad();	 // ポーズ
+	CPlayer::Unload();	 // プレイヤー
+	CFloor::Unload();	 // 床
+	CBullet::Unload();   // 弾
 
 	if (m_pSound != NULL)
 	{
@@ -206,6 +209,7 @@ void CManager::Update(void)
 	{
 		m_pJoypad->Update();
 	}
+	
 	// キーボードクラスの更新処理
 	if (m_pInputKeyboard != NULL)
 	{
@@ -217,8 +221,6 @@ void CManager::Update(void)
 	{
 		m_pInputMouse->Update();
 	}
-
-	
 
 	// レンダラークラスの更新処理
 	if (m_pRenderer != NULL)

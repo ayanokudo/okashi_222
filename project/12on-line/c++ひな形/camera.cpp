@@ -144,7 +144,7 @@ void CCamera::SetCamera(void)
 
 	D3DXMatrixPerspectiveFovLH(&m_pCamera->m_mtxProjection,
 		D3DXToRadian(100.0f), 
-		(float)SCREEN_WIDTH / (float)SCREEN_HEIGHT, 0.0f, 1000.0f);
+		(float)SCREEN_WIDTH / (float)SCREEN_HEIGHT, 10.0f, 1000.0f);
 	
 	//プロジェクションマトリックスの設定
 	pDevice->SetTransform(D3DTS_PROJECTION, &m_pCamera->m_mtxProjection);

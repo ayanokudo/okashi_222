@@ -31,7 +31,8 @@ public:
 	{
 		OBJTYPE_NONE = 0,
 		OBJTYPE_BG,         // 背景
-		OBJTYPE_FLOOR,      // フロア
+		OBJTYPE_FLOOR,      // 床
+		OBJTYPE_WALL,		// 壁
 		OBJTYPE_MAP,        // マップ
 		OBJTYPE_MANACIRCLE, // マナサークル
 		OBJTYPE_ITEM,       // アイテム

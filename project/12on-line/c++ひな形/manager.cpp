@@ -1,4 +1,9 @@
-
+//=============================================================================
+//
+// マネージャー処理 [manager.cpp]
+// Author : 筒井 ＆ 増澤
+//
+//=============================================================================
 
 //=============================
 // インクルード
@@ -27,6 +32,7 @@
 #include "pause.h"
 #include "player.h"
 #include "floor.h"
+#include "wall.h"
 
 //=============================
 // 静的メンバ変数宣言
@@ -119,6 +125,7 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, bool bWindow)
 	CPause::Load();		// ポーズ
 	CPlayer::Load();	// プレイヤー
 	CFloor::Load();		// 床
+	CWall::Load();		// 壁
 
 	// ポーズ状態の時
 	return S_OK;
@@ -139,6 +146,7 @@ void CManager::Uninit(void)
 	CPause::UnLoad();
 	CPlayer::Unload();
 	CFloor::Unload();
+	CWall::Unload();
 
 	if (m_pSound != NULL)
 	{

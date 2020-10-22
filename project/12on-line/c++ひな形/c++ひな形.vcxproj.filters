@@ -90,10 +90,6 @@
     </ClCompile>
     <ClCompile Include="wall.cpp">
       <Filter>ソースファイル</Filter>
-    </ClCompile>      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="bullet.cpp">
-      <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -186,17 +182,14 @@
     </ClInclude>
     <ClInclude Include="wall.h">
       <Filter>ヘッダーファイル</Filter>
-    </ClInclude>      <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="bullet.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>  </ItemGroup>
+  </ItemGroup>
   <ItemGroup>
     <Filter Include="ヘッダーファイル">
-      <UniqueIdentifier>{54cff019-e96b-4521-b9ed-dcebd89d7687}</UniqueIdentifier>
+      <UniqueIdentifier>{ddbfc277-3388-40a9-b32d-0bee85f43c8c}</UniqueIdentifier>
     </Filter>
     <Filter Include="ソースファイル">
-      <UniqueIdentifier>{1cd73cbf-ca8c-4480-9c88-e42e9c6f1d69}</UniqueIdentifier>
+      <UniqueIdentifier>{6df98483-8573-4206-beb3-cb3a4d63c9bc}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

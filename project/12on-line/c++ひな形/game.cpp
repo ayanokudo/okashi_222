@@ -21,6 +21,7 @@
 #include "player.h"
 #include "light.h"
 #include "floor.h"
+#include "wall.h"
 
 //=============================
 // 静的メンバ変数宣言
@@ -75,10 +76,12 @@ HRESULT CGame::Init(void)
 	m_pCamera = CCamera::Create();
 	// プレイヤーの生成
 	m_pPlayer = CPlayer::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f));
-	// ポリゴンの生成
-	//CScene3d::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(1000.0f, 0.0f, 1000.0f))->SetColor(D3DXCOLOR(0.0f, 1.0f, 0.0f, 1.0f));
-	//床の生成
-	CFloor::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(1000.0f, 0.0f, 1000.0f),CFloor::FLOOR_FLOORING);
+	// 床の生成
+	CFloor::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(1000.0f, 0.0f, 1000.0f), CFloor::FLOOR_FLOORING);
+	// 壁の生成
+	CWall::Create(D3DXVECTOR3(0.0f, 0.0f, 500.0f), D3DXVECTOR3(1000.0f, 1000.0f, 0.0f), CWall::WALL_1);
+	// 壁の生成
+	CWall::Create(D3DXVECTOR3(0.0f, 0.0f, -500.0f), D3DXVECTOR3(1000.0f, 1000.0f, 0.0f), CWall::WALL_1);
 	// ポーズの初期化
 	CManager::SetActivePause(false);
 	return S_OK;

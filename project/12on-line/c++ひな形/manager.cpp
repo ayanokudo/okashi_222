@@ -1,4 +1,9 @@
-
+//=============================================================================
+//
+// マネージャー処理 [manager.cpp]
+// Author : 筒井 ＆ 増澤
+//
+//=============================================================================
 
 //=============================
 // インクルード
@@ -27,6 +32,7 @@
 #include "pause.h"
 #include "player.h"
 #include "floor.h"
+#include "wall.h"
 #include "bullet.h"
 
 //=============================
@@ -120,6 +126,7 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, bool bWindow)
 	CPause::Load();		// ポーズ
 	CPlayer::Load();	// プレイヤー
 	CFloor::Load();		// 床
+	CWall::Load();		// 壁
 	CBullet::Load();    // 弾
 
 	// ポーズ状態の時
@@ -142,6 +149,7 @@ void CManager::Uninit(void)
 	CPlayer::Unload();	 // プレイヤー
 	CFloor::Unload();	 // 床
 	CBullet::Unload();   // 弾
+	CWall::Unload();
 
 	if (m_pSound != NULL)
 	{

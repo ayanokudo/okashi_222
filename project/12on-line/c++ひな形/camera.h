@@ -34,7 +34,7 @@ public:
 	void Update(void);
 	void SetCamera(void);
 	D3DXVECTOR3 GetPos(void) { return m_posV; }
-	
+	D3DXVECTOR3 GetLookPos(void) { return m_posR; }
 	D3DXMATRIX GetViewMtx(void) { return m_mtxView; }
 	D3DXMATRIX GetProjectionMtx(void) { return m_mtxProjection; }
 

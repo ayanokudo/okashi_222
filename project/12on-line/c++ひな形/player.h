@@ -36,7 +36,9 @@ public:
 	void Draw(void);
 
 private:
-	void Controll(void);
+	void Move(void);
+	void Attack(void);
+
 	// メンバ変数
 	static LPD3DXMESH m_pMeshModel;	//メッシュ情報へのポインタ
 	static LPD3DXBUFFER m_pBuffMatModel;	//マテリアル情報へのポインタ

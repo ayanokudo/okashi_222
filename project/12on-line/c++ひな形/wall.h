@@ -16,6 +16,11 @@
 #include "scene3d.h"
 
 //*****************************
+//前方宣言
+//*****************************
+class CPlayer;
+
+//*****************************
 //クラス定義
 //*****************************
 class CWall : public CScene3d
@@ -40,6 +45,7 @@ public:
 	void Uninit(void);
 	void Update(void);
 	void Draw(void);
+	static CPlayer *GetPlayer(void) { return m_pPlayer; }
 
 private:
 	//メンバ変数
@@ -48,6 +54,7 @@ private:
 	D3DXVECTOR3 m_pos;
 	D3DXVECTOR3 m_posold;
 	D3DXVECTOR3 m_size;
+	static CPlayer *m_pPlayer;
 };
 
 #endif 

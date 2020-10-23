@@ -18,6 +18,7 @@ CModel::CModel()
 	m_pMeshModel = NULL;
 	m_nNumMatModel = 0;
 	m_pos = D3DXVECTOR3();
+	m_size = D3DXVECTOR3();
 	m_rot = D3DXVECTOR3();
 	memset(&m_apTexture, 0, sizeof(m_apTexture));
 }
@@ -32,7 +33,7 @@ CModel::~CModel()
 //=============================================================================
 //モデルクラスのクリエイト処理
 //=============================================================================
-CModel * CModel::Create(D3DXVECTOR3 pos)
+CModel * CModel::Create(D3DXVECTOR3 pos, D3DXVECTOR3 size)
 {
 	//モデルクラスのポインタ変数
 	CModel *pModel = NULL;
@@ -46,6 +47,7 @@ CModel * CModel::Create(D3DXVECTOR3 pos)
 		//初期化処理呼び出し
 		pModel->Init();
 		pModel->m_pos = pos;
+		pModel->m_size = size;
 	}
 	//メモリ確保に失敗したとき
 	else
@@ -79,6 +81,9 @@ HRESULT CModel::Init()
 
 	//向きの初期化
 	m_rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+
+	//大きさの初期化
+	m_size = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 
 	return S_OK;
 }
@@ -174,7 +179,6 @@ LPD3DXMESH CModel::GetMesh(void) const
 void CModel::SetPos(const D3DXVECTOR3 pos)
 {
 	m_pos = pos;
-
 }
 
 //=============================================================================
@@ -183,6 +187,22 @@ void CModel::SetPos(const D3DXVECTOR3 pos)
 D3DXVECTOR3 CModel::GetPos(void) const
 {
 	return m_pos;
+}
+
+//=============================================================================
+//モデルクラスの大きさ情報の設定
+//=============================================================================
+void CModel::SetSize(const D3DXVECTOR3 size)
+{
+	m_size = size;
+}
+
+//=============================================================================
+//モデルクラスの大きさ情報の取得
+//=============================================================================
+D3DXVECTOR3 CModel::GetSize(void) const
+{
+	return m_size;
 }
 
 //=============================================================================

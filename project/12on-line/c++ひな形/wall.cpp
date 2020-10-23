@@ -14,9 +14,9 @@
 //*****************************
 // マクロ定義
 //*****************************
-#define WALL_1_TEXTURE_PATH "./data/Textures/floor000.png"    //フローリングのテクスチャのパス
-#define WALL_2_TEXTURE_PATH		"./data/Textures/particle001.png"	 //まっとのテクスチャのパス
-#define WALL_3_TEXTURE_PATH  "./data/Textures/particle001.png"    //キッチンの床のテクスチャのパス
+#define WALL_1_TEXTURE_PATH		"./data/Textures/floor000.png"		 // フローリングのテクスチャのパス
+#define WALL_2_TEXTURE_PATH		"./data/Textures/particle001.png"	 // まっとのテクスチャのパス
+#define WALL_3_TEXTURE_PATH		"./data/Textures/particle001.png"    // キッチンの床のテクスチャのパス
 
 //==================================
 // コンストラクタ
@@ -54,7 +54,9 @@ CWall * CWall::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size, WALL type)
 		//それぞれの初期化処理
 		pWall->Init();
 		pWall->m_type = type;
+		pWall->m_pos = pos;
 		pWall->SetPos(pos);
+		pWall->m_size = size;
 		pWall->SetSize(size);
 		pWall->SetObjType(OBJTYPE_WALL);
 	}
@@ -117,7 +119,7 @@ void CWall::Uninit(void)
 //==================================
 void CWall::Update(void)
 {
-	Colision(CScene::GetType(), m_pos, m_posold, m_size);
+	Colision(CScene::OBJTYPE_PLAYER, m_pos, m_posold, m_size);
 }
 
 //==================================

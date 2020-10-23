@@ -14,6 +14,7 @@
 #include "keyboard.h"
 #include "joypad.h"
 #include "bullet.h"
+#include "scene3d.h"
 
 //*****************************
 // マクロ定義
@@ -57,7 +58,7 @@ CPlayer * CPlayer::Create(D3DXVECTOR3 pos)
 	pPlayer->Init();
 	pPlayer->SetPos(pos);
 	// 各値の代入・セット
-	pPlayer->SetObjType(OBJTYPE_MAP); // オブジェクトタイプ
+	pPlayer->SetObjType(OBJTYPE_PLAYER); // オブジェクトタイプ
 
 	return pPlayer;
 }
@@ -114,7 +115,6 @@ HRESULT CPlayer::Init(void)
 
 	// テクスチャ割り当て
 	BindModel(m_pMeshModel, m_pBuffMatModel, m_nNumMatModel);
-
 	return S_OK;
 }
 

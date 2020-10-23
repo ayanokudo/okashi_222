@@ -26,6 +26,8 @@ class CSound;
 class CCamera;
 class CPlayer;
 class CLight;
+class CDebug;
+
 //*****************************
 //クラス定義
 //*****************************
@@ -52,6 +54,10 @@ private:
 	static CCamera*m_pCamera; // カメラ
 	static CPlayer*m_pPlayer; // プレイヤー
 	static CLight *m_pLight;   // ライト
+
+#if _DEBUG
+    static CDebug *m_pDebug;    // デバッグ
+#endif // _DEBUG
 }; 
 
 #endif

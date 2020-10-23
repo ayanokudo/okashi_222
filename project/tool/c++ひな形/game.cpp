@@ -11,7 +11,7 @@
 #include "game.h"
 #include "bg.h"
 #include "number.h"
-#include "score.h" 
+#include "score.h"
 #include "mouse.h"
 #include "camera.h"
 #include "fade.h"
@@ -24,6 +24,7 @@
 #include "stage.h"
 #include "object.h"
 #include "file.h"
+#include "debug.h"
 
 //=============================
 // 静的メンバ変数宣言
@@ -31,6 +32,10 @@
 CCamera *CGame::m_pCamera = NULL;   // カメラクラスのポインタ変数
 CPlayer *CGame::m_pPlayer = NULL;
 CLight *CGame::m_pLight = NULL;		// ライトクラスのポインタ変数
+
+#if _DEBUG
+CDebug *CGame::m_pDebug = NULL;     // デバッグ用テキストのポインタ
+#endif //_DEBUG
 
 //=============================
 // コンストラクタ
@@ -84,6 +89,8 @@ HRESULT CGame::Init(void)
 	m_pPlayer = CPlayer::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f));
     CObject::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 
+
+    // ファイルの読み込み
     CFile::Read();
 	// ポリゴンの生成
 	//CScene3d::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(1000.0f, 0.0f, 1000.0f))->SetColor(D3DXCOLOR(0.0f, 1.0f, 0.0f, 1.0f));
@@ -91,6 +98,11 @@ HRESULT CGame::Init(void)
 	CFloor::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(1000.0f, 0.0f, 1000.0f),CFloor::FLOOR_FLOORING);
 	// ポーズの初期化
 	CManager::SetActivePause(false);
+
+#if _DEBUG
+    m_pDebug = CDebug::Create();
+#endif // _DEBUG
+
 	return S_OK;
 }
 
@@ -107,6 +119,10 @@ void CGame::Uninit(void)
 		delete m_pLight;
 		m_pLight = NULL;
 	}
+
+#if _DEBUG
+    m_pDebug->Uninit();
+#endif // _DEBUG
 	// 開放処理
 	Release();
 }
@@ -135,4 +151,10 @@ void CGame::Draw(void)
 	{
 		m_pCamera->SetCamera();
 	}
+#if _DEBUG
+    if (m_pDebug)
+    {
+        m_pDebug->Draw();
+    }
+#endif // _DEBUG
 }

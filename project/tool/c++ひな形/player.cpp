@@ -137,8 +137,6 @@ void CPlayer::Update(void)
 	SetRot(rot);
     // 操作の管理
 	Controll();
-
-
 }
 
 //******************************
@@ -148,6 +146,7 @@ void CPlayer::Draw(void)
 {
     // デバイスの取得
     LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+    // ワイヤーフレーム
     pDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
 	CModel::Draw();
     pDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);

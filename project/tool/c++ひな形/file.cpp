@@ -10,7 +10,8 @@
 //*****************************************************************************
 // マクロ定義
 //*****************************************************************************
-#define FAIL_NAME "data/Txt/stage.txt"      // 使用するファイルの名前
+#define FILE_NAME "data/Txt/stage.txt"      // 使用するファイルの名前
+#define READ_BUFFER (128)                   // 読み込み用バッファ
 
 //=============================================================================
 // [CFile] コンストラクタ
@@ -33,6 +34,48 @@ CFile::~CFile()
 //=============================================================================
 void CFile::Read(void)
 {
+    // 変数宣言
+    char aRead[READ_BUFFER];    // 文字列読み込み用
+    char aHead[READ_BUFFER];    // 比較用
+    char aDie[READ_BUFFER];             // 不必要な文字を読み込む
+    FILE *pFile = fopen(FILE_NAME, "r");
+    D3DXVECTOR3 pos;                // 読み込んだ位置
+
+    if (pFile)
+    {// ファイル読み込み
+        while (strcmp(aHead, "SCRIPT"))
+        {
+            fgets(aRead, sizeof(aRead), pFile);
+            sscanf(aRead, "%s", &aHead);
+        }
+        // SCREPTを読み込んだ時
+        if (strcmp(aHead, "SCRIPT") == 0)
+        {
+            while (strcmp(aHead, "END_SCRIPT") != 0)//END_SCRIPTを読み込むまでループ
+            {
+                // 文字列の読み込み
+                fgets(aRead, sizeof(aRead), pFile);//位置行単位で文字列を読み込み
+                sscanf(aRead, "%s", &aHead);//読み込んだテキストを比較用変数に代入
+
+                if (strcmp(aHead, "OBJ_SET") == 0)// OBJSETを読み込んだ時
+                {
+                    while (strcmp(aHead, "END_OBJ_SET") != 0)// END_OBJSETを読み込むまでループ
+                    {
+                        // 文字列の読み込み
+                        fgets(aRead, sizeof(aRead), pFile);//位置行単位で文字列を読み込み
+                        sscanf(aRead, "%s", &aHead);//読み込んだテキストを比較用変数に代入
+                        // 位置の設定
+                        if (strcmp(aHead, "POS") == 0)
+                        {
+                            sscanf(aRead, "%s %f %f %f", &aDie, &pos.x, &pos.y, &pos.z);//位置を格納
+                            CObject::SetObject(pos);
+                        }
+                    }
+                }
+            }
+        }
+    }
+    fclose(pFile);
 }
 
 //=============================================================================
@@ -41,10 +84,11 @@ void CFile::Read(void)
 void CFile::Writing(void)
 {
     // 変数宣言
-    FILE *pFile = fopen(FAIL_NAME, "w");
+    FILE *pFile = fopen(FILE_NAME, "w");
 
     if (pFile)
     {// ファイル書き込み
+
         fprintf(pFile, "SCRIPT          // スクリプト開始 \n\n");       // スクリプト開始
 
         // オブジェクトの数分データを書きだす
@@ -63,6 +107,7 @@ void CFile::Writing(void)
         fprintf(pFile, "\n");
         fprintf(pFile, "END_SCRIPT      // スクリプト終了");   // スクリプト終了
         fclose(pFile);                  // ファイル書き込み終了
+
     }
 
 }

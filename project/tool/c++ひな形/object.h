@@ -44,7 +44,7 @@ public:
     void Update(void);
     void Draw(void);
 
-    void SetObject(void);
+    static void SetObject(D3DXVECTOR3 pos);
 
     static CModel *GetObjectData(int nNumObj) { return pModel[nNumObj]; }
 private:

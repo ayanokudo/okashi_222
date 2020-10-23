@@ -94,7 +94,16 @@ void CObject::Uninit(void)
 void CObject::Update(void)
 {
     // オブジェクトの配置
-    SetObject();
+    if (CManager::GetKeyboard()->GetKeyTrigger(DIK_SPACE))
+    {
+        SetObject(CGame::GetPlayer()->GetPos());
+    }
+
+    // ファイル書き込み
+    if (CManager::GetKeyboard()->GetKeyTrigger(DIK_F1))
+    {
+        CFile::Writing();
+    }
 }
 
 //=============================================================================
@@ -107,24 +116,18 @@ void CObject::Draw(void)
 //=============================================================================
 // [SetObject] オブジェクトの配置
 // Author : AYANO KUDO
+// 引数
+//pos : 位置
 //=============================================================================
-void CObject::SetObject(void)
+void CObject::SetObject(D3DXVECTOR3 pos)
 {
-    if (CManager::GetKeyboard()->GetKeyTrigger(DIK_SPACE))
-    {
         // 現在の位置にオブジェクトの配置をする
         for (int nCnt = 0; nCnt < MAX_OBJECT; nCnt++)
         {
             if (pModel[nCnt] == NULL)
             {
-                pModel[nCnt] = CEnemy::Create(CGame::GetPlayer()->GetPos());
+                pModel[nCnt] = CEnemy::Create(pos);
                 break;// 一体ずつ配置するためにループを抜ける
             }
         }
-
-    }
-    if (CManager::GetKeyboard()->GetKeyTrigger(DIK_F1))
-    {
-        CFile::Writing();
-    }
 }

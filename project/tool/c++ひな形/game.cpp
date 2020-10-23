@@ -23,6 +23,7 @@
 #include "floor.h"
 #include "stage.h"
 #include "object.h"
+#include "file.h"
 
 //=============================
 // ê√ìIÉÅÉìÉoïœêîêÈåæ
@@ -83,7 +84,7 @@ HRESULT CGame::Init(void)
 	m_pPlayer = CPlayer::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f));
     CObject::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 
-
+    CFile::Read();
 	// É|ÉäÉSÉìÇÃê∂ê¨
 	//CScene3d::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(1000.0f, 0.0f, 1000.0f))->SetColor(D3DXCOLOR(0.0f, 1.0f, 0.0f, 1.0f));
 	//è∞ÇÃê∂ê¨

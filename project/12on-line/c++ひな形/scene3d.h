@@ -46,8 +46,6 @@ public:
 	// カラーのセット、取得
 	void SetColor(const D3DXCOLOR col);
 	D3DXCOLOR GetColor(void) { return m_col; }
-	//当たり判定
-	bool Colision(CScene::OBJTYPE objtype, D3DXVECTOR3 Pos, D3DXVECTOR3 PosOld, D3DXVECTOR3 size);
 
 	void SetTextureUV(const D3DXVECTOR2 uv[NUM_VERTEX]); // テクスチャのUV座標のセット
 

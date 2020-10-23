@@ -10,6 +10,7 @@
 #include "wall.h"
 #include "manager.h"
 #include "renderer.h"
+#include "collision.h"
 
 //*****************************
 // ƒ}ƒNƒ’è‹`
@@ -52,11 +53,11 @@ CWall * CWall::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size, WALL type)
 	if (pWall != NULL)
 	{
 		//‚»‚ê‚¼‚ê‚Ì‰Šú‰»ˆ—
+		pWall->m_pos = pos;
+		pWall->m_size = size;
 		pWall->Init();
 		pWall->m_type = type;
-		pWall->m_pos = pos;
 		pWall->SetPos(pos);
-		pWall->m_size = size;
 		pWall->SetSize(size);
 		pWall->SetObjType(OBJTYPE_WALL);
 	}
@@ -103,6 +104,7 @@ HRESULT CWall::Init(void)
 {
 	CScene3d::Init();
 	CScene3d::BindTexture(m_apTexture[m_type]);
+	m_pCollision=CCollision::CreateBox(m_pos*2, m_size*2);
 	return S_OK;
 }
 
@@ -119,7 +121,7 @@ void CWall::Uninit(void)
 //==================================
 void CWall::Update(void)
 {
-	Colision(CScene::OBJTYPE_PLAYER, m_pos, m_posold, m_size);
+	m_pCollision->SetPos(GetPos()*2);
 }
 
 //==================================

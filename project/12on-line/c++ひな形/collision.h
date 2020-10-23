@@ -25,7 +25,7 @@ class CCollision : public CModel
 public:
 	typedef enum
 	{
-		COLLISIONTYPE_CUBE = 0,
+		COLLISIONTYPE_BOX = 0,
 		COLLISIONTYPE_SPHERE,
 		COLLISIONTYPE_MAX,
 	}COLLISIONTYPE;
@@ -34,6 +34,8 @@ public:
 	~CCollision();
 	static CCollision *CreateSphere(D3DXVECTOR3 pos, float fRadius);
 	static bool CollisionSphere(CCollision*pCollision1, CCollision*pCollision2);
+	static CCollision *CreateBox(D3DXVECTOR3 pos, D3DXVECTOR3 size);
+	static bool CollisionBox(CCollision*pCollision1, CCollision*pCollision2);
 	HRESULT Init(void);
 	void Uninit(void);
 	void Update(void);
@@ -47,6 +49,7 @@ private:
 	DWORD m_nNumMatModel;	//マテリアル情報の数
 	COLLISIONTYPE m_type;  // コリジョンのタイプ
 	float m_fRadius;
+	D3DXVECTOR3 m_size;
 };
 
 #endif

@@ -64,7 +64,7 @@ CCollision * CCollision::CreateSphere(D3DXVECTOR3 pos,float fRadius)
 	
 	// 各値の代入・セット
 	pCollision->SetPos(pos);
-	pCollision->SetObjType(OBJTYPE_MAP); // オブジェクトタイプ
+	pCollision->SetObjType(OBJTYPE_COLLISION); // オブジェクトタイプ
 	
 	return pCollision;
 }
@@ -85,6 +85,31 @@ bool CCollision::CollisionSphere(CCollision * pCollision1, CCollision * pCollisi
 	{
 		return false;
 	}
+}
+
+CCollision * CCollision::CreateBox(D3DXVECTOR3 pos, D3DXVECTOR3 size)
+{
+	// メモリの確保
+	CCollision *pCollision;
+	pCollision = new CCollision;
+
+	// initで使うから先に代入
+	pCollision->m_type = COLLISIONTYPE_BOX;
+	pCollision->m_size = size;
+
+	// 初期化
+	pCollision->Init();
+
+	// 各値の代入・セット
+	pCollision->SetPos(pos);
+	pCollision->SetObjType(OBJTYPE_COLLISION); // オブジェクトタイプ
+
+	return pCollision;
+}
+
+bool CCollision::CollisionBox(CCollision * pCollision1, CCollision * pCollision2)
+{
+	return false;
 }
 
 
@@ -162,8 +187,8 @@ void CCollision::CreateMesh(void)
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
 	switch (m_type)
 	{
-	case COLLISIONTYPE_CUBE:
-
+	case COLLISIONTYPE_BOX:
+		D3DXCreateBox(pDevice,m_size.x, m_size.y, m_size.z, &m_pMeshModel, &m_pBuffMatModel);
 		break;
 	case COLLISIONTYPE_SPHERE:
 		// 球体の生成

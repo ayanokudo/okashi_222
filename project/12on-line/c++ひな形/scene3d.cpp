@@ -82,10 +82,10 @@ HRESULT CScene3d::Init(void)
 	m_pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);
 
 	// 頂点座標の設定
-	pVtx[0].pos = D3DXVECTOR3(m_pos.x - m_size.x, m_pos.y + m_size.y, m_pos.z - m_size.z);
-	pVtx[1].pos = D3DXVECTOR3(m_pos.x + m_size.x, m_pos.y + m_size.y, m_pos.z - m_size.z);
-	pVtx[2].pos = D3DXVECTOR3(m_pos.x - m_size.x, m_pos.y - m_size.y, m_pos.z + m_size.z);
-	pVtx[3].pos = D3DXVECTOR3(m_pos.x + m_size.x, m_pos.y - m_size.y, m_pos.z + m_size.z);
+	pVtx[0].pos = D3DXVECTOR3(m_pos.x - m_size.x, m_pos.y + m_size.y, m_pos.z + m_size.z);
+	pVtx[1].pos = D3DXVECTOR3(m_pos.x + m_size.x, m_pos.y + m_size.y, m_pos.z + m_size.z);
+	pVtx[2].pos = D3DXVECTOR3(m_pos.x - m_size.x, m_pos.y - m_size.y, m_pos.z - m_size.z);
+	pVtx[3].pos = D3DXVECTOR3(m_pos.x + m_size.x, m_pos.y - m_size.y, m_pos.z - m_size.z);
 
 	// テクスチャUV座標の設定
 	pVtx[0].tex = D3DXVECTOR2(0.0f, 0.0f);
@@ -219,75 +219,6 @@ void CScene3d::SetAngle(const float fAngle)
 	m_fAngle = fAngle; 
 	SetPos(m_pos);
 }
-
-//===================================
-// 当たり判定
-//===================================
-bool CScene3d::Colision(CScene::OBJTYPE objtype, D3DXVECTOR3 Pos, D3DXVECTOR3 PosOld, D3DXVECTOR3 size)
-{
-	//全モデルの情報を読み込むためfor文を回す
-	for (int nCntColision = 0; nCntColision < PRIORITY_NUM; nCntColision++)
-	{
-		CScene *pScene = GetTop(nCntColision);
-
-		while (pScene != NULL)
-		{
-			CScene*pNext = pScene->GetNext();
-
-			OBJTYPE ObjType = pScene->GetType();
-
-			if (ObjType == objtype)
-			{
-				CModel*pModel = (CModel*)pScene;
-				D3DXVECTOR3 posModel = pModel->GetPos();
-				D3DXVECTOR3 sizeModel = D3DXVECTOR3(100.0f, 0.0f, 100.0f);
-				
-				D3DXVECTOR3 rectObjectMax = D3DXVECTOR3(sizeModel.x / 2,
-					sizeModel.y / 2, sizeModel.z / 2) + posModel;
-				D3DXVECTOR3 rectObjectMin = D3DXVECTOR3(-sizeModel.x / 2,
-					-sizeModel.y / 2, -sizeModel.z / 2) + posModel;
-				D3DXVECTOR3 rectModelMax = D3DXVECTOR3(size.x / 2,
-					size.y / 2, size.z / 2) + Pos;
-				D3DXVECTOR3 rectModelMin = D3DXVECTOR3(-size.x / 2,
-					-size.y / 2, -size.z / 2) + Pos;
-
-				if (rectObjectMax.x > rectModelMin.x &&//blockから見て左
-					rectObjectMin.x < rectModelMax.x &&//blockから見て右
-					rectObjectMax.z > rectModelMin.z &&//blockから見て下
-					rectObjectMin.z < rectModelMax.z) //blockから見て上
-				{
-					if (rectObjectMax.x > rectModelMin.x &&
-						PosOld.x + (size.x / 2) <= rectModelMin.x)
-					{//左
-						Pos.x = rectModelMin.x - (size.x / 2);
-					}
-
-					if (rectObjectMin.x < rectModelMax.x &&
-						PosOld.x + (size.x / 2) >= rectModelMax.x)
-					{//右
-						Pos.x = +rectModelMax.x + (size.x / 2);
-					}
-
-					if (rectObjectMax.z > rectModelMin.z &&
-						PosOld.z + (size.z / 2) <= rectModelMin.z)
-					{//前
-						Pos.z = rectModelMin.z - (size.z / 2);
-					}
-
-					if (rectObjectMin.z < rectModelMax.z &&
-						PosOld.z + (size.z / 2) >= rectModelMax.z)
-					{//上
-						Pos.z = rectModelMax.z + (size.z / 2);
-					}
-				}
-			}
-
-			pScene = pNext;
-		}
-	}
-	return false;
-}
-
 
 //===================================
 // アニメーション情報のセット

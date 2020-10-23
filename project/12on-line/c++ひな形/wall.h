@@ -19,7 +19,7 @@
 //前方宣言
 //*****************************
 class CPlayer;
-
+class CCollision;
 //*****************************
 //クラス定義
 //*****************************
@@ -45,7 +45,7 @@ public:
 	void Uninit(void);
 	void Update(void);
 	void Draw(void);
-	static CPlayer *GetPlayer(void) { return m_pPlayer; }
+	CCollision *GetCollision(void) { return m_pCollision; }
 
 private:
 	//メンバ変数
@@ -54,7 +54,7 @@ private:
 	D3DXVECTOR3 m_pos;
 	D3DXVECTOR3 m_posold;
 	D3DXVECTOR3 m_size;
-	static CPlayer *m_pPlayer;
+	CCollision *m_pCollision;
 };
 
 #endif 

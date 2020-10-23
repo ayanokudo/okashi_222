@@ -94,8 +94,12 @@
     <ClCompile Include="enemy.cpp">
       <Filter>ソースファイル</Filter>
     </ClCompile>
-    <ClCompile Include="debug_log.cpp" />
-    <ClCompile Include="collision.cpp" />
+    <ClCompile Include="collision.cpp">
+      <Filter>ソースファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="debug_log.cpp">
+      <Filter>ソースファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bg.h">
@@ -191,8 +195,12 @@
     <ClInclude Include="enemy.h">
       <Filter>ヘッダーファイル</Filter>
     </ClInclude>
-    <ClInclude Include="debug_log.h" />
-    <ClInclude Include="collision.h" />
+    <ClInclude Include="collision.h">
+      <Filter>ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="debug_log.h">
+      <Filter>ヘッダーファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ヘッダーファイル">

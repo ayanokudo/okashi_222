@@ -225,62 +225,62 @@ void CScene3d::SetAngle(const float fAngle)
 //===================================
 bool CScene3d::Colision(CScene::OBJTYPE objtype, D3DXVECTOR3 Pos, D3DXVECTOR3 PosOld, D3DXVECTOR3 size)
 {
-	//全モデルの情報を読み込むためfor文を回す
-	for (int nCntColision = 0; nCntColision < MODEL_MAX; nCntColision++)
-	{
-		CScene *pScene = GetScene(nCntColision);
+	////全モデルの情報を読み込むためfor文を回す
+	//for (int nCntColision = 0; nCntColision < MODEL_MAX; nCntColision++)
+	//{
+	//	CScene *pScene = GetScene(nCntColision);
 
-		if (pScene != NULL)
-		{
-			OBJTYPE ObjType = pScene->GetType();
+	//	if (pScene != NULL)
+	//	{
+	//		OBJTYPE ObjType = pScene->GetType();
 
-			if (ObjType == objtype)
-			{
-				CModel*pModel = (CModel*)pScene;
-				D3DXVECTOR3 posModel = pModel->GetPos();
-				D3DXVECTOR3 sizeModel = D3DXVECTOR3(100.0f, 0.0f, 100.0f);
-				
-				D3DXVECTOR3 rectObjectMax = D3DXVECTOR3(sizeModel.x / 2,
-					sizeModel.y / 2, sizeModel.z / 2) + posModel;
-				D3DXVECTOR3 rectObjectMin = D3DXVECTOR3(-sizeModel.x / 2,
-					-sizeModel.y / 2, -sizeModel.z / 2) + posModel;
-				D3DXVECTOR3 rectModelMax = D3DXVECTOR3(size.x / 2,
-					size.y / 2, size.z / 2) + Pos;
-				D3DXVECTOR3 rectModelMin = D3DXVECTOR3(-size.x / 2,
-					-size.y / 2, -size.z / 2) + Pos;
+	//		if (ObjType == objtype)
+	//		{
+	//			CModel*pModel = (CModel*)pScene;
+	//			D3DXVECTOR3 posModel = pModel->GetPos();
+	//			D3DXVECTOR3 sizeModel = D3DXVECTOR3(100.0f, 0.0f, 100.0f);
+	//			
+	//			D3DXVECTOR3 rectObjectMax = D3DXVECTOR3(sizeModel.x / 2,
+	//				sizeModel.y / 2, sizeModel.z / 2) + posModel;
+	//			D3DXVECTOR3 rectObjectMin = D3DXVECTOR3(-sizeModel.x / 2,
+	//				-sizeModel.y / 2, -sizeModel.z / 2) + posModel;
+	//			D3DXVECTOR3 rectModelMax = D3DXVECTOR3(size.x / 2,
+	//				size.y / 2, size.z / 2) + Pos;
+	//			D3DXVECTOR3 rectModelMin = D3DXVECTOR3(-size.x / 2,
+	//				-size.y / 2, -size.z / 2) + Pos;
 
-				if (rectObjectMax.x > rectModelMin.x &&//blockから見て左
-					rectObjectMin.x < rectModelMax.x &&//blockから見て右
-					rectObjectMax.z > rectModelMin.z &&//blockから見て下
-					rectObjectMin.z < rectModelMax.z) //blockから見て上
-				{
-					if (rectObjectMax.x > rectModelMin.x &&
-						PosOld.x + (size.x / 2) <= rectModelMin.x)
-					{//左
-						Pos.x = rectModelMin.x - (size.x / 2);
-					}
+	//			if (rectObjectMax.x > rectModelMin.x &&//blockから見て左
+	//				rectObjectMin.x < rectModelMax.x &&//blockから見て右
+	//				rectObjectMax.z > rectModelMin.z &&//blockから見て下
+	//				rectObjectMin.z < rectModelMax.z) //blockから見て上
+	//			{
+	//				if (rectObjectMax.x > rectModelMin.x &&
+	//					PosOld.x + (size.x / 2) <= rectModelMin.x)
+	//				{//左
+	//					Pos.x = rectModelMin.x - (size.x / 2);
+	//				}
 
-					if (rectObjectMin.x < rectModelMax.x &&
-						PosOld.x + (size.x / 2) >= rectModelMax.x)
-					{//右
-						Pos.x = +rectModelMax.x + (size.x / 2);
-					}
+	//				if (rectObjectMin.x < rectModelMax.x &&
+	//					PosOld.x + (size.x / 2) >= rectModelMax.x)
+	//				{//右
+	//					Pos.x = +rectModelMax.x + (size.x / 2);
+	//				}
 
-					if (rectObjectMax.z > rectModelMin.z &&
-						PosOld.z + (size.z / 2) <= rectModelMin.z)
-					{//前
-						Pos.z = rectModelMin.z - (size.z / 2);
-					}
+	//				if (rectObjectMax.z > rectModelMin.z &&
+	//					PosOld.z + (size.z / 2) <= rectModelMin.z)
+	//				{//前
+	//					Pos.z = rectModelMin.z - (size.z / 2);
+	//				}
 
-					if (rectObjectMin.z < rectModelMax.z &&
-						PosOld.z + (size.z / 2) >= rectModelMax.z)
-					{//上
-						Pos.z = rectModelMax.z + (size.z / 2);
-					}
-				}
-			}
-		}
-	}
+	//				if (rectObjectMin.z < rectModelMax.z &&
+	//					PosOld.z + (size.z / 2) >= rectModelMax.z)
+	//				{//上
+	//					Pos.z = rectModelMax.z + (size.z / 2);
+	//				}
+	//			}
+	//		}
+	//	}
+	//}
 	return false;
 }
 

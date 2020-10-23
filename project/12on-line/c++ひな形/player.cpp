@@ -14,7 +14,8 @@
 #include "keyboard.h"
 #include "joypad.h"
 #include "bullet.h"
-#include "scene3d.h"#include "debug_log.h"
+#include "scene3d.h"
+#include "debug_log.h"
 #include "collision.h"
 
 //*****************************

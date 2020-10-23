@@ -72,6 +72,7 @@ HRESULT CEnemy::Load(void)
 {
 	// デバイスの取得
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+
 	//Xファイルの読み込み
 	D3DXLoadMeshFromX(MODEL_PATH,
 		D3DXMESH_SYSTEMMEM,
@@ -127,7 +128,6 @@ HRESULT CEnemy::Init(void)
 void CEnemy::Uninit(void)
 {
 	// コリジョンの終了処理
-
 	if (m_pCollision != NULL)
 	{
 		m_pCollision->Uninit();

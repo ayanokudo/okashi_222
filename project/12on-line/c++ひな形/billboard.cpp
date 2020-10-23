@@ -82,10 +82,10 @@ HRESULT CBillboard::Init(void)
 	m_pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);
 
 	// 頂点座標の設定
-	pVtx[0].pos = D3DXVECTOR3(+m_size.x, -m_size.y, 0.0f);
-	pVtx[1].pos = D3DXVECTOR3(m_size.x, -m_size.y, 0.0f);
-	pVtx[2].pos = D3DXVECTOR3(+m_size.x, m_size.y, 0.0f);
-	pVtx[3].pos = D3DXVECTOR3(m_size.x, m_size.y, 0.0f);
+	pVtx[0].pos = D3DXVECTOR3(+m_size.x, -m_size.y, 0);
+	pVtx[1].pos = D3DXVECTOR3(-m_size.x, -m_size.y, 0);
+	pVtx[2].pos = D3DXVECTOR3(+m_size.x, +m_size.y, 0);
+	pVtx[3].pos = D3DXVECTOR3(-m_size.x, +m_size.y, 0);
 
 	// テクスチャUV座標の設定
 	pVtx[0].tex = D3DXVECTOR2(0.0f, 0.0f);

@@ -45,6 +45,7 @@ private:
 	static DWORD m_nNumMatModel;	//マテリアル情報の数
 	static LPDIRECT3DTEXTURE9 m_apTexture; // テクスチャ
 	D3DXVECTOR3 m_move;        // 移動量
+	float m_fRotYDist;         // プレイヤーの向いている向きの目標値
 };
 
 #endif

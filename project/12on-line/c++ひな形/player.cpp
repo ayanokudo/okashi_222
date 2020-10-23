@@ -35,6 +35,7 @@ DWORD        CPlayer::m_nNumMatModel = 0;	    //マテリアル情報の数
 CPlayer::CPlayer()
 {
 	m_move = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	m_fRotYDist = 0.0f;
 }
 
 //******************************
@@ -219,14 +220,16 @@ void CPlayer::Attack(void)
 	if (CManager::GetKeyboard()->GetKeyTrigger(DIK_SPACE))
 	{// 弾を撃つ
 		// プレイヤーの向いている方向の取得
-		float fRotY = GetRot().y /*+ D3DXToRadian(90)*/;
+		float fRotY = GetRot().y - D3DXToRadian(90);
 		// 移動量
 		D3DXVECTOR3 bulletMove;
 		bulletMove.x = cosf(fRotY)*BULLET_SPEED_PLAYER;
 		bulletMove.y = 0;
 		bulletMove.z = sinf(fRotY)*BULLET_SPEED_PLAYER;
+		// 弾を撃つ位置の調整
+		D3DXVECTOR3 pos = GetPos();
+		pos.y += 10;
 		// 弾の生成
-		CBullet::Create(GetPos(), bulletMove, 300, CBullet::BULLETUSER_PLAYER)->
-			SetColor(D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f));
+		CBullet::Create(pos, bulletMove, 300, CBullet::BULLETUSER_PLAYER)->SetColor(D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f));
 	}
 }

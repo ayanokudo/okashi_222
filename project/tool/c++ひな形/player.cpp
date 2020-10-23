@@ -20,7 +20,7 @@
 // マクロ定義
 //*****************************
 #define MODEL_PATH "./data/Models/cat V1.x"    //モデルのパス
-#define PLAYER_SPEED 10
+#define PLAYER_SPEED 10.0f
 #define PLAYER_MOVE_RATE 0.05f
 
 //*****************************

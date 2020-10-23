@@ -27,7 +27,7 @@ LPDIRECT3DTEXTURE9  CParticle::m_apTexture[PARTICLE_MAX] = {}; // テクスチャポイ
 //******************************
 // コンストラクタ
 //******************************
-CParticle::CParticle()
+CParticle::CParticle():CScene3d(OBJTYPE_PARTICLE)
 {
 	m_move = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	m_nLife = 0;

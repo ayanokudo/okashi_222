@@ -16,6 +16,8 @@
 #include "score.h"
 #include "player.h"
 #include "game.h"
+#include "collision.h"
+#include "enemy.h"
 
 //*****************************
 // マクロ定義
@@ -30,12 +32,13 @@ LPDIRECT3DTEXTURE9  CBullet::m_pTexture = NULL; // テクスチャポインタ
 //******************************
 // コンストラクタ
 //******************************
-CBullet::CBullet()
+CBullet::CBullet():CBillboard(OBJTYPE_BULLET)
 {
 	// 変数のクリア
 	m_move = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	m_nLife = 0;
 	m_user = BULLETUSER_PLAYER;
+	m_pCollision = NULL;
 }
 
 //******************************
@@ -108,7 +111,8 @@ HRESULT CBullet::Init(void)
 	BindTexture(m_pTexture);
 	// サイズの設定
 	SetSize(D3DXVECTOR3(BULLET_SIZE, BULLET_SIZE, 0.0f));
-
+	// 当たり判定の生成
+	m_pCollision = CCollision::CreateSphere(GetPos(), BULLET_SIZE);
 	return S_OK;
 }
 
@@ -117,6 +121,13 @@ HRESULT CBullet::Init(void)
 //******************************
 void CBullet::Uninit(void)
 {
+	// コリジョンの終了処理
+	if (m_pCollision != NULL)
+	{
+		m_pCollision->Uninit();
+		m_pCollision = NULL;
+	}
+
 	CBillboard::Uninit();
 }
 
@@ -138,10 +149,14 @@ void CBullet::Update(void)
 	{// 寿命が0以下になったとき
 		// 消す
 		Uninit();
+		return;
 	}
 
+	// 当たり判定の位置更新
+	m_pCollision->SetPos(GetPos());
 	// 当たり判定
 	CollisionBullet(m_user);
+	
 }
 
 //******************************
@@ -158,4 +173,28 @@ void CBullet::Draw(void)
 //******************************
 void CBullet::CollisionBullet(BULLETUSER user)
 {
+	switch (user)
+	{
+	case BULLETUSER_ENEMY:
+
+		break;
+	case BULLETUSER_PLAYER:
+	{
+		CEnemy*pEnemy = (CEnemy*)CScene::GetTop(OBJTYPE_ENEMY);
+		while (pEnemy != NULL)
+		{
+
+			if (CCollision::CollisionSphere(m_pCollision, pEnemy->GetCollision()))
+			{
+				pEnemy->Uninit();
+				Uninit();
+				break;
+			}
+			pEnemy = (CEnemy*)pEnemy->GetNext();
+		}
+	}
+		break;
+	default:
+		break;
+	}
 }

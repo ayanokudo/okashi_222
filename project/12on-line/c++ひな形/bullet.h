@@ -18,9 +18,13 @@
 //*****************************
 // マクロ定義
 //*****************************
-#define BULLET_SPEED_PLAYER 10    // 速度(プレイヤーの弾)
+#define BULLET_SPEED_PLAYER 20    // 速度(プレイヤーの弾)
 #define BULLET_SPEED_ENEMY 20     // 速度(エネミーの弾)
 #define BULLET_SIZE 30           // サイズ
+//*****************************
+// 前方宣言
+//*****************************
+class CCollision;
 
 //*****************************
 // クラス定義
@@ -55,6 +59,7 @@ private:
 	D3DXVECTOR3 m_move; // 移動量
 	int m_nLife;        // 寿命
 	BULLETUSER m_user; // バレットユーザー
+	CCollision*m_pCollision;    // コリジョンクラスのポインタ
 };
 
 #endif

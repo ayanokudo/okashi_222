@@ -13,6 +13,7 @@
 #include "renderer.h"
 #include "keyboard.h"
 #include "joypad.h"
+#include "collision.h"
 
 //*****************************
 // マクロ定義
@@ -20,6 +21,7 @@
 #define MODEL_PATH "./data/Models/cube.x"    //モデルのパス
 #define ENEMY_SPEED 10
 #define ENEMY_MOVE_RATE 0.05f
+#define ENEMY_RADIUS  50
 
 //*****************************
 // 静的メンバ変数宣言
@@ -31,9 +33,10 @@ DWORD        CEnemy::m_nNumMatModel = 0;	    //マテリアル情報の数
 //******************************
 // コンストラクタ
 //******************************
-CEnemy::CEnemy()
+CEnemy::CEnemy() :CModel(OBJTYPE_ENEMY)
 {
 	m_move = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	m_pCollision = NULL;
 }
 
 //******************************
@@ -54,9 +57,10 @@ CEnemy * CEnemy::Create(D3DXVECTOR3 pos)
 
 	// 初期化
 	pPlayer->Init();
-	pPlayer->SetPos(pos);
+	
 	// 各値の代入・セット
-	pPlayer->SetObjType(OBJTYPE_MAP); // オブジェクトタイプ
+	pPlayer->SetPos(pos);
+	pPlayer->SetObjType(OBJTYPE_ENEMY); // オブジェクトタイプ
 
 	return pPlayer;
 }
@@ -113,7 +117,7 @@ HRESULT CEnemy::Init(void)
 
 	// テクスチャ割り当て
 	BindModel(m_pMeshModel, m_pBuffMatModel, m_nNumMatModel);
-
+	m_pCollision = CCollision::CreateSphere(GetPos(), ENEMY_RADIUS);
 	return S_OK;
 }
 
@@ -122,6 +126,13 @@ HRESULT CEnemy::Init(void)
 //******************************
 void CEnemy::Uninit(void)
 {
+	// コリジョンの終了処理
+
+	if (m_pCollision != NULL)
+	{
+		m_pCollision->Uninit();
+		m_pCollision = NULL;
+	}
 
 	CModel::Uninit();
 }
@@ -134,6 +145,8 @@ void CEnemy::Update(void)
 	D3DXVECTOR3 rot = GetRot();
 
 	SetRot(rot);
+	// コリジョンの位置更新
+	m_pCollision->SetPos(GetPos());
 }
 
 //******************************

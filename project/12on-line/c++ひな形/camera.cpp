@@ -101,35 +101,8 @@ void CCamera::Uninit(void)
 //******************************
 void CCamera::Update(void)
 {
-#if 0
 	m_posV = CGame::GetPlayer()->GetPos() + CAMERA_LOCAL_POS;
 	m_posR = CGame::GetPlayer()->GetPos();
-#else
-	if (CManager::GetKeyboard()->GetKeyPress(DIK_NUMPAD8))
-	{
-		m_posV.y += 10;
-	}
-	if (CManager::GetKeyboard()->GetKeyPress(DIK_NUMPAD2))
-	{
-		m_posV.y -= 10;
-	}
-	if (CManager::GetKeyboard()->GetKeyPress(DIK_NUMPAD4))
-	{
-		m_posV.z += 10;
-	}
-	if (CManager::GetKeyboard()->GetKeyPress(DIK_NUMPAD6))
-	{
-		m_posV.z -= 10;
-	}
-	if (CManager::GetKeyboard()->GetKeyPress(DIK_NUMPAD7))
-	{
-		m_posV.x += 10;
-	}
-	if (CManager::GetKeyboard()->GetKeyPress(DIK_NUMPAD9))
-	{
-		m_posV.x -= 10;
-	}
-#endif
 }
 
 //******************************

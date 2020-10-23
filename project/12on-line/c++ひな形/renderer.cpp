@@ -15,6 +15,7 @@
 #include "game.h"
 #include "fade.h"
 #include "pause.h"
+#include "debug_log.h"
 
 //==================================
 //    コンストラクタ
@@ -184,6 +185,8 @@ void CRenderer::Draw(void)
 #ifdef _DEBUG
 		// FPS表示
 		DrawFPS();
+
+		CDebugLog::Draw();
 #endif
 
 		//フェードの描画

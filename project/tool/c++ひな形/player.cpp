@@ -206,7 +206,7 @@ void CPlayer::Controll(void)
 	}
 
 	// Šµ«
-	m_move += (moveDest - m_move) * PLAYER_MOVE_RATE;
+	m_move = (moveDest);
 	
 	// ˆÚ“®—Ê‚ğ‘«‚·
 	pos += m_move;

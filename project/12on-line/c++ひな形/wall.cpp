@@ -28,7 +28,10 @@ LPDIRECT3DTEXTURE9 CWall::m_apTexture[WALL_MAX] = {};
 //==================================
 CWall::CWall()
 {
-	m_type = WALL_1;	//°‚Ìí—Ş‚Ì‰Šú‰»
+	m_type   =   WALL_1;			// °‚Ìí—Ş‚Ì‰Šú‰»
+	m_pos    =	{ 0.0f,0.0f,0.0f };	// pos‚Ì‰Šú‰»
+	m_posold =	{ 0.0f,0.0f,0.0f };	// ‘O‚ÌˆÊ’u‚Ì‰Šú‰»
+	m_size   =	{ 0.0f,0.0f,0.0f };	// size‚Ì‰Šú‰»
 }
 
 //==================================
@@ -114,7 +117,7 @@ void CWall::Uninit(void)
 //==================================
 void CWall::Update(void)
 {
-
+	Colision(CScene::GetType(), m_pos, m_posold, m_size);
 }
 
 //==================================

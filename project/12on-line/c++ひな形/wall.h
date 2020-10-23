@@ -45,6 +45,9 @@ private:
 	//メンバ変数
 	static LPDIRECT3DTEXTURE9 m_apTexture[WALL_MAX];//テクスチャ
 	WALL m_type;
+	D3DXVECTOR3 m_pos;
+	D3DXVECTOR3 m_posold;
+	D3DXVECTOR3 m_size;
 };
 
 #endif 

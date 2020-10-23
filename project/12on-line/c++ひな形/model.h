@@ -29,7 +29,7 @@ public:
 	CModel();
 	~CModel();
 
-	static CModel *Create(D3DXVECTOR3 pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+	static CModel *Create(D3DXVECTOR3 pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3 size = D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 
 	HRESULT Init();
 	void Uninit(void);
@@ -39,6 +39,8 @@ public:
 
 	void SetPos(const D3DXVECTOR3 pos);
 	D3DXVECTOR3 GetPos(void)const;
+	void SetSize(const D3DXVECTOR3 size);
+	D3DXVECTOR3 GetSize(void)const;
 	void SetRot(const D3DXVECTOR3 rot);
 	D3DXVECTOR3 GetRot(void)const;
 	void BindModel(LPD3DXMESH pMeshModel, LPD3DXBUFFER pBuffMatModel, DWORD nNumMatModel);
@@ -52,6 +54,7 @@ private:
 	LPD3DXBUFFER m_pBuffMatModel;	//マテリアル情報へのポインタ
 	DWORD m_nNumMatModel;	//マテリアル情報の数
 	D3DXVECTOR3 m_pos;	//位置
+	D3DXVECTOR3 m_size;	//大きさ
 	D3DXVECTOR3 m_rot;	//向き
 	D3DXMATRIX m_mtxWorldModel;	//ワールドマトリックス
 };

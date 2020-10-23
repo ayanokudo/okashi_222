@@ -14,9 +14,9 @@
 //*****************************
 // マクロ定義
 //*****************************
-#define WALL_1_TEXTURE_PATH "./data/Textures/floor000.png"    //フローリングのテクスチャのパス
-#define WALL_2_TEXTURE_PATH		"./data/Textures/particle001.png"	 //まっとのテクスチャのパス
-#define WALL_3_TEXTURE_PATH  "./data/Textures/particle001.png"    //キッチンの床のテクスチャのパス
+#define WALL_1_TEXTURE_PATH		"./data/Textures/floor000.png"		 // フローリングのテクスチャのパス
+#define WALL_2_TEXTURE_PATH		"./data/Textures/particle001.png"	 // まっとのテクスチャのパス
+#define WALL_3_TEXTURE_PATH		"./data/Textures/particle001.png"    // キッチンの床のテクスチャのパス
 
 //==================================
 // コンストラクタ
@@ -28,7 +28,10 @@ LPDIRECT3DTEXTURE9 CWall::m_apTexture[WALL_MAX] = {};
 //==================================
 CWall::CWall()
 {
-	m_type = WALL_1;	//床の種類の初期化
+	m_type   =   WALL_1;			// 床の種類の初期化
+	m_pos    =	{ 0.0f,0.0f,0.0f };	// posの初期化
+	m_posold =	{ 0.0f,0.0f,0.0f };	// 前の位置の初期化
+	m_size   =	{ 0.0f,0.0f,0.0f };	// sizeの初期化
 }
 
 //==================================
@@ -51,7 +54,9 @@ CWall * CWall::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size, WALL type)
 		//それぞれの初期化処理
 		pWall->Init();
 		pWall->m_type = type;
+		pWall->m_pos = pos;
 		pWall->SetPos(pos);
+		pWall->m_size = size;
 		pWall->SetSize(size);
 		pWall->SetObjType(OBJTYPE_WALL);
 	}
@@ -114,7 +119,7 @@ void CWall::Uninit(void)
 //==================================
 void CWall::Update(void)
 {
-
+	Colision(CScene::OBJTYPE_PLAYER, m_pos, m_posold, m_size);
 }
 
 //==================================

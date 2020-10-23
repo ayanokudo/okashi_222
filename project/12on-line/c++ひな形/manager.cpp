@@ -128,8 +128,8 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, bool bWindow)
 	CPlayer::Load();	// プレイヤー
 	CFloor::Load();		// 床
 	CWall::Load();		// 壁
-CBullet::Load();    // 弾
-CEnemy::Load();		// エネミー
+	CBullet::Load();    // 弾
+	CEnemy::Load();		// エネミー
 
 	// ポーズ状態の時
 	return S_OK;

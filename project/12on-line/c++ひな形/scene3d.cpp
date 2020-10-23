@@ -14,11 +14,13 @@
 #include "manager.h"
 #include "keyboard.h"
 #include "joypad.h"
+#include "model.h"
 
 //******************************
 // マクロ定義
 //******************************
 #define POLYGON_SIZE 200 // ポリゴンの初期サイズ
+#define MODEL_MAX 50	 // モデルの最大数
 
 //===================================
 // コンストラクタ
@@ -221,53 +223,67 @@ void CScene3d::SetAngle(const float fAngle)
 //===================================
 // 当たり判定
 //===================================
-bool CScene3d::Colision(D3DXVECTOR3 * pPos, D3DXVECTOR3 * pPosOld, D3DXVECTOR3 size)
+bool CScene3d::Colision(CScene::OBJTYPE objtype, D3DXVECTOR3 Pos, D3DXVECTOR3 PosOld, D3DXVECTOR3 size)
 {
-	bool bIsGround = false;
-
-	m_size = size;
-
-	D3DXVECTOR3 RectSceneMax = D3DXVECTOR3(size.x / 2,
-		size.y / 2, size.z / 2) + *pPos;
-	D3DXVECTOR3 RectSceneMin = D3DXVECTOR3(-size.x / 2,
-		-size.y / 2, -size.z / 2) + *pPos;
-	D3DXVECTOR3 RectModelMax = D3DXVECTOR3(m_size.x / 2,
-		m_size.y / 2, m_size.z / 2) + m_pos;
-	D3DXVECTOR3 RectModelMin = D3DXVECTOR3(-m_size.x / 2,
-		-m_size.y / 2, -m_size.z / 2) + m_pos;
-
-	if (RectSceneMax.x > RectModelMin.x &&//blockから見て左
-		RectSceneMin.x < RectModelMax.x &&//blockから見て右
-		RectSceneMax.z > RectModelMin.z &&//blockから見て下
-		RectSceneMin.z < RectModelMax.z) //blockから見て上
+	//全モデルの情報を読み込むためfor文を回す
+	for (int nCntColision = 0; nCntColision < MODEL_MAX; nCntColision++)
 	{
-		if (RectSceneMax.x > RectModelMin.x &&
-			pPosOld->x + (size.x / 2) <= RectModelMin.x)
-		{//左
-			pPos->x = RectModelMin.x - (size.x / 2);
-		}
+		CScene *pScene = GetScene(nCntColision);
 
-		if (RectSceneMin.x < RectModelMax.x &&
-			pPosOld->x + (size.x / 2) >= RectModelMax.x)
-		{//右
-			pPos->x = +RectModelMax.x + (size.x / 2);
-		}
+		if (pScene != NULL)
+		{
+			OBJTYPE ObjType = pScene->GetType();
 
-		if (RectSceneMax.z > RectModelMin.z &&
-			pPosOld->z + (size.z / 2) <= RectModelMin.z)
-		{//前
-			pPos->z = RectModelMin.z - (size.z / 2);
-		}
+			if (ObjType == objtype)
+			{
+				CModel*pModel = (CModel*)pScene;
+				D3DXVECTOR3 posModel = pModel->GetPos();
+				D3DXVECTOR3 sizeModel = D3DXVECTOR3(100.0f, 0.0f, 100.0f);
+				
+				D3DXVECTOR3 rectObjectMax = D3DXVECTOR3(sizeModel.x / 2,
+					sizeModel.y / 2, sizeModel.z / 2) + posModel;
+				D3DXVECTOR3 rectObjectMin = D3DXVECTOR3(-sizeModel.x / 2,
+					-sizeModel.y / 2, -sizeModel.z / 2) + posModel;
+				D3DXVECTOR3 rectModelMax = D3DXVECTOR3(size.x / 2,
+					size.y / 2, size.z / 2) + Pos;
+				D3DXVECTOR3 rectModelMin = D3DXVECTOR3(-size.x / 2,
+					-size.y / 2, -size.z / 2) + Pos;
 
-		if (RectSceneMin.z < RectModelMax.z &&
-			pPosOld->z + (size.z / 2) >= RectModelMax.z)
-		{//上
-			pPos->z = RectModelMax.z + (size.z / 2);
+				if (rectObjectMax.x > rectModelMin.x &&//blockから見て左
+					rectObjectMin.x < rectModelMax.x &&//blockから見て右
+					rectObjectMax.z > rectModelMin.z &&//blockから見て下
+					rectObjectMin.z < rectModelMax.z) //blockから見て上
+				{
+					if (rectObjectMax.x > rectModelMin.x &&
+						PosOld.x + (size.x / 2) <= rectModelMin.x)
+					{//左
+						Pos.x = rectModelMin.x - (size.x / 2);
+					}
+
+					if (rectObjectMin.x < rectModelMax.x &&
+						PosOld.x + (size.x / 2) >= rectModelMax.x)
+					{//右
+						Pos.x = +rectModelMax.x + (size.x / 2);
+					}
+
+					if (rectObjectMax.z > rectModelMin.z &&
+						PosOld.z + (size.z / 2) <= rectModelMin.z)
+					{//前
+						Pos.z = rectModelMin.z - (size.z / 2);
+					}
+
+					if (rectObjectMin.z < rectModelMax.z &&
+						PosOld.z + (size.z / 2) >= rectModelMax.z)
+					{//上
+						Pos.z = rectModelMax.z + (size.z / 2);
+					}
+				}
+			}
 		}
 	}
-
-	return bIsGround;
+	return false;
 }
+
 
 //===================================
 // アニメーション情報のセット

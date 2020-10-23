@@ -24,7 +24,7 @@ class CScene2d : public CScene
 {
 public:
 	// ƒƒ“ƒoŠÖ”
-	CScene2d();
+	CScene2d(int nPliority = OBJTYPE_NONE);
 	~CScene2d();
 	static CScene2d *Create(void);
 	HRESULT Init(void);

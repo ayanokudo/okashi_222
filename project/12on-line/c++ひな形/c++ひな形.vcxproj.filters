@@ -94,6 +94,8 @@
     <ClCompile Include="enemy.cpp">
       <Filter>ソースファイル</Filter>
     </ClCompile>
+    <ClCompile Include="debug_log.cpp" />
+    <ClCompile Include="collision.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bg.h">
@@ -189,6 +191,8 @@
     <ClInclude Include="enemy.h">
       <Filter>ヘッダーファイル</Filter>
     </ClInclude>
+    <ClInclude Include="debug_log.h" />
+    <ClInclude Include="collision.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ヘッダーファイル">

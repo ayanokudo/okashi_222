@@ -35,6 +35,7 @@
 #include "wall.h"
 #include "bullet.h"
 #include "enemy.h"
+#include "debug_log.h"
 
 //=============================
 // 静的メンバ変数宣言
@@ -116,6 +117,9 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, bool bWindow)
 	//	return E_FAIL;
 	//}
 	
+	// デバッグログ
+	CDebugLog::Init();
+
 	// フェードの生成
 	m_pFade = CFade::Create();
 	m_pFade->SetFade(m_mode);
@@ -128,8 +132,8 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, bool bWindow)
 	CPlayer::Load();	// プレイヤー
 	CFloor::Load();		// 床
 	CWall::Load();		// 壁
-CBullet::Load();    // 弾
-CEnemy::Load();		// エネミー
+	CBullet::Load();    // 弾
+	CEnemy::Load();		// エネミー
 
 	// ポーズ状態の時
 	return S_OK;

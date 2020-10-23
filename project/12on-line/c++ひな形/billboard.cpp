@@ -25,7 +25,7 @@
 //===================================
 // コンストラクタ
 //===================================
-CBillboard::CBillboard()
+CBillboard::CBillboard(int nPriority) :CScene(nPriority)
 {
 	m_pTexture = NULL;
 	m_pVtxBuff = NULL;
@@ -70,7 +70,7 @@ HRESULT CBillboard::Init(void)
 {
 	VERTEX_3D *pVtx;// 頂点情報ポインタ
 
-					// デバイスの取得
+	// デバイスの取得
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
 
 	// 頂点バッファの生成

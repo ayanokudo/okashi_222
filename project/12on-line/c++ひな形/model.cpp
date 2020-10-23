@@ -11,7 +11,7 @@
 //=============================================================================
 //モデルクラスのコンストラクタ
 //=============================================================================
-CModel::CModel()
+CModel::CModel(int nPriority) :CScene(nPriority)
 {
 	// 変数のクリア
 	m_pBuffMatModel = NULL;
@@ -88,19 +88,6 @@ HRESULT CModel::Init()
 //=============================================================================
 void CModel::Uninit(void)
 {
-	////メッシュの破棄
-	//if (m_pMeshModel != NULL)
-	//{
-	//	m_pMeshModel->Release();
-	//	m_pMeshModel = NULL;
-	//}
-	////マテリアルの破棄
-	//if (m_pBuffMatModel != NULL)
-	//{
-	//	m_pBuffMatModel->Release();
-	//	m_pBuffMatModel = NULL;
-	//}
-
 	//オブジェクトの破棄
 	Release();
 }

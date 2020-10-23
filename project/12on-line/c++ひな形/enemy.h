@@ -16,6 +16,11 @@
 #include "model.h"
 
 //*****************************
+// 前方宣言
+//*****************************
+class CCollision;
+
+//*****************************
 // クラス定義
 //*****************************
 
@@ -42,6 +47,7 @@ public:
 	void Update(void);
 	void Draw(void);
 
+	CCollision *GetCollision(void) { return m_pCollision; }
 private:
 	// メンバ変数
 	static LPD3DXMESH m_pMeshModel;	//メッシュ情報へのポインタ
@@ -49,6 +55,7 @@ private:
 	static DWORD m_nNumMatModel;	//マテリアル情報の数
 	static LPDIRECT3DTEXTURE9 m_apTexture[ENEMY_MAX]; // テクスチャ
 	D3DXVECTOR3 m_move;        // 移動量
+	CCollision *m_pCollision;    // 当たり判定
 };
 
 #endif

@@ -26,7 +26,7 @@ LPDIRECT3DTEXTURE9 CFloor::m_apTexture[FLOOR_MAX] = {};
 //==================================
 // コンストラクタ
 //==================================
-CFloor::CFloor()
+CFloor::CFloor():CScene3d(OBJTYPE_MAP)
 {
 	m_type = FLOOR_FLOORING;	//床の種類の初期化
 }

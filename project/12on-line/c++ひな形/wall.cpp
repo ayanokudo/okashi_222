@@ -26,7 +26,7 @@ LPDIRECT3DTEXTURE9 CWall::m_apTexture[WALL_MAX] = {};
 //==================================
 // コンストラクタ
 //==================================
-CWall::CWall()
+CWall::CWall():CScene3d(OBJTYPE_WALL)
 {
 	m_type = WALL_1;	//床の種類の初期化
 }

@@ -103,7 +103,6 @@ void CCamera::Update(void)
 {
 	m_posV = CGame::GetPlayer()->GetPos() + CAMERA_LOCAL_POS;
 	m_posR = CGame::GetPlayer()->GetPos();
-
 }
 
 //******************************

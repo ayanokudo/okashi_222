@@ -16,6 +16,11 @@
 #include "model.h"
 
 //*****************************
+// 前方宣言
+//*****************************
+class CCollision;
+
+//*****************************
 // クラス定義
 //*****************************
 
@@ -27,7 +32,7 @@ public:
 	//メンバ関数
 	CPlayer();
 	~CPlayer();
-	static CPlayer *Create(D3DXVECTOR3 pos);
+	static CPlayer *Create(D3DXVECTOR3 pos,int nPlayerNum);
 	static HRESULT Load(void);
 	static void Unload(void);
 	HRESULT Init(void);
@@ -36,7 +41,9 @@ public:
 	void Draw(void);
 
 private:
-	void Move(void);
+	void MoveKeyboard(void);
+	void MoveController(void);
+	void Direction(void);
 	void Attack(void);
 
 	// メンバ変数
@@ -45,7 +52,10 @@ private:
 	static DWORD m_nNumMatModel;	//マテリアル情報の数
 	static LPDIRECT3DTEXTURE9 m_apTexture; // テクスチャ
 	D3DXVECTOR3 m_move;        // 移動量
+	D3DXVECTOR3 m_moveDest;    // 移動量の目標値
 	float m_fRotYDist;         // プレイヤーの向いている向きの目標値
+	int m_nPlayerNum;          // プレイヤー番号
+	CCollision*m_pCollision;    // コリジョンクラスのポインタ
 };
 
 #endif

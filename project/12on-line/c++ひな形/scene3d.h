@@ -24,7 +24,7 @@ class CScene3d : public CScene
 {
 public:
 	// ÉÅÉìÉoä÷êî
-	CScene3d();
+	CScene3d(int nPliority = OBJTYPE_NONE);
 	~CScene3d();
 	static CScene3d *Create(D3DXVECTOR3 pos ,D3DXVECTOR3 size);
 	HRESULT Init(void);

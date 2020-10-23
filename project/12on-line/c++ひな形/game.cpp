@@ -77,7 +77,7 @@ HRESULT CGame::Init(void)
 	// カメラの生成
 	m_pCamera = CCamera::Create();
 	// プレイヤーの生成
-	m_pPlayer = CPlayer::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+	m_pPlayer = CPlayer::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f),0);
 	// エネミーの生成
 	m_pEnemy = CEnemy::Create(D3DXVECTOR3(0.0f, 0.0f, -800.0f));
 	// 床の生成

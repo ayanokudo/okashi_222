@@ -240,3 +240,4 @@ ModelManifest.xml
 
 # FAKE - F# Make
 .fake/
+/project/12on-line/.vs/12online/v14/*.suo

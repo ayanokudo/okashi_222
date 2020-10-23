@@ -83,9 +83,8 @@ HRESULT CGame::Init(void)
 	// è∞ÇÃê∂ê¨
 	CFloor::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(1000.0f, 0.0f, 1000.0f), CFloor::FLOOR_FLOORING);
 	// ï«ÇÃê∂ê¨
-	CWall::Create(D3DXVECTOR3(0.0f, 0.0f, 500.0f), D3DXVECTOR3(1000.0f, 1000.0f, 0.0f), CWall::WALL_1);
-	// ï«ÇÃê∂ê¨
-	CWall::Create(D3DXVECTOR3(0.0f, 0.0f, -500.0f), D3DXVECTOR3(1000.0f, 1000.0f, 0.0f), CWall::WALL_1);
+	CWall::Create(D3DXVECTOR3(0.0f, 0.0f, 1000.0f), D3DXVECTOR3(1000.0f, 1000.0f, 0.0f), CWall::WALL_1);
+	CWall::Create(D3DXVECTOR3(0.0f, 0.0f, -1000.0f), D3DXVECTOR3(1000.0f, 1000.0f, 0.0f), CWall::WALL_1);
 	// É|Å[ÉYÇÃèâä˙âª
 	CManager::SetActivePause(false);
 	return S_OK;

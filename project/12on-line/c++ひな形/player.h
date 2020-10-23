@@ -39,7 +39,7 @@ public:
 	void Uninit(void);
 	void Update(void);
 	void Draw(void);
-
+	CCollision*GetCollision(void) { return m_pCollision; }
 private:
 	void MoveKeyboard(void);
 	void MoveController(void);

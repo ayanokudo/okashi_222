@@ -33,16 +33,21 @@ public:
 	CCollision();
 	~CCollision();
 	static CCollision *CreateSphere(D3DXVECTOR3 pos, float fRadius);
-	static bool CollisionSphere(CCollision*pCollision1, CCollision*pCollision2);
 	static CCollision *CreateBox(D3DXVECTOR3 pos, D3DXVECTOR3 size);
+	static bool CollisionSphere(CCollision*pCollision1, CCollision*pCollision2);
 	static bool CollisionBox(CCollision*pCollision1, CCollision*pCollision2);
+	static bool CollisionSphereToBox(CCollision*pCollSphere, CCollision*pCollBox);
+	static float OnRange(float fPoint, float fMin, float fMax);
+
 	HRESULT Init(void);
 	void Uninit(void);
 	void Update(void);
 	void Draw(void);
-
+	D3DXVECTOR3 GetCollisionSize(void) { return m_size; }
+	float GetCollisionRadius(void) { return m_fRadius; }
 private:
 	void CreateMesh(void);
+
 	// メンバ変数
 	LPD3DXMESH m_pMeshModel;	//メッシュ情報へのポインタ
 	LPD3DXBUFFER m_pBuffMatModel;	//マテリアル情報へのポインタ

@@ -163,6 +163,7 @@ void CPlayer::Update(void)
 
 	// 座標
 	D3DXVECTOR3 pos = GetPos();
+
 	// 移動量を足す
 	pos += m_move;
 

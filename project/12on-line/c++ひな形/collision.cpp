@@ -47,7 +47,7 @@ CCollision::~CCollision()
 }
 
 //******************************
-// クリエイト
+// クリエイト(球)
 //******************************
 CCollision * CCollision::CreateSphere(D3DXVECTOR3 pos,float fRadius)
 {
@@ -70,23 +70,8 @@ CCollision * CCollision::CreateSphere(D3DXVECTOR3 pos,float fRadius)
 }
 
 //******************************
-// 球と球の当たり判定
+// クリエイト(BOX)
 //******************************
-bool CCollision::CollisionSphere(CCollision * pCollision1, CCollision * pCollision2)
-{
-	if (pow(pCollision1->GetPos().x - pCollision2->GetPos().x, 2) + 
-		pow(pCollision1->GetPos().y - pCollision2->GetPos().y, 2) +
-		pow(pCollision1->GetPos().z - pCollision2->GetPos().z, 2) <= pow(pCollision1->m_fRadius + pCollision2->m_fRadius, 2))
-	{
-
-		return true;
-	}
-	else
-	{
-		return false;
-	}
-}
-
 CCollision * CCollision::CreateBox(D3DXVECTOR3 pos, D3DXVECTOR3 size)
 {
 	// メモリの確保
@@ -107,9 +92,80 @@ CCollision * CCollision::CreateBox(D3DXVECTOR3 pos, D3DXVECTOR3 size)
 	return pCollision;
 }
 
+//******************************
+// 球と球の当たり判定
+//******************************
+bool CCollision::CollisionSphere(CCollision * pCollision1, CCollision * pCollision2)
+{
+	if (pow(pCollision1->GetPos().x - pCollision2->GetPos().x, 2) + 
+		pow(pCollision1->GetPos().y - pCollision2->GetPos().y, 2) +
+		pow(pCollision1->GetPos().z - pCollision2->GetPos().z, 2) <= pow(pCollision1->m_fRadius + pCollision2->m_fRadius, 2))
+	{
+
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+//******************************
+// BOXとBOXの当たり判定
+//******************************
 bool CCollision::CollisionBox(CCollision * pCollision1, CCollision * pCollision2)
 {
 	return false;
+}
+
+//******************************
+// 球とBOXの当たり判定
+//******************************
+bool CCollision::CollisionSphereToBox(CCollision *pCollSphere, CCollision * pCollBox)
+{
+	// 球の座標
+	D3DXVECTOR3 spherePos = pCollSphere->GetPos();
+	// BOXの座標
+	D3DXVECTOR3 boxPos = pCollBox->GetPos();
+	D3DXVECTOR3 boxSize = pCollBox->m_size;
+	
+	// ボックスから球のボックス内の最短距離の取得
+	D3DXVECTOR3 shortrectPos;
+	shortrectPos.x = OnRange(spherePos.x, boxPos.x - boxSize.x/2, boxPos.x + boxSize.x/2);
+	shortrectPos.y = OnRange(spherePos.y, boxPos.y - boxSize.y/2, boxPos.y + boxSize.y/2);
+	shortrectPos.z = OnRange(spherePos.z, boxPos.z - boxSize.z/2, boxPos.z + boxSize.z/2);
+
+	float fDistance = sqrtf(powf(shortrectPos.x - spherePos.x, 2) + 
+		powf(shortrectPos.y- spherePos.y, 2) + 
+		powf(shortrectPos.z - spherePos.z, 2));
+
+	// 当たっているかの判定
+	if (fDistance < pCollSphere->m_fRadius)
+	{
+		return true;
+	}
+
+	return false;
+}
+
+//******************************
+// 範囲内か見る
+//******************************]
+float CCollision::OnRange(float fPoint, float fMin, float fMax)
+{
+
+	if (fPoint < fMin)
+	{
+		return fMin;
+	}
+	else if (fPoint > fMax)
+	{
+		return fMax;
+	}
+	else 
+	{
+		return fPoint;
+	}
 }
 
 

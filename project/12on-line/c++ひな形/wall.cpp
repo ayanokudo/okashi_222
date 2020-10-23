@@ -11,7 +11,8 @@
 #include "manager.h"
 #include "renderer.h"
 #include "collision.h"
-
+#include "game.h"
+#include "player.h"
 //*****************************
 // マクロ定義
 //*****************************
@@ -104,7 +105,10 @@ HRESULT CWall::Init(void)
 {
 	CScene3d::Init();
 	CScene3d::BindTexture(m_apTexture[m_type]);
-	m_pCollision=CCollision::CreateBox(m_pos*2, m_size*2);
+	// 壁よりちょっと大きめに当たり判定をとる
+	D3DXVECTOR3 collisionSize = m_size + D3DXVECTOR3(5.0f, 5.0f, 5.0f);
+	// 当たり判定の生成
+	m_pCollision = CCollision::CreateBox(m_pos , collisionSize *2);
 	return S_OK;
 }
 
@@ -121,7 +125,7 @@ void CWall::Uninit(void)
 //==================================
 void CWall::Update(void)
 {
-	m_pCollision->SetPos(GetPos()*2);
+	CollisionPlayer();
 }
 
 //==================================
@@ -130,4 +134,32 @@ void CWall::Update(void)
 void CWall::Draw(void)
 {
 	CScene3d::Draw();
+}
+
+//==================================
+// プレイヤーと壁の当たり判定
+//==================================
+void CWall::CollisionPlayer(void)
+{
+	if (CCollision::CollisionSphereToBox(CGame::GetPlayer()->GetCollision(), m_pCollision))
+	{
+		// プレイヤー座標の取得
+		D3DXVECTOR3 playerPos = CGame::GetPlayer()->GetPos();
+		// 当たり判定のサイズの取得
+		D3DXVECTOR3 collsionSize = m_pCollision->GetCollisionSize();
+
+		// ボックス内の最短地点の検索
+		D3DXVECTOR3 shortrectPos;
+		shortrectPos.x = CCollision::OnRange(playerPos.x, GetPos().x - collsionSize.x / 2, GetPos().x + collsionSize.x / 2);
+		shortrectPos.y = CCollision::OnRange(playerPos.y, GetPos().y - collsionSize.y / 2, GetPos().y + collsionSize.y / 2);
+		shortrectPos.z = CCollision::OnRange(playerPos.z, GetPos().z - collsionSize.z / 2, GetPos().z + collsionSize.z / 2);
+		// ボックスからプレイヤーの方向ベクトル
+		playerPos = playerPos - shortrectPos;
+		// 正規化
+		D3DXVec3Normalize(&playerPos, &playerPos);
+		// 最短地点から当たり判定の半径分離す
+		playerPos = shortrectPos + playerPos * CGame::GetPlayer()->GetCollision()->GetCollisionRadius();
+		// プレイヤー座標のセット
+		CGame::GetPlayer()->SetPos(playerPos);
+	}
 }

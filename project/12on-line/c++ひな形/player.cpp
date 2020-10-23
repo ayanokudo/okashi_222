@@ -1,12 +1,12 @@
 ////////////////////////////////////////////////////
 //
-//    playerƒNƒ‰ƒX‚Ìˆ—[player.cpp]
-//    Author:‘àV –¢—ˆ
+//    playerã‚¯ãƒ©ã‚¹ã®å‡¦ç†[player.cpp]
+//    Author:å¢—æ¾¤ æœªæ¥
 //
 ////////////////////////////////////////////////////
 
 //******************************
-// ƒCƒ“ƒNƒ‹[ƒh
+// ã‚¤ãƒ³ã‚¯ãƒ«ãƒ¼ãƒ‰
 //******************************
 #include "player.h"
 #include "manager.h"
@@ -19,22 +19,22 @@
 #include "collision.h"
 
 //*****************************
-// ƒ}ƒNƒ’è‹`
+// ãƒã‚¯ãƒ­å®šç¾©
 //*****************************
-#define MODEL_PATH "./data/Models/cat_sakamoto.x"    //ƒ‚ƒfƒ‹‚ÌƒpƒX
-#define PLAYER_SPEED 10                          // ˆÚ“®ƒXƒs[ƒh
-#define PLAYER_MOVE_RATE 0.05f                   // ˆÚ“®‚ÌŠµ«‚ÌŒW”
-#define PLAYER_DIRECTION_RATE 0.1f              // Œü‚«‚ğ•Ï‚¦‚é‚Æ‚«‚ÌŒW”
-#define PLAYER_RADIUS 100                       // ƒvƒŒƒCƒ„[‚Ì”¼Œa
+#define MODEL_PATH "./data/Models/cat_sakamoto.x"    //ãƒ¢ãƒ‡ãƒ«ã®ãƒ‘ã‚¹
+#define PLAYER_SPEED 10                          // ç§»å‹•ã‚¹ãƒ”ãƒ¼ãƒ‰
+#define PLAYER_MOVE_RATE 0.05f                   // ç§»å‹•ã®æ…£æ€§ã®ä¿‚æ•°
+#define PLAYER_DIRECTION_RATE 0.1f              // å‘ãã‚’å¤‰ãˆã‚‹ã¨ãã®ä¿‚æ•°
+#define PLAYER_RADIUS 100                       // ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®åŠå¾„
 //*****************************
-// Ã“Iƒƒ“ƒo•Ï”éŒ¾
+// é™çš„ãƒ¡ãƒ³ãƒå¤‰æ•°å®£è¨€
 //*****************************
-LPD3DXMESH   CPlayer::m_pMeshModel = NULL;   	//ƒƒbƒVƒ…î•ñ‚Ö‚Ìƒ|ƒCƒ“ƒ^
-LPD3DXBUFFER CPlayer::m_pBuffMatModel = NULL;	//ƒ}ƒeƒŠƒAƒ‹î•ñ‚Ö‚Ìƒ|ƒCƒ“ƒ^
-DWORD        CPlayer::m_nNumMatModel = 0;	    //ƒ}ƒeƒŠƒAƒ‹î•ñ‚Ì”
+LPD3DXMESH   CPlayer::m_pMeshModel = NULL;   	//ãƒ¡ãƒƒã‚·ãƒ¥æƒ…å ±ã¸ã®ãƒã‚¤ãƒ³ã‚¿
+LPD3DXBUFFER CPlayer::m_pBuffMatModel = NULL;	//ãƒãƒ†ãƒªã‚¢ãƒ«æƒ…å ±ã¸ã®ãƒã‚¤ãƒ³ã‚¿
+DWORD        CPlayer::m_nNumMatModel = 0;	    //ãƒãƒ†ãƒªã‚¢ãƒ«æƒ…å ±ã®æ•°
 
 //******************************
-// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 //******************************
 CPlayer::CPlayer():CModel(OBJTYPE_PLAYER)
 {
@@ -46,40 +46,40 @@ CPlayer::CPlayer():CModel(OBJTYPE_PLAYER)
 }
 
 //******************************
-// ƒfƒXƒgƒ‰ƒNƒ^
+// ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 //******************************
 CPlayer::~CPlayer()
 {
 }
 
 //******************************
-// ƒNƒŠƒGƒCƒg
+// ã‚¯ãƒªã‚¨ã‚¤ãƒˆ
 //******************************
 CPlayer * CPlayer::Create(D3DXVECTOR3 pos, int nPlayerNum)
 {
-	// ƒƒ‚ƒŠ‚ÌŠm•Û
+	// ãƒ¡ãƒ¢ãƒªã®ç¢ºä¿
 	CPlayer *pPlayer;
 	pPlayer = new CPlayer;
 
-	// ‰Šú‰»
+	// åˆæœŸåŒ–
 	pPlayer->Init();
 	
-	// Še’l‚Ì‘ã“üEƒZƒbƒg
+	// å„å€¤ã®ä»£å…¥ãƒ»ã‚»ãƒƒãƒˆ
 	pPlayer->SetPos(pos);
-	// Še’l‚Ì‘ã“üEƒZƒbƒg
-	pPlayer->SetObjType(OBJTYPE_PLAYER); // ƒIƒuƒWƒFƒNƒgƒ^ƒCƒv
+	// å„å€¤ã®ä»£å…¥ãƒ»ã‚»ãƒƒãƒˆ
+	pPlayer->SetObjType(OBJTYPE_PLAYER); // ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚¿ã‚¤ãƒ—
 	pPlayer->m_nPlayerNum = nPlayerNum;
 	return pPlayer;
 }
 
 //******************************
-// ƒeƒNƒXƒ`ƒƒ‚Ìƒ[ƒh
+// ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®ãƒ­ãƒ¼ãƒ‰
 //******************************
 HRESULT CPlayer::Load(void)
 {
-	// ƒfƒoƒCƒX‚Ìæ“¾
+	// ãƒ‡ãƒã‚¤ã‚¹ã®å–å¾—
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
-	//Xƒtƒ@ƒCƒ‹‚Ì“Ç‚İ‚İ
+	//Xãƒ•ã‚¡ã‚¤ãƒ«ã®èª­ã¿è¾¼ã¿
 	D3DXLoadMeshFromX(MODEL_PATH,
 		D3DXMESH_SYSTEMMEM,
 		pDevice,
@@ -93,17 +93,17 @@ HRESULT CPlayer::Load(void)
 }
 
 //******************************
-// ƒeƒNƒXƒ`ƒƒ‚ÌƒAƒ“ƒ[ƒh
+// ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®ã‚¢ãƒ³ãƒ­ãƒ¼ãƒ‰
 //******************************
 void CPlayer::Unload(void)
 {
-	//ƒƒbƒVƒ…‚Ì”jŠü
+	//ãƒ¡ãƒƒã‚·ãƒ¥ã®ç ´æ£„
 	if (m_pMeshModel != NULL)
 	{
 		m_pMeshModel->Release();
 		m_pMeshModel = NULL;
 	}
-	//ƒ}ƒeƒŠƒAƒ‹‚Ì”jŠü
+	//ãƒãƒ†ãƒªã‚¢ãƒ«ã®ç ´æ£„
 	if (m_pBuffMatModel != NULL)
 	{
 		m_pBuffMatModel->Release();
@@ -113,7 +113,7 @@ void CPlayer::Unload(void)
 
 
 //******************************
-// ‰Šú‰»ˆ—
+// åˆæœŸåŒ–å‡¦ç†
 //******************************
 HRESULT CPlayer::Init(void)
 {
@@ -122,19 +122,19 @@ HRESULT CPlayer::Init(void)
 		return E_FAIL;
 	}
 
-	// ƒeƒNƒXƒ`ƒƒŠ„‚è“–‚Ä
+	// ãƒ†ã‚¯ã‚¹ãƒãƒ£å‰²ã‚Šå½“ã¦
 	BindModel(m_pMeshModel, m_pBuffMatModel, m_nNumMatModel);
-	// “–‚½‚è”»’è‚Ì¶¬
+	// å½“ãŸã‚Šåˆ¤å®šã®ç”Ÿæˆ
 	m_pCollision = CCollision::CreateSphere(GetPos(), PLAYER_RADIUS);
 	return S_OK;
 }
 
 //******************************
-// I—¹ˆ—
+// çµ‚äº†å‡¦ç†
 //******************************
 void CPlayer::Uninit(void)
 {
-	// ƒRƒŠƒWƒ‡ƒ“‚ÌI—¹ˆ—
+	// ã‚³ãƒªã‚¸ãƒ§ãƒ³ã®çµ‚äº†å‡¦ç†
 	if (m_pCollision != NULL)
 	{
 		m_pCollision->Uninit();
@@ -145,41 +145,41 @@ void CPlayer::Uninit(void)
 }
 
 //******************************
-// XVˆ—
+// æ›´æ–°å‡¦ç†
 //******************************
 void CPlayer::Update(void)
 {
-	// –Ú•W’l‚Ì‰Šú‰»
+	// ç›®æ¨™å€¤ã®åˆæœŸåŒ–
 	m_moveDest = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 
-	// ˆÚ“®iƒL[ƒ{[ƒhj
+	// ç§»å‹•ï¼ˆã‚­ãƒ¼ãƒœãƒ¼ãƒ‰ï¼‰
 	MoveKeyboard();
 
-	// ˆÚ“®iƒRƒ“ƒgƒ[ƒ‰[j
+	// ç§»å‹•ï¼ˆã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ãƒ¼ï¼‰
 	MoveController();
 
-	// Šµ«
+	// æ…£æ€§
 	m_move += (m_moveDest - m_move) * PLAYER_MOVE_RATE;
 
-	// À•W
+	// åº§æ¨™
 	D3DXVECTOR3 pos = GetPos();
-	// ˆÚ“®—Ê‚ğ‘«‚·
+	// ç§»å‹•é‡ã‚’è¶³ã™
 	pos += m_move;
 
-	// À•W‚ÌƒZƒbƒg
+	// åº§æ¨™ã®ã‚»ãƒƒãƒˆ
 	SetPos(pos);
 
-	// Œü‚«‚ÌŠÇ—
+	// å‘ãã®ç®¡ç†
 	Direction();
-	// UŒ‚
+	// æ”»æ’ƒ
 	Attack();
 
-	// “–‚½‚è”»’è‚ÌˆÊ’uXV
+	// å½“ãŸã‚Šåˆ¤å®šã®ä½ç½®æ›´æ–°
 	m_pCollision->SetPos(GetPos());
 }
 
 //******************************
-// •`‰æˆ—
+// æç”»å‡¦ç†
 //******************************
 void CPlayer::Draw(void)
 {
@@ -187,25 +187,25 @@ void CPlayer::Draw(void)
 }
 
 //******************************
-// ˆÚ“®‘€ì(ƒL[ƒ{[ƒh)
+// ç§»å‹•æ“ä½œ(ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰)
 //******************************
 void CPlayer::MoveKeyboard(void)
 {
-	// ˆÚ“®ˆ—
+	// ç§»å‹•å‡¦ç†
 
-	// ƒWƒ‡ƒCƒXƒeƒBƒbƒN‚Ìæ“¾
+	// ã‚¸ãƒ§ã‚¤ã‚¹ãƒ†ã‚£ãƒƒã‚¯ã®å–å¾—
 	DIJOYSTATE js = CManager::GetJoypad()->GetStick(0);
 
 	if (CManager::GetKeyboard()->GetKeyPress(DIK_W))
-	{// ªˆÚ“®
+	{// â†‘ç§»å‹•
 		m_moveDest.z = -PLAYER_SPEED;
 
-		// Œü‚«‚Ìİ’è
+		// å‘ãã®è¨­å®š
 		m_fRotYDist = D3DXToRadian(0);
 
 		if (CManager::GetKeyboard()->GetKeyPress(DIK_A))
 		{
-			// Œü‚«‚Ìİ’è
+			// å‘ãã®è¨­å®š
 			m_fRotYDist = D3DXToRadian(-45);
 
 			m_moveDest.z = sinf(45) * -PLAYER_SPEED;
@@ -213,7 +213,7 @@ void CPlayer::MoveKeyboard(void)
 		}
 		if (CManager::GetKeyboard()->GetKeyPress(DIK_D))
 		{
-			// Œü‚«‚Ìİ’è
+			// å‘ãã®è¨­å®š
 			m_fRotYDist = D3DXToRadian(45);
 
 			m_moveDest.z = sinf(45) * -PLAYER_SPEED;
@@ -221,15 +221,15 @@ void CPlayer::MoveKeyboard(void)
 		}
 	}
 	else if (CManager::GetKeyboard()->GetKeyPress(DIK_S))
-	{// «ˆÚ“®
+	{// â†“ç§»å‹•
 	
-	    // Œü‚«‚Ìİ’è
+	    // å‘ãã®è¨­å®š
 		m_fRotYDist = D3DXToRadian(180);
 		m_moveDest.z = PLAYER_SPEED;
 
 		if (CManager::GetKeyboard()->GetKeyPress(DIK_A))
 		{
-			// Œü‚«‚Ìİ’è
+			// å‘ãã®è¨­å®š
 			m_fRotYDist = D3DXToRadian(225);
 
 			m_moveDest.z = sinf(45) * PLAYER_SPEED;
@@ -237,7 +237,7 @@ void CPlayer::MoveKeyboard(void)
 		}
 		if (CManager::GetKeyboard()->GetKeyPress(DIK_D))
 		{
-			// Œü‚«‚Ìİ’è
+			// å‘ãã®è¨­å®š
 			m_fRotYDist = D3DXToRadian(135);
 
 			m_moveDest.z = sinf(45) * PLAYER_SPEED;
@@ -245,18 +245,18 @@ void CPlayer::MoveKeyboard(void)
 		}
 	}
 	else if (CManager::GetKeyboard()->GetKeyPress(DIK_A))
-	{// ©ˆÚ“®
+	{// â†ç§»å‹•
 	 
-	    // Œü‚«‚Ìİ’è
+	    // å‘ãã®è¨­å®š
 		m_fRotYDist = D3DXToRadian(-90);
 
 		m_moveDest.x = PLAYER_SPEED;
 
 	}
 	else if (CManager::GetKeyboard()->GetKeyPress(DIK_D))
-	{// ¨ˆÚ“®
+	{// â†’ç§»å‹•
 	 
-	    // Œü‚«‚Ìİ’è
+	    // å‘ãã®è¨­å®š
 		m_fRotYDist = D3DXToRadian(90);
 
 		m_moveDest.x = -PLAYER_SPEED;
@@ -266,14 +266,14 @@ void CPlayer::MoveKeyboard(void)
 
 }
 //******************************
-// ˆÚ“®‘€ì(ƒRƒ“ƒgƒ[ƒ‰[)
+// ç§»å‹•æ“ä½œ(ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ãƒ¼)
 //******************************
 void CPlayer::MoveController(void)
 {
-	// ƒWƒ‡ƒCƒXƒeƒBƒbƒN‚Ìî•ñ‚Ìæ“¾
+	// ã‚¸ãƒ§ã‚¤ã‚¹ãƒ†ã‚£ãƒƒã‚¯ã®æƒ…å ±ã®å–å¾—
 	DIJOYSTATE js = CManager::GetJoypad()->GetStick(m_nPlayerNum);
 
-	// ƒXƒeƒBƒbƒN‚ª‚Ç‚ê‚­‚ç‚¢“|‚³‚ê‚Ä‚¢‚é‚©‚ÅƒXƒs[ƒh‚Ì’²®
+	// ã‚¹ãƒ†ã‚£ãƒƒã‚¯ãŒã©ã‚Œãã‚‰ã„å€’ã•ã‚Œã¦ã„ã‚‹ã‹ã§ã‚¹ãƒ”ãƒ¼ãƒ‰ã®èª¿æ•´
 	float fSpeedX = 0.0f;
 	float fSpeedZ = 0.0f;
 	if (js.lX < 0)
@@ -295,41 +295,41 @@ void CPlayer::MoveController(void)
 		fSpeedZ = js.lY - 0;
 	}
 
-	// ƒXƒeƒBƒbƒN‚ª“|‚³‚ê‚Ä‚¢‚éŠp“x
+	// ã‚¹ãƒ†ã‚£ãƒƒã‚¯ãŒå€’ã•ã‚Œã¦ã„ã‚‹è§’åº¦
 	float fAngle = atan2f(js.lY, js.lX);
-	// ƒXƒeƒBƒbƒN‚ªˆê’èˆÈã“|‚³‚ê‚Ä‚¢‚é‚Æ‚«
+	// ã‚¹ãƒ†ã‚£ãƒƒã‚¯ãŒä¸€å®šä»¥ä¸Šå€’ã•ã‚Œã¦ã„ã‚‹ã¨ã
 	if (js.lX >= 10 || js.lX <= -10 || js.lY >= 10 || js.lY <= -10)
 	{
-		// ˆÚ“®—Ê‚Ì–Ú•W’l
+		// ç§»å‹•é‡ã®ç›®æ¨™å€¤
 		m_moveDest.x = cosf(fAngle) * -fSpeedX / 100;
 		m_moveDest.z = sinf(fAngle) * fSpeedZ / 100;
-		// Œü‚«‚Ìİ’è
+		// å‘ãã®è¨­å®š
 		m_fRotYDist = atan2f(js.lX, -js.lY);
 	}
 
-	// Šµ«
+	// æ…£æ€§
 	m_move += (m_moveDest - m_move) * PLAYER_MOVE_RATE;
 
-	// À•W
+	// åº§æ¨™
 	D3DXVECTOR3 pos = GetPos();
-	// ˆÚ“®—Ê‚ğ‘«‚·
+	// ç§»å‹•é‡ã‚’è¶³ã™
 	pos += m_move;
 
-	// À•W‚ÌƒZƒbƒg
+	// åº§æ¨™ã®ã‚»ãƒƒãƒˆ
 	SetPos(pos);
 
 	
 }
 
 //******************************
-// ƒLƒƒƒ‰ƒNƒ^[‚ÌŒü‚«‚Ìİ’è
+// ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ã®å‘ãã®è¨­å®š
 //******************************
 void CPlayer::Direction(void)
 {
-	// Œ»İ‚Ìƒƒbƒg‚Ìæ“¾
+	// ç¾åœ¨ã®ãƒ­ãƒƒãƒˆã®å–å¾—
 	D3DXVECTOR3 rot = GetRot();
 
-	// ƒOƒ‹‚ñ‚Æ‰ñ“]‚µ‚È‚¢‚æ‚¤’²®
+	// ã‚°ãƒ«ã‚“ã¨å›è»¢ã—ãªã„ã‚ˆã†èª¿æ•´
 	while (m_fRotYDist - rot.y > D3DXToRadian(180))
 	{
 		m_fRotYDist -= D3DXToRadian(360);
@@ -339,30 +339,30 @@ void CPlayer::Direction(void)
 		m_fRotYDist += D3DXToRadian(360);
 	}
 
-	// Œü‚«‚ÌXV
+	// å‘ãã®æ›´æ–°
 	rot.y += (m_fRotYDist - rot.y)*PLAYER_DIRECTION_RATE;
-	// Œü‚«‚Ìİ’è
+	// å‘ãã®è¨­å®š
 	SetRot(rot);
 }
 
 //******************************
-// UŒ‚‘€ì
+// æ”»æ’ƒæ“ä½œ
 //******************************
 void CPlayer::Attack(void)
 {
 	if (CManager::GetKeyboard()->GetKeyTrigger(DIK_SPACE) || CManager::GetJoypad()->GetJoystickTrigger(2, m_nPlayerNum))
-	{// ’e‚ğŒ‚‚Â
-		// ƒvƒŒƒCƒ„[‚ÌŒü‚¢‚Ä‚¢‚é•ûŒü‚Ìæ“¾
+	{// å¼¾ã‚’æ’ƒã¤
+		// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®å‘ã„ã¦ã„ã‚‹æ–¹å‘ã®å–å¾—
 		float fRotY = GetRot().y - D3DXToRadian(90);
-		// ˆÚ“®—Ê
+		// ç§»å‹•é‡
 		D3DXVECTOR3 bulletMove;
 		bulletMove.x = cosf(fRotY)*-BULLET_SPEED_PLAYER;
 		bulletMove.y = 0;
 		bulletMove.z = sinf(fRotY)*BULLET_SPEED_PLAYER;
-		// ’e‚ğŒ‚‚ÂˆÊ’u‚Ì’²®
+		// å¼¾ã‚’æ’ƒã¤ä½ç½®ã®èª¿æ•´
 		D3DXVECTOR3 pos = GetPos();
 		pos.y += 10;
-		// ’e‚Ì¶¬
+		// å¼¾ã®ç”Ÿæˆ
 		CBullet::Create(pos, bulletMove, 300, CBullet::BULLETUSER_PLAYER)->SetColor(D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f));
 	}
 }

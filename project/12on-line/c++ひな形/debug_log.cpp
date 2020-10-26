@@ -95,7 +95,7 @@ void CDebugLog::Print(const char * format, ...)
 			}
 			else if (chChar == 'f')
 			{//%f（float）
-				sprintf(m_aStr, "%s%f", m_aStr, va_arg(arg, float));
+				sprintf(m_aStr, "%s%.4lf", m_aStr, va_arg(arg, double));
 			}
 			else if (chChar == 'c')
 			{//%c（char）

@@ -131,7 +131,6 @@ void CEnemy::Uninit(void)
 	if (m_pCollision != NULL)
 	{
 		m_pCollision->Uninit();
-		m_pCollision = NULL;
 	}
 
 	CModel::Uninit();

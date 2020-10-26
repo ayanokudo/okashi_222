@@ -161,5 +161,7 @@ void CWall::CollisionPlayer(void)
 		playerPos = shortrectPos + playerPos * CGame::GetPlayer()->GetCollision()->GetCollisionRadius();
 		// プレイヤー座標のセット
 		CGame::GetPlayer()->SetPos(playerPos);
+		// プレイヤーのコリジョンの座標のセット
+		CGame::GetPlayer()->GetCollision()->SetPos(playerPos);
 	}
 }

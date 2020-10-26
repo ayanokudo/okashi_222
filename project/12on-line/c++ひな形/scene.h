@@ -31,8 +31,6 @@ public:
 	{
 		OBJTYPE_NONE = 0,
 		OBJTYPE_BG,         // 背景
-		OBJTYPE_FLOOR,      // 床
-		OBJTYPE_WALL,		// 壁
 		OBJTYPE_MAP,        // マップ
 		OBJTYPE_ITEM,       // アイテム
 		OBJTYPE_EFFECT,     // エフェクト
@@ -43,6 +41,8 @@ public:
 		OBJTYPE_PARTICLE,   // パーティクル
 		OBJTYPE_BOMB,       // ボム
 		OBJTYPE_UI,         // UI
+		OBJTYPE_FLOOR,      // 床
+		OBJTYPE_WALL,		// 壁
 		OBJTYPE_COLLISION,  // コリジョン
 		OBJTYPE_MAX,        // タイプの最大数
 	}OBJTYPE;

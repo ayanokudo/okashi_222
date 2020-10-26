@@ -138,7 +138,6 @@ void CPlayer::Uninit(void)
 	if (m_pCollision != NULL)
 	{
 		m_pCollision->Uninit();
-		m_pCollision = NULL;
 	}
 
 	CModel::Uninit();
@@ -177,6 +176,9 @@ void CPlayer::Update(void)
 
 	// 当たり判定の位置更新
 	m_pCollision->SetPos(GetPos());
+	float fFloat = 0.9f;
+	CDebugLog::Init();
+	CDebugLog::Print("%f,%f,%f\n",0.1f, 0.2f, 0.3f);
 }
 
 //******************************

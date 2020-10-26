@@ -131,5 +131,5 @@ void CStage::Update(void)
 //=============================================================================
 void CStage::Draw(void)
 {
-    CModel::Draw();
+    //CModel::Draw();
 }

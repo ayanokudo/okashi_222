@@ -52,6 +52,7 @@ CCursor * CCursor::Create(D3DXVECTOR3 pos)
 HRESULT CCursor::Init(void)
 {
     CScene3d::Init();
+    SetColor({ 0.0f,1.0f,0.0f,1.0f });
     return S_OK;
 }
 
@@ -69,14 +70,6 @@ void CCursor::Uninit(void)
 //=============================================================================
 void CCursor::Update(void)
 {
-    //// オブジェクトの位置を取得
-    CObject *pObject = CGame::GetObjectData();
-    D3DXVECTOR3 pos = pObject->GetPos();
-    //// 位置の設定
-    //SetPos(pos);
-
-    CDebug::Print(200, 200, D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f), "pos : %.1f  %.1f  %.1f", pos.x, pos.y, pos.z);
-
 }
 
 //=============================================================================

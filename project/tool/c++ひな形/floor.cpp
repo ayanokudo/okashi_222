@@ -23,10 +23,10 @@
 //==================================
 LPDIRECT3DTEXTURE9 CFloor::m_apTexture[FLOOR_MAX] = {};
 D3DXVECTOR2 CFloor::m_UV[NUM_VERTEX] = {
-    { 0.0f * MAX_GRID ,0.0f * MAX_GRID },
-    { 1.0f * MAX_GRID ,0.0f * MAX_GRID },
-    { 0.0f * MAX_GRID ,1.0f * MAX_GRID },
-    { 1.0f * MAX_GRID ,1.0f * MAX_GRID }
+    { 0.0f * MAX_GRID / 2 ,0.0f * MAX_GRID / 2 },
+    { 1.0f * MAX_GRID / 2 ,0.0f * MAX_GRID / 2 },
+    { 0.0f * MAX_GRID / 2 ,1.0f * MAX_GRID / 2 },
+    { 1.0f * MAX_GRID / 2 ,1.0f * MAX_GRID / 2 }
 };
 //==================================
 // コンストラクタ
@@ -129,5 +129,5 @@ void CFloor::Update(void)
 //==================================
 void CFloor::Draw(void)
 {
-	//CScene3d::Draw();
+	CScene3d::Draw();
 }

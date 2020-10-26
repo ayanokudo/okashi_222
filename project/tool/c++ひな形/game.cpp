@@ -82,7 +82,7 @@ HRESULT CGame::Init(void)
 	m_pCamera = CCamera::Create();
 
     // ステージの生成
-    CStage::Create({ 0.0f,0.0f,0.0f });
+    CStage::Create({ 0.0f,-1.0f,0.0f });
 
     // オブジェクトの生成
     m_pObject = CObject::Create({ 0.0f,0.0f,0.0f });
@@ -92,7 +92,7 @@ HRESULT CGame::Init(void)
 	// ポリゴンの生成
 	//CScene3d::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(1000.0f, 0.0f, 1000.0f))->SetColor(D3DXCOLOR(0.0f, 1.0f, 0.0f, 1.0f));
 	//床の生成
-	CFloor::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(1000.0f, 0.0f, 1000.0f),CFloor::FLOOR_FLOORING);
+	CFloor::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(GRID_SIZE * MAX_GRID, 0.0f, GRID_SIZE * MAX_GRID),CFloor::FLOOR_FLOORING);
 	// ポーズの初期化
 	CManager::SetActivePause(false);
 

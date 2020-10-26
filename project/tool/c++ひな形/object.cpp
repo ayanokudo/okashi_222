@@ -14,12 +14,13 @@
 #include "file.h"
 #include "joypad.h"
 #include "cursor.h"
+#include "floor.h"
 
 //*****************************************************************************
 // マクロ定義
 //*****************************************************************************
 #define MODEL_PATH "./data/Models/cat V1.x"    //モデルのパス
-#define GRID_MODE_MOVE   (10.0f)      // グリッドモード時の移動量
+#define GRID_MODE_MOVE   (GRID_SIZE)      // グリッドモード時の移動量
 #define NORMAL_MODE_MOVE (3.0f)     // ノーマルモードの字の移動量
 #define INTERVAL         (7)                    //操作を受け付けるまでの間隔
 
@@ -37,9 +38,9 @@ CCursor *CObject::m_pCursor = NULL;                     // カーソルへのポインタ
 //=============================================================================
 CObject::CObject()
 {
-    m_pos = { 0.0f,0.0f,0.0f };
+    m_pos = { GRID_SIZE,0.0f,GRID_SIZE };
     m_ObjctNum = 0;
-    m_bGridMode = false;
+    m_bGridMode = true;
     m_nCountInterval = INTERVAL;
     
 }
@@ -89,8 +90,8 @@ void CObject::Unload(void)
 HRESULT CObject::Init(void)
 {
     // プレイヤーの生成
-    m_pPlayer = CPlayer::Create({ 0.0f, 0.0f, 0.0f });
-    m_pCursor = CCursor::Create({ 0.0f, 0.0f, 0.0f });
+    m_pPlayer = CPlayer::Create(m_pos);
+    m_pCursor = CCursor::Create(m_pos);
     return S_OK;
 }
 
@@ -120,6 +121,12 @@ void CObject::Update(void)
     if (CManager::GetKeyboard()->GetKeyTrigger(DIK_F1))
     {
         CFile::Writing();
+    }
+
+    // モード切替
+    if (CManager::GetKeyboard()->GetKeyTrigger(DIK_F2))
+    {
+        m_bGridMode ^= true;
     }
 }
 
@@ -160,13 +167,16 @@ void CObject::Move(void)
     D3DXVECTOR3 moveDest = {0.0f,0.0f,0.0f};
     // ジョイスティックの取得
     DIJOYSTATE js = CManager::GetJoypad()->GetStick(0);
+    float fMove = 0.0f;// 移動量
 
-    float fMove;// 移動量
-
+    m_ObjctNum++;
     if (m_bGridMode)
     {
+        if (m_ObjctNum >= INTERVAL)
+        {
         fMove = GRID_MODE_MOVE;
-
+        m_ObjctNum = 0;
+        }
     }
     else
     {
@@ -177,32 +187,32 @@ void CObject::Move(void)
     {// ↑移動
         moveDest.z = -fMove;
 
-        if (CManager::GetKeyboard()->GetKeyPress(DIK_A) || js.lX <= -600)
-        {
-            moveDest.z = sinf(45) * -fMove;
-            moveDest.x = cosf(45) * fMove;
-        }
-        if (CManager::GetKeyboard()->GetKeyPress(DIK_D) || js.lX >= 600)
-        {
-            moveDest.z = sinf(45) * -fMove;
-            moveDest.x = cosf(45) * -fMove;
-        }
+        //if (CManager::GetKeyboard()->GetKeyPress(DIK_A) || js.lX <= -600)
+        //{
+        //    moveDest.z = sinf(45) * -fMove;
+        //    moveDest.x = cosf(45) * fMove;
+        //}
+        //if (CManager::GetKeyboard()->GetKeyPress(DIK_D) || js.lX >= 600)
+        //{
+        //    moveDest.z = sinf(45) * -fMove;
+        //    moveDest.x = cosf(45) * -fMove;
+        //}
     }
     else if (CManager::GetKeyboard()->GetKeyPress(DIK_S) || js.lY >= 600)
     {// ↓移動
 
         moveDest.z = fMove;
 
-        if (CManager::GetKeyboard()->GetKeyPress(DIK_A) || js.lX <= -600)
-        {
-            moveDest.z = sinf(45) * fMove;
-            moveDest.x = cosf(45) * fMove;
-        }
-        if (CManager::GetKeyboard()->GetKeyPress(DIK_D) || js.lX >= 600)
-        {
-            moveDest.z = sinf(45) * fMove;
-            moveDest.x = cosf(45) * -fMove;
-        }
+        //if (CManager::GetKeyboard()->GetKeyPress(DIK_A) || js.lX <= -600)
+        //{
+        //    moveDest.z = sinf(45) * fMove;
+        //    moveDest.x = cosf(45) * fMove;
+        //}
+        //if (CManager::GetKeyboard()->GetKeyPress(DIK_D) || js.lX >= 600)
+        //{
+        //    moveDest.z = sinf(45) * fMove;
+        //    moveDest.x = cosf(45) * -fMove;
+        //}
     }
     else if (CManager::GetKeyboard()->GetKeyPress(DIK_A) || js.lX <= -600)
     {// ←移動

@@ -30,9 +30,8 @@
 // 静的メンバ変数宣言
 //=============================
 CCamera *CGame::m_pCamera = NULL;   // カメラクラスのポインタ変数
-CPlayer *CGame::m_pPlayer = NULL;
 CLight *CGame::m_pLight = NULL;		// ライトクラスのポインタ変数
-
+CObject *CGame::m_pObject = NULL;   // オブジェクトへのポインタ
 #if _DEBUG
 CDebug *CGame::m_pDebug = NULL;     // デバッグ用テキストのポインタ
 #endif //_DEBUG
@@ -85,10 +84,8 @@ HRESULT CGame::Init(void)
     // ステージの生成
     CStage::Create({ 0.0f,0.0f,0.0f });
 
-	// プレイヤーの生成
-	m_pPlayer = CPlayer::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f));
-    CObject::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f));
-
+    // オブジェクトの生成
+    m_pObject = CObject::Create({ 0.0f,0.0f,0.0f });
 
     // ファイルの読み込み
     CFile::Read();

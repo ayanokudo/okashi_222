@@ -14,15 +14,20 @@
 //*****************************
 // マクロ定義
 //*****************************
-#define FLOOR_FLOORING_TEXTURE_PATH "./data/Textures/particle001.png"    //フローリングのテクスチャのパス
-#define FLOOR_MAT_TEXTURE_PATH		"./data/Textures/particle001.png"	 //まっとのテクスチャのパス
-#define FLOOR_KITCHEN_TEXTURE_PATH  "./data/Textures/particle001.png"    //キッチンの床のテクスチャのパス
+#define FLOOR_FLOORING_TEXTURE_PATH "./data/Textures/check.png"    //フローリングのテクスチャのパス
+#define FLOOR_MAT_TEXTURE_PATH		"./data/Textures/check.png"	   //まっとのテクスチャのパス
+#define FLOOR_KITCHEN_TEXTURE_PATH  "./data/Textures/check.png"    //キッチンの床のテクスチャのパス
 
 //==================================
 // コンストラクタ
 //==================================
 LPDIRECT3DTEXTURE9 CFloor::m_apTexture[FLOOR_MAX] = {};
-
+D3DXVECTOR2 CFloor::m_UV[NUM_VERTEX] = {
+    { 0.0f * MAX_GRID ,0.0f * MAX_GRID },
+    { 1.0f * MAX_GRID ,0.0f * MAX_GRID },
+    { 0.0f * MAX_GRID ,1.0f * MAX_GRID },
+    { 1.0f * MAX_GRID ,1.0f * MAX_GRID }
+};
 //==================================
 // コンストラクタ
 //==================================
@@ -99,6 +104,7 @@ void CFloor::Unload(void)
 HRESULT CFloor::Init(void)
 {
 	CScene3d::Init();
+    SetTextureUV(m_UV);
 	CScene3d::BindTexture(m_apTexture[m_type]);
 	return S_OK;
 }
@@ -123,5 +129,5 @@ void CFloor::Update(void)
 //==================================
 void CFloor::Draw(void)
 {
-	CScene3d::Draw();
+	//CScene3d::Draw();
 }

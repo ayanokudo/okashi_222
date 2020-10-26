@@ -31,10 +31,14 @@
 #include "stage.h"
 #include "enemy.h"
 
+#include "imgui/imgui.h"
+#include "imgui/imgui_impl_dx9.h"
+#include "imgui/imgui_impl_win32.h"
+
 //=============================
 // 静的メンバ変数宣言
 //=============================
-CManager::MODE   CManager::m_mode = MODE_TITLE;      // ゲームモード
+CManager::MODE   CManager::m_mode = MODE_GAME;      // ゲームモード
 CRenderer       *CManager::m_pRenderer = NULL;       // レンダラーポインタ
 CInputKeyboard  *CManager::m_pInputKeyboard = NULL;  // キーボード
 CInputJoypad    *CManager::m_pJoypad = NULL;         // ジョイパッド
@@ -126,6 +130,17 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, bool bWindow)
     CStage::Load();     // ステージ
     CEnemy::Load();     // 敵
 
+    // IMGUIの設定
+#ifdef IMGUI_ON
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGuiIO& io = ImGui::GetIO(); (void)io;
+
+    ImGui::StyleColorsDark();
+
+    ImGui_ImplWin32_Init(hWnd);
+    ImGui_ImplDX9_Init(m_pRenderer->GetDevice());
+#endif // IMGUI
 	// ポーズ状態の時
 	return S_OK;
 }
@@ -202,6 +217,12 @@ void CManager::Uninit(void)
 		delete m_pFade;
 		m_pFade = NULL;
 	}
+
+#ifdef IMGUI_ON
+    ImGui_ImplDX9_Shutdown();
+    ImGui_ImplWin32_Shutdown();
+    ImGui::DestroyContext();
+#endif
 }
 
 
@@ -210,6 +231,30 @@ void CManager::Uninit(void)
 //=============================
 void CManager::Update(void)
 {
+#ifdef IMGUI_ON
+    // Start the Dear ImGui frame
+    ImGui_ImplDX9_NewFrame();
+    ImGui_ImplWin32_NewFrame();
+    ImGui::NewFrame();
+
+    bool show_demo_window = true;
+    bool show_another_window = false;
+    ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
+
+    // 1. Show the big demo window (Most of the sample code is in ImGui::ShowDemoWindow()! You can browse its code to learn more about Dear ImGui!).
+    if (show_demo_window)
+        ImGui::ShowDemoWindow(&show_demo_window);
+
+    ImGui::SetNextWindowSize(ImVec2(320, 100), 0);
+    ImGui::Begin("Another Window", &show_another_window);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked)
+    ImGui::Text("Hello from another window!");
+    if (ImGui::Button("Close Me"))
+        show_another_window = false;
+    ImGui::End();
+
+    ImGui::EndFrame();
+#endif //IMGUI_ON
+
 	// ジョイパッドクラスの更新処理
 	if (m_pJoypad != NULL)
 	{

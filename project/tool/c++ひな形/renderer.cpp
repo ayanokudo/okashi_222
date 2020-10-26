@@ -16,6 +16,10 @@
 #include "fade.h"
 #include "pause.h"
 
+#include "imgui/imgui.h"
+#include "imgui/imgui_impl_dx9.h"
+#include "imgui/imgui_impl_win32.h"
+
 //==================================
 //    コンストラクタ
 //==================================
@@ -174,8 +178,12 @@ void CRenderer::Draw(void)
 	{
 		
 		CScene::DrawAll();
-		
-		
+
+#ifdef IMGUI_ON
+        ImGui::Render();
+        ImGui_ImplDX9_RenderDrawData(ImGui::GetDrawData());
+#endif
+
 		if (CManager::GetMode() == CManager::MODE_GAME&&CManager::GetActivePause())
 		{// ポーズ状態の時
 			// ポーズメニューの表示

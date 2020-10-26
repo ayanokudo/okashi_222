@@ -24,9 +24,9 @@ class CInputJoypad;
 class CInputMouse;
 class CSound;
 class CCamera;
-class CPlayer;
 class CLight;
 class CDebug;
+class CObject;
 
 //*****************************
 //クラス定義
@@ -48,12 +48,15 @@ public:
 
 
 	static CCamera *GetCamera(void) { return m_pCamera; }  // カメラの取得処理
-	static CPlayer *GetPlayer(void) { return m_pPlayer; }  // プレイヤーの取得処理
+
+    // オブジェクトの情報のゲッタ
+    static CObject *GetObjectData(void) { return m_pObject; }
+
 private:
 	// メンバ変数
-	static CCamera*m_pCamera; // カメラ
-	static CPlayer*m_pPlayer; // プレイヤー
-	static CLight *m_pLight;   // ライト
+    static CObject *m_pObject;      // オブジェクトへのポインタ
+	static CCamera *m_pCamera;      // カメラ
+	static CLight  *m_pLight;       // ライト
 
 #if _DEBUG
     static CDebug *m_pDebug;    // デバッグ

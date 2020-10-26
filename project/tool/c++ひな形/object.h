@@ -13,6 +13,8 @@
 // 前方宣言
 //*****************************************************************************
 class CModel;
+class CPlayer;
+class CCursor;
 
 //*****************************************************************************
 // マクロ定義
@@ -26,11 +28,6 @@ class CModel;
 class CObject : public CScene
 {
 public:
-    typedef struct
-    {
-        D3DXVECTOR3 pos;    // 位置
-        
-    }OBJECT_DATA;
 
     // メンバ関数
     CObject();
@@ -46,11 +43,22 @@ public:
 
     static void SetObject(D3DXVECTOR3 pos);
 
-    static CModel *GetObjectData(int nNumObj) { return pModel[nNumObj]; }
+    static CPlayer *GetPlayer(void) { return m_pPlayer; }  // プレイヤーの取得処理
+    static CModel *GetObjectData(int nNumObj) { return m_pModel[nNumObj]; }
+
+    D3DXVECTOR3 GetPos(void) { return m_pos; }
 private:
-    static int ObjctNum;                    // オブジェクトの数
-    static CModel *pModel[MAX_OBJECT];             // シーン
+    // メンバ関数
+    void Move(void);
 
+    // メンバ変数
+    D3DXVECTOR3 m_pos;                             // オブジェクトの位置
+    static int      m_ObjctNum;                    // オブジェクトの数
+    static CPlayer*m_pPlayer;                      // プレイヤー
+    static CCursor *m_pCursor;                     // カーソルへのポインタ
+    static CModel  *m_pModel[MAX_OBJECT];          // シーン
 
+     bool           m_bGridMode;                   //グリッドモードがどうか
+     int            m_nCountInterval;              // 操作を受け付けるまでの間隔
 };
 #endif      // _OBJECT_H_

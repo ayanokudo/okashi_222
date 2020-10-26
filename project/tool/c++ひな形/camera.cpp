@@ -14,6 +14,7 @@
 #include "keyboard.h"
 #include "game.h"
 #include "player.h"
+#include "object.h"
 
 //******************************
 // ƒ}ƒNƒ’è‹`
@@ -100,8 +101,9 @@ void CCamera::Uninit(void)
 //******************************
 void CCamera::Update(void)
 {
-	m_posV = CGame::GetPlayer()->GetPos() + CAMERA_LOCAL_POS;
-	m_posR = CGame::GetPlayer()->GetPos();
+	m_posV = CObject::GetPlayer()->GetPos() + CAMERA_LOCAL_POS;
+	m_posR = CObject::GetPlayer()->GetPos();
+
 #ifdef _DEBUG
 	if (CManager::GetKeyboard()->GetKeyPress(DIK_UP))
 	{

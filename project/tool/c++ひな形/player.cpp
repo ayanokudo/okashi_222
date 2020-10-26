@@ -136,7 +136,7 @@ void CPlayer::Update(void)
 	
 	SetRot(rot);
     // ‘€ì‚ÌŠÇ—
-	Controll();
+	//Controll();
 }
 
 //******************************

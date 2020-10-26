@@ -16,6 +16,12 @@
 #include "scene3d.h"
 
 //*****************************
+//マクロ定義
+//*****************************
+#define GRID_SIZE                   (60.0f)        // グリッドの大きさ
+#define MAX_GRID                    (8) // グリッドの数
+
+//*****************************
 //クラス定義
 //*****************************
 class CFloor : public CScene3d
@@ -43,6 +49,7 @@ public:
 
 private:
 	//メンバ変数
+    static D3DXVECTOR2 m_UV[NUM_VERTEX];// テクスチャ座標の情報
 	static LPDIRECT3DTEXTURE9 m_apTexture[FLOOR_MAX];//テクスチャ
 	FLOOR m_type;
 };

@@ -9,6 +9,7 @@
 #include "renderer.h"
 #include "game.h"
 #include "player.h"
+#include "object.h"
 
 //******************************************************************************
 // 静的メンバ変数定義
@@ -74,20 +75,20 @@ void CDebug::Uninit()
 //=============================================================================
 // [Print] 画面に表示
 //=============================================================================
-//void CDebug::Print(int nX, int nY, D3DCOLOR color, const char* pFormat, ...)
-//{
-//    va_list apList;// 可変長引数を操作するための変数
-//
-//
-//    char temp[MAX_PATH];
-//
-//    va_start(apList, pFormat);                   // 可変長引数を1つの変数にまとめる
-//    vsprintf_s(temp, pFormat, apList);
-//    va_end(apList);
-//
-//    DrawText(nX, nY, color, ()temp);
-//
-//}
+void CDebug::Print(int nX, int nY, D3DCOLOR color, const char* pFormat, ...)
+{
+    va_list apList;// 可変長引数を操作するための変数
+    RECT rect = { 0, 100, SCREEN_WIDTH, SCREEN_HEIGHT };
+
+    char temp[MAX_PATH];
+
+    va_start(apList, pFormat);                   // 可変長引数を1つの変数にまとめる
+    vsprintf_s(temp, pFormat, apList);
+    va_end(apList);
+
+    // テキスト描画
+    m_pFont->DrawText(NULL, temp, -1, &rect, DT_LEFT, D3DCOLOR_ARGB(0xff, 0xff, 0x00, 0x00));
+}
 
 //=============================================================================
 // [Draw] 描画処理
@@ -96,7 +97,7 @@ void CDebug::Draw()
 {
     RECT rect = { 0, 100, SCREEN_WIDTH, SCREEN_HEIGHT };
     char str[256];
-    D3DXVECTOR3 pos = CGame::GetPlayer()->GetPos();
+    D3DXVECTOR3 pos = CObject::GetPlayer()->GetPos();
     sprintf(str, "座標:%.1f,%.1f,%.1f\n", pos.x,pos.y,pos.z);
 
     // テキスト描画

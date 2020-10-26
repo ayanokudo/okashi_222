@@ -36,6 +36,7 @@
 #include "bullet.h"
 #include "enemy.h"
 #include "debug_log.h"
+#include "scratch.h"
 
 //=============================
 // 静的メンバ変数宣言
@@ -134,6 +135,7 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, bool bWindow)
 	CWall::Load();		// 壁
 	CBullet::Load();    // 弾
 	CEnemy::Load();		// エネミー
+	CScratch::Load();
 
 	// ポーズ状態の時
 	return S_OK;
@@ -157,6 +159,7 @@ void CManager::Uninit(void)
 	CBullet::Unload();   // 弾
 	CWall::Unload();
 	CEnemy::Unload();
+	CScratch::Unload();
 
 	if (m_pSound != NULL)
 	{

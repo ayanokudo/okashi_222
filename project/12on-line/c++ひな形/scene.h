@@ -34,7 +34,6 @@ public:
 		OBJTYPE_MAP,        // マップ
 		OBJTYPE_ITEM,       // アイテム
 		OBJTYPE_EFFECT,     // エフェクト
-		OBJTYPE_BULLET,     // 弾
 		OBJTYPE_PLAYER,     // プレイヤー
 		OBJTYPE_ENEMY,      // エネミー
 		OBJTYPE_EXPLOSION,  // 爆発
@@ -43,6 +42,7 @@ public:
 		OBJTYPE_UI,         // UI
 		OBJTYPE_FLOOR,      // 床
 		OBJTYPE_WALL,		// 壁
+		OBJTYPE_ATTACK,     // 攻撃
 		OBJTYPE_COLLISION,  // コリジョン
 		OBJTYPE_MAX,        // タイプの最大数
 	}OBJTYPE;

@@ -229,7 +229,7 @@ void CCollision::Draw(void)
 	// ワイヤーフレームで描画
 	pDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
 	//　描画
-	CModel::Draw();
+	//CModel::Draw();
 	// ワイヤーフレームをもどす
 	pDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
 }

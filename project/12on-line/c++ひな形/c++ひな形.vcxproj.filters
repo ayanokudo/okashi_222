@@ -100,6 +100,9 @@
     <ClCompile Include="debug_log.cpp">
       <Filter>ソースファイル</Filter>
     </ClCompile>
+    <ClCompile Include="item.cpp">
+      <Filter>ソースファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bg.h">
@@ -199,6 +202,9 @@
       <Filter>ヘッダーファイル</Filter>
     </ClInclude>
     <ClInclude Include="debug_log.h">
+      <Filter>ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="item.h">
       <Filter>ヘッダーファイル</Filter>
     </ClInclude>
   </ItemGroup>

@@ -116,7 +116,7 @@ HRESULT CItem::Init(void)
 	// テクスチャ割り当て
 	BindModel(m_pMeshModel, m_pBuffMatModel, m_nNumMatModel);
 	// 当たり判定の生成
-	//m_pCollision = CCollision::CreateSphere(GetPos());
+	m_pCollision = CCollision::CreateSphere(GetPos(), 100);
 	return S_OK;
 }
 

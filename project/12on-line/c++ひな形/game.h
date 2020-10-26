@@ -27,6 +27,7 @@ class CCamera;
 class CPlayer;
 class CLight;
 class CEnemy;
+class CItem;
 
 //*****************************
 //クラス定義
@@ -50,11 +51,13 @@ public:
 	static CCamera *GetCamera(void) { return m_pCamera; }  // カメラの取得処理
 	static CPlayer *GetPlayer(void) { return m_pPlayer; }  // プレイヤーの取得処理
 	static CEnemy  *GetEnemy(void)  { return m_pEnemy; }   // エネミーの取得処理
+	static CItem   *GetItem(void)	{ return m_pItem; }	   // アイテムの取得処理
 private:
 	// メンバ変数
 	static CCamera*m_pCamera;	// カメラ
 	static CPlayer*m_pPlayer;	// プレイヤー
 	static CEnemy*m_pEnemy;		// エネミー
+	static CItem*m_pItem;		// アイテム
 	static CLight *m_pLight;	// ライト
 }; 
 

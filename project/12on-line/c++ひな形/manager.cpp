@@ -35,6 +35,7 @@
 #include "wall.h"
 #include "bullet.h"
 #include "enemy.h"
+#include "item.h"
 #include "debug_log.h"
 
 //=============================
@@ -133,7 +134,8 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, bool bWindow)
 	CFloor::Load();		// 床
 	CWall::Load();		// 壁
 	CBullet::Load();    // 弾
-	CEnemy::Load();		// エネミー
+	CEnemy::Load();		// 敵
+	CItem::Load();		// アイテム
 
 	// ポーズ状態の時
 	return S_OK;
@@ -155,8 +157,9 @@ void CManager::Uninit(void)
 	CPlayer::Unload();	 // プレイヤー
 	CFloor::Unload();	 // 床
 	CBullet::Unload();   // 弾
-	CWall::Unload();
-	CEnemy::Unload();
+	CWall::Unload();	 //	壁
+	CEnemy::Unload();	 // 敵
+	CItem::Unload();	 //	アイテム
 
 	if (m_pSound != NULL)
 	{

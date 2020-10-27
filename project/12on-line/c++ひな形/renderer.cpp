@@ -111,7 +111,7 @@ HRESULT CRenderer::Init(HWND hWnd, bool bWindow)
 	m_pD3DDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA); // aデスティネーションカラーの設定
 
 	m_pD3DDevice->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
-	m_pD3DDevice->SetRenderState(D3DRS_ALPHAREF, 1);
+	m_pD3DDevice->SetRenderState(D3DRS_ALPHAREF, 50);
 	m_pD3DDevice->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
 
 	// サンプラーステートの設定

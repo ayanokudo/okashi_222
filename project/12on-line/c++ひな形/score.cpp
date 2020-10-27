@@ -10,6 +10,8 @@
 //**********************************
 #include "score.h"
 #include "number.h"
+#include "renderer.h"
+#include "manager.h"
 
 //==============================
 //静的メンバ変数宣言
@@ -58,9 +60,9 @@ HRESULT CScore::Init(void)
 	for (int nCntDigit = 0; nCntDigit < MAX_SCORE_DIGIT; nCntDigit++)
 	{
 		m_apNumber[nCntDigit] = CNumber::Create(0,
-			D3DXVECTOR3(1000 + nCntDigit * 20 * 2, 50.0f, 0.0f),
-			D3DXVECTOR3(20, 20, 0),
-			D3DXCOLOR(0.8f, 0.3f, 0.8f, 1.0f));
+			D3DXVECTOR3(950 + nCntDigit * 30 * 2, 40.0f, 0.0f),
+			D3DXVECTOR3(30, 30, 0),
+			D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 	}
 	// スコアの初期化
 	m_nScore = 0;
@@ -105,8 +107,12 @@ void CScore::Update(void)
 //==================================
 void CScore::Draw(void)
 {
+	//デバイスの取得
+	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+	pDevice->SetRenderState(D3DRS_ALPHAREF, 200);
 	for (int nCntDigit = 0; nCntDigit < MAX_SCORE_DIGIT; nCntDigit++)
 	{
 		m_apNumber[nCntDigit]->Draw();
 	}
+	pDevice->SetRenderState(D3DRS_ALPHAREF,50);
 }

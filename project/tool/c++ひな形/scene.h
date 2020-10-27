@@ -43,6 +43,7 @@ public:
 		OBJTYPE_PARTICLE,   // パーティクル
 		OBJTYPE_BOMB,       // ボム
 		OBJTYPE_UI,         // UI
+        OBJTYPE_COLLISION,
 		OBJTYPE_MAX,        // タイプの最大数
 	}OBJTYPE;
 

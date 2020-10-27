@@ -111,7 +111,14 @@ void CObject::Update(void)
 {
     // 座標の移動
     Move();
-    ChangeObject();
+
+    // 配置するオブジェクトの変更
+    if (CManager::GetKeyboard()->GetKeyTrigger(DIK_1)||
+        CManager::GetKeyboard()->GetKeyTrigger(DIK_2))
+    {
+        ChangeObject();
+    }
+
     // オブジェクトの配置
     if (CManager::GetKeyboard()->GetKeyTrigger(DIK_SPACE))
     {
@@ -163,6 +170,16 @@ void CObject::ChangeObject(void)
     {
         nModel += 1;
     }
+    // 最大値以上/最小値以下になったらループ
+    if (nModel > CPlayer::MODEL_MAX)
+    {
+        nModel = CPlayer::MODEL_PLAYER;
+    }
+    if (nModel < CPlayer::MODEL_PLAYER)
+    {
+        nModel = CPlayer::MODEL_MAX;
+    }
+
     m_Model = (CPlayer::MODEL)nModel;
 }
 

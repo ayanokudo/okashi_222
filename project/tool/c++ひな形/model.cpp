@@ -11,7 +11,7 @@
 //=============================================================================
 //モデルクラスのコンストラクタ
 //=============================================================================
-CModel::CModel()
+CModel::CModel(OBJTYPE type)
 {
 	// 変数のクリア
 	m_pBuffMatModel = NULL;
@@ -19,6 +19,7 @@ CModel::CModel()
 	m_nNumMatModel = 0;
 	m_pos = D3DXVECTOR3();
 	m_rot = D3DXVECTOR3();
+    SetObjType(type);
 }
 
 //=============================================================================
@@ -37,7 +38,7 @@ CModel * CModel::Create(D3DXVECTOR3 pos)
 	CModel *pModel = NULL;
 
 	//メモリ確保
-	pModel = new CModel;
+	pModel = new CModel(OBJTYPE_NONE);
 
 	//メモリが確保できていたら
 	if (pModel != NULL)

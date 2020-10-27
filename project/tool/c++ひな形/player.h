@@ -27,6 +27,7 @@ public:
     {
         MODEL_PLAYER,
         MODEL_ENEMY,
+        MODEL_DELETE,
         MODEL_MAX
     }MODEL;      // モデルのファイル名
 

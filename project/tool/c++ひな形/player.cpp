@@ -38,7 +38,7 @@ DWORD        CPlayer::m_nNumMatModel[CPlayer::MODEL_MAX] = {};	    //ƒ}ƒeƒŠƒAƒ‹
 //******************************
 // ƒRƒ“ƒXƒgƒ‰ƒNƒ^
 //******************************
-CPlayer::CPlayer()
+CPlayer::CPlayer() : CModel(OBJTYPE_PLAYER)
 {
 	m_move = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 }
@@ -163,6 +163,7 @@ void CPlayer::Draw(void)
 	CModel::Draw();
     pDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
 }
+
 
 //******************************
 // ‘€ì‚ÌŠÇ—

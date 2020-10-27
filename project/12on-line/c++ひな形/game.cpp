@@ -23,6 +23,7 @@
 #include "floor.h"
 #include "wall.h"
 #include "enemy.h"
+#include "item.h"
 
 //=============================
 // 静的メンバ変数宣言
@@ -30,6 +31,7 @@
 CCamera *CGame::m_pCamera = NULL;   // カメラクラスのポインタ変数
 CPlayer *CGame::m_pPlayer[MAX_PLAYER] = {};	// プレイヤークラスのポインタ変数
 CEnemy  *CGame::m_pEnemy  = NULL;	// エネミークラスのポインタ変数
+CItem   *CGame::m_pItem	  = NULL;	// アイテムクラスのポインタ変数
 CLight  *CGame::m_pLight  = NULL;	// ライトクラスのポインタ変数
 
 //=============================
@@ -85,6 +87,8 @@ HRESULT CGame::Init(void)
 	
 	// エネミーの生成
 	m_pEnemy = CEnemy::Create(D3DXVECTOR3(0.0f, 0.0f, -800.0f));
+	// アイテムの生成
+	m_pItem = CItem::Create(D3DXVECTOR3(200.0f, 0.0f, -800.0f));
 	// 床の生成
 	CFloor::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(1000.0f, 0.0f, 1000.0f), CFloor::FLOOR_FLOORING);
 	// 壁の生成

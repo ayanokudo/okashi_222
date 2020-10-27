@@ -42,10 +42,14 @@ public:
 	void Update(void);
 	void Draw(void);
 
+	static void SubtractTime(int nTime);
+	static int GetTime(void) { return m_nTime; }
 private:
 	// ƒƒ“ƒo•Ï”
 	CNumber* m_apNumber[MAX_TIME_DIGIT];
-	static int m_nScore;
+	static int m_nTime;
+	DWORD m_start;
+	DWORD m_end;
 
 };
 

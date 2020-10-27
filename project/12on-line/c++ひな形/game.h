@@ -28,6 +28,8 @@ class CPlayer;
 class CLight;
 class CEnemy;
 class CItem;
+class CScore;
+class CTime;
 
 //*****************************
 //クラス定義
@@ -52,12 +54,16 @@ public:
 	static CPlayer *GetPlayer(void) { return m_pPlayer; }  // プレイヤーの取得処理
 	static CEnemy  *GetEnemy(void)  { return m_pEnemy; }   // エネミーの取得処理
 	static CItem   *GetItem(void)	{ return m_pItem; }	   // アイテムの取得処理
+	static CScore  *GetScore(void)  { return m_pScore; }   // スコアの取得処理
+	static CTime   *GetTime(void)   { return m_pTime; }	   // タイムの取得処理
 private:
 	// メンバ変数
 	static CCamera*m_pCamera;	// カメラ
 	static CPlayer*m_pPlayer;	// プレイヤー
 	static CEnemy*m_pEnemy;		// エネミー
 	static CItem*m_pItem;		// アイテム
+	static CScore*m_pScore;		// スコア
+	static CTime*m_pTime;		// アイテム
 	static CLight *m_pLight;	// ライト
 }; 
 

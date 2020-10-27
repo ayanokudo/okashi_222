@@ -8,6 +8,7 @@
 #define _OBJECT_H_
 #include "main.h"
 #include "model.h"
+#include "player.h"
 
 //*****************************************************************************
 // 前方宣言
@@ -41,6 +42,10 @@ public:
     void Update(void);
     void Draw(void);
 
+    void GridTransform(void);
+
+    void ChangeObject(void);
+
     static void SetObject(D3DXVECTOR3 pos);
 
     static CPlayer *GetPlayer(void) { return m_pPlayer; }  // プレイヤーの取得処理
@@ -52,6 +57,7 @@ private:
     void Move(void);
 
     // メンバ変数
+    static CPlayer::MODEL m_Model;                        // 現在選択中のモデル
     D3DXVECTOR3 m_pos;                             // オブジェクトの位置
     static int      m_ObjctNum;                    // オブジェクトの数
     static CPlayer*m_pPlayer;                      // プレイヤー

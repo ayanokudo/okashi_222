@@ -20,13 +20,14 @@
 // マクロ定義
 //*****************************************************************************
 #define MODEL_PATH "./data/Models/cat V1.x"    //モデルのパス
-#define GRID_MODE_MOVE   (GRID_SIZE)      // グリッドモード時の移動量
-#define NORMAL_MODE_MOVE (3.0f)     // ノーマルモードの字の移動量
-#define INTERVAL         (7)                    //操作を受け付けるまでの間隔
+#define GRID_MODE_MOVE   (GRID_SIZE * 2)      // グリッドモード時の移動量
+#define NORMAL_MODE_MOVE (10.0f)     // ノーマルモードの字の移動量
+#define INTERVAL         (10)                    //操作を受け付けるまでの間隔
 
 //*****************************************************************************
 // 静的メンバ変数宣言
 //*****************************************************************************
+CPlayer::MODEL CObject::m_Model=CPlayer::MODEL_PLAYER;
 int CObject::m_ObjctNum = 0;
 CModel *CObject::m_pModel[MAX_OBJECT] = {};
 CPlayer *CObject::m_pPlayer = NULL;
@@ -38,11 +39,11 @@ CCursor *CObject::m_pCursor = NULL;                     // カーソルへのポインタ
 //=============================================================================
 CObject::CObject()
 {
+    m_Model = CPlayer::MODEL_PLAYER;
     m_pos = { GRID_SIZE,0.0f,GRID_SIZE };
     m_ObjctNum = 0;
     m_bGridMode = true;
     m_nCountInterval = INTERVAL;
-    
 }
 
 //=============================================================================
@@ -110,7 +111,7 @@ void CObject::Update(void)
 {
     // 座標の移動
     Move();
-
+    ChangeObject();
     // オブジェクトの配置
     if (CManager::GetKeyboard()->GetKeyTrigger(DIK_SPACE))
     {
@@ -127,6 +128,7 @@ void CObject::Update(void)
     if (CManager::GetKeyboard()->GetKeyTrigger(DIK_F2))
     {
         m_bGridMode ^= true;
+        GridTransform();
     }
 }
 
@@ -136,6 +138,32 @@ void CObject::Update(void)
 void CObject::Draw(void)
 {
 
+}
+
+//=============================================================================
+// [GridTransform] グリッドの座標に変換
+//=============================================================================
+void CObject::GridTransform(void)
+{
+    m_pos = { GRID_SIZE,0.0f,GRID_SIZE };
+
+}
+
+//=============================================================================
+// [ChangeObject] オブジェクトの変更
+//=============================================================================
+void CObject::ChangeObject(void)
+{
+    int nModel = m_Model;
+    if (CManager::GetKeyboard()->GetKeyTrigger(DIK_1))
+    {
+        nModel -=  1;
+    }
+    if (CManager::GetKeyboard()->GetKeyTrigger(DIK_2))
+    {
+        nModel += 1;
+    }
+    m_Model = (CPlayer::MODEL)nModel;
 }
 
 //=============================================================================
@@ -151,7 +179,18 @@ void CObject::SetObject(D3DXVECTOR3 pos)
         {
             if (m_pModel[nCnt] == NULL)
             {
-                m_pModel[nCnt] = CEnemy::Create(pos);
+                switch (m_Model % CPlayer::MODEL_MAX == 0)
+                {
+                case CPlayer::MODEL_PLAYER:
+
+                    m_pModel[nCnt] = CPlayer::Create(pos);
+                    break;
+
+                case CPlayer::MODEL_ENEMY:
+                    m_pModel[nCnt] = CEnemy::Create(pos);
+                    break;
+                }
+
                 break;// 一体ずつ配置するためにループを抜ける
             }
         }
@@ -164,7 +203,7 @@ void CObject::Move(void)
 {
 
     //移動量の目標値
-    D3DXVECTOR3 moveDest = {0.0f,0.0f,0.0f};
+    D3DXVECTOR3 moveDest = { 0.0f,0.0f,0.0f };
     // ジョイスティックの取得
     DIJOYSTATE js = CManager::GetJoypad()->GetStick(0);
     float fMove = 0.0f;// 移動量
@@ -174,8 +213,8 @@ void CObject::Move(void)
     {
         if (m_ObjctNum >= INTERVAL)
         {
-        fMove = GRID_MODE_MOVE;
-        m_ObjctNum = 0;
+            fMove = GRID_MODE_MOVE;
+            m_ObjctNum = 0;
         }
     }
     else
@@ -186,33 +225,37 @@ void CObject::Move(void)
     if (CManager::GetKeyboard()->GetKeyPress(DIK_W) || js.lY <= -600)
     {// ↑移動
         moveDest.z = -fMove;
-
-        //if (CManager::GetKeyboard()->GetKeyPress(DIK_A) || js.lX <= -600)
-        //{
-        //    moveDest.z = sinf(45) * -fMove;
-        //    moveDest.x = cosf(45) * fMove;
-        //}
-        //if (CManager::GetKeyboard()->GetKeyPress(DIK_D) || js.lX >= 600)
-        //{
-        //    moveDest.z = sinf(45) * -fMove;
-        //    moveDest.x = cosf(45) * -fMove;
-        //}
+        if (!m_bGridMode)
+        {
+            if (CManager::GetKeyboard()->GetKeyPress(DIK_A) || js.lX <= -600)
+            {
+                moveDest.z = sinf(45) * -fMove;
+                moveDest.x = cosf(45) * fMove;
+            }
+            if (CManager::GetKeyboard()->GetKeyPress(DIK_D) || js.lX >= 600)
+            {
+                moveDest.z = sinf(45) * -fMove;
+                moveDest.x = cosf(45) * -fMove;
+            }
+        }
     }
     else if (CManager::GetKeyboard()->GetKeyPress(DIK_S) || js.lY >= 600)
     {// ↓移動
 
         moveDest.z = fMove;
-
-        //if (CManager::GetKeyboard()->GetKeyPress(DIK_A) || js.lX <= -600)
-        //{
-        //    moveDest.z = sinf(45) * fMove;
-        //    moveDest.x = cosf(45) * fMove;
-        //}
-        //if (CManager::GetKeyboard()->GetKeyPress(DIK_D) || js.lX >= 600)
-        //{
-        //    moveDest.z = sinf(45) * fMove;
-        //    moveDest.x = cosf(45) * -fMove;
-        //}
+        if (!m_bGridMode)
+        {
+            if (CManager::GetKeyboard()->GetKeyPress(DIK_A) || js.lX <= -600)
+            {
+                moveDest.z = sinf(45) * fMove;
+                moveDest.x = cosf(45) * fMove;
+            }
+            if (CManager::GetKeyboard()->GetKeyPress(DIK_D) || js.lX >= 600)
+            {
+                moveDest.z = sinf(45) * fMove;
+                moveDest.x = cosf(45) * -fMove;
+            }
+        }
     }
     else if (CManager::GetKeyboard()->GetKeyPress(DIK_A) || js.lX <= -600)
     {// ←移動

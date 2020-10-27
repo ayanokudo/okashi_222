@@ -30,7 +30,7 @@ CScene3d::CScene3d(int nPriority) :CScene(nPriority)
 	m_pTexture = NULL;
 	m_pVtxBuff = NULL;
 	m_pos = D3DXVECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0.0f);
-
+	m_rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	m_col = { 1.0f,1.0f,1.0f,1.0f };
 	m_size = { 0.0f,0.0f,0.0f };
 	m_fAngle = 0.0f;
@@ -157,7 +157,7 @@ void CScene3d::Draw(void)
 	D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxScail);
 
 	// 向きを反映
-	D3DXMatrixRotationYawPitchRoll(&mtxRot, 0.0f, 0.0f, 0.0f);
+	D3DXMatrixRotationYawPitchRoll(&mtxRot, m_rot.y, m_rot.x, m_rot.z);
 	D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxRot);
 
 	// 位置を反映
@@ -213,15 +213,6 @@ void CScene3d::SetPos(const D3DXVECTOR3 pos)
 }
 
 //===================================
-// 角度のセット
-//===================================
-void CScene3d::SetAngle(const float fAngle)
-{
-	m_fAngle = fAngle; 
-	SetPos(m_pos);
-}
-
-//===================================
 // アニメーション情報のセット
 //===================================
 void CScene3d::SetTextureUV(const D3DXVECTOR2 uv[NUM_VERTEX])
@@ -271,4 +262,12 @@ void CScene3d::SetColor(const D3DXCOLOR col)
 
 	// アンロック
 	m_pVtxBuff->Unlock();
+}
+
+//=============================================================================
+//モデルクラスの向きの設定
+//=============================================================================
+void CScene3d::SetRot(const D3DXVECTOR3 rot)
+{
+	m_rot = rot;
 }

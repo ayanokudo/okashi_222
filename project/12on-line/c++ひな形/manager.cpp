@@ -37,6 +37,7 @@
 #include "enemy.h"
 #include "item.h"
 #include "debug_log.h"
+#include "scratch.h"
 
 //=============================
 // 静的メンバ変数宣言
@@ -136,6 +137,7 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, bool bWindow)
 	CBullet::Load();    // 弾
 	CEnemy::Load();		// 敵
 	CItem::Load();		// アイテム
+	CScratch::Load();
 
 	// ポーズ状態の時
 	return S_OK;
@@ -160,6 +162,7 @@ void CManager::Uninit(void)
 	CWall::Unload();	 //	壁
 	CEnemy::Unload();	 // 敵
 	CItem::Unload();	 //	アイテム
+	CScratch::Unload();
 
 	if (m_pSound != NULL)
 	{
@@ -247,7 +250,6 @@ void CManager::Update(void)
 		if (m_mode == MODE_GAME)
 		{// モードゲームのときポーズ画面の処理
 
-			
 			if (m_pInputKeyboard->GetKeyTrigger(DIK_TAB) || m_pJoypad->GetJoystickTrigger(11, 0))
 			{// TAB
 

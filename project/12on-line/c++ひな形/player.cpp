@@ -17,6 +17,7 @@
 #include "scene3d.h"
 #include "debug_log.h"
 #include "collision.h"
+#include "scratch.h"
 
 //*****************************
 // マクロ定義
@@ -176,9 +177,6 @@ void CPlayer::Update(void)
 
 	// 当たり判定の位置更新
 	m_pCollision->SetPos(GetPos());
-	float fFloat = 0.9f;
-	CDebugLog::Init();
-	CDebugLog::Print("%f,%f,%f\n",0.1f, 0.2f, 0.3f);
 }
 
 //******************************
@@ -320,8 +318,6 @@ void CPlayer::MoveController(void)
 
 	// 座標のセット
 	SetPos(pos);
-
-	
 }
 
 //******************************
@@ -360,12 +356,25 @@ void CPlayer::Attack(void)
 		// 移動量
 		D3DXVECTOR3 bulletMove;
 		bulletMove.x = cosf(fRotY)*-BULLET_SPEED_PLAYER;
-		bulletMove.y = 0;
+		bulletMove.y = 0.0f;
 		bulletMove.z = sinf(fRotY)*BULLET_SPEED_PLAYER;
 		// 弾を撃つ位置の調整
 		D3DXVECTOR3 pos = GetPos();
-		pos.y += 10;
+		pos.y += 10.0f;
 		// 弾の生成
 		CBullet::Create(pos, bulletMove, 300, CBullet::BULLETUSER_PLAYER)->SetColor(D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f));
+	}
+	if (CManager::GetKeyboard()->GetKeyTrigger(DIK_B) || CManager::GetJoypad()->GetJoystickTrigger(0, m_nPlayerNum))
+	{// 弾を撃つ
+   	 // プレイヤーの向いている方向の取得
+		float fRotY = GetRot().y - D3DXToRadian(90);
+	    // 弾を撃つ位置の調整
+		D3DXVECTOR3 pos = GetPos();
+		pos.x = pos.x + cosf(fRotY)*-SCRATCH_SIZE;
+		pos.y = pos.y + SCRATCH_HEIGHT;
+		pos.z = pos.z + sinf(fRotY) * SCRATCH_SIZE;
+
+		// 弾の生成
+		CScratch::Create(pos, fRotY, CScratch::SCRATCHUSER_PLAYER,m_nPlayerNum);
 	}
 }

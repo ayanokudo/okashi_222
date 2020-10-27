@@ -29,10 +29,15 @@ class CLight;
 class CEnemy;
 
 //*****************************
+// マクロ定義
+//*****************************
+#define MAX_PLAYER 2
+
+//*****************************
 //クラス定義
 //*****************************
 
-//2dポリゴンクラス
+//ゲームクラス
 class CGame : public CScene
 {
 public:
@@ -48,12 +53,12 @@ public:
 
 
 	static CCamera *GetCamera(void) { return m_pCamera; }  // カメラの取得処理
-	static CPlayer *GetPlayer(void) { return m_pPlayer; }  // プレイヤーの取得処理
+	static CPlayer *GetPlayer(int nIndex = 0) { return m_pPlayer[nIndex]; }  // プレイヤーの取得処理
 	static CEnemy  *GetEnemy(void)  { return m_pEnemy; }   // エネミーの取得処理
 private:
 	// メンバ変数
 	static CCamera*m_pCamera;	// カメラ
-	static CPlayer*m_pPlayer;	// プレイヤー
+	static CPlayer*m_pPlayer[MAX_PLAYER];	// プレイヤー
 	static CEnemy*m_pEnemy;		// エネミー
 	static CLight *m_pLight;	// ライト
 }; 

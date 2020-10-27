@@ -81,11 +81,19 @@ HRESULT CBillboard::Init(void)
 
 	m_pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);
 
+	// 中心から頂点の距離
+	float fDistance = sqrtf(powf(m_size.x, 2) + powf(m_size.y, 2));
+	// 中心から右上の頂点の角度
+	float fAngle = atan2f(m_size.y, m_size.x);
+	// 中心から左上の頂点の角度
+	float  fAngle2 = atan2f(m_size.y, -m_size.x);
+
 	// 頂点座標の設定
-	pVtx[0].pos = D3DXVECTOR3(+m_size.x, -m_size.y, 0);
-	pVtx[1].pos = D3DXVECTOR3(-m_size.x, -m_size.y, 0);
-	pVtx[2].pos = D3DXVECTOR3(+m_size.x, +m_size.y, 0);
-	pVtx[3].pos = D3DXVECTOR3(-m_size.x, +m_size.y, 0);
+	pVtx[0].pos = D3DXVECTOR3((cosf(-fAngle2 + D3DXToRadian(m_fAngle)) * fDistance), (sinf(-fAngle2 + D3DXToRadian(m_fAngle)) * fDistance), 0);
+	pVtx[1].pos = D3DXVECTOR3((cosf(-fAngle + D3DXToRadian(m_fAngle)) * fDistance) , (sinf(-fAngle + D3DXToRadian(m_fAngle)) * fDistance), 0);
+	pVtx[2].pos = D3DXVECTOR3((cosf(fAngle2 + D3DXToRadian(m_fAngle)) * fDistance) , (sinf(fAngle2 + D3DXToRadian(m_fAngle)) * fDistance), 0);
+	pVtx[3].pos = D3DXVECTOR3((cosf(fAngle + D3DXToRadian(m_fAngle))  * fDistance) , (sinf(fAngle + D3DXToRadian(m_fAngle))  * fDistance), 0);
+
 
 	// テクスチャUV座標の設定
 	pVtx[0].tex = D3DXVECTOR2(0.0f, 0.0f);
@@ -217,11 +225,17 @@ void CBillboard::SetPos(const D3DXVECTOR3 pos)
 	// ロック
 	m_pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);
 
+	// 中心から頂点の距離
+	float fDistance = sqrtf(powf(m_size.x, 2) + powf(m_size.y, 2));
+	// 中心から右上の頂点の角度
+	float fAngle = atan2f(m_size.y, m_size.x);
+	// 中心から左上の頂点の角度
+	float  fAngle2 = atan2f(m_size.y, -m_size.x);
 	// 頂点座標の設定
-	pVtx[0].pos = D3DXVECTOR3(+ m_size.x, - m_size.y, 0);
-	pVtx[1].pos = D3DXVECTOR3(- m_size.x, - m_size.y, 0);
-	pVtx[2].pos = D3DXVECTOR3(+ m_size.x, + m_size.y, 0);
-	pVtx[3].pos = D3DXVECTOR3(- m_size.x, + m_size.y, 0);
+	pVtx[0].pos = D3DXVECTOR3((cosf(-fAngle2 + D3DXToRadian(m_fAngle)) * fDistance), (sinf(-fAngle2 + D3DXToRadian(m_fAngle)) * fDistance), 0);
+	pVtx[1].pos = D3DXVECTOR3((cosf(-fAngle + D3DXToRadian(m_fAngle)) * fDistance), (sinf(-fAngle + D3DXToRadian(m_fAngle)) * fDistance), 0);
+	pVtx[2].pos = D3DXVECTOR3((cosf(fAngle2 + D3DXToRadian(m_fAngle)) * fDistance), (sinf(fAngle2 + D3DXToRadian(m_fAngle)) * fDistance), 0);
+	pVtx[3].pos = D3DXVECTOR3((cosf(fAngle + D3DXToRadian(m_fAngle))  * fDistance), (sinf(fAngle + D3DXToRadian(m_fAngle))  * fDistance), 0);
 
 	// アンロック
 	m_pVtxBuff->Unlock();

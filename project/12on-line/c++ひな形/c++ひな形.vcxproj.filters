@@ -103,6 +103,9 @@
     <ClCompile Include="item.cpp">
       <Filter>ソースファイル</Filter>
     </ClCompile>
+    <ClCompile Include="scratch.cpp">
+      <Filter>ソースファイル</Filter>
+    </ClCompile>
     <ClCompile Include="time.cpp">
       <Filter>ソースファイル</Filter>
     </ClCompile>
@@ -208,6 +211,9 @@
       <Filter>ヘッダーファイル</Filter>
     </ClInclude>
     <ClInclude Include="item.h">
+      <Filter>ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="scratch.h">
       <Filter>ヘッダーファイル</Filter>
     </ClInclude>
     <ClInclude Include="time.h">

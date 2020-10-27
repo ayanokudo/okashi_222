@@ -28,7 +28,7 @@
 // 静的メンバ変数宣言
 //=============================
 CCamera *CGame::m_pCamera = NULL;   // カメラクラスのポインタ変数
-CPlayer *CGame::m_pPlayer = NULL;	// プレイヤークラスのポインタ変数
+CPlayer *CGame::m_pPlayer[MAX_PLAYER] = {};	// プレイヤークラスのポインタ変数
 CEnemy  *CGame::m_pEnemy  = NULL;	// エネミークラスのポインタ変数
 CLight  *CGame::m_pLight  = NULL;	// ライトクラスのポインタ変数
 
@@ -76,8 +76,13 @@ HRESULT CGame::Init(void)
 
 	// カメラの生成
 	m_pCamera = CCamera::Create();
-	// プレイヤーの生成
-	m_pPlayer = CPlayer::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f),0);
+	
+	for (int nCntPlayer = 0; nCntPlayer < MAX_PLAYER;nCntPlayer++)
+	{
+		// プレイヤーの生成
+		m_pPlayer[nCntPlayer] = CPlayer::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), nCntPlayer);
+	}
+	
 	// エネミーの生成
 	m_pEnemy = CEnemy::Create(D3DXVECTOR3(0.0f, 0.0f, -800.0f));
 	// 床の生成

@@ -318,8 +318,6 @@ void CPlayer::MoveController(void)
 
 	// 座標のセット
 	SetPos(pos);
-
-	
 }
 
 //******************************
@@ -368,16 +366,15 @@ void CPlayer::Attack(void)
 	}
 	if (CManager::GetKeyboard()->GetKeyTrigger(DIK_B) || CManager::GetJoypad()->GetJoystickTrigger(0, m_nPlayerNum))
 	{// 弾を撃つ
-	 // プレイヤーの向いている方向の取得
+   	 // プレイヤーの向いている方向の取得
 		float fRotY = GetRot().y - D3DXToRadian(90);
 	    // 弾を撃つ位置の調整
 		D3DXVECTOR3 pos = GetPos();
-		pos.x = pos.x + cosf(fRotY)*-100;
-		pos.y = pos.y+10.0f;
-		pos.z = pos.z + sinf(fRotY) * 100;
-
+		pos.x = pos.x + cosf(fRotY)*-SCRATCH_SIZE;
+		pos.y = pos.y + SCRATCH_HEIGHT;
+		pos.z = pos.z + sinf(fRotY) * SCRATCH_SIZE;
 
 		// 弾の生成
-		CScratch::Create(pos, 0.0f, CScratch::SCRATCHUSER_PLAYER);
+		CScratch::Create(pos, fRotY, CScratch::SCRATCHUSER_PLAYER,m_nPlayerNum);
 	}
 }

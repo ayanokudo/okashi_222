@@ -37,15 +37,16 @@ public:
 	// 中心座標のセット、取得
 	void SetPos(const D3DXVECTOR3 pos);
 	D3DXVECTOR3 GetPos(void) { return m_pos; }
-	// 回転角度のセット、取得
-	void SetAngle(const float fAngle);
-	float GetAngle(void) { return m_fAngle; }
+
 	// サイズのセット、取得
 	void SetSize(const D3DXVECTOR3 size);
 	D3DXVECTOR3 GetSize(void) { return m_size; }
 	// カラーのセット、取得
 	void SetColor(const D3DXCOLOR col);
 	D3DXCOLOR GetColor(void) { return m_col; }
+	// ロットのセット、取得
+	void SetRot(const D3DXVECTOR3 rot);
+	D3DXVECTOR3 GetRot(void) { return m_rot; }
 
 	void SetTextureUV(const D3DXVECTOR2 uv[NUM_VERTEX]); // テクスチャのUV座標のセット
 
@@ -55,6 +56,7 @@ private:
 	LPDIRECT3DTEXTURE9		m_pTexture;	 // テクスチャへのポインタ
 	LPDIRECT3DVERTEXBUFFER9 m_pVtxBuff;	 // 頂点バッファへのポインタ
 	D3DXVECTOR3	m_pos;                   // ポリゴンの位置
+	D3DXVECTOR3	m_rot;                   // ポリゴンの角度
 	D3DXVECTOR3 m_size;                  // ポリゴンのサイズ
 	float m_fAngle;                      // ポリゴンの回転角度
 	D3DXCOLOR m_col;                     // 色

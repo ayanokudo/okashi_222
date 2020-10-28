@@ -16,6 +16,7 @@
 class CModel;
 class CPlayer;
 class CCursor;
+class CCollision;
 
 //*****************************************************************************
 // マクロ定義
@@ -46,12 +47,21 @@ public:
 
     void ChangeObject(void);
 
+    // オブジェクトの削除
+    void DeleteObject(void);
+
+    // オブジェクトのセッタ
     static void SetObject(D3DXVECTOR3 pos);
 
-    static CPlayer *GetPlayer(void) { return m_pPlayer; }  // プレイヤーの取得処理
+    // プレイヤーのゲッタ
+    static CPlayer *GetPlayer(void) { return m_pPlayer; }
+
+    // オブジェクトの情報のゲッタ
     static CModel *GetObjectData(int nNumObj) { return m_pModel[nNumObj]; }
 
+    // 位置情報のゲッタ
     D3DXVECTOR3 GetPos(void) { return m_pos; }
+
 private:
     // メンバ関数
     void Move(void);
@@ -63,6 +73,7 @@ private:
     static CPlayer*m_pPlayer;                      // プレイヤー
     static CCursor *m_pCursor;                     // カーソルへのポインタ
     static CModel  *m_pModel[MAX_OBJECT];          // シーン
+    CCollision *m_pCollision;                      // 当たり判定
 
      bool           m_bGridMode;                   //グリッドモードがどうか
      int            m_nCountInterval;              // 操作を受け付けるまでの間隔

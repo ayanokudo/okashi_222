@@ -129,10 +129,6 @@ void CGame::Uninit(void)
 //=============================
 void CGame::Update(void)
 {
-	if (CManager::GetKeyboard()->GetKeyTrigger(DIK_RETURN))
-	{
-		CManager::GetFade()->SetFade(CManager::MODE_RESULT);
-	}
 	if (m_pCamera != NULL)
 	{
 		m_pCamera->Update();

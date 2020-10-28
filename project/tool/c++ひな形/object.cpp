@@ -15,6 +15,7 @@
 #include "joypad.h"
 #include "cursor.h"
 #include "floor.h"
+#include "collision.h"
 
 //*****************************************************************************
 // マクロ定義
@@ -23,6 +24,7 @@
 #define GRID_MODE_MOVE   (GRID_SIZE * 2)      // グリッドモード時の移動量
 #define NORMAL_MODE_MOVE (10.0f)     // ノーマルモードの字の移動量
 #define INTERVAL         (10)                    //操作を受け付けるまでの間隔
+#define OBJECT_RADIUS    (50.0f)                // 選択範囲の半径
 
 //*****************************************************************************
 // 静的メンバ変数宣言
@@ -44,6 +46,7 @@ CObject::CObject()
     m_ObjctNum = 0;
     m_bGridMode = true;
     m_nCountInterval = INTERVAL;
+    m_pCollision = NULL;
 }
 
 //=============================================================================
@@ -93,6 +96,7 @@ HRESULT CObject::Init(void)
     // プレイヤーの生成
     m_pPlayer = CPlayer::Create(m_pos);
     m_pCursor = CCursor::Create(m_pos);
+    m_pCollision = CCollision::CreateSphere(m_pos, OBJECT_RADIUS);
     return S_OK;
 }
 
@@ -102,6 +106,12 @@ HRESULT CObject::Init(void)
 void CObject::Uninit(void)
 {
 
+    // コリジョンの終了処理
+    if (m_pCollision != NULL)
+    {
+        m_pCollision->Uninit();
+        m_pCollision = NULL;
+    }
 }
 
 //=============================================================================
@@ -137,6 +147,14 @@ void CObject::Update(void)
         m_bGridMode ^= true;
         GridTransform();
     }
+
+    // モード切替
+    if (CManager::GetKeyboard()->GetKeyTrigger(DIK_BACK))
+    {
+        DeleteObject();
+    }
+    // 当たり判定の位置更新
+    m_pCollision->SetPos(GetPos());
 }
 
 //=============================================================================
@@ -184,6 +202,26 @@ void CObject::ChangeObject(void)
 }
 
 //=============================================================================
+// [DeleteObject] オブジェクトの削除
+//=============================================================================
+void CObject::DeleteObject(void)
+{
+    // 配置したオブジェクトと当たっているか調べる
+    for (int nCount = 0; nCount < MAX_SCENE; nCount++)
+    {
+        CScene *pScene = CScene::GetScene(nCount);
+        if (pScene!=NULL)
+        {
+            if (CCollision::CollisionSphere(m_pCollision,((CModel*)pScene)->GetCollision()))
+            {
+                pScene->Uninit();
+                break;
+            }
+        }
+    }
+}
+
+//=============================================================================
 // [SetObject] オブジェクトの配置
 // Author : AYANO KUDO
 // 引数
@@ -196,7 +234,7 @@ void CObject::SetObject(D3DXVECTOR3 pos)
         {
             if (m_pModel[nCnt] == NULL)
             {
-                switch (m_Model % CPlayer::MODEL_MAX == 0)
+                switch (m_Model % CPlayer::MODEL_MAX)
                 {
                 case CPlayer::MODEL_PLAYER:
 

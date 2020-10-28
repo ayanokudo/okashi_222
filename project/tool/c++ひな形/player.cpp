@@ -164,7 +164,6 @@ void CPlayer::Draw(void)
     pDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
 }
 
-
 //******************************
 // ‘€ì‚ÌŠÇ—
 //******************************

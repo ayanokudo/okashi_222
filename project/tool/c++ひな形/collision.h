@@ -20,7 +20,7 @@
 //*****************************
 
 // 当たり判定クラス
-class CCollision : public CModel
+class CCollision
 {
 public:
 	typedef enum
@@ -39,12 +39,16 @@ public:
 	static bool CollisionSphereToBox(CCollision*pCollSphere, CCollision*pCollBox);
 	static float OnRange(float fPoint, float fMin, float fMax);
 
-	HRESULT Init(void);
+	HRESULT Init(D3DXVECTOR3 pos);
 	void Uninit(void);
 	void Update(void);
 	void Draw(void);
 	D3DXVECTOR3 GetCollisionSize(void) { return m_size; }
 	float GetCollisionRadius(void) { return m_fRadius; }
+
+    // 位置のセッタ/ゲッタ
+    void SetPos(D3DXVECTOR3 pos) { m_pos = pos; }
+    D3DXVECTOR3 GetPod(void) { return m_pos; }
 private:
 	void CreateMesh(void);
 
@@ -53,6 +57,7 @@ private:
 	LPD3DXBUFFER m_pBuffMatModel;	//マテリアル情報へのポインタ
 	DWORD m_nNumMatModel;	//マテリアル情報の数
 	COLLISIONTYPE m_type;  // コリジョンのタイプ
+    D3DXVECTOR3 m_pos;
 	float m_fRadius;
 	D3DXVECTOR3 m_size;
 };

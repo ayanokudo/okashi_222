@@ -31,7 +31,7 @@
 //******************************
 // コンストラクタ
 //******************************
-CCollision::CCollision():CModel(OBJTYPE_COLLISION)
+CCollision::CCollision()
 {
 	// 変数のクリア
 	m_pMeshModel = NULL;   	//メッシュ情報へのポインタ
@@ -60,11 +60,7 @@ CCollision * CCollision::CreateSphere(D3DXVECTOR3 pos,float fRadius)
 	pCollision->m_fRadius = fRadius;
 
 	// 初期化
-	pCollision->Init();
-	
-	// 各値の代入・セット
-	pCollision->SetPos(pos);
-	pCollision->SetObjType(OBJTYPE_COLLISION); // オブジェクトタイプ
+	pCollision->Init(pos);
 	
 	return pCollision;
 }
@@ -83,11 +79,7 @@ CCollision * CCollision::CreateBox(D3DXVECTOR3 pos, D3DXVECTOR3 size)
 	pCollision->m_size = size;
 
 	// 初期化
-	pCollision->Init();
-
-	// 各値の代入・セット
-	pCollision->SetPos(pos);
-	pCollision->SetObjType(OBJTYPE_COLLISION); // オブジェクトタイプ
+	pCollision->Init(pos);
 
 	return pCollision;
 }
@@ -97,11 +89,10 @@ CCollision * CCollision::CreateBox(D3DXVECTOR3 pos, D3DXVECTOR3 size)
 //******************************
 bool CCollision::CollisionSphere(CCollision * pCollision1, CCollision * pCollision2)
 {
-	if (pow(pCollision1->GetPos().x - pCollision2->GetPos().x, 2) + 
-		pow(pCollision1->GetPos().y - pCollision2->GetPos().y, 2) +
-		pow(pCollision1->GetPos().z - pCollision2->GetPos().z, 2) <= pow(pCollision1->m_fRadius + pCollision2->m_fRadius, 2))
+	if (pow(pCollision1->m_pos.x - pCollision2->m_pos.x, 2) + 
+		pow(pCollision1->m_pos.y - pCollision2->m_pos.y, 2) +
+		pow(pCollision1->m_pos.z - pCollision2->m_pos.z, 2) <= pow(pCollision1->m_fRadius + pCollision2->m_fRadius, 2))
 	{
-
 		return true;
 	}
 	else
@@ -124,9 +115,9 @@ bool CCollision::CollisionBox(CCollision * pCollision1, CCollision * pCollision2
 bool CCollision::CollisionSphereToBox(CCollision *pCollSphere, CCollision * pCollBox)
 {
 	// 球の座標
-	D3DXVECTOR3 spherePos = pCollSphere->GetPos();
+	D3DXVECTOR3 spherePos = pCollSphere->m_pos;
 	// BOXの座標
-	D3DXVECTOR3 boxPos = pCollBox->GetPos();
+	D3DXVECTOR3 boxPos = pCollBox->m_pos;
 	D3DXVECTOR3 boxSize = pCollBox->m_size;
 	
 	// ボックスから球のボックス内の最短距離の取得
@@ -172,15 +163,10 @@ float CCollision::OnRange(float fPoint, float fMin, float fMax)
 //******************************
 // 初期化処理
 //******************************
-HRESULT CCollision::Init(void)
+HRESULT CCollision::Init(D3DXVECTOR3 pos)
 {
-	if (FAILED(CModel::Init()))
-	{
-		return E_FAIL;
-	}
 	CreateMesh();
-	// テクスチャ割り当て
-	BindModel(m_pMeshModel, m_pBuffMatModel, 1);
+    m_pos = pos;
 
 	return S_OK;
 }
@@ -202,8 +188,6 @@ void CCollision::Uninit(void)
 		m_pBuffMatModel->Release();
 		m_pBuffMatModel = NULL;
 	}
-
-	CModel::Uninit();
 }
 
 //******************************
@@ -228,8 +212,8 @@ void CCollision::Draw(void)
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
 	// ワイヤーフレームで描画
 	pDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
-	//　描画
-	CModel::Draw();
+	////　描画
+	//CModel::Draw();
 	// ワイヤーフレームをもどす
 	pDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
 }

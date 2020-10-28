@@ -43,6 +43,7 @@ public:
 		OBJTYPE_FLOOR,      // 床
 		OBJTYPE_WALL,		// 壁
 		OBJTYPE_ATTACK,     // 攻撃
+		OBJTYPE_ANIMATION,  // アニメーション
 		OBJTYPE_COLLISION,  // コリジョン
 		OBJTYPE_MAX,        // タイプの最大数
 	}OBJTYPE;

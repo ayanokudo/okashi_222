@@ -104,6 +104,7 @@ void CCamera::Uninit(void)
 //******************************
 void CCamera::Update(void)
 {
+#if 0
 	CPlayer*pPlayer[MAX_PLAYER] = {};
 	D3DXVECTOR3 playerPos[MAX_PLAYER] = {};
 	for (int nCntPlayer = 0; nCntPlayer < MAX_PLAYER; nCntPlayer++)
@@ -137,6 +138,35 @@ void CCamera::Update(void)
 	// カメラ位置の設定
 	m_posV = m_posR + CAMERA_LOCAL_POS;
 	m_posV.y = CAMERA_LOCAL_POS.y + m_fViewExtent;
+
+#else
+	// DEBUG用カメラ
+	if (CManager::GetKeyboard()->GetKeyPress(DIK_NUMPAD7))
+	{
+		m_posV.x += 3;
+	}
+	if (CManager::GetKeyboard()->GetKeyPress(DIK_NUMPAD4))
+	{
+		m_posV.x -= 3;
+	}
+	if (CManager::GetKeyboard()->GetKeyPress(DIK_NUMPAD8))
+	{
+		m_posV.y += 3;
+	}
+	if (CManager::GetKeyboard()->GetKeyPress(DIK_NUMPAD5))
+	{
+		m_posV.y -= 3;
+	}
+	if (CManager::GetKeyboard()->GetKeyPress(DIK_NUMPAD9))
+	{
+		m_posV.z += 3;
+	}
+	if (CManager::GetKeyboard()->GetKeyPress(DIK_NUMPAD6))
+	{
+		m_posV.z -= 3;
+	}
+
+#endif
 }
 
 //******************************

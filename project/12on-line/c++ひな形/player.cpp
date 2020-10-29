@@ -210,6 +210,7 @@ HRESULT CPlayer::Init(void)
 	
 	m_pAnim[ANIM_WAIT]->SetActiveAnimation(true);
 
+	m_pCollision = CCollision::CreateSphere(GetPos(), PLAYER_RADIUS);
 	return S_OK;
 }
 

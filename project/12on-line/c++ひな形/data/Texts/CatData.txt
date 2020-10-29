@@ -15,7 +15,7 @@ NUM_MODEL = 12
 # モデルファイル名
 #------------------------------------------------------------------------------
 MODEL_FILENAME = data/Models/jouhanshin.x	# [0]上半身
-MODEL_FILENAME = data/Models/Cat_atama_test.x	# [1]頭
+MODEL_FILENAME = data/Models/atama.x		# [1]頭
 MODEL_FILENAME = data/Models/right_kata.x	# [2]右肩
 MODEL_FILENAME = data/Models/right_ashi.x	# [3]右手
 MODEL_FILENAME = data/Models/left_kata.x	# [4]左肩

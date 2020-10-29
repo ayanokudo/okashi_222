@@ -178,6 +178,7 @@ HRESULT CCollision::Init(void)
 	{
 		return E_FAIL;
 	}
+	// メッシュの生成
 	CreateMesh();
 	// テクスチャ割り当て
 	BindModel(m_pMeshModel, m_pBuffMatModel, 1);

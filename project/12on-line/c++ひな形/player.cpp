@@ -210,6 +210,7 @@ HRESULT CPlayer::Init(void)
 	
 	m_pAnim[ANIM_WAIT]->SetActiveAnimation(true);
 
+
 	return S_OK;
 }
 

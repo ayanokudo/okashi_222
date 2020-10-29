@@ -196,13 +196,6 @@ void CModelHierarchy::Draw(void)
 		}
 		//保持していたマテリアルを戻す
 		pDevice->SetMaterial(&matDef);
-
-		// 一番の親
-		if (m_model[nCntParts].nParent == -1)
-		{
-			/*m_model[nCntParts].pos = m_pos;
-			m_model[nCntParts].rot = m_rot;*/
-		}
 	}
 }
 

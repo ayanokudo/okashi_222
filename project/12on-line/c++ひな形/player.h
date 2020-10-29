@@ -54,15 +54,17 @@ public:
 	void Uninit(void);
 	void Update(void);
 	void Draw(void);
+
 	CCollision*GetCollision(void) { return m_pCollision; }
 	D3DXVECTOR3 GetMove(void) { return m_move; }
 	void GetMove(D3DXVECTOR3 move) { m_move = move; }
-
+	
 private:
 	void MoveKeyboard(void);
 	void MoveController(void);
 	void Direction(void);
 	void Attack(void);
+	void AnimationFalse(void);
 
 	// ÉÅÉìÉoïœêî
 	static CModel::Model m_model[MAX_PARTS_NUM];

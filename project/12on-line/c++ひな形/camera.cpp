@@ -20,7 +20,7 @@
 // マクロ定義
 //******************************
 #define CAMERA_DISTANCE 250    // カメラの距離
-#define CAMERA_LOCAL_POS D3DXVECTOR3(0.0f, 2000.0f, 1000.0f)
+#define CAMERA_LOCAL_POS D3DXVECTOR3(0.0f, 1500.0f, 1000.0f)
 
 //******************************
 // 静的メンバ変数宣言
@@ -81,7 +81,7 @@ void CCamera::Release(void)
 HRESULT CCamera::Init(void)
 {
 	// 初期化
-	m_posV = D3DXVECTOR3(1.0f, 500.0f, 100.0f);
+	m_posV = CAMERA_LOCAL_POS;
 	m_posR = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	m_vecU = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
 
@@ -104,7 +104,7 @@ void CCamera::Uninit(void)
 //******************************
 void CCamera::Update(void)
 {
-#if 0
+#if 1
 	CPlayer*pPlayer[MAX_PLAYER] = {};
 	D3DXVECTOR3 playerPos[MAX_PLAYER] = {};
 	for (int nCntPlayer = 0; nCntPlayer < MAX_PLAYER; nCntPlayer++)

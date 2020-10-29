@@ -49,6 +49,7 @@ public:
 
 private:
 	void CollisionPlayer(void);
+	void CollisionEnemy(void);
 	//メンバ変数
 	static LPDIRECT3DTEXTURE9 m_apTexture[WALL_MAX];//テクスチャ
 	WALL m_type;

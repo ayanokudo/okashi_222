@@ -14,6 +14,7 @@
 //*****************************
 #include "main.h"
 #include "model.h"
+#include "player.h"
 
 //*****************************
 // 前方宣言
@@ -30,32 +31,48 @@ class CEnemy : public CModel
 public:
 	typedef enum
 	{
-		ENEMY_CARRIER,		//お菓子運んでる敵
-		ENEMY_ESCORT,		//BOSS守ってる敵
-		ENEMY_RARE,			//レアキャラ
+		ENEMY_CARRIER = 0,		//お菓子運んでる敵
+		ENEMY_ESCORT,			//BOSS守ってる敵
 		ENEMY_MAX,
 	}ENEMY;
 
 	//メンバ関数
 	CEnemy();
 	~CEnemy();
-	static CEnemy *Create(D3DXVECTOR3 pos);
+	static CEnemy *Create(D3DXVECTOR3 pos, ENEMY type);
 	static HRESULT Load(void);
 	static void Unload(void);
 	HRESULT Init(void);
 	void Uninit(void);
 	void Update(void);
 	void Draw(void);
-
+	void Hit(int nDamage);
 	CCollision *GetCollision(void) { return m_pCollision; }
 private:
+	//各敵キャラの動きの処理
+	void RangeDecisionCarrier(void);
+	void RangeDecisionEscort(void);
+	void MotionCarrier(void);
+	void MotionEscort(void);
+	void Move(void);
+	void Direction(void);
+
 	// メンバ変数
-	static LPD3DXMESH m_pMeshModel;	//メッシュ情報へのポインタ
-	static LPD3DXBUFFER m_pBuffMatModel;	//マテリアル情報へのポインタ
-	static DWORD m_nNumMatModel;	//マテリアル情報の数
+	static LPD3DXMESH m_pMeshModel[ENEMY_MAX];	//メッシュ情報へのポインタ
+	static LPD3DXBUFFER m_pBuffMatModel[ENEMY_MAX];	//マテリアル情報へのポインタ
+	static DWORD m_nNumMatModel[ENEMY_MAX];	//マテリアル情報の数
 	static LPDIRECT3DTEXTURE9 m_apTexture[ENEMY_MAX]; // テクスチャ
 	D3DXVECTOR3 m_move;        // 移動量
+	D3DXVECTOR3 m_moveDest;
 	CCollision *m_pCollision;    // 当たり判定
+	CCollision *m_pRadiusColision;
+	ENEMY m_type;
+	int m_nLife;
+	bool m_bRd;
+	float m_fRotYDist;
+	int m_nCount;
+	int m_nCountMotion;
+	int m_nCountRand;
 };
 
 #endif

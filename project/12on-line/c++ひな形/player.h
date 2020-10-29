@@ -29,6 +29,7 @@ class CPlayer : public CModel
 {
 public:
 
+
 	//メンバ関数
 	CPlayer();
 	~CPlayer();
@@ -58,6 +59,7 @@ private:
 	float m_fRotYDist;         // プレイヤーの向いている向きの目標値
 	int m_nPlayerNum;          // プレイヤー番号
 	CCollision*m_pCollision;    // コリジョンクラスのポインタ
+	int m_nLife;				// プレイヤーのライフ
 };
 
 #endif

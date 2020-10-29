@@ -13,6 +13,7 @@
 #include "collision.h"
 #include "game.h"
 #include "player.h"
+#include "enemy.h"
 //*****************************
 // マクロ定義
 //*****************************
@@ -126,6 +127,7 @@ void CWall::Uninit(void)
 void CWall::Update(void)
 {
 	CollisionPlayer();
+	CollisionEnemy();
 }
 
 //==================================
@@ -171,4 +173,41 @@ void CWall::CollisionPlayer(void)
 			}
 		}
 	}
+}
+
+//==================================
+// エネミーと壁の当たり判定
+//==================================
+void CWall::CollisionEnemy(void)
+{
+
+	CEnemy*pEnemy = (CEnemy*)CScene::GetTop(OBJTYPE_ENEMY);
+	while (pEnemy != NULL)
+	{
+		if (CCollision::CollisionSphereToBox(pEnemy->GetCollision(), m_pCollision))
+		{
+			// プレイヤー座標の取得
+			D3DXVECTOR3 playerPos = pEnemy->GetPos();
+			// 当たり判定のサイズの取得
+			D3DXVECTOR3 collsionSize = m_pCollision->GetCollisionSize();
+
+			// ボックス内の最短地点の検索
+			D3DXVECTOR3 shortrectPos;
+			shortrectPos.x = CCollision::OnRange(playerPos.x, GetPos().x - collsionSize.x / 2, GetPos().x + collsionSize.x / 2);
+			shortrectPos.y = CCollision::OnRange(playerPos.y, GetPos().y - collsionSize.y / 2, GetPos().y + collsionSize.y / 2);
+			shortrectPos.z = CCollision::OnRange(playerPos.z, GetPos().z - collsionSize.z / 2, GetPos().z + collsionSize.z / 2);
+			// ボックスからプレイヤーの方向ベクトル
+			playerPos = playerPos - shortrectPos;
+			// 正規化
+			D3DXVec3Normalize(&playerPos, &playerPos);
+			// 最短地点から当たり判定の半径分離す
+			playerPos = shortrectPos + playerPos * pEnemy->GetCollision()->GetCollisionRadius();
+			// プレイヤー座標のセット
+			pEnemy->SetPos(playerPos);
+			// プレイヤーのコリジョンの座標のセット
+			pEnemy->GetCollision()->SetPos(playerPos);
+		}
+		pEnemy = (CEnemy*)pEnemy->GetNext();
+	}
+
 }

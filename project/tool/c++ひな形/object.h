@@ -51,7 +51,7 @@ public:
     void DeleteObject(void);
 
     // オブジェクトのセッタ
-    static void SetObject(D3DXVECTOR3 pos);
+    static void SetObject(D3DXVECTOR3 pos, CModel::OBJTYPE type);
 
     // プレイヤーのゲッタ
     static CPlayer *GetPlayer(void) { return m_pPlayer; }
@@ -67,7 +67,7 @@ private:
     void Move(void);
 
     // メンバ変数
-    static CPlayer::MODEL m_Model;                        // 現在選択中のモデル
+    static CModel::OBJTYPE m_type;                // 現在選択中のモデルの種類
     D3DXVECTOR3 m_pos;                             // オブジェクトの位置
     static int      m_ObjctNum;                    // オブジェクトの数
     static CPlayer*m_pPlayer;                      // プレイヤー

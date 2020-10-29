@@ -82,7 +82,7 @@ HRESULT CGame::Init(void)
 	m_pCamera = CCamera::Create();
 
     // ステージの生成
-    CStage::Create({ 0.0f,-1.0f,0.0f });
+    CStage::Create({ 0.0f,0.0f,0.0f });
 
     // オブジェクトの生成
     m_pObject = CObject::Create({ 0.0f,0.0f,0.0f });

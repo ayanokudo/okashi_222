@@ -45,7 +45,6 @@ CStage * CStage::Create(D3DXVECTOR3 pos)
     if (!pObject)
     {
         pObject = new CStage;
-        pObject->Init();
         // ‰Šú‰»
         pObject->Init();
         pObject->SetPos(pos);

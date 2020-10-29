@@ -40,6 +40,7 @@ void CFile::Read(void)
     char aDie[READ_BUFFER];             // 不必要な文字を読み込む
     FILE *pFile = fopen(FILE_NAME, "r");
     D3DXVECTOR3 pos;                // 読み込んだ位置
+    CModel::OBJTYPE type;
 
     if (pFile)
     {// ファイル読み込み
@@ -68,9 +69,13 @@ void CFile::Read(void)
                         if (strcmp(aHead, "POS") == 0)
                         {
                             sscanf(aRead, "%s %f %f %f", &aDie, &pos.x, &pos.y, &pos.z);//位置を格納
-                            CObject::SetObject(pos);
+                        }
+                        if (strcmp(aHead, "TYPE") == 0)
+                        {
+                            sscanf(aRead, "%s %d", &aDie, &type);//位置を格納
                         }
                     }
+                    CObject::SetObject(pos, type);
                 }
             }
         }
@@ -100,6 +105,7 @@ void CFile::Writing(void)
                 D3DXVECTOR3 pos = pScene->GetPos();
                 fprintf(pFile, "\tOBJ_SET\n");
                 fprintf(pFile, "\t\t POS %.1f %.1f %.1f \n", pos.x,pos.y,pos.z);
+                fprintf(pFile, "\t\t TYPE %d \n", pScene->GetType());
                 fprintf(pFile, "\tEND_OBJ_SET\n");
                 fprintf(pFile, "\n");
             }

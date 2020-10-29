@@ -29,7 +29,7 @@
 //*****************************************************************************
 // 静的メンバ変数宣言
 //*****************************************************************************
-CPlayer::MODEL CObject::m_Model=CPlayer::MODEL_PLAYER;
+CModel::OBJTYPE CObject::m_type= CModel::OBJTYPE_PLAYER;
 int CObject::m_ObjctNum = 0;
 CModel *CObject::m_pModel[MAX_OBJECT] = {};
 CPlayer *CObject::m_pPlayer = NULL;
@@ -41,7 +41,7 @@ CCursor *CObject::m_pCursor = NULL;                     // カーソルへのポインタ
 //=============================================================================
 CObject::CObject()
 {
-    m_Model = CPlayer::MODEL_PLAYER;
+    m_type = CModel::OBJTYPE_PLAYER;
     m_pos = { GRID_SIZE,0.0f,GRID_SIZE };
     m_ObjctNum = 0;
     m_bGridMode = true;
@@ -132,7 +132,9 @@ void CObject::Update(void)
     // オブジェクトの配置
     if (CManager::GetKeyboard()->GetKeyTrigger(DIK_SPACE))
     {
-        SetObject(CObject::GetPlayer()->GetPos());
+        int nModel = m_type;
+        CModel::OBJTYPE Model = (CModel::OBJTYPE)nModel;
+        SetObject(CObject::GetPlayer()->GetPos(), Model);
     }
 
     // ファイル書き込み
@@ -179,7 +181,7 @@ void CObject::GridTransform(void)
 //=============================================================================
 void CObject::ChangeObject(void)
 {
-    int nModel = m_Model;
+    int nModel = m_type;
     if (CManager::GetKeyboard()->GetKeyTrigger(DIK_1))
     {
         nModel -=  1;
@@ -189,16 +191,16 @@ void CObject::ChangeObject(void)
         nModel += 1;
     }
     // 最大値以上/最小値以下になったらループ
-    if (nModel > CPlayer::MODEL_MAX)
+    if (nModel > CModel::OBJTYPE_ENEMY)
     {
-        nModel = CPlayer::MODEL_PLAYER;
+        nModel = CModel::OBJTYPE_PLAYER;
     }
     if (nModel < CPlayer::MODEL_PLAYER)
     {
-        nModel = CPlayer::MODEL_MAX;
+        nModel = CModel::OBJTYPE_ENEMY;
     }
 
-    m_Model = (CPlayer::MODEL)nModel;
+    m_type = (CModel::OBJTYPE)nModel;
 }
 
 //=============================================================================
@@ -207,16 +209,28 @@ void CObject::ChangeObject(void)
 void CObject::DeleteObject(void)
 {
     // 配置したオブジェクトと当たっているか調べる
-    for (int nCount = 0; nCount < MAX_SCENE; nCount++)
+    for (int nCount = 0; nCount < PRIORITY_NUM; nCount++)
     {
-        CScene *pScene = CScene::GetScene(nCount);
-        if (pScene!=NULL)
+        // 先頭のアドレスを取得
+        CScene *pScene = CScene::GetTop(nCount);
+        while (pScene != NULL)
         {
-            if (CCollision::CollisionSphere(m_pCollision,((CModel*)pScene)->GetCollision()))
+            // 次のアドレスを保存
+            CScene *pNext = pScene->GetNext();
+
+            if (pScene !=m_pPlayer&&
+                pScene->GetType() == OBJTYPE_PLAYER ||
+                pScene->GetType() == OBJTYPE_ENEMY)
             {
-                pScene->Uninit();
-                break;
+                if (CCollision::CollisionSphere(m_pCollision, ((CModel*)pScene)->GetCollision()))
+                {
+                    pScene->Uninit();
+                    pScene = NULL;
+                    return;
+                }
             }
+            // 次のアドレスを取得
+            pScene = pNext;
         }
     }
 }
@@ -227,21 +241,21 @@ void CObject::DeleteObject(void)
 // 引数
 //pos : 位置
 //=============================================================================
-void CObject::SetObject(D3DXVECTOR3 pos)
+void CObject::SetObject(D3DXVECTOR3 pos ,CModel::OBJTYPE type)
 {
         // 現在の位置にオブジェクトの配置をする
         for (int nCnt = 0; nCnt < MAX_OBJECT; nCnt++)
         {
             if (m_pModel[nCnt] == NULL)
             {
-                switch (m_Model % CPlayer::MODEL_MAX)
+                switch (type)
                 {
-                case CPlayer::MODEL_PLAYER:
+                case CModel::OBJTYPE_PLAYER:
 
                     m_pModel[nCnt] = CPlayer::Create(pos);
                     break;
 
-                case CPlayer::MODEL_ENEMY:
+                case CModel::OBJTYPE_ENEMY:
                     m_pModel[nCnt] = CEnemy::Create(pos);
                     break;
                 }

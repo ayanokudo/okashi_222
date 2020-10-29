@@ -87,7 +87,7 @@ void CDebug::Print(int nX, int nY, D3DCOLOR color, const char* pFormat, ...)
     va_end(apList);
 
     // テキスト描画
-    m_pFont->DrawText(NULL, temp, -1, &rect, DT_LEFT, D3DCOLOR_ARGB(0xff, 0xff, 0x00, 0x00));
+    m_pFont->DrawText(NULL, temp, -1, &rect, DT_LEFT, D3DCOLOR_ARGB(0xff, 0x00, 0xff, 0xff));
 }
 
 //=============================================================================

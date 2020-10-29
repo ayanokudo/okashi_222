@@ -41,6 +41,7 @@ DWORD        CPlayer::m_nNumMatModel[CPlayer::MODEL_MAX] = {};	    //É}ÉeÉäÉAÉãè
 CPlayer::CPlayer() : CModel(OBJTYPE_PLAYER)
 {
 	m_move = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+
 }
 
 //******************************
@@ -63,7 +64,7 @@ CPlayer * CPlayer::Create(D3DXVECTOR3 pos)
 	pPlayer->Init();
 	pPlayer->SetPos(pos);
 	// äeílÇÃë„ì¸ÅEÉZÉbÉg
-	pPlayer->SetObjType(OBJTYPE_MAP); // ÉIÉuÉWÉFÉNÉgÉ^ÉCÉv
+	pPlayer->SetObjType(OBJTYPE_PLAYER); // ÉIÉuÉWÉFÉNÉgÉ^ÉCÉv
 
 	return pPlayer;
 }
@@ -144,6 +145,7 @@ void CPlayer::Uninit(void)
 //******************************
 void CPlayer::Update(void)
 {
+    CModel::Update();
 	D3DXVECTOR3 rot = GetRot();
 	
 	SetRot(rot);

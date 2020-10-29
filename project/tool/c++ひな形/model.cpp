@@ -17,7 +17,7 @@
 //=============================================================================
 //モデルクラスのコンストラクタ
 //=============================================================================
-CModel::CModel(OBJTYPE type)
+CModel::CModel(int nPriority) :CScene(nPriority)
 {
 	// 変数のクリア
 	m_pBuffMatModel = NULL;
@@ -25,7 +25,6 @@ CModel::CModel(OBJTYPE type)
 	m_nNumMatModel = 0;
 	m_pos = {0.0f,0.0f,0.0f};
 	m_rot = {0.0f,0.0f,0.0f};
-    SetObjType(type);
     m_pCollision = NULL;
 }
 
@@ -70,7 +69,7 @@ HRESULT CModel::Init()
 {
 	//向きの初期化
 	m_rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-    m_pCollision = CCollision::CreateSphere(GetPos(), MODEL_RADIUS);
+    m_pCollision = CCollision::CreateSphere(m_pos, MODEL_RADIUS);
 	return S_OK;
 }
 

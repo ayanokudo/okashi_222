@@ -104,7 +104,7 @@ void CCamera::Uninit(void)
 //******************************
 void CCamera::Update(void)
 {
-#if 1
+#if 0
 	CPlayer*pPlayer[MAX_PLAYER] = {};
 	D3DXVECTOR3 playerPos[MAX_PLAYER] = {};
 	for (int nCntPlayer = 0; nCntPlayer < MAX_PLAYER; nCntPlayer++)

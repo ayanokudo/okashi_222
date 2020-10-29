@@ -29,7 +29,7 @@ CAnimation::CAnimation() :CScene(OBJTYPE_ANIMATION)
 	m_nNumKey = 0;                            // キーフレームの数 
 	m_nNumParts = 0;                          // パーツ数
 	m_bAnim = false;                          // アニメーションしているか
-	bLoop = false;                            // ループするか
+	m_bLoop = false;                            // ループするか
 	m_nCntKey = 0;                            // キーカウント
 	m_nCntFrame = 0;                          // フレームカウント
 	memset(&m_pos, 0, sizeof(m_pos));         // 座標
@@ -98,34 +98,37 @@ void CAnimation::Uninit(void)
 //******************************
 void CAnimation::Update(void)
 {
-	// フレームカウントを進める
-	m_nCntFrame++;
-	if (m_nCntFrame%m_nNumFrame[m_nCntKey] == 0)
+	if (m_bAnim)
 	{
-		// キーカウントを進める
-		m_nCntKey++;
-		m_nCntKey %= m_nNumKey;
-		// 加算値の更新
+		// フレームカウントを進める
+		m_nCntFrame++;
+		if (m_nCntFrame%m_nNumFrame[m_nCntKey] == 0)
+		{
+			// キーカウントを進める
+			m_nCntKey++;
+			m_nCntKey %= m_nNumKey;
+			// 加算値の更新
+			for (int nCntParts = 0; nCntParts < m_nNumParts; nCntParts++)
+			{
+				if (m_nCntKey == 0)
+				{// 一番最初のフレーム
+					m_addPos[nCntParts] = (m_pos[m_nCntKey][nCntParts] - m_pos[m_nNumKey - 1][nCntParts]) / m_nNumFrame[m_nCntKey];
+					m_addRot[nCntParts] = (m_rot[m_nCntKey][nCntParts] - m_rot[m_nNumKey - 1][nCntParts]) / m_nNumFrame[m_nCntKey];
+				}
+				else
+				{
+					m_addPos[nCntParts] = (m_pos[m_nCntKey][nCntParts] - m_pos[m_nCntKey - 1][nCntParts]) / m_nNumFrame[m_nCntKey];
+					m_addRot[nCntParts] = (m_rot[m_nCntKey][nCntParts] - m_rot[m_nCntKey - 1][nCntParts]) / m_nNumFrame[m_nCntKey];
+				}
+
+			}
+		}
+
 		for (int nCntParts = 0; nCntParts < m_nNumParts; nCntParts++)
 		{
-			if (m_nCntKey == 0)
-			{// 一番最初のフレーム
-				m_addPos[nCntParts] = (m_pos[m_nCntKey][nCntParts] - m_pos[m_nNumKey - 1][nCntParts]) / m_nNumFrame[m_nCntKey];
-				m_addRot[nCntParts] = (m_rot[m_nCntKey][nCntParts] - m_rot[m_nNumKey - 1][nCntParts]) / m_nNumFrame[m_nCntKey];
-			}
-			else
-			{
-				m_addPos[nCntParts] = (m_pos[m_nCntKey][nCntParts] - m_pos[m_nCntKey - 1][nCntParts]) / m_nNumFrame[m_nCntKey];
-				m_addRot[nCntParts] = (m_rot[m_nCntKey][nCntParts] - m_rot[m_nCntKey - 1][nCntParts]) / m_nNumFrame[m_nCntKey];
-			}
-			
+			m_pModel[nCntParts].pos += m_addPos[nCntParts];
+			m_pModel[nCntParts].rot += m_addRot[nCntParts];
 		}
-	}
-
-	for (int nCntParts = 0; nCntParts < m_nNumParts; nCntParts++)
-	{
-		m_pModel[nCntParts].pos += m_addPos[nCntParts];
-		m_pModel[nCntParts].rot += m_addRot[nCntParts];
 	}
 }
 

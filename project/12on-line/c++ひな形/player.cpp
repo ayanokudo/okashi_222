@@ -23,9 +23,14 @@
 //*****************************
 // マクロ定義
 //*****************************
-#define MODEL_PATH      "data/Models/cat_sakamoto.x"    //モデルのパス
-#define MODEL_TEST_PATH "data/Texts/CatData.txt"    //モデルのパス
-#define WALK_ANIM_PATH  "data/Texts/WalkAnim.txt"      // 歩きアニメーションのパス
+#define MODEL_PATH      "data/Models/cat_sakamoto.x"          //モデルのパス
+#define MODEL_TEST_PATH "data/Texts/CatData.txt"              //モデルのパス
+
+#define WAIT_ANIM_PATH  "data/Texts/NekoMotion/Wait.txt"      // 待機アニメーションのパス
+#define WALK_ANIM_PATH  "data/Texts/NekoMotion/Walk.txt"      // 歩きアニメーションのパス
+#define VOICE_ANIM_PATH "data/Texts/NekoMotion/Voice.txt"     // 鳴き声アニメーションのパス
+#define PUNCH_ANIM_PATH "data/Texts/NekoMotion/Punch.txt"     // パンチアニメーションのパス
+#define DASH_ANIM_PATH  "data/Texts/NekoMotion/Dash.txt"      // 走りアニメーションのパス
 
 #define PLAYER_SPEED 10                          // 移動スピード
 #define PLAYER_MOVE_RATE 0.05f                   // 移動の慣性の係数
@@ -37,7 +42,14 @@
 //*****************************
 CModel::Model CPlayer::m_model[MAX_PARTS_NUM] = {};
 int CPlayer::m_nNumModel = 0;
-
+char CPlayer::m_chAnimPath[ANIM_MAX][64]
+{
+	{ WAIT_ANIM_PATH },    // 待機アニメーション
+	{ WALK_ANIM_PATH },	   // 歩きアニメーション
+	{ VOICE_ANIM_PATH },   // 鳴き声アニメーション
+	{ PUNCH_ANIM_PATH },   // パンチアニメーション
+	{ DASH_ANIM_PATH }	   // 走りアニメーション
+};
 //******************************
 // コンストラクタ
 //******************************
@@ -179,7 +191,12 @@ HRESULT CPlayer::Init(void)
 	// サイズの調整
 	SetSize(D3DXVECTOR3(1.5f, 1.5f, 1.5f));
 	// アニメーションの生成
-	m_pWalkAnim = CAnimation::Create(GetPartsNum(), WALK_ANIM_PATH, &m_model[0]);
+	for (int nCntAnim = 0; nCntAnim < ANIM_MAX; nCntAnim++)
+	{
+		m_pAnim[nCntAnim]= CAnimation::Create(GetPartsNum(), m_chAnimPath[nCntAnim], &m_model[0]);
+	}
+	//m_pWalkAnim = CAnimation::Create(GetPartsNum(), WALK_ANIM_PATH, &m_model[0]);
+
 	return S_OK;
 }
 

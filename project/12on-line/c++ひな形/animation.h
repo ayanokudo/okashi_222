@@ -44,6 +44,7 @@ public:
 	void Draw(void);
 	void SetModel(CModel::Model*pModel) { m_pModel = pModel; }
 	void SetActiveAnimation(bool bActive);
+	bool GetActiveAnimation(void) { return m_bLoop; }
 private:
 	void Load(const char *pPath);
 	// メンバ変数
@@ -52,13 +53,13 @@ private:
 	D3DXVECTOR3 m_rot[MAX_KEYFRAME][MAX_PARTS_NUM];// 回転
 	D3DXVECTOR3 m_addPos[MAX_PARTS_NUM];     // 座標の加算値
 	D3DXVECTOR3 m_addRot[MAX_PARTS_NUM];     // 回転の加算値
-	int m_nNumKey;          // キーフレームの数
-	int m_nNumParts;          // パーツ数
-	int m_nNumFrame[MAX_KEYFRAME];        // フレーム数
-	int m_nCntKey;              // キーカウント
-	int m_nCntFrame;            // フレームカウント
-	bool m_bAnim;           // アニメーションしているか
-	bool bLoop;             // ループするか
+	int m_nNumKey;                 // キーフレームの数
+	int m_nNumParts;               // パーツ数
+	int m_nNumFrame[MAX_KEYFRAME]; // フレーム数
+	int m_nCntKey;                 // キーカウント
+	int m_nCntFrame;               // フレームカウント
+	bool m_bAnim;                  // アニメーションしているか
+	bool m_bLoop;                  // ループするか
 };
 
 #endif

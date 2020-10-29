@@ -109,6 +109,10 @@
     <ClCompile Include="time.cpp">
       <Filter>ソースファイル</Filter>
     </ClCompile>
+    <ClCompile Include="model_hierarchy.cpp">
+      <Filter>ソースファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="animation.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bg.h">
@@ -219,6 +223,8 @@
     <ClInclude Include="time.h">
       <Filter>ヘッダーファイル</Filter>
     </ClInclude>
+    <ClInclude Include="model_hierarchy.h" />
+    <ClInclude Include="animation.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ヘッダーファイル">

@@ -43,6 +43,7 @@ public:
 		ANIM_MAX
 	}ANIMATION;
 
+
 	//メンバ関数
 	CPlayer();
 	~CPlayer();
@@ -76,6 +77,7 @@ private:
 	CCollision*m_pCollision;      // コリジョンクラスのポインタ
 	CAnimation*m_pWalkAnim;       // 歩きアニメーション
 	CAnimation*m_pAnim[ANIM_MAX]; // アニメーションポインタ
+	int m_nLife;				// プレイヤーのライフ
 };
 
 #endif

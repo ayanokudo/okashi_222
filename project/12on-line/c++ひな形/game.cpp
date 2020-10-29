@@ -89,7 +89,7 @@ HRESULT CGame::Init(void)
 	}
 	
 	// エネミーの生成
-	m_pEnemy = CEnemy::Create(D3DXVECTOR3(0.0f, 0.0f, -800.0f));
+	m_pEnemy = CEnemy::Create(D3DXVECTOR3(0.0f, 0.0f, -800.0f), CEnemy::ENEMY_ESCORT);
 	// アイテムの生成
 	m_pItem = CItem::Create(D3DXVECTOR3(200.0f, 0.0f, -800.0f));
 	// スコアの生成
@@ -98,9 +98,23 @@ HRESULT CGame::Init(void)
 	m_pTime = CTime::Create();
 	// 床の生成
 	CFloor::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(1000.0f, 0.0f, 1000.0f), CFloor::FLOOR_FLOORING);
+	CFloor::Create(D3DXVECTOR3(0.0f, 0.0f, 2000.0f), D3DXVECTOR3(1000.0f, 0.0f, 1000.0f), CFloor::FLOOR_FLOORING);
+	CFloor::Create(D3DXVECTOR3(0.0f, 0.0f, -2000.0f), D3DXVECTOR3(1000.0f, 0.0f, 1000.0f), CFloor::FLOOR_FLOORING);
+	CFloor::Create(D3DXVECTOR3(-2000.0f, 0.0f, 2000.0f), D3DXVECTOR3(1000.0f, 0.0f, 1000.0f), CFloor::FLOOR_FLOORING);
+	CFloor::Create(D3DXVECTOR3(2000.0f, 0.0f, -2000.0f), D3DXVECTOR3(1000.0f, 0.0f, 1000.0f), CFloor::FLOOR_FLOORING);
+	CFloor::Create(D3DXVECTOR3(-2000.0f, 0.0f, -2000.0f), D3DXVECTOR3(1000.0f, 0.0f, 1000.0f), CFloor::FLOOR_FLOORING);
+	CFloor::Create(D3DXVECTOR3(2000.0f, 0.0f, 2000.0f), D3DXVECTOR3(1000.0f, 0.0f, 1000.0f), CFloor::FLOOR_FLOORING);
+	CFloor::Create(D3DXVECTOR3(-2000.0f, 0.0f, 0.0f), D3DXVECTOR3(1000.0f, 0.0f, 1000.0f), CFloor::FLOOR_FLOORING);
+	CFloor::Create(D3DXVECTOR3(2000.0f, 0.0f, 0.0f), D3DXVECTOR3(1000.0f, 0.0f, 1000.0f), CFloor::FLOOR_FLOORING);
+
 	// 壁の生成
-	CWall::Create(D3DXVECTOR3(0.0f, 0.0f, 1000.0f), D3DXVECTOR3(1000.0f, 1000.0f, 0.0f), CWall::WALL_1);
-	CWall::Create(D3DXVECTOR3(0.0f, 0.0f, -1000.0f), D3DXVECTOR3(1000.0f, 1000.0f, 0.0f), CWall::WALL_1);
+	CWall::Create(D3DXVECTOR3(0.0f, 0.0f, 3000.0f), D3DXVECTOR3(1000.0f, 1000.0f, 0.0f), CWall::WALL_1);
+	CWall::Create(D3DXVECTOR3(0.0f, 0.0f, -3000.0f), D3DXVECTOR3(1000.0f, 1000.0f, 0.0f), CWall::WALL_1);
+	CWall::Create(D3DXVECTOR3(2000.0f, 0.0f, 3000.0f), D3DXVECTOR3(1000.0f, 1000.0f, 0.0f), CWall::WALL_1);
+	CWall::Create(D3DXVECTOR3(2000.0f, 0.0f, -3000.0f), D3DXVECTOR3(1000.0f, 1000.0f, 0.0f), CWall::WALL_1);
+	CWall::Create(D3DXVECTOR3(-2000.0f, 0.0f, 3000.0f), D3DXVECTOR3(1000.0f, 1000.0f, 0.0f), CWall::WALL_1);
+	CWall::Create(D3DXVECTOR3(-2000.0f, 0.0f, -3000.0f), D3DXVECTOR3(1000.0f, 1000.0f, 0.0f), CWall::WALL_1);
+
 	// ポーズの初期化
 	CManager::SetActivePause(false);
 	return S_OK;

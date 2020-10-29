@@ -23,7 +23,8 @@
 // マクロ定義
 //*****************************
 #define BULLET_TEXTURE_PATH "./data/Textures/" //テクスチャのパス
-
+#define ENEMY_ESCOAT_DAMAGE 12					//攻撃ネズミの攻撃力
+#define PLAYER_BULLET_DAMAGE 50					//プレイヤーの攻撃力
 //******************************
 // 静的メンバ変数宣言
 //******************************
@@ -185,7 +186,7 @@ void CBullet::CollisionBullet(BULLETUSER user)
 
 			if (CCollision::CollisionSphere(m_pCollision, pEnemy->GetCollision()))
 			{
-				pEnemy->Uninit();
+				pEnemy->Hit(PLAYER_BULLET_DAMAGE);
 				Uninit();
 				break;
 			}

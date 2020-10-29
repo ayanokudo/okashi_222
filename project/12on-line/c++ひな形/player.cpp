@@ -182,8 +182,6 @@ HRESULT CPlayer::Init(void)
 		return E_FAIL;
 	}
 
-	// テクスチャ割り当て
-	//BindModel(m_pMeshModel, m_pBuffMatModel, m_nNumMatModel);
 
 	// 当たり判定の生成
 	m_pCollision = CCollision::CreateSphere(GetPos(), PLAYER_RADIUS);
@@ -195,7 +193,8 @@ HRESULT CPlayer::Init(void)
 	{
 		m_pAnim[nCntAnim]= CAnimation::Create(GetPartsNum(), m_chAnimPath[nCntAnim], &m_model[0]);
 	}
-	//m_pWalkAnim = CAnimation::Create(GetPartsNum(), WALK_ANIM_PATH, &m_model[0]);
+	
+	m_pAnim[ANIM_WAIT]->SetActiveAnimation(true);
 
 	return S_OK;
 }
@@ -448,5 +447,17 @@ void CPlayer::Attack(void)
 
 		// 弾の生成
 		CScratch::Create(pos, fRotY, CScratch::SCRATCHUSER_PLAYER,m_nPlayerNum);
+	}
+}
+
+//******************************
+// アニメーションをすべてfalseにする
+//******************************
+void CPlayer::AnimationFalse(void)
+{
+	// アニメーションをすべてfalseにする
+	for (int nCntAnim = 0; nCntAnim < ANIM_MAX; nCntAnim++)
+	{
+		m_pAnim[nCntAnim]->SetActiveAnimation(false);
 	}
 }

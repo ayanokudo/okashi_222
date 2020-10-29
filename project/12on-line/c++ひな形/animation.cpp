@@ -107,6 +107,12 @@ void CAnimation::Update(void)
 			// キーカウントを進める
 			m_nCntKey++;
 			m_nCntKey %= m_nNumKey;
+			if (m_nCntKey == 0&&!m_bLoop)
+			{// 一周終えてループしないとき
+				// アニメーションの終了
+				m_bAnim = false; 
+				return;
+			}
 			// 加算値の更新
 			for (int nCntParts = 0; nCntParts < m_nNumParts; nCntParts++)
 			{
@@ -185,11 +191,11 @@ void CAnimation::Load(const char * pPath)
 		// ループの判定
 		if (nLoop == 1)
 		{
-			m_bAnim = true;
+			m_bLoop = true;
 		}
 		else
 		{
-			m_bAnim = false;
+			m_bLoop = false;
 		}
 
 		// "NUM_KEY"読み込むまでループ

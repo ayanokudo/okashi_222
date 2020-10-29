@@ -15,6 +15,7 @@
 #include "game.h"
 #include "player.h"
 #include "debug_log.h"
+#include "mouse.h"
 
 //******************************
 // マクロ定義
@@ -38,10 +39,12 @@ CCamera::CCamera()
 	m_vecU = { 0.0f,0.0f,0.0f };
 	D3DXMatrixIdentity(&m_mtxProjection);
 	D3DXMatrixIdentity(&m_mtxView);
-	m_fRad = 0.0f;
-	m_fTheta = 0.0f;
-	m_fPhi = 0.0f;
-	m_fViewExtent = 1.0f;
+	m_fViewExtent = 0.0f;
+#ifdef _DEBUG
+	m_fRad = CAMERA_DISTANCE;
+	m_fTheta = D3DXToRadian(-90);
+	m_fPhi = D3DXToRadian(-70);
+#endif
 }
 
 //******************************
@@ -104,7 +107,27 @@ void CCamera::Uninit(void)
 //******************************
 void CCamera::Update(void)
 {
-#if 0
+#ifdef _DEBUG
+	m_fPhi -= CManager::GetMouse()->GetMouseMove().y / 100.0f;
+	m_fTheta -= CManager::GetMouse()->GetMouseMove().x / 100.0f;
+	// 注視点をプレイヤーにする
+	m_posR = CGame::GetPlayer(0)->GetPos();
+	// 球面座標の設定
+	m_posV.x = m_posR.x + (m_fRad)* sinf(-m_fPhi)*cosf(m_fTheta);
+	m_posV.y = m_posR.y + (m_fRad)* cosf(-m_fPhi);
+	m_posV.z = m_posR.z + (m_fRad)* sinf(-m_fPhi)*sinf(m_fTheta);
+
+	if (CManager::GetKeyboard()->GetKeyPress(DIK_UP))
+	{
+		m_fRad += 2.0f;
+	}
+	if (CManager::GetKeyboard()->GetKeyPress(DIK_DOWN))
+	{
+		m_fRad -= 2.0f;
+	}
+
+#else
+
 	CPlayer*pPlayer[MAX_PLAYER] = {};
 	D3DXVECTOR3 playerPos[MAX_PLAYER] = {};
 	for (int nCntPlayer = 0; nCntPlayer < MAX_PLAYER; nCntPlayer++)
@@ -120,10 +143,10 @@ void CCamera::Update(void)
 	float fDistance = sqrtf(powf(playerPos[0].x - playerPos[1].x, 2) + powf(playerPos[0].z - playerPos[1].z, 2));
 	// プレイヤー同士の位置の角度
 	float fAngle = atan2f(playerPos[1].z - playerPos[0].z, playerPos[1].x - playerPos[0].x);
-	
+
 	if (fDistance >= 3000)
 	{
-		playerPos[1].x= playerPos[0].x + cosf(fAngle)*(3000);
+		playerPos[1].x = playerPos[0].x + cosf(fAngle)*(3000);
 		playerPos[1].z = playerPos[0].z + sinf(fAngle)*(3000);
 		pPlayer[1]->SetPos(playerPos[1]);
 	}
@@ -133,38 +156,11 @@ void CCamera::Update(void)
 	m_posR.z = playerPos[0].z + sinf(fAngle)*(fDistance / 2);
 
 	// 距離でカメラを引く
-	m_fViewExtent = fDistance/2;
+	m_fViewExtent = fDistance / 2;
 
 	// カメラ位置の設定
 	m_posV = m_posR + CAMERA_LOCAL_POS;
 	m_posV.y = CAMERA_LOCAL_POS.y + m_fViewExtent;
-
-#else
-	// DEBUG用カメラ
-	if (CManager::GetKeyboard()->GetKeyPress(DIK_NUMPAD7))
-	{
-		m_posV.x += 3;
-	}
-	if (CManager::GetKeyboard()->GetKeyPress(DIK_NUMPAD4))
-	{
-		m_posV.x -= 3;
-	}
-	if (CManager::GetKeyboard()->GetKeyPress(DIK_NUMPAD8))
-	{
-		m_posV.y += 3;
-	}
-	if (CManager::GetKeyboard()->GetKeyPress(DIK_NUMPAD5))
-	{
-		m_posV.y -= 3;
-	}
-	if (CManager::GetKeyboard()->GetKeyPress(DIK_NUMPAD9))
-	{
-		m_posV.z += 3;
-	}
-	if (CManager::GetKeyboard()->GetKeyPress(DIK_NUMPAD6))
-	{
-		m_posV.z -= 3;
-	}
 
 #endif
 }

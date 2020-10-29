@@ -47,10 +47,12 @@ private:
 	D3DXMATRIX  m_mtxProjection;//プロジェクションマトリックス
 	D3DXMATRIX  m_mtxView;//ビューマトリックス
 	float m_fViewExtent; // 視野角の拡縮用
+#ifdef _DEBUG
 	// 球面座標
 	float m_fRad;   // 目標からの距離
 	float m_fTheta;  // 角度シータ
 	float m_fPhi;    // 角度ファイ
+#endif
 };
 
 #endif

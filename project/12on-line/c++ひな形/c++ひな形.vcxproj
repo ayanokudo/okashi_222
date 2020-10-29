@@ -147,6 +147,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="animation.cpp" />
     <ClCompile Include="bg.cpp" />
     <ClCompile Include="billboard.cpp" />
     <ClCompile Include="bullet.cpp" />
@@ -165,6 +166,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="manager.cpp" />
     <ClCompile Include="model.cpp" />
+    <ClCompile Include="model_hierarchy.cpp" />
     <ClCompile Include="mouse.cpp" />
     <ClCompile Include="number.cpp" />
     <ClCompile Include="particle.cpp" />
@@ -185,6 +187,7 @@
     <ClCompile Include="wall.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="animation.h" />
     <ClInclude Include="bg.h" />
     <ClInclude Include="billboard.h" />
     <ClInclude Include="bullet.h" />
@@ -203,6 +206,7 @@
     <ClInclude Include="main.h" />
     <ClInclude Include="manager.h" />
     <ClInclude Include="model.h" />
+    <ClInclude Include="model_hierarchy.h" />
     <ClInclude Include="mouse.h" />
     <ClInclude Include="number.h" />
     <ClInclude Include="particle.h" />

@@ -291,7 +291,7 @@ void CEnemy::RangeDecisionEscort(void)
 		D3DXVECTOR3 playerPos = pPlayer->GetPos();
 		//エネミーの位置情報を取得
 		D3DXVECTOR3 enemyPos = GetPos();
-
+		enemyPos.y += 30;
 		//プレイヤーと敵の範囲の当たり判定
 		if (CCollision::CollisionSphere(m_pRadiusColision, pPlayer->GetCollision()))
 		{

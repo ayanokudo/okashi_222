@@ -119,11 +119,11 @@ void CCamera::Update(void)
 
 	if (CManager::GetKeyboard()->GetKeyPress(DIK_UP))
 	{
-		m_fRad += 2.0f;
+		m_fRad += 4.0f;
 	}
 	if (CManager::GetKeyboard()->GetKeyPress(DIK_DOWN))
 	{
-		m_fRad -= 2.0f;
+		m_fRad -= 4.0f;
 	}
 
 #else

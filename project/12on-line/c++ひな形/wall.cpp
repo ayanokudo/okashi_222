@@ -17,7 +17,7 @@
 //*****************************
 // マクロ定義
 //*****************************
-#define WALL_1_TEXTURE_PATH		"./data/Textures/wall000.jpg"		 // フローリングのテクスチャのパス
+#define WALL_1_TEXTURE_PATH		"./data/Textures/wall000.png"		 // フローリングのテクスチャのパス
 #define WALL_2_TEXTURE_PATH		"./data/Textures/particle001.png"	 // まっとのテクスチャのパス
 #define WALL_3_TEXTURE_PATH		"./data/Textures/particle001.png"    // キッチンの床のテクスチャのパス
 

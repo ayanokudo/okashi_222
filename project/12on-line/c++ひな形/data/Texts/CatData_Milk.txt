@@ -14,18 +14,18 @@ NUM_MODEL = 12
 #------------------------------------------------------------------------------
 # モデルファイル名
 #------------------------------------------------------------------------------
-MODEL_FILENAME = data/MODEL/jouhanshin.x	# [0]上半身
-MODEL_FILENAME = data/MODEL/atama.x		# [1]頭
-MODEL_FILENAME = data/MODEL/right_kata.x	# [2]右肩
-MODEL_FILENAME = data/MODEL/right_ashi.x	# [3]右手
-MODEL_FILENAME = data/MODEL/left_kata.x		# [4]左肩
-MODEL_FILENAME = data/MODEL/left_ashi.x		# [5]左手
-MODEL_FILENAME = data/MODEL/right_momo.x	# [6]右腿
-MODEL_FILENAME = data/MODEL/right_back_ashi.x	# [7]右後ろ足
-MODEL_FILENAME = data/MODEL/left_momo.x		# [8]左腿
-MODEL_FILENAME = data/MODEL/left_back_ashi.x	# [9]左後ろ足
-MODEL_FILENAME = data/MODEL/kahanshin.x		# [10]下半身
-MODEL_FILENAME = data/MODEL/shiipo.x		# [11]尻尾
+MODEL_FILENAME = data/Models/cat/Milk/jouhanshin.x		# [0]上半身
+MODEL_FILENAME = data/Models/cat/Milk/atama.x			# [1]頭
+MODEL_FILENAME = data/Models/cat/Milk/right_kata.x		# [2]右肩
+MODEL_FILENAME = data/Models/cat/Milk/right_ashi.x		# [3]右手
+MODEL_FILENAME = data/Models/cat/Milk/left_kata.x		# [4]左肩
+MODEL_FILENAME = data/Models/cat/Milk/left_ashi.x		# [5]左手
+MODEL_FILENAME = data/Models/cat/Milk/right_momo.x		# [6]右腿
+MODEL_FILENAME = data/Models/cat/Milk/right_back_ashi.x	# [7]右後ろ足
+MODEL_FILENAME = data/Models/cat/Milk/left_momo.x		# [8]左腿
+MODEL_FILENAME = data/Models/cat/Milk/left_back_ashi.x	# [9]左後ろ足
+MODEL_FILENAME = data/Models/cat/Milk/kahanshin.x		# [10]下半身
+MODEL_FILENAME = data/Models/cat/Milk/shiipo.x			# [11]尻尾
 
 #------------------------------------------------------------------------------
 # キャラクター情報
@@ -400,62 +400,62 @@ MOTIONSET
 		FRAME = 10
 		KEY	# ----- [ 0 ] -----
 			POS = 0.00 0.00 0.00
-			ROT = 0.00 0.00 0.00
+			ROT = -0.06 0.00 0.00
 		END_KEY
 
 		KEY	# ----- [ 1 ] -----
 			POS = 0.00 0.00 0.00
-			ROT = 0.00 0.00 0.00
+			ROT = -0.47 0.00 0.00
 		END_KEY
 
 		KEY	# ----- [ 2 ] -----
 			POS = 0.00 0.00 0.00
-			ROT = 0.00 0.00 0.00
+			ROT = -0.31 0.00 0.00
 		END_KEY
 
 		KEY	# ----- [ 3 ] -----
 			POS = 0.00 0.00 0.00
-			ROT = 0.00 0.00 0.00
+			ROT = 0.09 0.00 0.00
 		END_KEY
 
 		KEY	# ----- [ 4 ] -----
 			POS = 0.00 0.00 0.00
-			ROT = 0.00 0.00 0.00
+			ROT = -0.31 0.00 0.00
 		END_KEY
 
 		KEY	# ----- [ 5 ] -----
 			POS = 0.00 0.00 0.00
-			ROT = 0.00 0.00 0.00
+			ROT = 0.09 0.00 0.00
 		END_KEY
 
 		KEY	# ----- [ 6 ] -----
 			POS = 0.00 0.00 0.00
-			ROT = 0.00 0.00 0.00
+			ROT = 0.18 0.00 0.00
 		END_KEY
 
 		KEY	# ----- [ 7 ] -----
 			POS = 0.00 0.00 0.00
-			ROT = 0.00 0.00 0.00
+			ROT = 0.12 0.00 0.00
 		END_KEY
 
 		KEY	# ----- [ 8 ] -----
 			POS = 0.00 0.00 0.00
-			ROT = 0.00 0.00 0.00
+			ROT = 0.15 0.00 0.00
 		END_KEY
 
 		KEY	# ----- [ 9 ] -----
 			POS = 0.00 0.00 0.00
-			ROT = 0.00 0.00 0.00
+			ROT = 0.12 0.00 0.00
 		END_KEY
-
+		
 		KEY	# ----- [ 10 ] -----
 			POS = 0.00 0.00 0.00
 			ROT = 0.00 0.00 0.00
 		END_KEY
-
+		
 		KEY	# ----- [ 11 ] -----
 			POS = 0.00 0.00 0.00
-			ROT = 0.00 0.00 0.00
+			ROT = 0.53 0.00 0.00
 		END_KEY
 	END_KEYSET
 
@@ -463,125 +463,125 @@ MOTIONSET
 		FRAME = 10
 		KEY	# ----- [ 0 ] -----
 			POS = 0.00 0.00 0.00
-			ROT = -0.00 -0.36 -0.40
+			ROT = 0.09 0.00 0.00
 		END_KEY
 
 		KEY	# ----- [ 1 ] -----
 			POS = 0.00 0.00 0.00
-			ROT = 0.22 0.47 0.13
+			ROT = 0.15 0.00 0.00
 		END_KEY
 
 		KEY	# ----- [ 2 ] -----
 			POS = 0.00 0.00 0.00
-			ROT = 2.60 -0.21 -1.03
+			ROT = 1.13 0.00 0.00
 		END_KEY
 
 		KEY	# ----- [ 3 ] -----
 			POS = 0.00 0.00 0.00
-			ROT = 0.31 -0.00 0.00
+			ROT = 0.00 0.00 0.00
 		END_KEY
 
 		KEY	# ----- [ 4 ] -----
 			POS = 0.00 0.00 0.00
-			ROT = 0.78 0.34 0.56
+			ROT = 0.97 0.00 0.00
 		END_KEY
 
 		KEY	# ----- [ 5 ] -----
 			POS = 0.00 0.00 0.00
-			ROT = -0.65 0.02 0.00
+			ROT = 0.00 0.00 0.00
 		END_KEY
 
 		KEY	# ----- [ 6 ] -----
 			POS = 0.00 0.00 0.00
-			ROT = 0.12 0.37 0.25
+			ROT = -1.03 0.00 0.00
 		END_KEY
 
 		KEY	# ----- [ 7 ] -----
 			POS = 0.00 0.00 0.00
-			ROT = -0.31 0.00 0.00
+			ROT = -0.53 0.00 0.00
 		END_KEY
 
 		KEY	# ----- [ 8 ] -----
 			POS = 0.00 0.00 0.00
-			ROT = -0.03 0.25 0.69
+			ROT = -1.19 0.00 0.00
 		END_KEY
 
 		KEY	# ----- [ 9 ] -----
 			POS = 0.00 0.00 0.00
-			ROT = 0.18 -0.06 0.00
+			ROT = -0.53 0.00 0.00
 		END_KEY
-
+		
 		KEY	# ----- [ 10 ] -----
 			POS = 0.00 0.00 0.00
 			ROT = 0.00 0.00 0.00
 		END_KEY
-
+		
 		KEY	# ----- [ 11 ] -----
 			POS = 0.00 0.00 0.00
-			ROT = -0.72 0.40 0.00
+			ROT = -1.53 0.00 0.00
 		END_KEY
 	END_KEYSET
 
 	KEYSET			# --- << KEY : 2 / 3 >> ---
 		FRAME = 4
 		KEY	# ----- [ 0 ] -----
-			POS = 0.00 0.00 0.00
-			ROT = -0.16 -0.40 0.00
+			POS = 0.00 0.00 .00
+			ROT = -0.09 0.00 0.00
 		END_KEY
 
 		KEY	# ----- [ 1 ] -----
 			POS = 0.00 0.00 0.00
-			ROT = 0.22 0.47 0.13
+			ROT = -0.31 0.00 0.00
 		END_KEY
 
 		KEY	# ----- [ 2 ] -----
 			POS = 0.00 0.00 0.00
-			ROT = 1.00 0.41 0.00
+			ROT = -0.34 0.00 0.0
 		END_KEY
 
 		KEY	# ----- [ 3 ] -----
 			POS = 0.00 0.00 0.00
-			ROT = -0.40 -0.35 0.00
+			ROT = 0.37 0.00 0.00
 		END_KEY
 
 		KEY	# ----- [ 4 ] -----
 			POS = 0.00 0.00 0.00
-			ROT = 0.59 0.18 0.15
+			ROT = -0.34 0.00 0.00
 		END_KEY
 
 		KEY	# ----- [ 5 ] -----
 			POS = 0.00 0.00 0.00
-			ROT = 0.00 0.02 0.00
+			ROT = 0.37 0.00 0.00
 		END_KEY
 
 		KEY	# ----- [ 6 ] -----
 			POS = 0.00 0.00 0.00
-			ROT = -0.06 0.25 0.00
+			ROT = 0.47 0.00 0.00
 		END_KEY
 
 		KEY	# ----- [ 7 ] -----
 			POS = 0.00 0.00 0.00
-			ROT = -0.31 0.00 0.00
+			ROT = -0.56 0.00 0.00
 		END_KEY
 
 		KEY	# ----- [ 8 ] -----
 			POS = 0.00 0.00 0.00
-			ROT = 0.15 0.03 -0.06
+			ROT = 0.47 0.00 0.00
 		END_KEY
 
 		KEY	# ----- [ 9 ] -----
 			POS = 0.00 0.00 0.00
-			ROT = -0.35 -0.06 0.00
+			ROT = -0.56 0.00 0.00
 		END_KEY
-
+		
 		KEY	# ----- [ 10 ] -----
 			POS = 0.00 0.00 0.00
 			ROT = 0.00 0.00 0.00
 		END_KEY
-
+		
 		KEY	# ----- [ 11 ] -----
 			POS = 0.00 0.00 0.00
-			ROT = 0.25 0.40 0.00
+			ROT = 0.56 0.00 0.00
 		END_KEY
 	END_KEYSET
 END_MOTIONSET

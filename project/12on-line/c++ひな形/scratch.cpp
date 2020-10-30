@@ -160,21 +160,49 @@ void CScratch::Update(void)
 {
 	// 当たり判定
 	CollisionScratch(m_user);
-	// プレイヤーの取得
-	CPlayer*pPlayer = CGame::GetPlayer(m_nPlayerNum);
-	if (pPlayer != NULL)
+	switch (m_user)
 	{
-		// 座標の設定
-		D3DXVECTOR3 pos;
-		float fRotY = pPlayer->GetRot().y - D3DXToRadian(90);
-		pos.x = pPlayer->GetPos().x + cosf(fRotY) * -SCRATCH_SIZE;
-		pos.y = pPlayer->GetPos().y + SCRATCH_HEIGHT;
-		pos.z = pPlayer->GetPos().z + sinf(fRotY) * SCRATCH_SIZE;
-		SetPos(pos);
-		
-		// 角度
-		SetRot(D3DXVECTOR3(0.0f, fRotY, 0.0f)); 
-		m_pCollision->SetPos(D3DXVECTOR3(pos.x, pos.y - SCRATCH_HEIGHT, pos.z));
+	case SCRATCHUSER_ENEMY:
+	{
+		// プレイヤーの取得
+		CEnemy*pEnemy = CGame::GetEnemy();
+		if (pEnemy != NULL)
+		{
+			// 座標の設定
+			D3DXVECTOR3 pos;
+			float fRotY = pEnemy->GetRot().y - D3DXToRadian(90);
+			pos.x = pEnemy->GetPos().x + cosf(fRotY) * -SCRATCH_SIZE;
+			pos.y = pEnemy->GetPos().y + SCRATCH_HEIGHT;
+			pos.z = pEnemy->GetPos().z + sinf(fRotY) * SCRATCH_SIZE;
+			SetPos(pos);
+
+			// 角度
+			SetRot(D3DXVECTOR3(0.0f, fRotY, 0.0f));
+			m_pCollision->SetPos(D3DXVECTOR3(pos.x, pos.y - SCRATCH_HEIGHT, pos.z));
+		}
+	}
+		break;
+	case SCRATCHUSER_PLAYER:
+	{
+		// プレイヤーの取得
+		CPlayer*pPlayer = CGame::GetPlayer(m_nPlayerNum);
+		if (pPlayer != NULL)
+		{
+			// 座標の設定
+			D3DXVECTOR3 pos;
+			float fRotY = pPlayer->GetRot().y - D3DXToRadian(90);
+			pos.x = pPlayer->GetPos().x + cosf(fRotY) * -SCRATCH_SIZE;
+			pos.y = pPlayer->GetPos().y + SCRATCH_HEIGHT;
+			pos.z = pPlayer->GetPos().z + sinf(fRotY) * SCRATCH_SIZE;
+			SetPos(pos);
+
+			// 角度
+			SetRot(D3DXVECTOR3(0.0f, fRotY, 0.0f));
+			m_pCollision->SetPos(D3DXVECTOR3(pos.x, pos.y - SCRATCH_HEIGHT, pos.z));
+		}
+	}
+	default:
+		break;
 	}
 	// アニメーション*アニメーションが終了したら消える
 	Animation();
@@ -197,7 +225,6 @@ void CScratch::CollisionScratch(SCRATCHUSER user)
 	switch (user)
 	{
 	case SCRATCHUSER_ENEMY:
-
 		break;
 	case SCRATCHUSER_PLAYER:
 	{
@@ -214,7 +241,6 @@ void CScratch::CollisionScratch(SCRATCHUSER user)
 			pEnemy = (CEnemy*)pEnemy->GetNext();
 		}
 	}
-	break;
 	default:
 		break;
 	}

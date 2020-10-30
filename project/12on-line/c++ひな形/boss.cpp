@@ -8,7 +8,7 @@
 //******************************
 // インクルード
 //******************************
-#include "enemy.h"
+#include "boss.h"
 #include "manager.h"
 #include "renderer.h"
 #include "keyboard.h"
@@ -17,7 +17,6 @@
 #include "game.h"
 #include "player.h"
 #include "bullet.h"
-#include "scratch.h"
 
 //*****************************
 // マクロ定義
@@ -37,14 +36,14 @@
 //*****************************
 // 静的メンバ変数宣言
 //*****************************
-LPD3DXMESH   CEnemy::m_pMeshModel[ENEMY_MAX] = {};   	//メッシュ情報へのポインタ
-LPD3DXBUFFER CEnemy::m_pBuffMatModel[ENEMY_MAX] = {};	//マテリアル情報へのポインタ
-DWORD        CEnemy::m_nNumMatModel[ENEMY_MAX] = {};	    //マテリアル情報の数
+LPD3DXMESH   CBoss::m_pMeshModel = {};   	//メッシュ情報へのポインタ
+LPD3DXBUFFER CBoss::m_pBuffMatModel = {};	//マテリアル情報へのポインタ
+DWORD        CBoss::m_nNumMatModel = {};	//マテリアル情報の数
 
 //******************************
 // コンストラクタ
 //******************************
-CEnemy::CEnemy() :CModel(OBJTYPE_ENEMY)
+CBoss::CBoss() :CModel(OBJTYPE_ENEMY)
 {
 	m_move = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	m_moveDest = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
@@ -60,7 +59,7 @@ CEnemy::CEnemy() :CModel(OBJTYPE_ENEMY)
 //******************************
 // デストラクタ
 //******************************
-CEnemy::~CEnemy()
+CBoss::~CBoss()
 {
 
 }
@@ -68,11 +67,11 @@ CEnemy::~CEnemy()
 //******************************
 // クリエイト
 //******************************
-CEnemy * CEnemy::Create(D3DXVECTOR3 pos, ENEMY type)
+CBoss * CBoss::Create(D3DXVECTOR3 pos)
 {
 	// メモリの確保
-	CEnemy *pEnemy;
-	pEnemy = new CEnemy;
+	CBoss *pEnemy;
+	pEnemy = new CBoss;
 
 	if (pEnemy != NULL)
 	{
@@ -81,7 +80,6 @@ CEnemy * CEnemy::Create(D3DXVECTOR3 pos, ENEMY type)
 
 		// 各値の代入・セット
 		pEnemy->SetPos(pos);
-		pEnemy->m_type = type;
 		pEnemy->SetObjType(OBJTYPE_ENEMY); // オブジェクトタイプ
 	}
 
@@ -91,7 +89,7 @@ CEnemy * CEnemy::Create(D3DXVECTOR3 pos, ENEMY type)
 //******************************
 // テクスチャのロード
 //******************************
-HRESULT CEnemy::Load(void)
+HRESULT CBoss::Load(void)
 {
 	// デバイスの取得
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
@@ -102,20 +100,10 @@ HRESULT CEnemy::Load(void)
 		D3DXMESH_SYSTEMMEM,
 		pDevice,
 		NULL,
-		&m_pBuffMatModel[ENEMY_CARRIER],
+		&m_pBuffMatModel,
 		NULL,
-		&m_nNumMatModel[ENEMY_CARRIER],
-		&m_pMeshModel[ENEMY_CARRIER]);
-
-	//守りネズミ
-	D3DXLoadMeshFromX(ENEMY_ESCORT_MODEL_PATH,
-		D3DXMESH_SYSTEMMEM,
-		pDevice,
-		NULL,
-		&m_pBuffMatModel[ENEMY_ESCORT],
-		NULL,
-		&m_nNumMatModel[ENEMY_ESCORT],
-		&m_pMeshModel[ENEMY_ESCORT]);
+		&m_nNumMatModel,
+		&m_pMeshModel);
 
 	return S_OK;
 }
@@ -123,22 +111,19 @@ HRESULT CEnemy::Load(void)
 //******************************
 // テクスチャのアンロード
 //******************************
-void CEnemy::Unload(void)
+void CBoss::Unload(void)
 {
-	for (int nCount = ENEMY_CARRIER; nCount < ENEMY_MAX; nCount++)
+	//メッシュの破棄
+	if (m_pMeshModel != NULL)
 	{
-		//メッシュの破棄
-		if (m_pMeshModel[nCount] != NULL)
-		{
-			m_pMeshModel[nCount]->Release();
-			m_pMeshModel[nCount] = NULL;
-		}
-		//マテリアルの破棄
-		if (m_pBuffMatModel[nCount] != NULL)
-		{
-			m_pBuffMatModel[nCount]->Release();
-			m_pBuffMatModel[nCount] = NULL;
-		}
+		m_pMeshModel->Release();
+		m_pMeshModel = NULL;
+	}
+	//マテリアルの破棄
+	if (m_pBuffMatModel != NULL)
+	{
+		m_pBuffMatModel->Release();
+		m_pBuffMatModel = NULL;
 	}
 }
 
@@ -146,31 +131,18 @@ void CEnemy::Unload(void)
 //******************************
 // 初期化処理
 //******************************
-HRESULT CEnemy::Init(void)
+HRESULT CBoss::Init(void)
 {
 	if (FAILED(CModel::Init()))
 	{
 		return E_FAIL;
 	}
-	for (int nCount = ENEMY_CARRIER; nCount < ENEMY_MAX; nCount++)
-	{
-		// テクスチャ割り当て
-		BindModel(m_pMeshModel[nCount], m_pBuffMatModel[nCount], m_nNumMatModel[nCount]);
-	}
-	//ライフ設定
-	switch (m_type)
-	{
-	case ENEMY_CARRIER:
-		m_nLife = ENEMY_CARRIER_LIFE;
-		break;
 
-	case ENEMY_ESCORT:
-		m_nLife = ENEMY_ESCORT_LIFE;
-		break;
-	}
-	
+	// テクスチャ割り当て
+	BindModel(m_pMeshModel, m_pBuffMatModel, m_nNumMatModel);
+
 	m_pCollision = CCollision::CreateSphere(GetPos(), ENEMY_RADIUS);
-	
+
 	m_pRadiusColision = CCollision::CreateSphere(GetPos(), ENEMY_RANGE_RADIUS);
 	return S_OK;
 }
@@ -178,7 +150,7 @@ HRESULT CEnemy::Init(void)
 //******************************
 // 終了処理
 //******************************
-void CEnemy::Uninit(void)
+void CBoss::Uninit(void)
 {
 	// コリジョンの終了処理
 	if (m_pCollision != NULL)
@@ -196,7 +168,7 @@ void CEnemy::Uninit(void)
 //******************************
 // 更新処理
 //******************************
-void CEnemy::Update(void)
+void CBoss::Update(void)
 {
 	// 目標値の初期化
 	m_moveDest = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
@@ -217,20 +189,6 @@ void CEnemy::Update(void)
 	m_pCollision->SetPos(GetPos());
 	m_pRadiusColision->SetPos(GetPos());
 
-	//敵ごとの動きの処理分け
-	switch (m_type)
-	{
-		//運びネズミ
-	case ENEMY_CARRIER:
-		RangeDecisionCarrier();
-		MotionCarrier();
-		break;
-		//守りネズミ
-	case ENEMY_ESCORT:
-		RangeDecisionEscort();
-		MotionEscort();
-		break;
-	}
 	// 慣性
 	m_move += (m_moveDest - m_move) * ENEMY_MOVE_RATE;
 
@@ -244,7 +202,7 @@ void CEnemy::Update(void)
 //******************************
 // 描画処理
 //******************************
-void CEnemy::Draw(void)
+void CBoss::Draw(void)
 {
 	CModel::Draw();
 }
@@ -252,7 +210,7 @@ void CEnemy::Draw(void)
 //******************************
 // ヒット処理
 //******************************
-void CEnemy::Hit(int nDamage)
+void CBoss::Hit(int nDamage)
 {
 
 }
@@ -260,7 +218,7 @@ void CEnemy::Hit(int nDamage)
 //******************************
 // 運びネズミの範囲判定の更新処理
 //******************************
-void CEnemy::RangeDecisionCarrier(void)
+void CBoss::RangeDecisionCarrier(void)
 {
 	//プレイヤーの情報を取得
 	CPlayer*pPlayer = CGame::GetPlayer();
@@ -297,7 +255,7 @@ void CEnemy::RangeDecisionCarrier(void)
 //******************************
 // 守りネズミの範囲判定の更新処理
 //******************************
-void CEnemy::RangeDecisionEscort(void)
+void CBoss::RangeDecisionEscort(void)
 {
 	//プレイヤーの情報を取得
 	CPlayer*pPlayer = CGame::GetPlayer();
@@ -312,24 +270,24 @@ void CEnemy::RangeDecisionEscort(void)
 		//プレイヤーと敵の範囲の当たり判定
 		if (CCollision::CollisionSphere(m_pRadiusColision, pPlayer->GetCollision()))
 		{
+			//エネミーの移動をしなくする
 			m_bRd = true;
 			m_nCount++;
-			m_nCntAttack++;
 			//向きの設定
-			m_fRotYDist = atan2((playerPos.x - enemyPos.x),(playerPos.z - enemyPos.z));
-			
+			m_fRotYDist = atan2((playerPos.x - enemyPos.x), (playerPos.z - enemyPos.z));
+
 			// 移動量
 			D3DXVECTOR3 Move;
 			Move.x = sinf(m_fRotYDist)*10.0f;
 			Move.y = 0.0f;
 			Move.z = cosf(m_fRotYDist)*10.0f;
 
-			m_moveDest = Move;
 			//等間隔で打つ
-			if (m_nCount == 50)
+			if (m_nCount == 30)
 			{
-				// 弾の生成
-				CScratch::Create(enemyPos, m_fRotYDist, CScratch::SCRATCHUSER_ENEMY, -1);
+				CBullet::Create(enemyPos, Move, 300,
+					CBullet::BULLETUSER_ENEMY)->SetColor(D3DXCOLOR(1.0f, 1.0f, 0.0f, 1.0f));
+
 				m_nCount = 0;
 			}
 			//弾の向きの設定
@@ -346,7 +304,7 @@ void CEnemy::RangeDecisionEscort(void)
 //******************************
 // 運びネズミの動き更新処理
 //******************************
-void CEnemy::MotionCarrier(void)
+void CBoss::MotionCarrier(void)
 {
 	//falseの時
 	if (!m_bRd)
@@ -359,7 +317,7 @@ void CEnemy::MotionCarrier(void)
 //******************************
 // 守りネズミの動き更新処理
 //******************************
-void CEnemy::MotionEscort(void)
+void CBoss::MotionEscort(void)
 {
 	//falseの時
 	if (!m_bRd)
@@ -372,7 +330,7 @@ void CEnemy::MotionEscort(void)
 //******************************
 // 敵の移動処理
 //******************************
-void CEnemy::Move(void)
+void CBoss::Move(void)
 {
 	//カウントプラス
 	m_nCountMotion++;
@@ -451,7 +409,7 @@ void CEnemy::Move(void)
 //******************************
 // キャラクターの向きの設定
 //******************************
-void CEnemy::Direction(void)
+void CBoss::Direction(void)
 {
 	// 現在のロットの取得
 	D3DXVECTOR3 rot = GetRot();

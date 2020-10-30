@@ -1,13 +1,13 @@
 //=============================================================================
 //
-// enemyヘッダ [enemy.h]
+// bossヘッダ [boss.h]
 // Author : 筒井 俊稀
 //
 //=============================================================================
 
 //二重インクルード防止
-#ifndef _ENEMY_H_
-#define _ENEMY_H_
+#ifndef _BOSS_H_
+#define _BOSS_H_
 
 //*****************************
 // インクルード
@@ -26,20 +26,13 @@ class CCollision;
 //*****************************
 
 // パーティクルクラス
-class CEnemy : public CModel
+class CBoss : public CModel
 {
 public:
-	typedef enum
-	{
-		ENEMY_CARRIER = 0,		//お菓子運んでる敵
-		ENEMY_ESCORT,			//BOSS守ってる敵
-		ENEMY_MAX,
-	}ENEMY;
-
 	//メンバ関数
-	CEnemy();
-	~CEnemy();
-	static CEnemy *Create(D3DXVECTOR3 pos, ENEMY type);
+	CBoss();
+	~CBoss();
+	static CBoss *Create(D3DXVECTOR3 pos);
 	static HRESULT Load(void);
 	static void Unload(void);
 	HRESULT Init(void);
@@ -58,20 +51,18 @@ private:
 	void Direction(void);
 
 	// メンバ変数
-	static LPD3DXMESH m_pMeshModel[ENEMY_MAX];	//メッシュ情報へのポインタ
-	static LPD3DXBUFFER m_pBuffMatModel[ENEMY_MAX];	//マテリアル情報へのポインタ
-	static DWORD m_nNumMatModel[ENEMY_MAX];	//マテリアル情報の数
-	static LPDIRECT3DTEXTURE9 m_apTexture[ENEMY_MAX]; // テクスチャ
+	static LPD3DXMESH m_pMeshModel;	//メッシュ情報へのポインタ
+	static LPD3DXBUFFER m_pBuffMatModel;	//マテリアル情報へのポインタ
+	static DWORD m_nNumMatModel;	//マテリアル情報の数
+	static LPDIRECT3DTEXTURE9 m_apTexture; // テクスチャ
 	D3DXVECTOR3 m_move;        // 移動量
 	D3DXVECTOR3 m_moveDest;
 	CCollision *m_pCollision;    // 当たり判定
 	CCollision *m_pRadiusColision;
-	ENEMY m_type;
 	int m_nLife;
 	bool m_bRd;
 	float m_fRotYDist;
 	int m_nCount;
-	int m_nCntAttack;
 	int m_nCountMotion;
 	int m_nCountRand;
 };

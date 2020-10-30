@@ -13,6 +13,7 @@
 #include "number.h"
 #include "renderer.h"
 #include "manager.h"
+#include "fade.h"
 #include <time.h>
 
 //**********************************
@@ -37,6 +38,8 @@ CTime::CTime()
 	//Œ»İŠÔ‚ğæ“¾
 	m_start = timeGetTime();
 	m_end = NULL;
+	m_bTime == true;
+	m_nAllTime = 0;
 }
 
 //=============================
@@ -77,7 +80,6 @@ HRESULT CTime::Init(void)
 	}
 	// TIME‚Ì‰Šú‰»
 	m_nTime = MAX_TIME;
-
 	return S_OK;
 }
 
@@ -106,13 +108,26 @@ void CTime::Uninit(void)
 void CTime::Update(void)
 {
 	int nTime = 0;
+
 	//Œ»İŠÔ‚ğæ“¾
 	m_end = timeGetTime();
 	nTime = (m_end - m_start) / 1000;
-	for (int nCntDigit = 0; nCntDigit < MAX_TIME_DIGIT; nCntDigit++)
+	//‘ã“ü
+	m_nAllTime = m_nTime - nTime;
+	//true‚Ì
+	if (m_bTime)
 	{
-		m_apNumber[nCntDigit]->Update();
-		m_apNumber[nCntDigit]->SetNumber((m_nTime- nTime % (int)(powf(10.0f, (MAX_TIME_DIGIT - nCntDigit)))) / (float)(powf(10.0, (MAX_TIME_DIGIT - nCntDigit - 1))));
+		for (int nCntDigit = 0; nCntDigit < MAX_TIME_DIGIT; nCntDigit++)
+		{
+			m_apNumber[nCntDigit]->Update();
+			m_apNumber[nCntDigit]->SetNumber((m_nAllTime % (int)(powf(10.0f, (MAX_TIME_DIGIT - nCntDigit)))) / (float)(powf(10.0, (MAX_TIME_DIGIT - nCntDigit - 1))));
+		}
+	}
+	//‚O‚É‚È‚Á‚½‚ç
+	if (m_nAllTime == 0)
+	{
+		m_bTime = false;
+		CManager::GetFade()->SetFade(CManager::MODE_RESULT);
 	}
 }
 

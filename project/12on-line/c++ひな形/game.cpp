@@ -89,7 +89,7 @@ HRESULT CGame::Init(void)
 	}
 	
 	// エネミーの生成
-	m_pEnemy = CEnemy::Create(D3DXVECTOR3(0.0f, 0.0f, -800.0f), CEnemy::ENEMY_CARRIER);
+	m_pEnemy = CEnemy::Create(D3DXVECTOR3(0.0f, 0.0f, -800.0f), CEnemy::ENEMY_ESCORT);
 	// アイテムの生成
 	m_pItem = CItem::Create(D3DXVECTOR3(200.0f, 0.0f, -800.0f));
 	// スコアの生成
@@ -146,10 +146,10 @@ void CGame::Uninit(void)
 //=============================
 void CGame::Update(void)
 {
-	if (CManager::GetKeyboard()->GetKeyTrigger(DIK_RETURN))
-	{
-		CManager::GetFade()->SetFade(CManager::MODE_RESULT);
-	}
+	//if (CManager::GetKeyboard()->GetKeyTrigger(DIK_RETURN))
+	//{
+	//	CManager::GetFade()->SetFade(CManager::MODE_RESULT);
+	//}
 	if (m_pCamera != NULL)
 	{
 		m_pCamera->Update();

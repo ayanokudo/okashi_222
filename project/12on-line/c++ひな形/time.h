@@ -50,6 +50,8 @@ private:
 	static int m_nTime;
 	DWORD m_start;
 	DWORD m_end;
+	bool m_bTime;
+	int m_nAllTime;
 
 };
 

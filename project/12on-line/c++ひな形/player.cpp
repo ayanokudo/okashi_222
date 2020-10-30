@@ -24,7 +24,7 @@
 // マクロ定義
 //*****************************
 #define MODEL_PATH      "data/Models/cat_sakamoto.x"          //モデルのパス
-#define MODEL_TEST_PATH "data/Texts/CatData_Choco.txt"              //モデルのパス
+#define MODEL_TEST_PATH "data/Texts/CatData_Milk.txt"              //モデルのパス
 
 #define WAIT_ANIM_PATH  "data/Texts/NekoMotion/Wait.txt"      // 待機アニメーションのパス
 #define WALK_ANIM_PATH  "data/Texts/NekoMotion/Walk.txt"      // 歩きアニメーションのパス

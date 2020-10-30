@@ -147,10 +147,11 @@ void CModelHierarchy::Draw(void)
 		if (m_model[nCntParts].nParent == -1)
 		{// ©•ª‚ªˆê”Ô‚Ìe‚Ì‚Æ‚«
 
-			m_pos= m_model[nCntParts].pos;
-			m_rot= m_model[nCntParts].rot;
+			/*m_model[nCntParts].pos = m_pos + m_model[nCntParts].pos;
+			m_model[nCntParts].rot = m_rot + m_model[nCntParts].rot;*/
+			
 			//Œü‚«‚ğ”½‰f
-			D3DXMatrixRotationYawPitchRoll(&mtxRot, m_rot.y, m_rot.x, m_rot.z);
+			D3DXMatrixRotationYawPitchRoll(&mtxRot, m_model[nCntParts].rot.y, m_model[nCntParts].rot.x, m_model[nCntParts].rot.z);
 			D3DXMatrixMultiply(&m_model[nCntParts].mtxWorld, &m_model[nCntParts].mtxWorld, &mtxRot);
 
 			//ˆÊ’u‚ğ”½‰f

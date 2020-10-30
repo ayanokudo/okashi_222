@@ -25,7 +25,7 @@
 CAnimation::CAnimation() :CScene(OBJTYPE_ANIMATION)
 {
 	// メンバ変数のクリア
-	m_pModel = NULL;                            // モデル情報
+	m_pModel=NULL;                            // モデル情報
 	m_nNumKey = 0;                            // キーフレームの数 
 	m_nNumParts = 0;                          // パーツ数
 	m_bAnim = false;                          // アニメーションしているか
@@ -62,7 +62,7 @@ CAnimation * CAnimation::Create(int nNumParts, const char *pPath, CModel::Model*
 	pAnimation->Load(pPath);
 	// 初期化
 	pAnimation->Init();
-
+	
 	return pAnimation;
 }
 
@@ -75,7 +75,7 @@ HRESULT CAnimation::Init(void)
 	// 変数の初期化
 	m_nCntKey = 0;    // キーカウント
 	m_nCntFrame = 0;  // フレームカウント
-
+	
 	// 加算値の初期化
 	for (int nCntParts = 0; nCntParts < m_nNumParts; nCntParts++)
 	{
@@ -107,7 +107,7 @@ void CAnimation::Update(void)
 		{
 			// キーカウントを進める
 			m_nCntKey++;
-
+			
 			if (m_nCntKey >= m_nNumKey)
 			{// 一周終えてループしないとき
 				if (!m_bLoop)
@@ -121,19 +121,19 @@ void CAnimation::Update(void)
 					m_nCntKey = 0;
 				}
 			}
-
+			
 			// 加算値の更新
 			for (int nCntParts = 0; nCntParts < m_nNumParts; nCntParts++)
 			{
 				if (m_nCntKey == 0)
 				{// 一番最初のフレーム
-					m_addPos[nCntParts] = (m_pos[m_nCntKey][nCntParts] - m_pModel[nCntParts].pos) / m_nNumFrame[m_nCntKey];
-					m_addRot[nCntParts] = (m_rot[m_nCntKey][nCntParts] - m_pModel[nCntParts].rot) / m_nNumFrame[m_nCntKey];
+					m_addPos[nCntParts] = (m_pos[m_nCntKey][nCntParts] - m_pos[m_nNumKey - 1][nCntParts]) / m_nNumFrame[m_nCntKey];
+					m_addRot[nCntParts] = (m_rot[m_nCntKey][nCntParts] - m_rot[m_nNumKey - 1][nCntParts]) / m_nNumFrame[m_nCntKey];
 				}
 				else
 				{
-					m_addPos[nCntParts] = (m_pos[m_nCntKey][nCntParts] - m_pModel[nCntParts].pos) / m_nNumFrame[m_nCntKey];
-					m_addRot[nCntParts] = (m_rot[m_nCntKey][nCntParts] - m_pModel[nCntParts].rot) / m_nNumFrame[m_nCntKey];
+					m_addPos[nCntParts] = (m_pos[m_nCntKey][nCntParts] - m_pos[m_nCntKey - 1][nCntParts]) / m_nNumFrame[m_nCntKey];
+					m_addRot[nCntParts] = (m_rot[m_nCntKey][nCntParts] - m_rot[m_nCntKey - 1][nCntParts]) / m_nNumFrame[m_nCntKey];
 				}
 
 			}
@@ -245,7 +245,7 @@ void CAnimation::Load(const char * pPath)
 				fscanf(pFile, "%*s %*s %f %f %f", &m_pos[nCntKey][nIndex].x, &m_pos[nCntKey][nIndex].y, &m_pos[nCntKey][nIndex].z);
 				// 回転
 				fscanf(pFile, "%*s %*s %f %f %f", &m_rot[nCntKey][nIndex].x, &m_rot[nCntKey][nIndex].y, &m_rot[nCntKey][nIndex].z);
-
+				
 				// "END_KEY"読み込むまでループ
 				while (strcmp(chChar, "END_KEY") != 0)
 				{

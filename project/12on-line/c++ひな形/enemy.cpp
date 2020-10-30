@@ -268,11 +268,27 @@ void CEnemy::RangeDecisionCarrier(void)
 	{
 		//プレイヤーの位置情報を取得
 		D3DXVECTOR3 playerPos = pPlayer->GetPos();
+		//エネミーの位置情報を取得
 		D3DXVECTOR3 enemyPos = GetPos();
 		//プレイヤーと敵の範囲の当たり判定
 		if (CCollision::CollisionSphere(m_pRadiusColision, pPlayer->GetCollision()))
 		{
+			//エネミーの移動をしなくする
+			m_bRd = true;
+			//向きの設定
+			m_fRotYDist = atan2((playerPos.x - enemyPos.x), (playerPos.z - enemyPos.z));
 
+			// 移動量
+			D3DXVECTOR3 Move;
+			Move.x = sinf(m_fRotYDist)*10.0f;
+			Move.y = 0.0f;
+			Move.z = cosf(m_fRotYDist)*10.0f;
+
+			m_moveDest -= Move;
+		}
+		else
+		{
+			m_bRd = false;
 		}
 	}
 }
@@ -338,10 +354,6 @@ void CEnemy::MotionCarrier(void)
 	{
 		//移動処理
 		Move();
-	}
-	else
-	{
-
 	}
 }
 

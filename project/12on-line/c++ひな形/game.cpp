@@ -89,7 +89,7 @@ HRESULT CGame::Init(void)
 	}
 	
 	// エネミーの生成
-	m_pEnemy = CEnemy::Create(D3DXVECTOR3(0.0f, 0.0f, -800.0f), CEnemy::ENEMY_ESCORT);
+	m_pEnemy = CEnemy::Create(D3DXVECTOR3(0.0f, 0.0f, -800.0f), CEnemy::ENEMY_CARRIER);
 	// アイテムの生成
 	m_pItem = CItem::Create(D3DXVECTOR3(200.0f, 0.0f, -800.0f));
 	// スコアの生成

@@ -126,6 +126,7 @@ void CWall::Uninit(void)
 //==================================
 void CWall::Update(void)
 {
+	//プレイヤーとエネミーのCollisionを呼び出す
 	CollisionPlayer();
 	CollisionEnemy();
 }

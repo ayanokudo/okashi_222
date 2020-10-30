@@ -35,14 +35,13 @@ class CPlayer : public CModelHierarchy
 public:
 	typedef enum
 	{
-		ANIM_WAIT = 0,
-		ANIM_WALK,
-		ANIM_VOICE,
-		ANIM_PUNCH,
-		ANIM_DASH,
+		ANIM_WAIT = 0,// 待機
+		ANIM_WALK,	  // 歩き
+		ANIM_VOICE,	  // 鳴き声
+		ANIM_PUNCH,	  // パンチ
+		ANIM_DASH,	  // 走り
 		ANIM_MAX
 	}ANIMATION;
-
 
 	//メンバ関数
 	CPlayer();

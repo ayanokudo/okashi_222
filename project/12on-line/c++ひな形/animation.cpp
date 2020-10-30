@@ -101,13 +101,14 @@ void CAnimation::Update(void)
 {
 	if (m_bAnim)
 	{
+
 		// フレームカウントを進める
 		m_nCntFrame++;
-		if (m_nCntFrame%m_nNumFrame[m_nCntKey] == 0)
+		if (m_nCntFrame % m_nNumFrame[m_nCntKey] == 0)
 		{
 			// キーカウントを進める
 			m_nCntKey++;
-			
+
 			if (m_nCntKey >= m_nNumKey)
 			{// 一周終えてループしないとき
 				if (!m_bLoop)
@@ -121,7 +122,7 @@ void CAnimation::Update(void)
 					m_nCntKey = 0;
 				}
 			}
-			
+
 			// 加算値の更新
 			for (int nCntParts = 0; nCntParts < m_nNumParts; nCntParts++)
 			{
@@ -137,12 +138,16 @@ void CAnimation::Update(void)
 				}
 
 			}
+			CDebugLog::Init();
+			CDebugLog::Print("%d\n",m_nCntKey);
+			CDebugLog::Print("%f,%f,%f", m_pModel[2].rot.x, m_pModel[2].rot.y, m_pModel[2].rot.z);
 		}
 
+		
 		for (int nCntParts = 0; nCntParts < m_nNumParts; nCntParts++)
 		{
 			m_pModel[nCntParts].pos += m_addPos[nCntParts];
-			m_pModel[nCntParts].rot += m_addRot[nCntParts];
+			m_pModel[nCntParts].rot += m_addRot[nCntParts]/2;
 		}
 	}
 }

@@ -24,7 +24,7 @@
 // マクロ定義
 //*****************************
 #define MODEL_PATH      "data/Models/cat_sakamoto.x"          //モデルのパス
-#define MODEL_TEST_PATH "data/Texts/CatData.txt"              //モデルのパス
+#define MODEL_TEST_PATH "data/Texts/CatData_Milk.txt"              //モデルのパス
 
 #define WAIT_ANIM_PATH  "data/Texts/NekoMotion/Wait.txt"      // 待機アニメーションのパス
 #define WALK_ANIM_PATH  "data/Texts/NekoMotion/Walk.txt"      // 歩きアニメーションのパス
@@ -46,7 +46,7 @@
 //*****************************
 CModel::Model CPlayer::m_model[MAX_PARTS_NUM] = {};
 int CPlayer::m_nNumModel = 0;
-char CPlayer::m_chAnimPath[ANIM_MAX][64]
+char CPlayer::m_achAnimPath[ANIM_MAX][64]
 {
     { WAIT_ANIM_PATH },    // 待機アニメーション
     { WALK_ANIM_PATH },	   // 歩きアニメーション
@@ -59,13 +59,14 @@ char CPlayer::m_chAnimPath[ANIM_MAX][64]
 //******************************
 CPlayer::CPlayer() :CModelHierarchy(OBJTYPE_PLAYER)
 {
+	// 変数のクリア
     m_move = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
     m_moveDest = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
     m_fRotYDist = 0.0f;
     m_nPlayerNum = 0;
     m_pCollision = NULL;
     m_nLife = 0;
-    m_pWalkAnim = NULL;
+	memset(&m_pAnim, 0, sizeof(m_pAnim));
 }
 
 //******************************
@@ -123,7 +124,7 @@ HRESULT CPlayer::Load(void)
         fscanf(pFile,"%*s %d # %*s", &m_nNumModel);
 
         for (int nCnt = 0; nCnt < m_nNumModel; nCnt++)
-        {
+		{
             // 読み込んだ文字格納用
             char chPath[64] = {};
             // "MODEL_FILENAME"を読み込むまでループ
@@ -148,7 +149,6 @@ HRESULT CPlayer::Load(void)
             fscanf(pFile, "%s", chChar);
         }
     }
-
 
     return S_OK;
 }
@@ -187,28 +187,24 @@ HRESULT CPlayer::Init(void)
         return E_FAIL;
     }
     m_nLife = PLAYER_1_LIFE;
-    // テクスチャ割り当て
-    //BindModel(m_pMeshModel, m_pBuffMatModel, m_nNumMatModel);
-
 
     // サイズの調整
     SetSize(D3DXVECTOR3(1.5f, 1.5f, 1.5f));
     // アニメーションの生成
     for (int nCntAnim = 0; nCntAnim < ANIM_MAX; nCntAnim++)
     {
-        m_pAnim[nCntAnim]= CAnimation::Create(GetPartsNum(), m_chAnimPath[nCntAnim], &m_model[0]);
+        m_pAnim[nCntAnim]= CAnimation::Create(GetPartsNum(), m_achAnimPath[nCntAnim], &m_model[0]);
     }
-    //m_pWalkAnim = CAnimation::Create(GetPartsNum(), WALK_ANIM_PATH, &m_model[0]);
 
 	// サイズの調整
 	SetSize(D3DXVECTOR3(1.5f, 1.5f, 1.5f));
 	// アニメーションの生成
 	for (int nCntAnim = 0; nCntAnim < ANIM_MAX; nCntAnim++)
 	{
-		m_pAnim[nCntAnim]= CAnimation::Create(GetPartsNum(), m_chAnimPath[nCntAnim], &m_model[0]);
+		m_pAnim[nCntAnim]= CAnimation::Create(GetPartsNum(), m_achAnimPath[nCntAnim], &m_model[0]);
 	}
 	
-	m_pAnim[ANIM_WAIT]->SetActiveAnimation(true);
+	m_pAnim[ANIM_PUNCH]->SetActiveAnimation(true);
 
 	m_pCollision = CCollision::CreateSphere(GetPos(), PLAYER_RADIUS);
 	return S_OK;
@@ -258,6 +254,19 @@ void CPlayer::Update(void)
     Direction();
     // 攻撃
     Attack();
+
+	if (CManager::GetKeyboard()->GetKeyTrigger(DIK_K))
+	{
+		AnimationFalse();
+		m_pAnim[ANIM_PUNCH]->SetActiveAnimation(true);
+	}
+	if (!m_pAnim[ANIM_PUNCH]->GetActiveAnimation())
+	{
+		if (!m_pAnim[ANIM_WALK]->GetActiveAnimation())
+		{
+			m_pAnim[ANIM_WALK]->SetActiveAnimation(true);
+		}
+	}
 
     // 当たり判定の位置更新
     m_pCollision->SetPos(GetPos());
@@ -309,7 +318,7 @@ void CPlayer::MoveKeyboard(void)
     {// ↓移動
     
         // 向きの設定
-        m_fRotYDist = D3DXToRadian(180);
+        m_fRotYDist  = D3DXToRadian(180);
         m_moveDest.z = PLAYER_SPEED;
 
         if (CManager::GetKeyboard()->GetKeyPress(DIK_A))

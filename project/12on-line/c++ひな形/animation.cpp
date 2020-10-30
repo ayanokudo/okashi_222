@@ -63,7 +63,6 @@ CAnimation * CAnimation::Create(int nNumParts, const char *pPath, CModel::Model*
 	// 初期化
 	pAnimation->Init();
 	
-	
 	return pAnimation;
 }
 
@@ -80,8 +79,10 @@ HRESULT CAnimation::Init(void)
 	// 加算値の初期化
 	for (int nCntParts = 0; nCntParts < m_nNumParts; nCntParts++)
 	{
+		m_pModel[nCntParts].rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 		m_addRot[nCntParts] = (m_rot[m_nCntKey][nCntParts] - m_pModel[nCntParts].rot) / m_nNumFrame[m_nCntKey];
 	}
+
 	return S_OK;
 }
 
@@ -100,19 +101,28 @@ void CAnimation::Update(void)
 {
 	if (m_bAnim)
 	{
+
 		// フレームカウントを進める
 		m_nCntFrame++;
-		if (m_nCntFrame%m_nNumFrame[m_nCntKey] == 0)
+		if (m_nCntFrame % m_nNumFrame[m_nCntKey] == 0)
 		{
 			// キーカウントを進める
 			m_nCntKey++;
-			m_nCntKey %= m_nNumKey;
-			if (m_nCntKey == 0&&!m_bLoop)
+
+			if (m_nCntKey >= m_nNumKey)
 			{// 一周終えてループしないとき
-				// アニメーションの終了
-				m_bAnim = false; 
-				return;
+				if (!m_bLoop)
+				{
+					// アニメーションの終了
+					m_bAnim = false;
+					return;
+				}
+				else
+				{
+					m_nCntKey = 0;
+				}
 			}
+
 			// 加算値の更新
 			for (int nCntParts = 0; nCntParts < m_nNumParts; nCntParts++)
 			{
@@ -128,12 +138,16 @@ void CAnimation::Update(void)
 				}
 
 			}
+			CDebugLog::Init();
+			CDebugLog::Print("%d\n",m_nCntKey);
+			CDebugLog::Print("%f,%f,%f", m_pModel[2].rot.x, m_pModel[2].rot.y, m_pModel[2].rot.z);
 		}
 
+		
 		for (int nCntParts = 0; nCntParts < m_nNumParts; nCntParts++)
 		{
 			m_pModel[nCntParts].pos += m_addPos[nCntParts];
-			m_pModel[nCntParts].rot += m_addRot[nCntParts];
+			m_pModel[nCntParts].rot += m_addRot[nCntParts]/2;
 		}
 	}
 }

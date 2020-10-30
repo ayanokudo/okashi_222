@@ -85,7 +85,7 @@ HRESULT CGame::Init(void)
 	for (int nCntPlayer = 0; nCntPlayer < MAX_PLAYER;nCntPlayer++)
 	{
 		// プレイヤーの生成
-		m_pPlayer[nCntPlayer] = CPlayer::Create(D3DXVECTOR3(0.0f,75.0f, 0.0f), nCntPlayer);
+		m_pPlayer[nCntPlayer] = CPlayer::Create(D3DXVECTOR3(0.0f,0.0f, 0.0f), nCntPlayer);
 	}
 	
 	// エネミーの生成

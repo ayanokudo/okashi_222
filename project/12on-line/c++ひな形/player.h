@@ -35,14 +35,13 @@ class CPlayer : public CModelHierarchy
 public:
 	typedef enum
 	{
-		ANIM_WAIT = 0,
-		ANIM_WALK,
-		ANIM_VOICE,
-		ANIM_PUNCH,
-		ANIM_DASH,
+		ANIM_WAIT = 0,// 待機
+		ANIM_WALK,	  // 歩き
+		ANIM_VOICE,	  // 鳴き声
+		ANIM_PUNCH,	  // パンチ
+		ANIM_DASH,	  // 走り
 		ANIM_MAX
 	}ANIMATION;
-
 
 	//メンバ関数
 	CPlayer();
@@ -69,15 +68,14 @@ private:
 	// メンバ変数
 	static CModel::Model m_model[MAX_PARTS_NUM];
 	static int m_nNumModel;
-	static char m_chAnimPath[ANIM_MAX][64]; // アニメーションテキストのパス格納用
+	static char m_achAnimPath[ANIM_MAX][64]; // アニメーションテキストのパス格納用
 	D3DXVECTOR3 m_move;           // 移動量
 	D3DXVECTOR3 m_moveDest;       // 移動量の目標値
 	float m_fRotYDist;            // プレイヤーの向いている向きの目標値
 	int m_nPlayerNum;             // プレイヤー番号
 	CCollision*m_pCollision;      // コリジョンクラスのポインタ
-	CAnimation*m_pWalkAnim;       // 歩きアニメーション
 	CAnimation*m_pAnim[ANIM_MAX]; // アニメーションポインタ
-	int m_nLife;				// プレイヤーのライフ
+	int m_nLife;				  // プレイヤーのライフ
 };
 
 #endif

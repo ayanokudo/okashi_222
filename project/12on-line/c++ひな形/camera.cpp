@@ -107,7 +107,7 @@ void CCamera::Uninit(void)
 //******************************
 void CCamera::Update(void)
 {
-#ifdef _DE/BUG
+#ifdef _DEB/UG
 	m_fPhi -= CManager::GetMouse()->GetMouseMove().y / 100.0f;
 	m_fTheta -= CManager::GetMouse()->GetMouseMove().x / 100.0f;
 	// 注視点をプレイヤーにする
@@ -119,11 +119,11 @@ void CCamera::Update(void)
 
 	if (CManager::GetKeyboard()->GetKeyPress(DIK_UP))
 	{
-		m_fRad += 2.0f;
+		m_fRad += 4.0f;
 	}
 	if (CManager::GetKeyboard()->GetKeyPress(DIK_DOWN))
 	{
-		m_fRad -= 2.0f;
+		m_fRad -= 4.0f;
 	}
 
 #else

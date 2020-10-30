@@ -1,7 +1,7 @@
 //=============================================================================
 //
 // モデル処理 [ModelHirarchy.cpp]
-// Author : 山田陵太
+// Author : 増澤未来
 //
 //=============================================================================
 #include "model_hierarchy.h"
@@ -147,10 +147,20 @@ void CModelHierarchy::Draw(void)
 		if (m_model[nCntParts].nParent == -1)
 		{// 自分が一番の親のとき
 
-			m_model[nCntParts].pos = m_pos+ m_model[nCntParts].pos;
-			m_model[nCntParts].rot = m_rot+ m_model[nCntParts].rot;
+			/*m_model[nCntParts].pos = m_pos + m_model[nCntParts].pos;
+			m_model[nCntParts].rot = m_rot + m_model[nCntParts].rot;*/
+			
 			//向きを反映
-			D3DXMatrixRotationYawPitchRoll(&mtxRot, m_rot.y, m_rot.x, m_rot.z);
+			D3DXMatrixRotationYawPitchRoll(&mtxRot, m_model[nCntParts].rot.y, m_model[nCntParts].rot.x, m_model[nCntParts].rot.z);
+			D3DXMatrixMultiply(&m_model[nCntParts].mtxWorld, &m_model[nCntParts].mtxWorld, &mtxRot);
+
+			//向きを反映
+			/*D3DXMatrixRotationYawPitchRoll(&mtxRot, m_rot.y, m_rot.x, m_rot.z);
+			D3DXMatrixMultiply(&m_model[nCntParts].mtxWorld, &m_model[nCntParts].mtxWorld, &mtxRot);*/
+
+			//位置を反映
+
+			D3DXMatrixTranslation(&mtxRot, m_model[nCntParts].pos.x, m_model[nCntParts].pos.y, m_model[nCntParts].pos.z);
 			D3DXMatrixMultiply(&m_model[nCntParts].mtxWorld, &m_model[nCntParts].mtxWorld, &mtxRot);
 
 			//位置を反映

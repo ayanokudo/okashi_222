@@ -31,7 +31,7 @@
 //*****************************************************************************
 CModel::OBJTYPE CObject::m_type= CModel::OBJTYPE_PLAYER;
 int CObject::m_ObjctNum = 0;
-CModel *CObject::m_pModel[MAX_OBJECT] = {};
+CModel *CObject::m_pModel = NULL;
 CPlayer *CObject::m_pPlayer = NULL;
 CCursor *CObject::m_pCursor = NULL;                     // カーソルへのポインタ
 
@@ -241,28 +241,19 @@ void CObject::DeleteObject(void)
 // 引数
 //pos : 位置
 //=============================================================================
-void CObject::SetObject(D3DXVECTOR3 pos ,CModel::OBJTYPE type)
+void CObject::SetObject(D3DXVECTOR3 pos, CModel::OBJTYPE type)
 {
-        // 現在の位置にオブジェクトの配置をする
-        for (int nCnt = 0; nCnt < MAX_OBJECT; nCnt++)
-        {
-            if (m_pModel[nCnt] == NULL)
-            {
-                switch (type)
-                {
-                case CModel::OBJTYPE_PLAYER:
+    switch (type)
+    {
+    case CModel::OBJTYPE_PLAYER:
 
-                    m_pModel[nCnt] = CPlayer::Create(pos);
-                    break;
+        m_pModel= CPlayer::Create(pos);
+        break;
 
-                case CModel::OBJTYPE_ENEMY:
-                    m_pModel[nCnt] = CEnemy::Create(pos);
-                    break;
-                }
-
-                break;// 一体ずつ配置するためにループを抜ける
-            }
-        }
+    case CModel::OBJTYPE_ENEMY:
+        m_pModel = CEnemy::Create(pos);
+        break;
+    }
 }
 
 //=============================================================================

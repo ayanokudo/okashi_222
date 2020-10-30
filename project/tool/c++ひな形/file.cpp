@@ -96,24 +96,44 @@ void CFile::Writing(void)
 
         fprintf(pFile, "SCRIPT          // スクリプト開始 \n\n");       // スクリプト開始
 
+        CScene*pScene = CScene::GetTop(CScene::OBJTYPE_PLAYER);
         // オブジェクトの数分データを書きだす
-        for (int nCntObjct = 0; nCntObjct < MAX_OBJECT; nCntObjct++)
+        while (pScene != NULL)
         {
-            CModel *pScene = CObject::GetObjectData(nCntObjct);
+
+            if (pScene != CObject::GetPlayer())
+            {// カーソルに使われているオブジェクトを書き込み
+                if (pScene)
+                {// オブジェクトがあった場合
+                    D3DXVECTOR3 pos = ((CModel*)pScene)->GetPos();
+                    fprintf(pFile, "\tOBJ_SET\n");
+                    fprintf(pFile, "\t\t POS %.1f %.1f %.1f \n", pos.x, pos.y, pos.z);
+                    fprintf(pFile, "\t\t TYPE %d \n", pScene->GetType());
+                    fprintf(pFile, "\tEND_OBJ_SET\n");
+                    fprintf(pFile, "\n");
+                }
+            }
+            pScene = pScene->GetNext();
+        }
+        pScene = CScene::GetTop(CScene::OBJTYPE_ENEMY);
+
+        // オブジェクトの数分データを書きだす
+        while (pScene != NULL)
+        {
             if (pScene)
             {// オブジェクトがあった場合
-                D3DXVECTOR3 pos = pScene->GetPos();
+                D3DXVECTOR3 pos = ((CModel*)pScene)->GetPos();
                 fprintf(pFile, "\tOBJ_SET\n");
-                fprintf(pFile, "\t\t POS %.1f %.1f %.1f \n", pos.x,pos.y,pos.z);
+                fprintf(pFile, "\t\t POS %.1f %.1f %.1f \n", pos.x, pos.y, pos.z);
                 fprintf(pFile, "\t\t TYPE %d \n", pScene->GetType());
                 fprintf(pFile, "\tEND_OBJ_SET\n");
                 fprintf(pFile, "\n");
             }
+            pScene = pScene->GetNext();
         }
+
         fprintf(pFile, "\n");
         fprintf(pFile, "END_SCRIPT      // スクリプト終了");   // スクリプト終了
         fclose(pFile);                  // ファイル書き込み終了
-
     }
-
 }

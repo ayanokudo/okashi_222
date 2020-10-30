@@ -19,11 +19,6 @@ class CCursor;
 class CCollision;
 
 //*****************************************************************************
-// マクロ定義
-//*****************************************************************************
-#define MAX_OBJECT (128)            // 配置できるオブジェクトの数
-
-//*****************************************************************************
 // クラスの定義
 //*****************************************************************************
 // オブジェクトクラス
@@ -57,7 +52,7 @@ public:
     static CPlayer *GetPlayer(void) { return m_pPlayer; }
 
     // オブジェクトの情報のゲッタ
-    static CModel *GetObjectData(int nNumObj) { return m_pModel[nNumObj]; }
+    static CModel *GetObjectData(int nNumObj) { return m_pModel; }
 
     // 位置情報のゲッタ
     D3DXVECTOR3 GetPos(void) { return m_pos; }
@@ -72,7 +67,7 @@ private:
     static int      m_ObjctNum;                    // オブジェクトの数
     static CPlayer*m_pPlayer;                      // プレイヤー
     static CCursor *m_pCursor;                     // カーソルへのポインタ
-    static CModel  *m_pModel[MAX_OBJECT];          // シーン
+    static CModel  *m_pModel;                      // シーン
     CCollision *m_pCollision;                      // 当たり判定
 
      bool           m_bGridMode;                   //グリッドモードがどうか

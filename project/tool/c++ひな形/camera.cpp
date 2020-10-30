@@ -20,7 +20,7 @@
 // マクロ定義
 //******************************
 #define CAMERA_DISTANCE 250    // カメラの距離
-#define CAMERA_LOCAL_POS D3DXVECTOR3(0.0f, 500.0f, 100.0f);
+#define CAMERA_LOCAL_POS D3DXVECTOR3(0.0f, 1500.0f, 100.0f);
 //******************************
 // 静的メンバ変数宣言
 //******************************
@@ -144,7 +144,7 @@ void CCamera::SetCamera(void)
 	D3DXMatrixIdentity(&m_pCamera->m_mtxProjection);
 
 	D3DXMatrixPerspectiveFovLH(&m_pCamera->m_mtxProjection,
-		D3DXToRadian(100.0f), 
+		D3DXToRadian(45.0f), 
 		(float)SCREEN_WIDTH / (float)SCREEN_HEIGHT, 0.0f, 1000.0f);
 	
 	//プロジェクションマトリックスの設定

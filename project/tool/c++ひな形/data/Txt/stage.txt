@@ -1,32 +1,27 @@
 SCRIPT          // スクリプト開始 
 
 	OBJ_SET
-		 POS 420.0 0.0 -660.0 
+		 POS 60.0 0.0 60.0 
 		 TYPE 8 
 	END_OBJ_SET
 
 	OBJ_SET
-		 POS 420.0 0.0 -300.0 
+		 POS 60.0 0.0 300.0 
 		 TYPE 8 
 	END_OBJ_SET
 
 	OBJ_SET
-		 POS 60.0 0.0 -60.0 
+		 POS -180.0 0.0 300.0 
 		 TYPE 8 
 	END_OBJ_SET
 
 	OBJ_SET
-		 POS -420.0 0.0 -60.0 
-		 TYPE 9 
-	END_OBJ_SET
-
-	OBJ_SET
-		 POS -1020.0 0.0 180.0 
+		 POS -300.0 0.0 300.0 
 		 TYPE 8 
 	END_OBJ_SET
 
 	OBJ_SET
-		 POS 180.0 0.0 180.0 
+		 POS -300.0 0.0 60.0 
 		 TYPE 9 
 	END_OBJ_SET
 

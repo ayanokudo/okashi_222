@@ -44,7 +44,7 @@ public:
 	void Draw(void);
 	void SetModel(CModel::Model*pModel) { m_pModel = pModel; }
 	void SetActiveAnimation(bool bActive);
-	bool GetActiveAnimation(void) { return m_bLoop; }
+	bool GetActiveAnimation(void) { return m_bAnim; }
 private:
 	void Load(const char *pPath);
 	// ƒƒ“ƒo•Ï”

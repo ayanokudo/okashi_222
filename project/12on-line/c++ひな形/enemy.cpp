@@ -291,7 +291,8 @@ void CEnemy::RangeDecisionEscort(void)
 		D3DXVECTOR3 playerPos = pPlayer->GetPos();
 		//エネミーの位置情報を取得
 		D3DXVECTOR3 enemyPos = GetPos();
-		enemyPos.y += 30;
+		
+
 		//プレイヤーと敵の範囲の当たり判定
 		if (CCollision::CollisionSphere(m_pRadiusColision, pPlayer->GetCollision()))
 		{
@@ -310,6 +311,7 @@ void CEnemy::RangeDecisionEscort(void)
 			//等間隔で打つ
 			if (m_nCount == 30)
 			{
+				enemyPos.y += 30;
 				CBullet::Create(enemyPos, Move, 300,
 					CBullet::BULLETUSER_ENEMY)->SetColor(D3DXCOLOR(1.0f, 1.0f, 0.0f, 1.0f));
 

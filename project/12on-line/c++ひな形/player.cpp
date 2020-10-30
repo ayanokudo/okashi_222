@@ -208,7 +208,7 @@ HRESULT CPlayer::Init(void)
 		m_pAnim[nCntAnim]= CAnimation::Create(GetPartsNum(), m_chAnimPath[nCntAnim], &m_model[0]);
 	}
 	
-	m_pAnim[ANIM_WAIT]->SetActiveAnimation(true);
+	m_pAnim[ANIM_VOICE]->SetActiveAnimation(true);
 
 	m_pCollision = CCollision::CreateSphere(GetPos(), PLAYER_RADIUS);
 	return S_OK;
@@ -258,6 +258,14 @@ void CPlayer::Update(void)
     Direction();
     // 攻撃
     Attack();
+
+	if (!m_pAnim[ANIM_VOICE]->GetActiveAnimation())
+	{
+		if (!m_pAnim[ANIM_WAIT]->GetActiveAnimation())
+		{
+			m_pAnim[ANIM_WAIT]->SetActiveAnimation(true);
+		}
+	}
 
     // 当たり判定の位置更新
     m_pCollision->SetPos(GetPos());

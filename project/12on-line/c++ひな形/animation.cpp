@@ -77,9 +77,11 @@ HRESULT CAnimation::Init(void)
 	m_nCntKey = 0;    // キーカウント
 	m_nCntFrame = 0;  // フレームカウント
 	
+	
 	// 加算値の初期化
 	for (int nCntParts = 0; nCntParts < m_nNumParts; nCntParts++)
 	{
+		m_pModel[nCntParts].rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 		m_addRot[nCntParts] = (m_rot[m_nCntKey][nCntParts] - m_pModel[nCntParts].rot) / m_nNumFrame[m_nCntKey];
 	}
 	return S_OK;
@@ -106,13 +108,21 @@ void CAnimation::Update(void)
 		{
 			// キーカウントを進める
 			m_nCntKey++;
-			m_nCntKey %= m_nNumKey;
-			if (m_nCntKey == 0&&!m_bLoop)
+			
+			if (m_nCntKey >= m_nNumKey)
 			{// 一周終えてループしないとき
-				// アニメーションの終了
-				m_bAnim = false; 
-				return;
+				if (!m_bLoop)
+				{
+					// アニメーションの終了
+					m_bAnim = false;
+					return;
+				}
+				else
+				{
+					m_nCntKey = 0;
+				}
 			}
+			
 			// 加算値の更新
 			for (int nCntParts = 0; nCntParts < m_nNumParts; nCntParts++)
 			{

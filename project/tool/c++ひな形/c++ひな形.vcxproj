@@ -182,6 +182,7 @@
     <ClCompile Include="scene.cpp" />
     <ClCompile Include="scene2d.cpp" />
     <ClCompile Include="scene3d.cpp" />
+    <ClCompile Include="scene_x.cpp" />
     <ClCompile Include="score.cpp" />
     <ClCompile Include="sound.cpp" />
     <ClCompile Include="stage.cpp" />
@@ -226,6 +227,7 @@
     <ClInclude Include="scene.h" />
     <ClInclude Include="scene2d.h" />
     <ClInclude Include="scene3d.h" />
+    <ClInclude Include="scene_x.h" />
     <ClInclude Include="score.h" />
     <ClInclude Include="sound.h" />
     <ClInclude Include="stage.h" />

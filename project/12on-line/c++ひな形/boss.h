@@ -29,6 +29,17 @@ class CCollision;
 class CBoss : public CModel
 {
 public:
+	//ボスの攻撃方法とスタンのタイプ分け
+	typedef enum
+	{
+		TYPE_ATTACK_RANGE = 0,		// 範囲攻撃
+		TYPE_ATTACK_FAR,			// 遠距離攻撃
+		TYPE_ATTACK_PROXIMITY,		// 近接攻撃
+		TYPE_NUMB,					// 麻痺
+		TYPE_MAX
+	}BOSS;
+
+
 	//メンバ関数
 	CBoss();
 	~CBoss();
@@ -43,10 +54,6 @@ public:
 	CCollision *GetCollision(void) { return m_pCollision; }
 private:
 	//各敵キャラの動きの処理
-	void RangeDecisionCarrier(void);
-	void RangeDecisionEscort(void);
-	void MotionCarrier(void);
-	void MotionEscort(void);
 	void Move(void);
 	void Direction(void);
 

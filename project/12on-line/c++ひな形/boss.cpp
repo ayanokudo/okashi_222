@@ -21,17 +21,12 @@
 //*****************************
 // マクロ定義
 //*****************************
-#define ENEMY_CARRIER_MODEL_PATH	"./data/Models/cube.x"	//運びネズミのモデル情報
-#define ENEMY_ESCORT_MODEL_PATH		"./data/Models/cat_sakamoto.x"	//守りネズミのモデル情報
+#define BOSS_CARRIER_MODEL_PATH	"./data/Models/cube.x"	//運びネズミのモデル情報
 #define ENEMY_SPEED 5
-#define ENEMY_RAND rand() % 8 + 1
 #define ENEMY_MOVE_RATE 0.05f
-#define ENEMY_RADIUS  50
+#define ENEMY_RADIUS  100
 #define ENEMY_RANGE_RADIUS 600
-#define ENEMY_MOVE_RATE 0.05f 
 #define ENEMY_DIRECTION_RATE 0.1f              // 向きを変えるときの係数
-#define ENEMY_ESCORT_LIFE 100
-#define ENEMY_CARRIER_LIFE 100
 
 //*****************************
 // 静的メンバ変数宣言
@@ -96,7 +91,7 @@ HRESULT CBoss::Load(void)
 
 	//Xファイルの読み込み
 	//運びネズミ
-	D3DXLoadMeshFromX(ENEMY_CARRIER_MODEL_PATH,
+	D3DXLoadMeshFromX(BOSS_CARRIER_MODEL_PATH,
 		D3DXMESH_SYSTEMMEM,
 		pDevice,
 		NULL,
@@ -215,196 +210,10 @@ void CBoss::Hit(int nDamage)
 
 }
 
-//******************************
-// 運びネズミの範囲判定の更新処理
-//******************************
-void CBoss::RangeDecisionCarrier(void)
-{
-	//プレイヤーの情報を取得
-	CPlayer*pPlayer = CGame::GetPlayer();
+////******************************
+//// 敵の移動処理
+////******************************
 
-	if (pPlayer != NULL)
-	{
-		//プレイヤーの位置情報を取得
-		D3DXVECTOR3 playerPos = pPlayer->GetPos();
-		//エネミーの位置情報を取得
-		D3DXVECTOR3 enemyPos = GetPos();
-		//プレイヤーと敵の範囲の当たり判定
-		if (CCollision::CollisionSphere(m_pRadiusColision, pPlayer->GetCollision()))
-		{
-			//エネミーの移動をしなくする
-			m_bRd = true;
-			//向きの設定
-			m_fRotYDist = atan2((playerPos.x - enemyPos.x), (playerPos.z - enemyPos.z));
-
-			// 移動量
-			D3DXVECTOR3 Move;
-			Move.x = sinf(m_fRotYDist)*10.0f;
-			Move.y = 0.0f;
-			Move.z = cosf(m_fRotYDist)*10.0f;
-
-			m_moveDest -= Move;
-		}
-		else
-		{
-			m_bRd = false;
-		}
-	}
-}
-
-//******************************
-// 守りネズミの範囲判定の更新処理
-//******************************
-void CBoss::RangeDecisionEscort(void)
-{
-	//プレイヤーの情報を取得
-	CPlayer*pPlayer = CGame::GetPlayer();
-
-	if (pPlayer != NULL)
-	{
-		//プレイヤーの位置情報を取得
-		D3DXVECTOR3 playerPos = pPlayer->GetPos();
-		//エネミーの位置情報を取得
-		D3DXVECTOR3 enemyPos = GetPos();
-		enemyPos.y += 30;
-		//プレイヤーと敵の範囲の当たり判定
-		if (CCollision::CollisionSphere(m_pRadiusColision, pPlayer->GetCollision()))
-		{
-			//エネミーの移動をしなくする
-			m_bRd = true;
-			m_nCount++;
-			//向きの設定
-			m_fRotYDist = atan2((playerPos.x - enemyPos.x), (playerPos.z - enemyPos.z));
-
-			// 移動量
-			D3DXVECTOR3 Move;
-			Move.x = sinf(m_fRotYDist)*10.0f;
-			Move.y = 0.0f;
-			Move.z = cosf(m_fRotYDist)*10.0f;
-
-			//等間隔で打つ
-			if (m_nCount == 30)
-			{
-				CBullet::Create(enemyPos, Move, 300,
-					CBullet::BULLETUSER_ENEMY)->SetColor(D3DXCOLOR(1.0f, 1.0f, 0.0f, 1.0f));
-
-				m_nCount = 0;
-			}
-			//弾の向きの設定
-			m_fRotYDist = atan2(-(playerPos.x - enemyPos.x), -(playerPos.z - enemyPos.z));
-		}
-		else
-		{
-			//エネミーを再度動かす
-			m_bRd = false;
-		}
-	}
-}
-
-//******************************
-// 運びネズミの動き更新処理
-//******************************
-void CBoss::MotionCarrier(void)
-{
-	//falseの時
-	if (!m_bRd)
-	{
-		//移動処理
-		Move();
-	}
-}
-
-//******************************
-// 守りネズミの動き更新処理
-//******************************
-void CBoss::MotionEscort(void)
-{
-	//falseの時
-	if (!m_bRd)
-	{
-		//移動処理
-		Move();
-	}
-}
-
-//******************************
-// 敵の移動処理
-//******************************
-void CBoss::Move(void)
-{
-	//カウントプラス
-	m_nCountMotion++;
-	//50カウント言ったら乱数処理に入る
-	if (m_nCountMotion == 50)
-	{
-		//乱数
-		m_nCountRand = ENEMY_RAND;
-		m_nCountMotion = 0;
-	}
-	switch (m_nCountRand)
-	{
-	case 1:
-		// ↓移動
-		m_moveDest.z = ENEMY_SPEED;
-
-		// 向きの設定
-		m_fRotYDist = D3DXToRadian(180);
-		break;
-	case 2:
-		// ↑移動
-		m_moveDest.z = -ENEMY_SPEED;
-
-		// 向きの設定
-		m_fRotYDist = D3DXToRadian(0);
-		break;
-	case 3:
-		// ←移動
-		m_moveDest.x = ENEMY_SPEED;
-
-		// 向きの設定
-		m_fRotYDist = D3DXToRadian(-90);
-		break;
-	case 4:
-		// →移動
-		m_moveDest.x = -ENEMY_SPEED;
-
-		// 向きの設定
-		m_fRotYDist = D3DXToRadian(90);
-		break;
-	case 5:
-		//　斜め
-		m_moveDest.z = sinf(45) * -ENEMY_SPEED;
-		m_moveDest.x = cosf(45) * ENEMY_SPEED;
-
-		// 向きの設定
-		m_fRotYDist = D3DXToRadian(-45);
-		break;
-	case 6:
-		//　斜め
-		m_moveDest.z = sinf(45) * -ENEMY_SPEED;
-		m_moveDest.x = cosf(45) * -ENEMY_SPEED;
-
-		// 向きの設定
-		m_fRotYDist = D3DXToRadian(45);
-		break;
-	case 7:
-		//　斜め
-		m_moveDest.z = sinf(45) * ENEMY_SPEED;
-		m_moveDest.x = cosf(45) * ENEMY_SPEED;
-
-		// 向きの設定
-		m_fRotYDist = D3DXToRadian(225);
-		break;
-	case 8:
-		//　斜め
-		m_moveDest.z = sinf(45) * ENEMY_SPEED;
-		m_moveDest.x = cosf(45) * -ENEMY_SPEED;
-
-		// 向きの設定
-		m_fRotYDist = D3DXToRadian(135);
-		break;
-	}
-}
 
 //******************************
 // キャラクターの向きの設定

@@ -43,6 +43,13 @@ public:
 		ANIM_MAX
 	}ANIMATION;
 
+	typedef enum
+	{
+		TYPE_WALK,
+		TYPE_DASH,
+		TYPE_MAX
+	}PLAYERTYPE;
+
 	//メンバ関数
 	CPlayer();
 	~CPlayer();
@@ -76,6 +83,7 @@ private:
 	CCollision*m_pCollision;      // コリジョンクラスのポインタ
 	CAnimation*m_pAnim[ANIM_MAX]; // アニメーションポインタ
 	int m_nLife;				  // プレイヤーのライフ
+	int m_nSpeed;
 };
 
 #endif

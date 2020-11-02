@@ -38,7 +38,7 @@
 #define PLAYER_RADIUS 100						// プレイヤーの半径
 #define PLAYER_1_LIFE 100						// プレイヤー１のライフ
 #define PLAYER_2_LIFE 100						// プレイヤー２のライフ
-
+#define PLAYER_SPEED_MAX 5
 
 
 //*****************************
@@ -66,6 +66,7 @@ CPlayer::CPlayer() :CModelHierarchy(OBJTYPE_PLAYER)
     m_nPlayerNum = 0;
     m_pCollision = NULL;
     m_nLife = 0;
+	m_nSpeed = 0;
 	memset(&m_pAnim, 0, sizeof(m_pAnim));
 }
 
@@ -286,13 +287,12 @@ void CPlayer::Draw(void)
 void CPlayer::MoveKeyboard(void)
 {
     // 移動処理
-
     // ジョイスティックの取得
     DIJOYSTATE js = CManager::GetJoypad()->GetStick(0);
 
     if (CManager::GetKeyboard()->GetKeyPress(DIK_W))
     {// ↑移動
-        m_moveDest.z = -PLAYER_SPEED;
+        m_moveDest.z = -PLAYER_SPEED - m_nSpeed;
 
         // 向きの設定
         m_fRotYDist = D3DXToRadian(0);
@@ -302,16 +302,16 @@ void CPlayer::MoveKeyboard(void)
             // 向きの設定
             m_fRotYDist = D3DXToRadian(-45);
 
-            m_moveDest.z = sinf(45) * -PLAYER_SPEED;
-            m_moveDest.x = cosf(45) * PLAYER_SPEED;
+            m_moveDest.z = sinf(45) * -PLAYER_SPEED - m_nSpeed;
+            m_moveDest.x = cosf(45) * PLAYER_SPEED + m_nSpeed;
         }
         if (CManager::GetKeyboard()->GetKeyPress(DIK_D))
         {
             // 向きの設定
             m_fRotYDist = D3DXToRadian(45);
 
-            m_moveDest.z = sinf(45) * -PLAYER_SPEED;
-            m_moveDest.x = cosf(45) * -PLAYER_SPEED;
+            m_moveDest.z = sinf(45) * -PLAYER_SPEED - m_nSpeed;
+            m_moveDest.x = cosf(45) * -PLAYER_SPEED - m_nSpeed;
         }
     }
     else if (CManager::GetKeyboard()->GetKeyPress(DIK_S))
@@ -319,23 +319,23 @@ void CPlayer::MoveKeyboard(void)
     
         // 向きの設定
         m_fRotYDist  = D3DXToRadian(180);
-        m_moveDest.z = PLAYER_SPEED;
+        m_moveDest.z = PLAYER_SPEED + m_nSpeed;
 
         if (CManager::GetKeyboard()->GetKeyPress(DIK_A))
         {
             // 向きの設定
             m_fRotYDist = D3DXToRadian(225);
 
-            m_moveDest.z = sinf(45) * PLAYER_SPEED;
-            m_moveDest.x = cosf(45) * PLAYER_SPEED;
+            m_moveDest.z = sinf(45) * PLAYER_SPEED + m_nSpeed;
+            m_moveDest.x = cosf(45) * PLAYER_SPEED + m_nSpeed;
         }
         if (CManager::GetKeyboard()->GetKeyPress(DIK_D))
         {
             // 向きの設定
             m_fRotYDist = D3DXToRadian(135);
 
-            m_moveDest.z = sinf(45) * PLAYER_SPEED;
-            m_moveDest.x = cosf(45) * -PLAYER_SPEED;
+            m_moveDest.z = sinf(45) * PLAYER_SPEED + m_nSpeed;
+            m_moveDest.x = cosf(45) * -PLAYER_SPEED - m_nSpeed;
         }
     }
     else if (CManager::GetKeyboard()->GetKeyPress(DIK_A))
@@ -344,7 +344,7 @@ void CPlayer::MoveKeyboard(void)
         // 向きの設定
         m_fRotYDist = D3DXToRadian(-90);
 
-        m_moveDest.x = PLAYER_SPEED;
+        m_moveDest.x = PLAYER_SPEED + m_nSpeed;
 
     }
     else if (CManager::GetKeyboard()->GetKeyPress(DIK_D))
@@ -353,12 +353,20 @@ void CPlayer::MoveKeyboard(void)
         // 向きの設定
         m_fRotYDist = D3DXToRadian(90);
 
-        m_moveDest.x = -PLAYER_SPEED;
+        m_moveDest.x = -PLAYER_SPEED - m_nSpeed;
     }
 
-    
-
+	//ダッシュ処理
+	if (CManager::GetKeyboard()->GetKeyPress(DIK_LSHIFT))
+	{
+		m_nSpeed = PLAYER_SPEED_MAX;
+	}
+	else
+	{
+		m_nSpeed = 0;
+	}
 }
+
 //******************************
 // 移動操作(コントローラー)
 //******************************

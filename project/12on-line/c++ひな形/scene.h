@@ -17,6 +17,7 @@
 //***********************************
 #define MAX_SCENE 1280   // ポリゴンの最大数
 #define PRIORITY_NUM OBJTYPE_MAX
+
 //=============================
 //クラス定義
 //=============================
@@ -56,7 +57,6 @@ public:
 	static void DrawAll(void);
 	static int GetNumAll(void) { return m_nIDAll; }
 	
-
 	void SetObjType(const OBJTYPE objType) { m_type = objType; }
 	OBJTYPE GetType(void) { return m_type; }
 	int GetID(void) { return m_nNumID; } // 配列番号の取得

@@ -38,6 +38,7 @@
 #include "item.h"
 #include "debug_log.h"
 #include "scratch.h"
+#include "ui.h"
 
 //=============================
 // 静的メンバ変数宣言
@@ -137,7 +138,8 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, bool bWindow)
 	CBullet::Load();    // 弾
 	CEnemy::Load();		// 敵
 	CItem::Load();		// アイテム
-	CScratch::Load();
+	CScratch::Load();	// ひっかき
+	CUi::Load();		// ui
 
 	// ポーズ状態の時
 	return S_OK;
@@ -162,7 +164,8 @@ void CManager::Uninit(void)
 	CWall::Unload();	 //	壁
 	CEnemy::Unload();	 // 敵
 	CItem::Unload();	 //	アイテム
-	CScratch::Unload();
+	CScratch::Unload();  // ひっかき
+	CUi::Unload();		 // ui
 
 	if (m_pSound != NULL)
 	{

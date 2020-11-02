@@ -116,6 +116,9 @@
     <ClCompile Include="boss.cpp">
       <Filter>ソースファイル</Filter>
     </ClCompile>
+    <ClCompile Include="ui.cpp">
+      <Filter>ソースファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bg.h">
@@ -229,6 +232,9 @@
     <ClInclude Include="model_hierarchy.h" />
     <ClInclude Include="animation.h" />
     <ClInclude Include="boss.h">
+      <Filter>ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="ui.h">
       <Filter>ヘッダーファイル</Filter>
     </ClInclude>
   </ItemGroup>

@@ -9,7 +9,10 @@
 
 
 #define IMGUI_ON    // imguiオン
-//#undef  IMGUI_ON    // imguiオフ
+#undef  IMGUI_ON    // imguiオフ
+#ifdef IMGUI_ON
+
+
 //*****************************************************************************
 // クラスの定義
 //*****************************************************************************
@@ -19,9 +22,9 @@ public:
     CUI();
     ~CUI();
 
-    CUI* Create(void);
+    CUI* Create(HWND hWnd);
 
-    void Init(void);
+    void Init(HWND hWnd);
     void Uninit(void);
     void Update(void);
     void Draw(void);
@@ -29,4 +32,5 @@ public:
 private:
 
 };
+#endif // IMGUI_ON
 #endif // !_UI_H_

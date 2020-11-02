@@ -4,6 +4,7 @@
 // Author : AYANO KUDO
 //
 //=============================================================================
+#ifdef IMGUI_ON
 #include "ui.h"
 
 #include "imgui/imgui.h"
@@ -46,7 +47,6 @@ CUI* CUI::Create(HWND hWnd)
 void CUI::Init(HWND hWnd)
 {
 
-
     // IMGUIÇÃê›íË
 #ifdef IMGUI_ON
     IMGUI_CHECKVERSION();
@@ -80,3 +80,4 @@ void CUI::Update(void)
 void CUI::Draw(void)
 {
 }
+#endif // IMGUI_ON

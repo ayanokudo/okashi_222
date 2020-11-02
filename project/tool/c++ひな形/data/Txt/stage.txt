@@ -171,11 +171,6 @@ SCRIPT          // スクリプト開始
 	END_OBJ_SET
 
 	OBJ_SET
-		 POS -900.0 0.0 180.0 
-		 TYPE 12 
-	END_OBJ_SET
-
-	OBJ_SET
 		 POS -900.0 0.0 300.0 
 		 TYPE 12 
 	END_OBJ_SET
@@ -217,6 +212,41 @@ SCRIPT          // スクリプト開始
 
 	OBJ_SET
 		 POS -420.0 0.0 780.0 
+		 TYPE 12 
+	END_OBJ_SET
+
+	OBJ_SET
+		 POS -900.0 0.0 180.0 
+		 TYPE 12 
+	END_OBJ_SET
+
+	OBJ_SET
+		 POS -900.0 0.0 180.0 
+		 TYPE 12 
+	END_OBJ_SET
+
+	OBJ_SET
+		 POS -900.0 0.0 780.0 
+		 TYPE 12 
+	END_OBJ_SET
+
+	OBJ_SET
+		 POS 540.0 0.0 780.0 
+		 TYPE 12 
+	END_OBJ_SET
+
+	OBJ_SET
+		 POS 540.0 0.0 180.0 
+		 TYPE 12 
+	END_OBJ_SET
+
+	OBJ_SET
+		 POS -300.0 0.0 180.0 
+		 TYPE 12 
+	END_OBJ_SET
+
+	OBJ_SET
+		 POS -300.0 0.0 780.0 
 		 TYPE 12 
 	END_OBJ_SET
 

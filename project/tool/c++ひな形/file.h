@@ -26,6 +26,7 @@ public:
     static void Read(void);
     static void Writing(void);
 
+    void ObjctWriting(CScene::OBJTYPE tye);
 
 private:
 

@@ -156,6 +156,8 @@ void CObject::Update(void)
     {
         DeleteObject();
     }
+    // オブジェクトの回転
+    Rotation();
     // 当たり判定の位置更新
     m_pCollision->SetPos(GetPos());
 }
@@ -203,6 +205,47 @@ CModel::OBJTYPE CObject::changeType(void)
 void CObject::GridTransform(void)
 {
     m_pos = { GRID_SIZE,0.0f,GRID_SIZE };
+}
+
+//=============================================================================
+// [Rotation] オブジェクトの回転
+//=============================================================================
+void CObject::Rotation(void)
+{
+    // 配置したオブジェクトと当たっているか調べる
+    for (int nCount = 0; nCount < PRIORITY_NUM; nCount++)
+    {
+        // 先頭のアドレスを取得
+        CScene *pScene = CScene::GetTop(nCount);
+        while (pScene != NULL)
+        {
+            // 次のアドレスを保存
+            CScene *pNext = pScene->GetNext();
+
+            if (pScene != m_pPlayer&&
+                pScene->GetType() == OBJTYPE_PLAYER ||
+                pScene->GetType() == OBJTYPE_ENEMY ||
+                pScene->GetType() == OBJTYPE_WALL ||
+                pScene->GetType() == OBJTYPE_FLOOR)
+            {
+                if (CCollision::CollisionSphere(m_pCollision, ((CModel*)pScene)->GetCollision()))
+                {
+                    D3DXVECTOR3 rot = ((CModel*)pScene)->GetRot();
+                    if (CManager::GetKeyboard()->GetKeyTrigger(DIK_I))
+                    {
+                        rot.y += D3DXToRadian(90);
+                    }
+                    if (CManager::GetKeyboard()->GetKeyTrigger(DIK_K))
+                    {
+                        rot.y -= D3DXToRadian(90);
+                    }
+                    ((CModel*)pScene)->SetRot(rot);
+                }
+            }
+            // 次のアドレスを取得
+            pScene = pNext;
+        }
+    }
 }
 
 //=============================================================================

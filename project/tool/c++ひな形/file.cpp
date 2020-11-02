@@ -96,7 +96,7 @@ void CFile::Writing(void)
 
         fprintf(pFile, "SCRIPT          // スクリプト開始 \n\n");       // スクリプト開始
 
-        CScene*pScene = CScene::GetTop(CScene::OBJTYPE_PLAYER);
+        CScene* pScene = CScene::GetTop(CScene::OBJTYPE_PLAYER);
         // オブジェクトの数分データを書きだす
         while (pScene != NULL)
         {
@@ -170,4 +170,8 @@ void CFile::Writing(void)
         fprintf(pFile, "END_SCRIPT      // スクリプト終了");   // スクリプト終了
         fclose(pFile);                  // ファイル書き込み終了
     }
+}
+
+void CFile::ObjctWriting(CScene::OBJTYPE tye)
+{
 }

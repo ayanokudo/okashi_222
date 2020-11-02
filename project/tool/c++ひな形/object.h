@@ -51,6 +51,7 @@ public:
 
     void GridTransform(void);
 
+    void Rotation(void);
 
    void ChangeObject(void);
 

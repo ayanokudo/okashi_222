@@ -44,7 +44,6 @@ CFloor * CFloor::Create(D3DXVECTOR3 pos)
     if (!pObject)
     {
         pObject = new CFloor;
-        pObject->Init();
         // ‰Šú‰»
         pObject->Init();
         pObject->SetPos(pos);

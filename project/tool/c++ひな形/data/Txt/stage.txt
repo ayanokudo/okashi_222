@@ -1,87 +1,17 @@
 SCRIPT          // スクリプト開始 
 
 	OBJ_SET
-		 POS -60.0 0.0 60.0 
-		 TYPE 5 
+		 POS -420.0 0.0 180.0 
+		 TYPE 11 
 	END_OBJ_SET
 
 	OBJ_SET
-		 POS 180.0 0.0 60.0 
-		 TYPE 5 
+		 POS -300.0 0.0 180.0 
+		 TYPE 11 
 	END_OBJ_SET
 
 	OBJ_SET
-		 POS 60.0 0.0 -180.0 
-		 TYPE 5 
-	END_OBJ_SET
-
-	OBJ_SET
-		 POS 420.0 0.0 60.0 
-		 TYPE 5 
-	END_OBJ_SET
-
-	OBJ_SET
-		 POS 60.0 0.0 300.0 
-		 TYPE 6 
-	END_OBJ_SET
-
-	OBJ_SET
-		 POS -60.0 0.0 -180.0 
-		 TYPE 6 
-	END_OBJ_SET
-
-	OBJ_SET
-		 POS -180.0 0.0 60.0 
-		 TYPE 12 
-	END_OBJ_SET
-
-	OBJ_SET
-		 POS -300.0 0.0 60.0 
-		 TYPE 12 
-	END_OBJ_SET
-
-	OBJ_SET
-		 POS -420.0 0.0 -60.0 
-		 TYPE 12 
-	END_OBJ_SET
-
-	OBJ_SET
-		 POS -420.0 0.0 -60.0 
-		 TYPE 12 
-	END_OBJ_SET
-
-	OBJ_SET
-		 POS -300.0 0.0 -60.0 
-		 TYPE 12 
-	END_OBJ_SET
-
-	OBJ_SET
-		 POS -180.0 0.0 -60.0 
-		 TYPE 12 
-	END_OBJ_SET
-
-	OBJ_SET
-		 POS -180.0 0.0 -60.0 
-		 TYPE 12 
-	END_OBJ_SET
-
-	OBJ_SET
-		 POS -300.0 0.0 -60.0 
-		 TYPE 12 
-	END_OBJ_SET
-
-	OBJ_SET
-		 POS -420.0 0.0 -60.0 
-		 TYPE 12 
-	END_OBJ_SET
-
-	OBJ_SET
-		 POS -300.0 0.0 -180.0 
-		 TYPE 12 
-	END_OBJ_SET
-
-	OBJ_SET
-		 POS -180.0 0.0 -180.0 
+		 POS -300.0 0.0 180.0 
 		 TYPE 12 
 	END_OBJ_SET
 

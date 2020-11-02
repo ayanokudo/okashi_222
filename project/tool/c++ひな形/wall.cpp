@@ -44,7 +44,6 @@ CWall * CWall::Create(D3DXVECTOR3 pos)
     if (!pObject)
     {
         pObject = new CWall;
-        pObject->Init();
         // ‰Šú‰»
         pObject->Init();
         pObject->SetPos(pos);

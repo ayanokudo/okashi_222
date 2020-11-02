@@ -60,7 +60,7 @@ CGrid * CGrid::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size, FLOOR type)
 		pFloor->m_type = type;
 		pFloor->SetPos(pos);
 		pFloor->SetSize(size);
-		pFloor->SetObjType(OBJTYPE_FLOOR);
+		pFloor->SetObjType(OBJTYPE_MAP);
 	}
 	//ƒ|ƒCƒ“ƒ^‚ð•Ô‚·
 	return pFloor;

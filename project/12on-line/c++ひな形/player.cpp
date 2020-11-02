@@ -19,7 +19,7 @@
 #include "collision.h"
 #include "scratch.h"
 #include "model_hierarchy.h"
-#include "animation.h"
+#include "motion.h"
 //*****************************
 // マクロ定義
 //*****************************
@@ -46,7 +46,7 @@
 //*****************************
 CModel::Model CPlayer::m_model[MAX_PARTS_NUM] = {};
 int CPlayer::m_nNumModel = 0;
-char CPlayer::m_achAnimPath[ANIM_MAX][64]
+char CPlayer::m_achAnimPath[MOTION_MAX][64]
 {
     { WAIT_ANIM_PATH },    // 待機アニメーション
     { WALK_ANIM_PATH },	   // 歩きアニメーション
@@ -60,13 +60,14 @@ char CPlayer::m_achAnimPath[ANIM_MAX][64]
 CPlayer::CPlayer() :CModelHierarchy(OBJTYPE_PLAYER)
 {
 	// 変数のクリア
-    m_move = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	m_move = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
     m_moveDest = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
     m_fRotYDist = 0.0f;
     m_nPlayerNum = 0;
     m_pCollision = NULL;
     m_nLife = 0;
-	memset(&m_pAnim, 0, sizeof(m_pAnim));
+	memset(&m_pMotion, 0, sizeof(m_pMotion));
+	m_motionState = WAIT;
 }
 
 //******************************
@@ -191,21 +192,22 @@ HRESULT CPlayer::Init(void)
     // サイズの調整
     SetSize(D3DXVECTOR3(1.5f, 1.5f, 1.5f));
     // アニメーションの生成
-    for (int nCntAnim = 0; nCntAnim < ANIM_MAX; nCntAnim++)
+    for (int nCntAnim = 0; nCntAnim < MOTION_MAX; nCntAnim++)
     {
-        m_pAnim[nCntAnim]= CAnimation::Create(GetPartsNum(), m_achAnimPath[nCntAnim], &m_model[0]);
+        m_pMotion[nCntAnim]= CMotion::Create(GetPartsNum(), m_achAnimPath[nCntAnim], &m_model[0]);
     }
 
 	// サイズの調整
 	SetSize(D3DXVECTOR3(1.5f, 1.5f, 1.5f));
 	// アニメーションの生成
-	for (int nCntAnim = 0; nCntAnim < ANIM_MAX; nCntAnim++)
+	for (int nCntAnim = 0; nCntAnim < MOTION_MAX; nCntAnim++)
 	{
-		m_pAnim[nCntAnim]= CAnimation::Create(GetPartsNum(), m_achAnimPath[nCntAnim], &m_model[0]);
+		m_pMotion[nCntAnim] = CMotion::Create(GetPartsNum(), m_achAnimPath[nCntAnim], GetModelData());
 	}
-	
-	m_pAnim[ANIM_PUNCH]->SetActiveAnimation(true);
+	// モーション状態の初期化
+	m_motionState = WAIT;
 
+	// 当たり判定の生成
 	m_pCollision = CCollision::CreateSphere(GetPos(), PLAYER_RADIUS);
 	return S_OK;
 }
@@ -229,44 +231,34 @@ void CPlayer::Uninit(void)
 //******************************
 void CPlayer::Update(void)
 {
-    // 目標値の初期化
-    m_moveDest = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	// 目標値の初期化
+	m_moveDest = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 
-    // 移動（キーボード）
-    MoveKeyboard();
+	// 移動（キーボード）
+	MoveKeyboard();
 
-    // 移動（コントローラー）
-    MoveController();
+	// 移動（コントローラー）
+	MoveController();
 
-    // 慣性
-    m_move += (m_moveDest - m_move) * PLAYER_MOVE_RATE;
+	// 慣性
+	m_move += (m_moveDest - m_move) * PLAYER_MOVE_RATE;
 
-    // 座標
-    D3DXVECTOR3 pos = GetPos();
+	// 座標
+	D3DXVECTOR3 pos = GetPos();
 
-    // 移動量を足す
-    pos += m_move;
+	// 移動量を足す
+	pos += m_move;
 
-    // 座標のセット
-    SetPos(pos);
+	// 座標のセット
+	SetPos(pos);
 
-    // 向きの管理
-    Direction();
-    // 攻撃
-    Attack();
+	// 向きの管理
+	Direction();
+	// 攻撃
+	Attack();
 
-	if (CManager::GetKeyboard()->GetKeyTrigger(DIK_K))
-	{
-		AnimationFalse();
-		m_pAnim[ANIM_PUNCH]->SetActiveAnimation(true);
-	}
-	if (!m_pAnim[ANIM_PUNCH]->GetActiveAnimation())
-	{
-		if (!m_pAnim[ANIM_WALK]->GetActiveAnimation())
-		{
-			m_pAnim[ANIM_WALK]->SetActiveAnimation(true);
-		}
-	}
+	// モーション管理
+	MotionManager();
 
     // 当たり判定の位置更新
     m_pCollision->SetPos(GetPos());
@@ -398,7 +390,7 @@ void CPlayer::MoveController(void)
         m_moveDest.x = cosf(fAngle) * -fSpeedX / 100;
         m_moveDest.z = sinf(fAngle) * fSpeedZ / 100;
         // 向きの設定
-        m_fRotYDist = atan2f(js.lX, js.lY);
+        m_fRotYDist = atan2f(js.lX, -js.lY);
     }
 
     // 慣性
@@ -411,8 +403,6 @@ void CPlayer::MoveController(void)
 
     // 座標のセット
     SetPos(pos);
-
-    SetModelData(&m_model[0]);
 }
 
 //******************************
@@ -471,17 +461,32 @@ void CPlayer::Attack(void)
 
         // 弾の生成
         CScratch::Create(pos, fRotY, CScratch::SCRATCHUSER_PLAYER,m_nPlayerNum);
+
+		MotionFalse();
+		m_pMotion[PUNCH]->SetActiveAnimation(true);
     }
 }
 
 //******************************
-// アニメーションをすべてfalseにする
+// モーションをすべてfalseにする
 //******************************
-void CPlayer::AnimationFalse(void)
+void CPlayer::MotionFalse(void)
 {
 	// アニメーションをすべてfalseにする
-	for (int nCntAnim = 0; nCntAnim < ANIM_MAX; nCntAnim++)
+	for (int nCntAnim = 0; nCntAnim < MOTION_MAX; nCntAnim++)
 	{
-		m_pAnim[nCntAnim]->SetActiveAnimation(false);
+		m_pMotion[nCntAnim]->SetActiveAnimation(false);
+	}
+}
+
+//******************************
+// モーション管理関数
+//******************************
+void CPlayer::MotionManager(void)
+{
+	if (!m_pMotion[m_motionState]->GetActiveAnimation())
+	{
+		MotionFalse();
+		m_pMotion[m_motionState]->SetActiveAnimation(true);
 	}
 }

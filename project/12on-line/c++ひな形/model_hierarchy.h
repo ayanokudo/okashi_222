@@ -38,6 +38,7 @@ public:
 	void Draw(void);
 
 	void SetModelData(CModel::Model *pModel);
+	CModel::Model * GetModelData(void) { return &m_model[0]; }
 	void SetPartsNum(int nNumParts) { m_nNumParts = nNumParts; }
 	int GetPartsNum(void) { return m_nNumParts; }
 	void SetPos(const D3DXVECTOR3 pos) { m_pos = pos; }

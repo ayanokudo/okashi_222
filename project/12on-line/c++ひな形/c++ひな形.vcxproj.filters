@@ -112,8 +112,10 @@
     <ClCompile Include="model_hierarchy.cpp">
       <Filter>ソースファイル</Filter>
     </ClCompile>
-    <ClCompile Include="animation.cpp" />
     <ClCompile Include="boss.cpp">
+      <Filter>ソースファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="motion.cpp">
       <Filter>ソースファイル</Filter>
     </ClCompile>
   </ItemGroup>
@@ -226,9 +228,13 @@
     <ClInclude Include="time.h">
       <Filter>ヘッダーファイル</Filter>
     </ClInclude>
-    <ClInclude Include="model_hierarchy.h" />
-    <ClInclude Include="animation.h" />
     <ClInclude Include="boss.h">
+      <Filter>ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="model_hierarchy.h">
+      <Filter>ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="motion.h">
       <Filter>ヘッダーファイル</Filter>
     </ClInclude>
   </ItemGroup>

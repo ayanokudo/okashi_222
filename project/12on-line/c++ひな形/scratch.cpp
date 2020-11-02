@@ -27,7 +27,7 @@
 #define SCRATCH_ANIM_SPEED 4                               // アニメーション速度
 #define SCRATCH_MAX_ANIMATION_X 5                          // アニメーション数 横
 #define SCRATCH_MAX_ANIMATION_Y 2                          // アニメーション数 縦
-#define SCRATCH_ANIM_PATTERN 8                             // アニメーションのパターン数
+#define SCRATCH_ANIM_PATTERN 10                            // アニメーションのパターン数
 
 //******************************
 // 静的メンバ変数宣言

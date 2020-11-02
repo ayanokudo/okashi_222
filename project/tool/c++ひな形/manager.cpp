@@ -31,10 +31,6 @@
 #include "wall.h"
 #include "floor.h"
 
-#include "imgui/imgui.h"
-#include "imgui/imgui_impl_dx9.h"
-#include "imgui/imgui_impl_win32.h"
-
 //=============================
 // Ã“Iƒƒ“ƒo•Ï”éŒ¾
 //=============================

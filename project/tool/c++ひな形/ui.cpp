@@ -34,7 +34,6 @@ CUI* CUI::Create(void)
     {
         pUi = new CUI;
         pUi->Init();
-        // 各値の代入・セット
     }
     return pUi;
 }

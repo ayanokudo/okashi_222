@@ -43,6 +43,13 @@ public:
 		MOTION_MAX
 	}MOTION;
 
+	typedef enum
+	{
+		TYPE_WALK,
+		TYPE_DASH,
+		TYPE_MAX
+	}PLAYERTYPE;
+
 	//メンバ関数
 	CPlayer();
 	~CPlayer();
@@ -79,6 +86,7 @@ private:
 	CMotion*m_pMotion[MOTION_MAX];  // アニメーションポインタ
 	int m_nLife;				    // プレイヤーのライフ
 	MOTION m_motionState;           // 現在のモーション状態
+	int m_nSpeed;
 };
 
 #endif

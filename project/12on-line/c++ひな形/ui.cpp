@@ -1,71 +1,78 @@
 //===================================================
 //
-//    ナンバークラスの処理[number.cpp]
-//    Author:増澤 未来
+//    UIクラスの処理[ui.cpp]
+//    Author:筒井　俊稀
 //
 //====================================================
 
 //**********************************
 // インクルード
 //**********************************
-#include "number.h"
+#include "ui.h"
 #include "manager.h"
 #include "renderer.h"
+#include "scene.h"
 
 //**********************************
 // マクロ定義
 //**********************************
-#define NUMBER_TEXTURE_PATH "./data/Textures/NumberTexture.png" // テクスチャのパス
+#define UI_TIME_TEXTURE_PATH	"./data/Textures/TIME.png" // タイムのパス
+#define UI_TITLE_TEXTURE_PATH	"./data/Textures/title000.png" // タイトルのパス
+#define UI_ENTER_TEXTURE_PATH	"./data/Textures/title000.png" // エンターのパス
+#define UI_WARNING_TEXTURE_PATH "./data/Textures/TIME.png" // ワーニングのパス
 
+#define UI_SIZE 100
 //**********************************
 // 静的メンバ変数宣言
 //**********************************
-LPDIRECT3DTEXTURE9 CNumber::m_pTexture = NULL;
+LPDIRECT3DTEXTURE9 CUi::m_apTexture[UI_MAX] = {};
 
 //==================================
 // コンストラクタ
 //==================================
-CNumber::CNumber()
+CUi::CUi()
 {
 	m_pVtxBuff = NULL;
-	m_nNumber = 0;
 	m_col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 }
 
 //==================================
 // デストラクタ
 //==================================
-CNumber::~CNumber()
+CUi::~CUi()
 {
+
 }
 
 //==================================
 // クリエイト
 //==================================
-CNumber * CNumber::Create(const int nNum, const D3DXVECTOR3 pos, const D3DXVECTOR3 size, const D3DXCOLOR col)
+CUi * CUi::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size, const D3DXCOLOR col, const UI type)
 {
 	// メモリの確保
-	CNumber * pNumber = new CNumber;
-	
-	if (pNumber != NULL)
+	CUi * pUi = new CUi;
+
+	if (pUi != NULL)
 	{
 		// 初期化処理
-		pNumber->Init(pos, size, col);
-		pNumber->SetNumber(nNum);
+		pUi->Init(pos, size, col, type);
 	}
 
-	return pNumber;
+	return pUi;
 }
 
 //==================================
 // ロード
 //==================================
-HRESULT CNumber::Load(void)
+HRESULT CUi::Load(void)
 {
 	// デバイスの取得
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
 	// テクスチャの生成
-	D3DXCreateTextureFromFile(pDevice, NUMBER_TEXTURE_PATH, &m_pTexture);
+	D3DXCreateTextureFromFile(pDevice, UI_TIME_TEXTURE_PATH, &m_apTexture[UI_TIME]);
+	D3DXCreateTextureFromFile(pDevice, UI_TITLE_TEXTURE_PATH, &m_apTexture[UI_TITLE]);
+	D3DXCreateTextureFromFile(pDevice, UI_ENTER_TEXTURE_PATH, &m_apTexture[UI_ENTER]);
+	D3DXCreateTextureFromFile(pDevice, UI_WARNING_TEXTURE_PATH, &m_apTexture[UI_WARNING]);
 
 	return S_OK;
 }
@@ -73,19 +80,22 @@ HRESULT CNumber::Load(void)
 //==================================
 // アンロード
 //==================================
-void CNumber::Unload(void)
+void CUi::Unload(void)
 {
-	if (m_pTexture != NULL)
+	for (int nCount = UI_TIME; nCount < UI_MAX; nCount++)
 	{
-		m_pTexture->Release();
-		m_pTexture = NULL;
+		if (m_apTexture[nCount] != NULL)
+		{
+			m_apTexture[nCount]->Release();
+			m_apTexture[nCount] = NULL;
+		}
 	}
 }
 
 //==================================
 // 初期化処理
 //==================================
-HRESULT CNumber::Init(const D3DXVECTOR3 pos, const D3DXVECTOR3 size, const D3DXCOLOR col)
+HRESULT CUi::Init(const D3DXVECTOR3 pos, const D3DXVECTOR3 size, const D3DXCOLOR col, const UI type)
 {
 	VERTEX_2D *pVtx;// 頂点情報ポインタ
 
@@ -104,12 +114,13 @@ HRESULT CNumber::Init(const D3DXVECTOR3 pos, const D3DXVECTOR3 size, const D3DXC
 	pVtx[3].pos = D3DXVECTOR3(pos.x + size.x, pos.y + size.y, 0);
 
 	// テクスチャUV座標の設定
-	pVtx[0].tex = D3DXVECTOR2(0.0f + (0.1f * m_nNumber), 0.0f);
-	pVtx[1].tex = D3DXVECTOR2(0.1f + (0.1f * m_nNumber), 0.0f);
-	pVtx[2].tex = D3DXVECTOR2(0.0f + (0.1f * m_nNumber), 1.0f);
-	pVtx[3].tex = D3DXVECTOR2(0.1f + (0.1f * m_nNumber), 1.0f);
+	pVtx[0].tex = D3DXVECTOR2(0.0f, 0.0f);
+	pVtx[1].tex = D3DXVECTOR2(1.0f, 0.0f);
+	pVtx[2].tex = D3DXVECTOR2(0.0f, 1.0f);
+	pVtx[3].tex = D3DXVECTOR2(1.0f, 1.0f);
 
 	m_col = col;
+	m_type = type;
 	for (int nCnt = 0; nCnt < NUM_VERTEX; nCnt++)
 	{
 		pVtx[nCnt].col = m_col;
@@ -124,7 +135,7 @@ HRESULT CNumber::Init(const D3DXVECTOR3 pos, const D3DXVECTOR3 size, const D3DXC
 //==================================
 // 終了処理
 //==================================
-void CNumber::Uninit(void)
+void CUi::Uninit(void)
 {
 	if (m_pVtxBuff != NULL)
 	{
@@ -136,14 +147,14 @@ void CNumber::Uninit(void)
 //==================================
 // 更新処理
 //==================================
-void CNumber::Update(void)
+void CUi::Update(void)
 {
 }
 
 //==================================
 // 描画処理
 //==================================
-void CNumber::Draw(void)
+void CUi::Draw(void)
 {
 	//デバイスの取得
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
@@ -154,10 +165,10 @@ void CNumber::Draw(void)
 	//頂点フォーマットの設定
 	pDevice->SetFVF(FVF_VERTEX_2D);
 
-	if (m_pTexture != NULL)
+	if (m_apTexture[m_type] != NULL)
 	{
 		//テクスチャの設定
-		pDevice->SetTexture(0, m_pTexture);
+		pDevice->SetTexture(0, m_apTexture[m_type]);
 	}
 
 	//ポリゴンの描画
@@ -167,29 +178,9 @@ void CNumber::Draw(void)
 }
 
 //==================================
-// 数字のセット
+// カラーのセット
 //==================================
-void CNumber::SetNumber(const int nNumber)
-{
-	VERTEX_2D *pVtx;// 頂点情報ポインタ
-
-	m_nNumber = nNumber;
-
-	m_pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);
-
-	// テクスチャUV座標の設定
-	pVtx[0].tex = D3DXVECTOR2(0.0f + (0.1f * m_nNumber), 0.0f);
-	pVtx[1].tex = D3DXVECTOR2(0.1f + (0.1f * m_nNumber), 0.0f);
-	pVtx[2].tex = D3DXVECTOR2(0.0f + (0.1f * m_nNumber), 1.0f);
-	pVtx[3].tex = D3DXVECTOR2(0.1f + (0.1f * m_nNumber), 1.0f);
-
-	m_pVtxBuff->Unlock();
-}
-
-//==================================
-// 数字のカラーのセット
-//==================================
-void CNumber::SetColor(const D3DXCOLOR col)
+void CUi::SetColor(const D3DXCOLOR col)
 {
 	VERTEX_2D *pVtx;// 頂点情報ポインタ
 

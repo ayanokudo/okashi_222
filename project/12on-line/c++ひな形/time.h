@@ -19,6 +19,7 @@
 //前方宣言
 //*****************************
 class CNumber;
+class CUi;
 
 //*****************************
 //マクロ定義
@@ -42,17 +43,16 @@ public:
 	void Update(void);
 	void Draw(void);
 
-	static void SubtractTime(int nTime);
 	static int GetTime(void) { return m_nTime; }
 private:
 	// メンバ変数
 	CNumber* m_apNumber[MAX_TIME_DIGIT];
+	CUi* m_pUi;
 	static int m_nTime;
 	DWORD m_start;
 	DWORD m_end;
 	bool m_bTime;
 	int m_nAllTime;
-
 };
 
 #endif

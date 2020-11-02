@@ -79,7 +79,7 @@ HRESULT CScene2d::Init(void)
 	// 中心から右上の頂点の角度
 	float fAngle = atan2f(m_size.y, m_size.x);
 	// 中心から左上の頂点の角度
-	float  fAngle2 = atan2f(m_size.y, -m_size.x);
+	float fAngle2 = atan2f(m_size.y, -m_size.x);
 
 	// 頂点座標の設定
 	pVtx[0].pos = D3DXVECTOR3(m_pos.x + (cosf(-fAngle2 + D3DXToRadian(m_fAngle)) * fDistance), m_pos.y + (sinf(-fAngle2 + D3DXToRadian(m_fAngle)) * fDistance), 0);

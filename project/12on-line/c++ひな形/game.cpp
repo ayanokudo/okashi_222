@@ -25,6 +25,7 @@
 #include "enemy.h"
 #include "item.h"
 #include "time.h"
+#include "ui.h"
 
 //=============================
 // 静的メンバ変数宣言
@@ -96,6 +97,8 @@ HRESULT CGame::Init(void)
 	m_pScore = CScore::Create();
 	// タイムの生成
 	m_pTime = CTime::Create();
+	// タイムの文字の生成
+	CUi::Create(D3DXVECTOR3(500.0f, 40.0f, 0.0f), D3DXVECTOR3(20.0f, 10.0f, 0.0f), D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), CUi::UI_TIME);
 	// 床の生成
 	CFloor::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(1000.0f, 0.0f, 1000.0f), CFloor::FLOOR_FLOORING);
 	CFloor::Create(D3DXVECTOR3(0.0f, 0.0f, 2000.0f), D3DXVECTOR3(1000.0f, 0.0f, 1000.0f), CFloor::FLOOR_FLOORING);

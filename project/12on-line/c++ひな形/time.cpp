@@ -14,6 +14,7 @@
 #include "renderer.h"
 #include "manager.h"
 #include "fade.h"
+#include "ui.h"
 #include <time.h>
 
 //**********************************
@@ -34,7 +35,7 @@ CTime::CTime()
 {
 	// ナンバーのクリア
 	memset(m_apNumber, 0, sizeof(m_apNumber));
-
+	m_pUi = NULL;
 	//現在時間を取得
 	m_start = timeGetTime();
 	m_end = NULL;
@@ -74,10 +75,17 @@ HRESULT CTime::Init(void)
 	for (int nCntDigit = 0; nCntDigit < MAX_TIME_DIGIT; nCntDigit++)
 	{
 		m_apNumber[nCntDigit] = CNumber::Create(0,
-			D3DXVECTOR3(580 + nCntDigit * 35 * 2, 60.0f, 0.0f),
+			D3DXVECTOR3(580 + nCntDigit * 35 * 2, 120.0f, 0.0f),
 			D3DXVECTOR3(40, 40, 0),
 			D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 	}
+
+	//タイムの文字表示
+	m_pUi = CUi::Create(D3DXVECTOR3(650.0f, 40.0f, 0.0f),
+		D3DXVECTOR3(90, 30, 0),
+		D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
+		CUi::UI_TIME);
+
 	// TIMEの初期化
 	m_nTime = MAX_TIME;
 	return S_OK;
@@ -96,6 +104,12 @@ void CTime::Uninit(void)
 			delete m_apNumber[nCntDigit];
 			m_apNumber[nCntDigit] = NULL;
 		}
+	}
+	if (m_pUi != NULL)
+	{
+		m_pUi->Uninit();
+		delete m_pUi;
+		m_pUi = NULL;
 	}
 
 	// 開放処理
@@ -122,6 +136,8 @@ void CTime::Update(void)
 			m_apNumber[nCntDigit]->Update();
 			m_apNumber[nCntDigit]->SetNumber((m_nAllTime % (int)(powf(10.0f, (MAX_TIME_DIGIT - nCntDigit)))) / (float)(powf(10.0, (MAX_TIME_DIGIT - nCntDigit - 1))));
 		}
+
+		m_pUi->Update();
 	}
 	//０になったら
 	if (m_nAllTime == 0)
@@ -143,5 +159,7 @@ void CTime::Draw(void)
 	{
 		m_apNumber[nCntDigit]->Draw();
 	}
+	m_pUi->Draw();
+
 	pDevice->SetRenderState(D3DRS_ALPHAREF, 50);
 }

@@ -18,6 +18,7 @@
 #include "joypad.h"
 #include "fade.h"
 #include "sound.h"
+#include "ui.h"
 
 //**********************************
 // 静的メンバ変数宣言
@@ -27,7 +28,7 @@ LPDIRECT3DTEXTURE9 CTitle::m_pTexture = NULL;
 //**********************************
 // マクロ定義
 //**********************************
-#define  TITLE_TEXTURE_PATH "./data/Textures/title000.png" // テクスチャ
+#define  TITLE_TEXTURE_PATH "./data/Textures/title00.png" // テクスチャ
 
 //=============================
 // コンストラクタ
@@ -70,6 +71,12 @@ HRESULT CTitle::Init(void)
 		D3DXVECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0.0f),
 		D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 
+	//タイムの文字表示
+	m_pUi = CUi::Create(D3DXVECTOR3(650.0f, 200.0f, 0.0f),
+		D3DXVECTOR3(300, 200, 0),
+		D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
+		CUi::UI_TITLE);
+
 	m_pPolygon->SetTexture(m_pTexture);
 	
 	return S_OK;
@@ -97,6 +104,16 @@ void CTitle::Uninit(void)
 		m_pPolygon = NULL;
 	}
 
+	if (m_pUi != NULL)
+	{
+		// ポリゴンの終了処理
+		m_pUi->Uninit();
+
+		// メモリの解放
+		delete m_pUi;
+		m_pUi = NULL;
+	}
+
 	// 開放処理
 	Release();
 }
@@ -109,6 +126,8 @@ void CTitle::Update(void)
 {
 	// ポリゴンの更新処理
 	m_pPolygon->Update();
+
+	m_pUi->Update();
 
 	if (CManager::GetKeyboard()->GetKeyTrigger(DIK_RETURN) || 
 		CManager::GetMouse()->GetMouseTrigger(0) || 
@@ -127,4 +146,6 @@ void CTitle::Draw(void)
 {
 	// ポリゴンの描画処理
 	m_pPolygon->Draw();
+
+	m_pUi->Draw();
 }

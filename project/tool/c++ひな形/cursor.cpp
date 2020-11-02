@@ -5,7 +5,7 @@
 //
 //=============================================================================
 #include "cursor.h"
-#include "floor.h"
+#include "grid.h"
 #include "game.h"
 #include "object.h"
 #include "player.h"
@@ -30,7 +30,7 @@ CCursor::~CCursor()
 //=============================================================================
 CCursor * CCursor::Create(D3DXVECTOR3 pos)
 {
-    //CFloorのポインタ作成
+    //CGridのポインタ作成
     CCursor *Cursor;
     //インスタンスを生成
     Cursor = new CCursor;

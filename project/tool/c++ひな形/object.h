@@ -24,8 +24,16 @@ class CCollision;
 // オブジェクトクラス
 class CObject : public CScene
 {
-public:
+    typedef enum
+    {
+        MODEL_PLAYER=0, // プレイヤー
+        MODEL_ENEMY,    // 敵
+        MODEL_WALL,     // 壁
+        MODEL_FLOOR,    // 床
+        MODEL_MAX
+    }MODEL;      // モデルのファイル名
 
+public:
     // メンバ関数
     CObject();
     ~CObject();
@@ -38,9 +46,13 @@ public:
     void Update(void);
     void Draw(void);
 
+    // 配置用にタイプ変換
+    CModel::OBJTYPE changeType(void);
+
     void GridTransform(void);
 
-    void ChangeObject(void);
+
+   void ChangeObject(void);
 
     // オブジェクトの削除
     void DeleteObject(void);
@@ -62,7 +74,7 @@ private:
     void Move(void);
 
     // メンバ変数
-    static CModel::OBJTYPE m_type;                // 現在選択中のモデルの種類
+    static MODEL m_type;                // 現在選択中のモデルの種類
     D3DXVECTOR3 m_pos;                             // オブジェクトの位置
     static int      m_ObjctNum;                    // オブジェクトの数
     static CPlayer*m_pPlayer;                      // プレイヤー

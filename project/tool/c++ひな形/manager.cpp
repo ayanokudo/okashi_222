@@ -1,5 +1,3 @@
-
-
 //=============================
 // インクルード
 //=============================
@@ -26,10 +24,12 @@
 #include "tutorial.h"
 #include "pause.h"
 #include "player.h"
-#include "floor.h"
+#include "grid.h"
 #include "object.h"
 #include "stage.h"
 #include "enemy.h"
+#include "wall.h"
+#include "floor.h"
 
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_dx9.h"
@@ -125,10 +125,12 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, bool bWindow)
 	CParticle::Load();	// パーティクル
 	CPause::Load();		// ポーズ
 	CPlayer::Load();	// プレイヤー
-	CFloor::Load();		// 床
+	CGrid::Load();		// 床
     CObject::Load();    // オブジェクト
     CStage::Load();     // ステージ
     CEnemy::Load();     // 敵
+    CWall::Load();      // 壁
+    CFloor::Load();     // 床
 
     // IMGUIの設定
 #ifdef IMGUI_ON
@@ -159,10 +161,12 @@ void CManager::Uninit(void)
 	CParticle::Unload();
 	CPause::UnLoad();
 	CPlayer::Unload();
-	CFloor::Unload();
+	CGrid::Unload();
     CObject::Unload();
     CStage::Unload();
     CEnemy::Unload();     // 敵
+    CWall::Unload();      // 壁
+    CFloor::Unload();     // 床
 
 	if (m_pSound != NULL)
 	{

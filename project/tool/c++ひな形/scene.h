@@ -27,25 +27,26 @@ class CScene
 public:
 	// オブジェクトタイプ列挙
 	// 描画順
-	typedef enum
-	{
-		OBJTYPE_NONE = 0,
-		OBJTYPE_BG,         // 背景
-		OBJTYPE_FLOOR,      // フロア
-		OBJTYPE_MAP,        // マップ
-		OBJTYPE_MANACIRCLE, // マナサークル
-		OBJTYPE_ITEM,       // アイテム
-		OBJTYPE_EFFECT,     // エフェクト
-		OBJTYPE_BULLET,     // 弾
-		OBJTYPE_PLAYER,     // プレイヤー
-		OBJTYPE_ENEMY,      // エネミー
-		OBJTYPE_EXPLOSION,  // 爆発
-		OBJTYPE_PARTICLE,   // パーティクル
-		OBJTYPE_BOMB,       // ボム
-		OBJTYPE_UI,         // UI
-        OBJTYPE_COLLISION,
-		OBJTYPE_MAX,        // タイプの最大数
-	}OBJTYPE;
+    typedef enum
+    {
+        OBJTYPE_NONE = 0,
+        OBJTYPE_BG,         // 背景
+        OBJTYPE_MAP,        // マップ
+        OBJTYPE_ITEM,       // アイテム
+        OBJTYPE_EFFECT,     // エフェクト
+        OBJTYPE_PLAYER,     // プレイヤー
+        OBJTYPE_ENEMY,      // エネミー
+        OBJTYPE_EXPLOSION,  // 爆発
+        OBJTYPE_PARTICLE,   // パーティクル
+        OBJTYPE_BOMB,       // ボム
+        OBJTYPE_UI,         // UI
+        OBJTYPE_FLOOR,      // 床
+        OBJTYPE_WALL,		// 壁
+        OBJTYPE_ATTACK,     // 攻撃
+        OBJTYPE_ANIMATION,  // アニメーション
+        OBJTYPE_COLLISION,  // コリジョン
+        OBJTYPE_MAX,        // タイプの最大数
+    }OBJTYPE;
 
 	// メンバ関数
     CScene(int nPriority = OBJTYPE_NONE);

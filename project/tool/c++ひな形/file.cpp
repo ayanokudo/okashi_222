@@ -132,6 +132,40 @@ void CFile::Writing(void)
             pScene = pScene->GetNext();
         }
 
+        pScene = CScene::GetTop(CScene::OBJTYPE_FLOOR);
+
+        // オブジェクトの数分データを書きだす
+        while (pScene != NULL)
+        {
+            if (pScene)
+            {// オブジェクトがあった場合
+                D3DXVECTOR3 pos = ((CModel*)pScene)->GetPos();
+                fprintf(pFile, "\tOBJ_SET\n");
+                fprintf(pFile, "\t\t POS %.1f %.1f %.1f \n", pos.x, pos.y, pos.z);
+                fprintf(pFile, "\t\t TYPE %d \n", pScene->GetType());
+                fprintf(pFile, "\tEND_OBJ_SET\n");
+                fprintf(pFile, "\n");
+            }
+            pScene = pScene->GetNext();
+        }
+
+        pScene = CScene::GetTop(CScene::OBJTYPE_WALL);
+
+        // オブジェクトの数分データを書きだす
+        while (pScene != NULL)
+        {
+            if (pScene)
+            {// オブジェクトがあった場合
+                D3DXVECTOR3 pos = ((CModel*)pScene)->GetPos();
+                fprintf(pFile, "\tOBJ_SET\n");
+                fprintf(pFile, "\t\t POS %.1f %.1f %.1f \n", pos.x, pos.y, pos.z);
+                fprintf(pFile, "\t\t TYPE %d \n", pScene->GetType());
+                fprintf(pFile, "\tEND_OBJ_SET\n");
+                fprintf(pFile, "\n");
+            }
+            pScene = pScene->GetNext();
+        }
+
         fprintf(pFile, "\n");
         fprintf(pFile, "END_SCRIPT      // スクリプト終了");   // スクリプト終了
         fclose(pFile);                  // ファイル書き込み終了

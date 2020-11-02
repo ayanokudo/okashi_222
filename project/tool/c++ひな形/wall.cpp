@@ -1,36 +1,36 @@
 //=============================================================================
 //
-// 床クラス [floor.cpp]
+// 壁クラス [wall.cpp]
 // Author : AYANO KUDO
 //
 //=============================================================================
-#include "floor.h"
+#include "wall.h"
 #include "manager.h"
 #include "renderer.h"
 
 //*****************************************************************************
 // マクロ定義
 //*****************************************************************************
-#define MODEL_PATH "./data/Models/floor000.x"    //モデルのパス
+#define MODEL_PATH "./data/Models/wall000.x"    //モデルのパス
 
 //*****************************************************************************
 // 静的メンバ変数宣言
 //*****************************************************************************
-LPD3DXMESH   CFloor::m_pMeshModel = NULL;   	//メッシュ情報へのポインタ
-LPD3DXBUFFER CFloor::m_pBuffMatModel = NULL;	//マテリアル情報へのポインタ
-DWORD        CFloor::m_nNumMatModel = 0;	    //マテリアル情報の数
+LPD3DXMESH   CWall::m_pMeshModel = NULL;   	//メッシュ情報へのポインタ
+LPD3DXBUFFER CWall::m_pBuffMatModel = NULL;	//マテリアル情報へのポインタ
+DWORD        CWall::m_nNumMatModel = 0;	    //マテリアル情報の数
 //=============================================================================
-// [CFloor] コンストラクタ
+// [CWall] コンストラクタ
 //=============================================================================
-CFloor::CFloor() : CModel(OBJTYPE_FLOOR)
+CWall::CWall() : CModel(OBJTYPE_WALL)
 {
 
 }
 
 //=============================================================================
-// [~CFloor] デストラクタ
+// [~CWall] デストラクタ
 //=============================================================================
-CFloor::~CFloor()
+CWall::~CWall()
 {
 
 }
@@ -38,19 +38,19 @@ CFloor::~CFloor()
 //=============================================================================
 // [Create] オブジェクトの生成
 //=============================================================================
-CFloor * CFloor::Create(D3DXVECTOR3 pos)
+CWall * CWall::Create(D3DXVECTOR3 pos)
 {
-    CFloor *pObject = NULL;
+    CWall *pObject = NULL;
     if (!pObject)
     {
-        pObject = new CFloor;
+        pObject = new CWall;
         pObject->Init();
         // 初期化
         pObject->Init();
         pObject->SetPos(pos);
 
         // 各値の代入・セット
-        pObject->SetObjType(OBJTYPE_FLOOR); // オブジェクトタイプ
+        pObject->SetObjType(OBJTYPE_WALL); // オブジェクトタイプ
     }
     return pObject;
 }
@@ -58,7 +58,7 @@ CFloor * CFloor::Create(D3DXVECTOR3 pos)
 //=============================================================================
 // [Load] テクスチャの読み込み
 //=============================================================================
-HRESULT CFloor::Load(void)
+HRESULT CWall::Load(void)
 {
     // デバイスの取得
     LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
@@ -78,7 +78,7 @@ HRESULT CFloor::Load(void)
 //=============================================================================
 // [Unload] テクスチャの破棄
 //=============================================================================
-void CFloor::Unload(void)
+void CWall::Unload(void)
 {
     //メッシュの破棄
     if (m_pMeshModel != NULL)
@@ -97,7 +97,7 @@ void CFloor::Unload(void)
 //=============================================================================
 // [Init] 初期化処理
 //=============================================================================
-HRESULT CFloor::Init(void)
+HRESULT CWall::Init(void)
 {
     if (FAILED(CModel::Init()))
     {
@@ -113,7 +113,7 @@ HRESULT CFloor::Init(void)
 //=============================================================================
 // [Uninit] 終了処理
 //=============================================================================
-void CFloor::Uninit(void)
+void CWall::Uninit(void)
 {
     CModel::Uninit();
 }
@@ -121,7 +121,7 @@ void CFloor::Uninit(void)
 //=============================================================================
 // [Update] 更新処理
 //=============================================================================
-void CFloor::Update(void)
+void CWall::Update(void)
 {
     CModel::Update();
 }
@@ -129,7 +129,7 @@ void CFloor::Update(void)
 //=============================================================================
 // [Draw] 描画処理
 //=============================================================================
-void CFloor::Draw(void)
+void CWall::Draw(void)
 {
     CModel::Draw();
 }

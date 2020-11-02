@@ -1,11 +1,11 @@
 //=============================================================================
 //
-// 床クラス [flooh.h]
+// 壁クラス [wall.h]
 // Author : AYANO KUDO
 //
 //=============================================================================
-#ifndef _FLOOR_H_
-#define _FLOOR_H_
+#ifndef _WALL_H_
+#define _WALL_H_
 #include "main.h"
 #include "model.h"
 
@@ -13,14 +13,14 @@
 // クラスの定義
 //*****************************************************************************
 // 敵クラス
-class CFloor : public CModel
+class CWall : public CModel
 {
 public:
     // メンバ関数
-    CFloor();
-    ~CFloor();
+    CWall();
+    ~CWall();
 
-    static CFloor *Create(D3DXVECTOR3 pos);
+    static CWall *Create(D3DXVECTOR3 pos);
     static HRESULT Load(void);
     static void Unload(void);
     HRESULT Init(void);
@@ -35,4 +35,4 @@ private:
     static DWORD                m_nNumMatModel;     //マテリアル情報の数
     static LPDIRECT3DTEXTURE9   m_apTexture;        // テクスチャ
 };
-#endif      // _FLOOR_H_
+#endif      // _ENEMY_H_

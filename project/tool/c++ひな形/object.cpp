@@ -14,8 +14,10 @@
 #include "file.h"
 #include "joypad.h"
 #include "cursor.h"
-#include "floor.h"
+#include "grid.h"
 #include "collision.h"
+#include "wall.h"
+#include "floor.h"
 
 //*****************************************************************************
 // マクロ定義
@@ -29,7 +31,7 @@
 //*****************************************************************************
 // 静的メンバ変数宣言
 //*****************************************************************************
-CModel::OBJTYPE CObject::m_type= CModel::OBJTYPE_PLAYER;
+CObject::MODEL CObject::m_type= MODEL_PLAYER;
 int CObject::m_ObjctNum = 0;
 CModel *CObject::m_pModel = NULL;
 CPlayer *CObject::m_pPlayer = NULL;
@@ -41,7 +43,7 @@ CCursor *CObject::m_pCursor = NULL;                     // カーソルへのポインタ
 //=============================================================================
 CObject::CObject()
 {
-    m_type = CModel::OBJTYPE_PLAYER;
+    m_type = MODEL_PLAYER;
     m_pos = { GRID_SIZE,0.0f,GRID_SIZE };
     m_ObjctNum = 0;
     m_bGridMode = true;
@@ -132,9 +134,8 @@ void CObject::Update(void)
     // オブジェクトの配置
     if (CManager::GetKeyboard()->GetKeyTrigger(DIK_SPACE))
     {
-        int nModel = m_type;
-        CModel::OBJTYPE Model = (CModel::OBJTYPE)nModel;
-        SetObject(CObject::GetPlayer()->GetPos(), Model);
+        // タイプを配置用に変換
+        SetObject(CObject::GetPlayer()->GetPos(), changeType());
     }
 
     // ファイル書き込み
@@ -150,7 +151,7 @@ void CObject::Update(void)
         GridTransform();
     }
 
-    // モード切替
+    // オブジェクトの削除
     if (CManager::GetKeyboard()->GetKeyTrigger(DIK_BACK))
     {
         DeleteObject();
@@ -168,12 +169,40 @@ void CObject::Draw(void)
 }
 
 //=============================================================================
+// [changeType] 配置用にタイプを変換
+//=============================================================================
+CModel::OBJTYPE CObject::changeType(void)
+{
+    CModel::OBJTYPE type;
+    switch (m_type)
+    {
+    case MODEL_PLAYER:
+        type = OBJTYPE_PLAYER;
+        break;
+
+    case MODEL_ENEMY:
+        type = OBJTYPE_ENEMY;
+        break;
+
+    case MODEL_WALL:
+        type = OBJTYPE_WALL;
+        break;
+
+    case MODEL_FLOOR:
+        type = OBJTYPE_FLOOR;
+        break;
+        
+    }
+
+    return type;
+}
+
+//=============================================================================
 // [GridTransform] グリッドの座標に変換
 //=============================================================================
 void CObject::GridTransform(void)
 {
     m_pos = { GRID_SIZE,0.0f,GRID_SIZE };
-
 }
 
 //=============================================================================
@@ -191,16 +220,16 @@ void CObject::ChangeObject(void)
         nModel += 1;
     }
     // 最大値以上/最小値以下になったらループ
-    if (nModel > CModel::OBJTYPE_ENEMY)
+    if (nModel >= MODEL_MAX)
     {
-        nModel = CModel::OBJTYPE_PLAYER;
+        nModel = MODEL_PLAYER;
     }
-    if (nModel < CPlayer::MODEL_PLAYER)
+    if (nModel < MODEL_PLAYER)
     {
-        nModel = CModel::OBJTYPE_ENEMY;
+        nModel = MODEL_MAX-1;
     }
 
-    m_type = (CModel::OBJTYPE)nModel;
+    m_type = (MODEL)nModel;
 }
 
 //=============================================================================
@@ -220,7 +249,9 @@ void CObject::DeleteObject(void)
 
             if (pScene !=m_pPlayer&&
                 pScene->GetType() == OBJTYPE_PLAYER ||
-                pScene->GetType() == OBJTYPE_ENEMY)
+                pScene->GetType() == OBJTYPE_ENEMY ||
+                pScene->GetType() == OBJTYPE_WALL||
+                pScene->GetType() == OBJTYPE_FLOOR)
             {
                 if (CCollision::CollisionSphere(m_pCollision, ((CModel*)pScene)->GetCollision()))
                 {
@@ -252,6 +283,14 @@ void CObject::SetObject(D3DXVECTOR3 pos, CModel::OBJTYPE type)
 
     case CModel::OBJTYPE_ENEMY:
         m_pModel = CEnemy::Create(pos);
+        break;
+
+    case CModel::OBJTYPE_WALL:
+        m_pModel = CWall::Create(pos);
+        break;
+
+    case CModel::OBJTYPE_FLOOR:
+        m_pModel = CFloor::Create(pos);
         break;
     }
 }

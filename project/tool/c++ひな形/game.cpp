@@ -20,7 +20,7 @@
 #include "time.h"
 #include "player.h"
 #include "light.h"
-#include "floor.h"
+#include "grid.h"
 #include "stage.h"
 #include "object.h"
 #include "file.h"
@@ -92,7 +92,7 @@ HRESULT CGame::Init(void)
 	// ポリゴンの生成
 	//CScene3d::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(1000.0f, 0.0f, 1000.0f))->SetColor(D3DXCOLOR(0.0f, 1.0f, 0.0f, 1.0f));
 	//床の生成
-	CFloor::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(GRID_SIZE * MAX_GRID, 0.0f, GRID_SIZE * MAX_GRID),CFloor::FLOOR_FLOORING);
+	CGrid::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(GRID_SIZE * MAX_GRID, 0.0f, GRID_SIZE * MAX_GRID),CGrid::FLOOR_FLOORING);
 	// ポーズの初期化
 	CManager::SetActivePause(false);
 

@@ -30,6 +30,7 @@
 #include "enemy.h"
 #include "wall.h"
 #include "floor.h"
+#include "ui.h"
 
 //=============================
 // 静的メンバ変数宣言
@@ -103,13 +104,7 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, bool bWindow)
 		return E_FAIL;
 	}
 
-	//// サウンド
-	//m_pSound = new CSound;
-	//// サウンドクラスの初期化
-	//if (FAILED(m_pSound->Init(hWnd)))
-	//{
-	//	return E_FAIL;
-	//}
+    // UI
 	
 	// フェードの生成
 	m_pFade = CFade::Create();
@@ -128,17 +123,7 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, bool bWindow)
     CWall::Load();      // 壁
     CFloor::Load();     // 床
 
-    // IMGUIの設定
-#ifdef IMGUI_ON
-    IMGUI_CHECKVERSION();
-    ImGui::CreateContext();
-    ImGuiIO& io = ImGui::GetIO(); (void)io;
 
-    ImGui::StyleColorsDark();
-
-    ImGui_ImplWin32_Init(hWnd);
-    ImGui_ImplDX9_Init(m_pRenderer->GetDevice());
-#endif // IMGUI
 	// ポーズ状態の時
 	return S_OK;
 }

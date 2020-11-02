@@ -9,6 +9,8 @@
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_dx9.h"
 #include "imgui/imgui_impl_win32.h"
+#include "manager.h"
+#include "renderer.h"
 
 //=============================================================================
 // [CUI] コンストラクタ
@@ -27,13 +29,13 @@ CUI::~CUI()
 //=============================================================================
 // [Create] オブジェクトの生成
 //=============================================================================
-CUI* CUI::Create(void)
+CUI* CUI::Create(HWND hWnd)
 {
     CUI *pUi = NULL;
     if (!pUi)
     {
         pUi = new CUI;
-        pUi->Init();
+        pUi->Init(hWnd);
     }
     return pUi;
 }
@@ -41,8 +43,21 @@ CUI* CUI::Create(void)
 //=============================================================================
 // [Init] 初期化処理
 //=============================================================================
-void CUI::Init(void)
+void CUI::Init(HWND hWnd)
 {
+
+
+    // IMGUIの設定
+#ifdef IMGUI_ON
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGuiIO& io = ImGui::GetIO(); (void)io;
+
+    ImGui::StyleColorsDark();
+
+    ImGui_ImplWin32_Init(hWnd);
+    ImGui_ImplDX9_Init(m_pRenderer->GetDevice());
+#endif // IMGUI
 }
 
 //=============================================================================

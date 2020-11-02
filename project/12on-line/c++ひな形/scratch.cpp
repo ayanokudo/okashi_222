@@ -118,16 +118,16 @@ HRESULT CScratch::Init(void)
 	// テクスチャ割り当て
 	BindTexture(m_pTexture);
 	// サイズの設定
-	SetSize(D3DXVECTOR3(SCRATCH_SIZE, 0.0f, SCRATCH_SIZE));
+	SetSize(D3DXVECTOR3(-SCRATCH_SIZE, 0.0f, -SCRATCH_SIZE));
 
 	// UV座標の設定
 	D3DXVECTOR2 uv[NUM_VERTEX];
 	float fu = 1.0f / SCRATCH_MAX_ANIMATION_X;
 	float fv = 1.0f / SCRATCH_MAX_ANIMATION_Y;
 
-	uv[0] = D3DXVECTOR2(fu*m_nAnimX, fv*m_nAnimY);
+	uv[0] = D3DXVECTOR2(fu*m_nAnimX     , fv*m_nAnimY);
 	uv[1] = D3DXVECTOR2(fu*m_nAnimX + fu, fv*m_nAnimY);
-	uv[2] = D3DXVECTOR2(fu*m_nAnimX, fv*m_nAnimY + fv);
+	uv[2] = D3DXVECTOR2(fu*m_nAnimX     , fv*m_nAnimY + fv);
 	uv[3] = D3DXVECTOR2(fu*m_nAnimX + fu, fv*m_nAnimY + fv);
 
 	// UV座標セット

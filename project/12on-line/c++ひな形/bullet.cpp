@@ -22,7 +22,7 @@
 //*****************************
 // マクロ定義
 //*****************************
-#define BULLET_TEXTURE_PATH "./data/Textures/" //テクスチャのパス
+#define BULLET_TEXTURE_PATH "./data/Textures/Catvoice_Barrett.png" //テクスチャのパス
 #define ENEMY_ESCOAT_DAMAGE 12					//攻撃ネズミの攻撃力
 #define PLAYER_BULLET_DAMAGE 50					//プレイヤーの攻撃力
 //******************************
@@ -33,7 +33,7 @@ LPDIRECT3DTEXTURE9  CBullet::m_pTexture = NULL; // テクスチャポインタ
 //******************************
 // コンストラクタ
 //******************************
-CBullet::CBullet():CBillboard(OBJTYPE_ATTACK)
+CBullet::CBullet():CScene3d(OBJTYPE_ATTACK)
 {
 	// 変数のクリア
 	m_move = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
@@ -104,7 +104,7 @@ void CBullet::Unload(void)
 //******************************
 HRESULT CBullet::Init(void)
 {
-	if (FAILED(CBillboard::Init()))
+	if (FAILED(CScene3d::Init()))
 	{
 		return E_FAIL;
 	}
@@ -112,8 +112,9 @@ HRESULT CBullet::Init(void)
 	// テクスチャ割り当て
 	BindTexture(m_pTexture);
 	// サイズの設定
-	SetSize(D3DXVECTOR3(BULLET_SIZE, BULLET_SIZE, 0.0f));
-	
+	SetSize(D3DXVECTOR3(BULLET_SIZE, 0.0f, BULLET_SIZE));
+
+
 	return S_OK;
 }
 
@@ -128,7 +129,7 @@ void CBullet::Uninit(void)
 		m_pCollision->Uninit();
 	}
 
-	CBillboard::Uninit();
+	CScene3d::Uninit();
 }
 
 //******************************
@@ -164,7 +165,7 @@ void CBullet::Update(void)
 //******************************
 void CBullet::Draw(void)
 {
-	CBillboard::Draw();
+	CScene3d::Draw();
 }
 
 

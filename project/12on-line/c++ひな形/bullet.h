@@ -13,14 +13,14 @@
 // インクルード
 //*****************************
 #include "main.h"
-#include "billboard.h"
+#include "scene3d.h"
 
 //*****************************
 // マクロ定義
 //*****************************
 #define BULLET_SPEED_PLAYER 25    // 速度(プレイヤーの弾)
 #define BULLET_SPEED_ENEMY 20     // 速度(エネミーの弾)
-#define BULLET_SIZE 60            // サイズ
+#define BULLET_SIZE 100            // サイズ
 
 //*****************************
 // 前方宣言
@@ -32,7 +32,7 @@ class CCollision;
 //*****************************
 
 // 弾クラス
-class CBullet : public CBillboard
+class CBullet : public CScene3d
 {
 public:
 	typedef enum

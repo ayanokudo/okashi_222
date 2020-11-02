@@ -71,8 +71,9 @@ private:
 	void MoveController(void);
 	void Direction(void);
 	void Attack(void);
-	void MotionFalse(void);
 	void MotionManager(void);
+	void MotionFalse(void);
+	void SetMotion(MOTION motionState);
 
 	// メンバ変数
 	static CModel::Model m_model[MAX_PLAYER][MAX_PARTS_NUM]; // モデル情報
@@ -88,6 +89,7 @@ private:
 	int m_nLife;				    // プレイヤーのライフ
 	MOTION m_motionState;           // 現在のモーション状態
 	int m_nSpeed;
+	bool m_bAttack;                 // 攻撃しているかの判定用
 };
 
 #endif

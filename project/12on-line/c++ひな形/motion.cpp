@@ -79,7 +79,7 @@ HRESULT CMotion::Init(void)
 	// ‰ÁZ’l‚Ì‰Šú‰»
 	for (int nCntParts = 0; nCntParts < m_nNumParts; nCntParts++)
 	{
-		m_pModel[nCntParts].rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+		//m_pModel[nCntParts].rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 		m_addRot[nCntParts] = (m_rot[m_nCntKey][nCntParts] - m_pModel[nCntParts].rot) / (float)m_nNumFrame[m_nCntKey];
 	}
 

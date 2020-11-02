@@ -39,7 +39,7 @@ CTime::CTime()
 	//Œ»İŠÔ‚ğæ“¾
 	m_start = timeGetTime();
 	m_end = NULL;
-	m_bTime == true;
+	m_bTime = true;
 	m_nAllTime = 0;
 }
 

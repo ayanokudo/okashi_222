@@ -14,6 +14,7 @@
 //*****************************
 #include "main.h"
 #include "model_hierarchy.h"
+#include "game.h"
 
 //*****************************
 // 前方宣言
@@ -74,7 +75,7 @@ private:
 	void MotionManager(void);
 
 	// メンバ変数
-	static CModel::Model m_model[MAX_PARTS_NUM]; // モデル情報
+	static CModel::Model m_model[MAX_PLAYER][MAX_PARTS_NUM]; // モデル情報
 	static int m_nNumModel;                      // モデル数
 	static char m_achAnimPath[MOTION_MAX][64];   // アニメーションテキストのパス格納用
 

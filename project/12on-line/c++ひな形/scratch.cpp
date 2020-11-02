@@ -132,8 +132,7 @@ HRESULT CScratch::Init(void)
 
 	// UV座標セット
 	SetTextureUV(uv);
-	// 加算合成にする
-	//SetAddMode(true);
+
 	// カラーの設定
 	SetColor(SCRATCH_COLOR);
 	return S_OK;

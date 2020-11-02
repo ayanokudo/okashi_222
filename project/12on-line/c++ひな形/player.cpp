@@ -23,8 +23,8 @@
 //*****************************
 // マクロ定義
 //*****************************
-#define MODEL_PATH      "data/Models/cat_sakamoto.x"          //モデルのパス
-#define MODEL_TEST_PATH "data/Texts/CatData_Milk.txt"              //モデルのパス
+#define PLAYER_1_PATH "data/Texts/CatData_Milk.txt"              //モデルのパス
+#define PLAYER_2_PATH "data/Texts/CatData_Choco.txt"              //モデルのパス
 
 #define WAIT_ANIM_PATH  "data/Texts/NekoMotion/Wait.txt"      // 待機アニメーションのパス
 #define WALK_ANIM_PATH  "data/Texts/NekoMotion/Walk.txt"      // 歩きアニメーションのパス
@@ -44,7 +44,7 @@
 //*****************************
 // 静的メンバ変数宣言
 //*****************************
-CModel::Model CPlayer::m_model[MAX_PARTS_NUM] = {};
+CModel::Model CPlayer::m_model[MAX_PLAYER][MAX_PARTS_NUM] = {};
 int CPlayer::m_nNumModel = 0;
 char CPlayer::m_achAnimPath[MOTION_MAX][64]
 {
@@ -69,7 +69,6 @@ CPlayer::CPlayer() :CModelHierarchy(OBJTYPE_PLAYER)
 	memset(&m_pMotion, 0, sizeof(m_pMotion));
 	m_motionState = WAIT;
 	m_nSpeed = 0;
-	memset(&m_pAnim, 0, sizeof(m_pAnim));
 }
 
 //******************************
@@ -88,13 +87,16 @@ CPlayer * CPlayer::Create(D3DXVECTOR3 pos, int nPlayerNum)
     CPlayer *pPlayer;
     pPlayer = new CPlayer;
 
+	// プレイヤー番号の設定
+	pPlayer->m_nPlayerNum = nPlayerNum;
+
     // 初期化
     pPlayer->Init();
 
     // 各値の代入・セット
     pPlayer->SetPos(pos);
     pPlayer->SetObjType(OBJTYPE_PLAYER); // オブジェクトタイプ
-    pPlayer->m_nPlayerNum = nPlayerNum;
+    
     return pPlayer;
 }
 
@@ -106,52 +108,65 @@ HRESULT CPlayer::Load(void)
     // デバイスの取得
     LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
     
-    // ファイルオープン
-    FILE*pFile = NULL;
-    pFile = fopen(MODEL_TEST_PATH, "r");
+    
+	for (int nCntPlayer = 0; nCntPlayer < MAX_PLAYER; nCntPlayer++)
+	{
+		// ファイルオープン
+		FILE*pFile = NULL;
+		
+		if (nCntPlayer == 0)
+		{// プレイヤー１
+			pFile = fopen(PLAYER_1_PATH, "r");
 
-    if (pFile != NULL)
-    {
-        // テキストファイルの解析
+		}
+		else
+		{// プレイヤー２
+			pFile = fopen(PLAYER_2_PATH, "r");
+		}
 
-        char chChar[256] = {};
-        fscanf(pFile, "%s", chChar);
-
-        // "NUM_MODEL"読み込むまでループ
-        while (strcmp(chChar, "NUM_MODEL") != 0)
-        {
-            fscanf(pFile, "%s", chChar);
-        }
-
-        // 読み込むモデルの数
-        fscanf(pFile,"%*s %d # %*s", &m_nNumModel);
-
-        for (int nCnt = 0; nCnt < m_nNumModel; nCnt++)
+		if (pFile != NULL)
 		{
-            // 読み込んだ文字格納用
-            char chPath[64] = {};
-            // "MODEL_FILENAME"を読み込むまでループ
-            while (strcmp(chChar, "MODEL_FILENAME") != 0)
-            {
-                fscanf(pFile, "%s", chChar);
-            }
-            // ファイルパスの読み込み
-            fscanf(pFile, "%*s %s", chPath);
+			// テキストファイルの解析
 
-            // Xファイルの読み込み
-            D3DXLoadMeshFromX(chPath,
-                D3DXMESH_SYSTEMMEM,
-                pDevice,
-                NULL,
-                &m_model[nCnt].pBuffMat,
-                NULL,
-                &m_model[nCnt].nNumMat,
-                &m_model[nCnt].pMesh);
+			char chChar[256] = {};
+			fscanf(pFile, "%s", chChar);
 
-            // 次の文字を読み込む
-            fscanf(pFile, "%s", chChar);
-        }
-    }
+			// "NUM_MODEL"読み込むまでループ
+			while (strcmp(chChar, "NUM_MODEL") != 0)
+			{
+				fscanf(pFile, "%s", chChar);
+			}
+
+			// 読み込むモデルの数
+			fscanf(pFile, "%*s %d # %*s", &m_nNumModel);
+
+			for (int nCnt = 0; nCnt < m_nNumModel; nCnt++)
+			{
+				// 読み込んだ文字格納用
+				char chPath[64] = {};
+				// "MODEL_FILENAME"を読み込むまでループ
+				while (strcmp(chChar, "MODEL_FILENAME") != 0)
+				{
+					fscanf(pFile, "%s", chChar);
+				}
+				// ファイルパスの読み込み
+				fscanf(pFile, "%*s %s", chPath);
+
+				// Xファイルの読み込み
+				D3DXLoadMeshFromX(chPath,
+					D3DXMESH_SYSTEMMEM,
+					pDevice,
+					NULL,
+					&m_model[nCntPlayer][nCnt].pBuffMat,
+					NULL,	
+					&m_model[nCntPlayer][nCnt].nNumMat,
+					&m_model[nCntPlayer][nCnt].pMesh);
+
+				// 次の文字を読み込む
+				fscanf(pFile, "%s", chChar);
+			}
+		}
+	}
 
     return S_OK;
 }
@@ -161,21 +176,24 @@ HRESULT CPlayer::Load(void)
 //******************************
 void CPlayer::Unload(void)
 {
-    for (int nCnt = 0; nCnt < m_nNumModel; nCnt++)
-    {
-        //メッシュの破棄
-        if (m_model[nCnt].pMesh != NULL)
-        {
-            m_model[nCnt].pMesh->Release();
-            m_model[nCnt].pMesh = NULL;
-        }
-        //マテリアルの破棄
-        if (m_model[nCnt].pBuffMat != NULL)
-        {
-            m_model[nCnt].pBuffMat->Release();
-            m_model[nCnt].pBuffMat = NULL;
-        }
-    }
+	for (int nCntPlayer = 0; nCntPlayer < MAX_PLAYER; nCntPlayer++)
+	{
+		for (int nCnt = 0; nCnt < m_nNumModel; nCnt++)
+		{
+			//メッシュの破棄
+			if (m_model[nCntPlayer][nCnt].pMesh != NULL)
+			{
+				m_model[nCntPlayer][nCnt].pMesh->Release();
+				m_model[nCntPlayer][nCnt].pMesh = NULL;
+			}
+			//マテリアルの破棄
+			if (m_model[nCntPlayer][nCnt].pBuffMat != NULL)
+			{
+				m_model[nCntPlayer][nCnt].pBuffMat->Release();
+				m_model[nCntPlayer][nCnt].pBuffMat = NULL;
+			}
+		}
+	}
 }
 
 
@@ -185,7 +203,7 @@ void CPlayer::Unload(void)
 HRESULT CPlayer::Init(void)
 {
     //LoadHierarchy(&m_model[0], MODEL_TEST_PATH);
-    if (FAILED(CModelHierarchy::Init(m_nNumModel, &m_model[0], MODEL_TEST_PATH)))
+    if (FAILED(CModelHierarchy::Init(m_nNumModel, &m_model[m_nPlayerNum][0], PLAYER_1_PATH)))
     {
         return E_FAIL;
     }
@@ -196,7 +214,7 @@ HRESULT CPlayer::Init(void)
     // アニメーションの生成
     for (int nCntAnim = 0; nCntAnim < MOTION_MAX; nCntAnim++)
     {
-        m_pMotion[nCntAnim]= CMotion::Create(GetPartsNum(), m_achAnimPath[nCntAnim], &m_model[0]);
+        m_pMotion[nCntAnim]= CMotion::Create(GetPartsNum(), m_achAnimPath[nCntAnim], &m_model[m_nPlayerNum][0]);
     }
 
 	// サイズの調整
@@ -256,6 +274,7 @@ void CPlayer::Update(void)
 
 	// 向きの管理
 	Direction();
+
 	// 攻撃
 	Attack();
 
@@ -494,8 +513,10 @@ void CPlayer::MotionFalse(void)
 void CPlayer::MotionManager(void)
 {
 	if (!m_pMotion[m_motionState]->GetActiveAnimation())
-	{
+	{// 現在のモーションがfalseのとき
+		// モーションの初期化
 		MotionFalse();
+		// 現在のモーションをtrueにする
 		m_pMotion[m_motionState]->SetActiveAnimation(true);
 	}
 }

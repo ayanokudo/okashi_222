@@ -39,7 +39,8 @@ void CFile::Read(void)
     char aHead[READ_BUFFER];    // 比較用
     char aDie[READ_BUFFER];             // 不必要な文字を読み込む
     FILE *pFile = fopen(FILE_NAME, "r");
-    D3DXVECTOR3 pos;                // 読み込んだ位置
+    D3DXVECTOR3 pos;            // 読み込んだ位置
+    D3DXVECTOR3 rot;            // 読み込んだ角度
     CModel::OBJTYPE type;
 
     if (pFile)
@@ -70,12 +71,17 @@ void CFile::Read(void)
                         {
                             sscanf(aRead, "%s %f %f %f", &aDie, &pos.x, &pos.y, &pos.z);//位置を格納
                         }
+                        // 角度の設定
+                        if (strcmp(aHead, "ROT") == 0)
+                        {
+                            sscanf(aRead, "%s %f %f %f", &aDie, &rot.x, &rot.y, &rot.z);//位置を格納
+                        }
                         if (strcmp(aHead, "TYPE") == 0)
                         {
                             sscanf(aRead, "%s %d", &aDie, &type);//位置を格納
                         }
                     }
-                    CObject::SetObject(pos, type);
+                    CObject::SetObject(pos, rot,type);
                 }
             }
         }
@@ -102,12 +108,15 @@ void CFile::Writing(void)
         {
 
             if (pScene != CObject::GetPlayer())
-            {// カーソルに使われているオブジェクトを書き込み
+            {// カーソルに使われていないオブジェクトを書き込み
                 if (pScene)
                 {// オブジェクトがあった場合
                     D3DXVECTOR3 pos = ((CModel*)pScene)->GetPos();
+                    D3DXVECTOR3 rot = ((CModel*)pScene)->GetRot();
+
                     fprintf(pFile, "\tOBJ_SET\n");
                     fprintf(pFile, "\t\t POS %.1f %.1f %.1f \n", pos.x, pos.y, pos.z);
+                    fprintf(pFile, "\t\t ROT %.1f %.1f %.1f \n", rot.x, rot.y, rot.z);
                     fprintf(pFile, "\t\t TYPE %d \n", pScene->GetType());
                     fprintf(pFile, "\tEND_OBJ_SET\n");
                     fprintf(pFile, "\n");
@@ -115,56 +124,14 @@ void CFile::Writing(void)
             }
             pScene = pScene->GetNext();
         }
-        pScene = CScene::GetTop(CScene::OBJTYPE_ENEMY);
+        // 敵オブジェクト書き込み
+        ObjctWriting(pFile, CScene::OBJTYPE_ENEMY);
 
-        // オブジェクトの数分データを書きだす
-        while (pScene != NULL)
-        {
-            if (pScene)
-            {// オブジェクトがあった場合
-                D3DXVECTOR3 pos = ((CModel*)pScene)->GetPos();
-                fprintf(pFile, "\tOBJ_SET\n");
-                fprintf(pFile, "\t\t POS %.1f %.1f %.1f \n", pos.x, pos.y, pos.z);
-                fprintf(pFile, "\t\t TYPE %d \n", pScene->GetType());
-                fprintf(pFile, "\tEND_OBJ_SET\n");
-                fprintf(pFile, "\n");
-            }
-            pScene = pScene->GetNext();
-        }
+        // 床オブジェクト書き込み
+        ObjctWriting(pFile, CScene::OBJTYPE_FLOOR);
 
-        pScene = CScene::GetTop(CScene::OBJTYPE_FLOOR);
-
-        // オブジェクトの数分データを書きだす
-        while (pScene != NULL)
-        {
-            if (pScene)
-            {// オブジェクトがあった場合
-                D3DXVECTOR3 pos = ((CModel*)pScene)->GetPos();
-                fprintf(pFile, "\tOBJ_SET\n");
-                fprintf(pFile, "\t\t POS %.1f %.1f %.1f \n", pos.x, pos.y, pos.z);
-                fprintf(pFile, "\t\t TYPE %d \n", pScene->GetType());
-                fprintf(pFile, "\tEND_OBJ_SET\n");
-                fprintf(pFile, "\n");
-            }
-            pScene = pScene->GetNext();
-        }
-
-        pScene = CScene::GetTop(CScene::OBJTYPE_WALL);
-
-        // オブジェクトの数分データを書きだす
-        while (pScene != NULL)
-        {
-            if (pScene)
-            {// オブジェクトがあった場合
-                D3DXVECTOR3 pos = ((CModel*)pScene)->GetPos();
-                fprintf(pFile, "\tOBJ_SET\n");
-                fprintf(pFile, "\t\t POS %.1f %.1f %.1f \n", pos.x, pos.y, pos.z);
-                fprintf(pFile, "\t\t TYPE %d \n", pScene->GetType());
-                fprintf(pFile, "\tEND_OBJ_SET\n");
-                fprintf(pFile, "\n");
-            }
-            pScene = pScene->GetNext();
-        }
+        // 壁オブジェクト書き込み
+        ObjctWriting(pFile, CScene::OBJTYPE_WALL);
 
         fprintf(pFile, "\n");
         fprintf(pFile, "END_SCRIPT      // スクリプト終了");   // スクリプト終了
@@ -172,6 +139,28 @@ void CFile::Writing(void)
     }
 }
 
-void CFile::ObjctWriting(CScene::OBJTYPE tye)
+//=============================================================================
+// [Writing] ファイルの書き込み
+//=============================================================================
+void CFile::ObjctWriting(FILE *pFile,CScene::OBJTYPE type)
 {
+    CScene* pScene = CScene::GetTop(type);
+
+    // オブジェクトの数分データを書きだす
+    while (pScene != NULL)
+    {
+        if (pScene)
+        {// オブジェクトがあった場合
+            D3DXVECTOR3 pos = ((CModel*)pScene)->GetPos();
+            D3DXVECTOR3 rot = ((CModel*)pScene)->GetRot();
+
+            fprintf(pFile, "\tOBJ_SET\n");
+            fprintf(pFile, "\t\t POS %.1f %.1f %.1f \n", pos.x, pos.y, pos.z);
+            fprintf(pFile, "\t\t ROT %.1f %.1f %.1f \n", rot.x, rot.y, rot.z);
+            fprintf(pFile, "\t\t TYPE %d \n", pScene->GetType());
+            fprintf(pFile, "\tEND_OBJ_SET\n");
+            fprintf(pFile, "\n");
+        }
+        pScene = pScene->GetNext();
+    }
 }

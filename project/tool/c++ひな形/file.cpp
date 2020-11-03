@@ -81,7 +81,7 @@ void CFile::Read(void)
                             sscanf(aRead, "%s %d", &aDie, &type);//位置を格納
                         }
                     }
-                    CObject::SetObject(pos, rot,type);
+                    CObject::SetObject(pos, D3DXToRadian(rot),type);
                 }
             }
         }
@@ -152,7 +152,7 @@ void CFile::ObjctWriting(FILE *pFile,CScene::OBJTYPE type)
         if (pScene)
         {// オブジェクトがあった場合
             D3DXVECTOR3 pos = ((CModel*)pScene)->GetPos();
-            D3DXVECTOR3 rot = ((CModel*)pScene)->GetRot();
+            D3DXVECTOR3 rot = D3DXToDegree(((CModel*)pScene)->GetRot());
 
             fprintf(pFile, "\tOBJ_SET\n");
             fprintf(pFile, "\t\t POS %.1f %.1f %.1f \n", pos.x, pos.y, pos.z);

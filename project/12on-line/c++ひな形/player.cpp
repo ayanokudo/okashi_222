@@ -271,7 +271,8 @@ void CPlayer::Update(void)
 	m_moveDest = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 
 	if (!m_bAttack)
-	{
+	{// 攻撃中じゃないとき
+
 		// 移動（キーボード）
 		MoveKeyboard();
 
@@ -289,10 +290,10 @@ void CPlayer::Update(void)
 
 		// 座標のセット
 		SetPos(pos);
-
-		// 攻撃
-		Attack();
 	}
+
+	// 攻撃
+	Attack();
 
 	// 向きの管理
 	Direction();
@@ -496,45 +497,72 @@ void CPlayer::Direction(void)
 //******************************
 void CPlayer::Attack(void)
 {
-    if (CManager::GetKeyboard()->GetKeyTrigger(DIK_SPACE) || CManager::GetJoypad()->GetJoystickTrigger(2, m_nPlayerNum))
-    {// 弾を撃つ
-        // プレイヤーの向いている方向の取得
-        float fRotY = GetRot().y - D3DXToRadian(90);
-        // 移動量
-        D3DXVECTOR3 bulletMove;
-        bulletMove.x = cosf(fRotY)*-BULLET_SPEED_PLAYER;
-        bulletMove.y = 0.0f;
-        bulletMove.z = sinf(fRotY)*BULLET_SPEED_PLAYER;
-        // 弾を撃つ位置の調整
-        D3DXVECTOR3 pos = GetPos();
-        pos.y += 10.0f;
-        // 弾の生成
-        CBullet::Create(pos, bulletMove, 300, CBullet::BULLETUSER_PLAYER);
+	if (!m_bAttack)
+	{// 攻撃中じゃないとき
 
-		// モーションステートの設定
-		SetMotion(VOICE);
+		if (CManager::GetKeyboard()->GetKeyTrigger(DIK_SPACE) || CManager::GetJoypad()->GetJoystickTrigger(2, m_nPlayerNum))
+		{// 弾を撃つ
+			//// プレイヤーの向いている方向の取得
+			//float fRotY = GetRot().y - D3DXToRadian(90);
+			//// 移動量
+			//D3DXVECTOR3 bulletMove;
+			//bulletMove.x = cosf(fRotY)*-BULLET_SPEED_PLAYER;
+			//bulletMove.y = 0.0f;
+			//bulletMove.z = sinf(fRotY)*BULLET_SPEED_PLAYER;
+			//// 弾を撃つ位置の調整
+			//D3DXVECTOR3 pos = GetPos();
+			//pos.y += 10.0f;
+			//// 弾の生成
+			//CBullet::Create(pos, bulletMove, 300, CBullet::BULLETUSER_PLAYER);
 
-		// 攻撃フラグを立てる
-		m_bAttack = true;
-    }
-    if (CManager::GetKeyboard()->GetKeyTrigger(DIK_B) || CManager::GetJoypad()->GetJoystickTrigger(0, m_nPlayerNum))
-    {// 弾を撃つ
-     // プレイヤーの向いている方向の取得
-        float fRotY = GetRot().y - D3DXToRadian(90);
-        // 弾を撃つ位置の調整
-        D3DXVECTOR3 pos = GetPos();
-        pos.x = pos.x + cosf(fRotY)*-SCRATCH_SIZE;
-        pos.y = pos.y + SCRATCH_HEIGHT;
-        pos.z = pos.z + sinf(fRotY) * SCRATCH_SIZE;
+			// モーションステートの設定
+			SetMotion(VOICE);
 
-        // ひっかきの生成
-		CScratch::Create(pos, fRotY, CScratch::SCRATCHUSER_PLAYER, m_nPlayerNum);
+			// 攻撃フラグを立てる
+			m_bAttack = true;
 
-		// モーションステートの設定
-		SetMotion(PUNCH);
+		}
 
-		// 攻撃フラグを立てる
-		m_bAttack = true;
+		if (CManager::GetKeyboard()->GetKeyTrigger(DIK_B) || CManager::GetJoypad()->GetJoystickTrigger(0, m_nPlayerNum))
+		{// 弾を撃つ
+			// プレイヤーの向いている方向の取得
+			float fRotY = GetRot().y - D3DXToRadian(90);
+			// 弾を撃つ位置の調整
+			D3DXVECTOR3 pos = GetPos();
+			pos.x = pos.x + cosf(fRotY)*-SCRATCH_SIZE;
+			pos.y = pos.y + SCRATCH_HEIGHT;
+			pos.z = pos.z + sinf(fRotY) * SCRATCH_SIZE;
+
+			// ひっかきの生成
+			CScratch::Create(pos, fRotY, CScratch::SCRATCHUSER_PLAYER, m_nPlayerNum);
+
+			// モーションステートの設定
+			SetMotion(PUNCH);
+
+			// 攻撃フラグを立てる
+			m_bAttack = true;
+		}
+	}
+	else
+	{
+		if (m_pMotion[VOICE]->GetKey() == 2)
+		{// モーションのキーフレームが2の時
+
+			 // プレイヤーの向いている方向の取得
+			float fRotY = GetRot().y - D3DXToRadian(90);
+			// 移動量
+			D3DXVECTOR3 bulletMove;
+			bulletMove.x = cosf(fRotY)*-BULLET_SPEED_PLAYER;
+			bulletMove.y = 0.0f;
+			bulletMove.z = sinf(fRotY)*BULLET_SPEED_PLAYER;
+			// 弾を撃つ位置の調整
+			D3DXVECTOR3 pos = GetPos();
+			pos.y += 10.0f;
+			// 弾の生成
+			CBullet::Create(pos, bulletMove, 300, CBullet::BULLETUSER_PLAYER);
+
+			m_bAttack = false;
+		}
 	}
 }
 
@@ -565,6 +593,9 @@ void CPlayer::MotionFalse(void)
 	}
 }
 
+//******************************
+// モーションセット
+//******************************
 void CPlayer::SetMotion(MOTION motionState)
 {
 	m_motionState = motionState;

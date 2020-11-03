@@ -204,11 +204,21 @@ void CPlayer::Unload(void)
 //******************************
 HRESULT CPlayer::Init(void)
 {
-    //LoadHierarchy(&m_model[0], MODEL_TEST_PATH);
-    if (FAILED(CModelHierarchy::Init(m_nNumModel, &m_model[m_nPlayerNum][0], PLAYER_1_PATH)))
-    {
-        return E_FAIL;
-    }
+	if (m_nPlayerNum == 0)
+	{
+		if (FAILED(CModelHierarchy::Init(m_nNumModel, &m_model[m_nPlayerNum][0], PLAYER_1_PATH)))
+		{
+			return E_FAIL;
+		}
+	}
+	else
+	{
+		if (FAILED(CModelHierarchy::Init(m_nNumModel, &m_model[m_nPlayerNum][0], PLAYER_2_PATH)))
+		{
+			return E_FAIL;
+		}
+	}
+
     m_nLife = PLAYER_1_LIFE;
 
     // サイズの調整
@@ -227,7 +237,7 @@ HRESULT CPlayer::Init(void)
 		m_pMotion[nCntAnim] = CMotion::Create(GetPartsNum(), m_achAnimPath[nCntAnim], GetModelData());
 	}
 	// モーション状態の初期化
-	m_motionState = WAIT;
+	SetMotion(WAIT);
 
 	// 当たり判定の生成
 	m_pCollision = CCollision::CreateSphere(GetPos(), PLAYER_RADIUS);
@@ -279,13 +289,13 @@ void CPlayer::Update(void)
 
 		// 座標のセット
 		SetPos(pos);
+
+		// 攻撃
+		Attack();
 	}
 
 	// 向きの管理
 	Direction();
-
-	// 攻撃
-	Attack();
 
 	// モーション管理
 	MotionManager();
@@ -319,7 +329,7 @@ void CPlayer::MoveKeyboard(void)
         m_fRotYDist = D3DXToRadian(0);
 
 		// モーションの設定
-		m_motionState = WALK;
+		SetMotion(WALK);
 
         if (CManager::GetKeyboard()->GetKeyPress(DIK_A))
         {
@@ -346,7 +356,7 @@ void CPlayer::MoveKeyboard(void)
         m_fRotYDist  = D3DXToRadian(180);
        
 		// モーションの設定
-		m_motionState = WALK;
+		SetMotion(WALK);
 
         if (CManager::GetKeyboard()->GetKeyPress(DIK_A))
         {
@@ -374,7 +384,7 @@ void CPlayer::MoveKeyboard(void)
         m_moveDest.x = PLAYER_SPEED + m_nSpeed;
 
 		// モーションの設定
-		m_motionState = WALK;
+		SetMotion(WALK);
 
     }
     else if (CManager::GetKeyboard()->GetKeyPress(DIK_D))
@@ -391,8 +401,7 @@ void CPlayer::MoveKeyboard(void)
 	else
 	{
 		// モーションの設定
-		SetMotion(WAIT);
-
+		//SetMotion(WAIT);
 	}
 
 	//ダッシュ処理
@@ -542,8 +551,6 @@ void CPlayer::MotionManager(void)
 			m_bAttack = false;
 		}
 	}
-
-	
 }
 
 //******************************

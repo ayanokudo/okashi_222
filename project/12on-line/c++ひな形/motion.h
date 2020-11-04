@@ -46,6 +46,7 @@ public:
 	void SetActiveAnimation(bool bActive);
 	bool GetActiveAnimation(void) { return m_bAnim; }
 	int GetKey(void) { return m_nCntKey; }
+	int GetFrame(void) { return m_nCntFrame; }
 private:
 	void Load(const char *pPath);
 	// ƒƒ“ƒo•Ï”

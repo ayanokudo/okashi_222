@@ -18,6 +18,7 @@
 #include "collision.h"
 #include "player.h"
 #include "score.h"
+#include "collect.h"
 
 //*****************************
 // ƒ}ƒNƒ’è‹`
@@ -208,6 +209,7 @@ void CItem::CollisionItem(void)
 			if (CCollision::CollisionSphere(m_pCollision, pPlayer->GetCollision()))
 			{
 				CScore::AddScore(1000);
+				CCollect::Collect();
 				Uninit();
 				return;
 			}

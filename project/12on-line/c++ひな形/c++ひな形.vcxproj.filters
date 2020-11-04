@@ -121,6 +121,9 @@
     <ClCompile Include="ui.cpp">
       <Filter>ソースファイル</Filter>
     </ClCompile>
+    <ClCompile Include="collect.cpp">
+      <Filter>ソースファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bg.h">
@@ -243,6 +246,7 @@
     <ClInclude Include="ui.h">
       <Filter>ヘッダーファイル</Filter>
     </ClInclude>
+    <ClInclude Include="collect.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ヘッダーファイル">

@@ -26,6 +26,7 @@
 #include "item.h"
 #include "time.h"
 #include "ui.h"
+#include "collect.h"
 
 //=============================
 // Ã“Iƒƒ“ƒo•Ï”éŒ¾

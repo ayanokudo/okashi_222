@@ -106,7 +106,7 @@ CPlayer * CPlayer::Create(D3DXVECTOR3 pos, int nPlayerNum)
 }
 
 //******************************
-// テクスチャのロード
+// ロード
 //******************************
 HRESULT CPlayer::Load(void)
 {
@@ -176,7 +176,7 @@ HRESULT CPlayer::Load(void)
 }
 
 //******************************
-// テクスチャのアンロード
+// アンロード
 //******************************
 void CPlayer::Unload(void)
 {
@@ -299,6 +299,7 @@ void CPlayer::Update(void)
 			m_pUi[nCount]->Update();
 		}
 	}
+
 	if (!m_bAttack)
 	{// 攻撃中じゃないとき
 
@@ -581,7 +582,7 @@ void CPlayer::Attack(void)
 	}
 	else
 	{
-		if (m_pMotion[VOICE]->GetKey() == 2)
+		if (m_pMotion[VOICE]->GetKey() == 2&& m_pMotion[VOICE]->GetFrame()==0)
 		{// モーションのキーフレームが2の時
 
 			 // プレイヤーの向いている方向の取得
@@ -596,8 +597,6 @@ void CPlayer::Attack(void)
 			pos.y += 10.0f;
 			// 弾の生成
 			CBullet::Create(pos, bulletMove, 300, CBullet::BULLETUSER_PLAYER);
-
-			m_bAttack = false;
 		}
 	}
 }

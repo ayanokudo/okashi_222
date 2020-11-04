@@ -16,12 +16,13 @@
 //**********************************
 // マクロ定義
 //**********************************
-#define UI_TIME_TEXTURE_PATH	"./data/Textures/TIME.png" // タイムのパス
-#define UI_TITLE_TEXTURE_PATH	"./data/Textures/title000.png" // タイトルのパス
-#define UI_ENTER_TEXTURE_PATH	"./data/Textures/title000.png" // エンターのパス
-#define UI_WARNING_TEXTURE_PATH "./data/Textures/TIME.png" // ワーニングのパス
-#define UI_ATTACK_TEXTURE_PATH	"./data/Textures/attack000.png" // ワーニングのパス
-#define UI_DASH_TEXTURE_PATH	"./data/Textures/dash000.png" // ワーニングのパス
+#define UI_TIME_TEXTURE_PATH		"./data/Textures/TIME.png"			// タイムのパス
+#define UI_TITLE_TEXTURE_PATH		"./data/Textures/title000.png"		// タイトルのパス
+#define UI_ENTER_TEXTURE_PATH		"./data/Textures/title000.png"		// エンターのパス
+#define UI_WARNING_TEXTURE_PATH		"./data/Textures/TIME.png"			// ワーニングのパス
+#define UI_ATTACK_NAIL_TEXTURE_PATH	"./data/Textures/Attack.png"			// ワーニングのパス
+#define UI_ATTACK_CRY_TEXTURE_PATH	"./data/Textures/Voice.png"		// ワーニングのパス
+#define UI_DASH_TEXTURE_PATH		"./data/Textures/Dash.png"			// ワーニングのパス
 
 #define UI_SIZE 100
 //**********************************
@@ -75,7 +76,8 @@ HRESULT CUi::Load(void)
 	D3DXCreateTextureFromFile(pDevice, UI_TITLE_TEXTURE_PATH, &m_apTexture[UI_TITLE]);
 	D3DXCreateTextureFromFile(pDevice, UI_ENTER_TEXTURE_PATH, &m_apTexture[UI_ENTER]);
 	D3DXCreateTextureFromFile(pDevice, UI_WARNING_TEXTURE_PATH, &m_apTexture[UI_WARNING]);
-	D3DXCreateTextureFromFile(pDevice, UI_ATTACK_TEXTURE_PATH, &m_apTexture[UI_ATTACK]);
+	D3DXCreateTextureFromFile(pDevice, UI_ATTACK_CRY_TEXTURE_PATH, &m_apTexture[UI_ATTACK_NAIL]);
+	D3DXCreateTextureFromFile(pDevice, UI_ATTACK_NAIL_TEXTURE_PATH, &m_apTexture[UI_ATTACK_CRY]);
 	D3DXCreateTextureFromFile(pDevice, UI_DASH_TEXTURE_PATH, &m_apTexture[UI_DASH]);
 
 	return S_OK;

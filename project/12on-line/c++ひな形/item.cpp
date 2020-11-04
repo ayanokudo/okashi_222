@@ -211,9 +211,8 @@ void CItem::CollisionItem(void)
 				CScore::AddScore(1000);
 				CCollect::Collect();
 				Uninit();
-				return;
+				break;
 			}
-			break;
 		}
 	}
 }

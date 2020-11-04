@@ -242,14 +242,20 @@ HRESULT CPlayer::Init(void)
 	SetMotion(WAIT);
 
 	// アタックのUIの生成
-	m_pUi[0] = CUi::Create(D3DXVECTOR3(1200.0f, 550.0f, 0.0f),
-		D3DXVECTOR3(70, 70, 0),
+	m_pUi[0] = CUi::Create(D3DXVECTOR3(1050.0f, 510.0f, 0.0f),
+		D3DXVECTOR3(60, 60, 0),
 		D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
-		CUi::UI_ATTACK);
+		CUi::UI_ATTACK_NAIL);
 
 	// ダッシュのUIの生成
-	m_pUi[1] = CUi::Create(D3DXVECTOR3(1080.0f, 640.0f, 0.0f),
-		D3DXVECTOR3(70, 70, 0),
+	m_pUi[1] = CUi::Create(D3DXVECTOR3(1180.0f, 580.0f, 0.0f),
+		D3DXVECTOR3(60, 60, 0),
+		D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
+		CUi::UI_ATTACK_CRY);
+
+	// ダッシュのUIの生成
+	m_pUi[2] = CUi::Create(D3DXVECTOR3(1050.0f, 660.0f, 0.0f),
+		D3DXVECTOR3(60, 60, 0),
 		D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
 		CUi::UI_DASH);
 
@@ -272,7 +278,7 @@ void CPlayer::Uninit(void)
     {
         m_pCollision->Uninit();
     }
-	for (int nCount = 0; nCount <= 1; nCount++)
+	for (int nCount = 0; nCount <= 2; nCount++)
 	{
 		if (m_pUi != NULL)
 		{
@@ -292,7 +298,7 @@ void CPlayer::Update(void)
 {
 	// 目標値の初期化
 	m_moveDest = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-	for (int nCount = 0; nCount <= 1; nCount++)
+	for (int nCount = 0; nCount <= 2; nCount++)
 	{
 		if (m_pUi != NULL)
 		{
@@ -341,7 +347,7 @@ void CPlayer::Update(void)
 void CPlayer::Draw(void)
 {
     CModelHierarchy::Draw();
-	for (int nCount = 0; nCount <= 1; nCount++)
+	for (int nCount = 0; nCount <= 2; nCount++)
 	{
 		if (m_pUi != NULL)
 		{

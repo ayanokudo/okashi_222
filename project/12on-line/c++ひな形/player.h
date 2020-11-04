@@ -21,10 +21,12 @@
 //*****************************
 class CCollision;
 class CMotion;
+class CUi;
 
 //*****************************
 // マクロ定義
 //*****************************
+#define UI_PLAYER 2
 
 //*****************************
 // クラス定義
@@ -90,6 +92,7 @@ private:
 	MOTION m_motionState;           // 現在のモーション状態
 	int m_nSpeed;
 	bool m_bAttack;                 // 攻撃しているかの判定用
+	CUi* m_pUi[UI_PLAYER];
 };
 
 #endif

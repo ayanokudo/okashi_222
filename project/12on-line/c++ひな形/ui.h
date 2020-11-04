@@ -31,6 +31,8 @@ public:
 		UI_TITLE,		//タイトル
 		UI_ENTER,		//プレスエンター
 		UI_WARNING,		//危険
+		UI_ATTACK,		//攻撃
+		UI_DASH,		//ダッシュ
 		UI_MAX
 	}UI;
 

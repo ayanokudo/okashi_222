@@ -13,22 +13,28 @@
 // インクルード
 //*****************************
 #include "main.h"
-#include "model.h"
-#include "player.h"
+#include "model_hierarchy.h"
 
 //*****************************
 // 前方宣言
 //*****************************
 class CCollision;
+class CMotion;
 
 //*****************************
 // クラス定義
 //*****************************
 
 // パーティクルクラス
-class CEnemy : public CModel
+class CEnemy : public CModelHierarchy
 {
 public:
+	typedef enum
+	{
+		WALK = 0,	  // 歩き
+		MOTION_MAX
+	}MOTION;
+
 	typedef enum
 	{
 		ENEMY_CARRIER = 0,		//お菓子運んでる敵
@@ -58,10 +64,15 @@ private:
 	void Direction(void);
 
 	// メンバ変数
-	static LPD3DXMESH m_pMeshModel[ENEMY_MAX];	//メッシュ情報へのポインタ
-	static LPD3DXBUFFER m_pBuffMatModel[ENEMY_MAX];	//マテリアル情報へのポインタ
-	static DWORD m_nNumMatModel[ENEMY_MAX];	//マテリアル情報の数
-	static LPDIRECT3DTEXTURE9 m_apTexture[ENEMY_MAX]; // テクスチャ
+	// メンバ変数
+	static CModel::Model m_model[ENEMY_MAX][MAX_PARTS_NUM]; // モデル情報
+	static int m_nNumModel;                      // モデル数
+	static char m_achAnimPath[MOTION_MAX][64];   // アニメーションテキストのパス格納用
+
+	//static LPD3DXMESH m_pMeshModel[ENEMY_MAX];	//メッシュ情報へのポインタ
+	//static LPD3DXBUFFER m_pBuffMatModel[ENEMY_MAX];	//マテリアル情報へのポインタ
+	//static DWORD m_nNumMatModel[ENEMY_MAX];	//マテリアル情報の数
+	//static LPDIRECT3DTEXTURE9 m_apTexture[ENEMY_MAX]; // テクスチャ
 	D3DXVECTOR3 m_move;        // 移動量
 	D3DXVECTOR3 m_moveDest;
 	CCollision *m_pCollision;    // 当たり判定
@@ -74,6 +85,7 @@ private:
 	int m_nCntAttack;
 	int m_nCountMotion;
 	int m_nCountRand;
+	CMotion*m_pMotion[MOTION_MAX];  // アニメーションポインタ
 };
 
 #endif

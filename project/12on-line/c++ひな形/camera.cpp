@@ -107,7 +107,7 @@ void CCamera::Uninit(void)
 //******************************
 void CCamera::Update(void)
 {
-#ifdef _DEB/UG
+#ifdef _DE/BUG
 	m_fPhi -= CManager::GetMouse()->GetMouseMove().y / 100.0f;
 	m_fTheta -= CManager::GetMouse()->GetMouseMove().x / 100.0f;
 	// 注視点をプレイヤーにする

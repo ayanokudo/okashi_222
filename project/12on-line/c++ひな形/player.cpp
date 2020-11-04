@@ -110,7 +110,6 @@ HRESULT CPlayer::Load(void)
     // デバイスの取得
     LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
     
-    
 	for (int nCntPlayer = 0; nCntPlayer < MAX_PLAYER; nCntPlayer++)
 	{
 		// ファイルオープン

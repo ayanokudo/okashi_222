@@ -36,6 +36,7 @@ LPDIRECT3DTEXTURE9 CTitle::m_pTexture = NULL;
 CTitle::CTitle()
 {
 	m_pPolygon = NULL;
+	m_pUi = NULL;
 }
 
 //=============================

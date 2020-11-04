@@ -16,18 +16,23 @@
 #include "scene3d.h"
 #include "debug_log.h"
 #include "collision.h"
+#include "player.h"
+#include "score.h"
 
 //*****************************
 // マクロ定義
 //*****************************
 #define MODEL_PATH "./data/Models/cat_sakamoto.x"    //モデルのパス
+#define MODEL_PATH "./data/Models/cat_sakamoto.x"    //モデルのパス
+#define MODEL_PATH "./data/Models/cat_sakamoto.x"    //モデルのパス
+#define MODEL_PATH "./data/Models/cat_sakamoto.x"    //モデルのパス
 
 //*****************************
 // 静的メンバ変数宣言
 //*****************************
-LPD3DXMESH   CItem::m_pMeshModel = NULL;   	//メッシュ情報へのポインタ
-LPD3DXBUFFER CItem::m_pBuffMatModel = NULL;	//マテリアル情報へのポインタ
-DWORD        CItem::m_nNumMatModel = 0;	    //マテリアル情報の数
+LPD3DXMESH   CItem::m_pMeshModel[ITEM_MAX] = {};   	//メッシュ情報へのポインタ
+LPD3DXBUFFER CItem::m_pBuffMatModel[ITEM_MAX] = {};	//マテリアル情報へのポインタ
+DWORD        CItem::m_nNumMatModel[ITEM_MAX] = {};	    //マテリアル情報の数
 
 //******************************
 // コンストラクタ
@@ -70,15 +75,34 @@ HRESULT CItem::Load(void)
 {
 	// デバイスの取得
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+
 	//Xファイルの読み込み
 	D3DXLoadMeshFromX(MODEL_PATH,
 		D3DXMESH_SYSTEMMEM,
 		pDevice,
 		NULL,
-		&m_pBuffMatModel,
+		&m_pBuffMatModel[CANDY],
 		NULL,
-		&m_nNumMatModel,
-		&m_pMeshModel);
+		&m_nNumMatModel[CANDY],
+		&m_pMeshModel[CANDY]);
+
+	D3DXLoadMeshFromX(MODEL_PATH,
+		D3DXMESH_SYSTEMMEM,
+		pDevice,
+		NULL,
+		&m_pBuffMatModel[KOBAN],
+		NULL,
+		&m_nNumMatModel[KOBAN],
+		&m_pMeshModel[KOBAN]);
+
+	D3DXLoadMeshFromX(MODEL_PATH,
+		D3DXMESH_SYSTEMMEM,
+		pDevice,
+		NULL,
+		&m_pBuffMatModel[LIFE],
+		NULL,
+		&m_nNumMatModel[LIFE],
+		&m_pMeshModel[LIFE]);
 
 	return S_OK;
 }
@@ -89,16 +113,19 @@ HRESULT CItem::Load(void)
 void CItem::Unload(void)
 {
 	//メッシュの破棄
-	if (m_pMeshModel != NULL)
+	for (int nCount = 0; nCount < ITEM_MAX; nCount++)
 	{
-		m_pMeshModel->Release();
-		m_pMeshModel = NULL;
-	}
-	//マテリアルの破棄
-	if (m_pBuffMatModel != NULL)
-	{
-		m_pBuffMatModel->Release();
-		m_pBuffMatModel = NULL;
+		if (m_pMeshModel[nCount] != NULL)
+		{
+			m_pMeshModel[nCount]->Release();
+			m_pMeshModel[nCount] = NULL;
+		}
+		//マテリアルの破棄
+		if (m_pBuffMatModel[nCount] != NULL)
+		{
+			m_pBuffMatModel[nCount]->Release();
+			m_pBuffMatModel[nCount] = NULL;
+		}
 	}
 }
 
@@ -114,7 +141,10 @@ HRESULT CItem::Init(void)
 	}
 
 	// テクスチャ割り当て
-	BindModel(m_pMeshModel, m_pBuffMatModel, m_nNumMatModel);
+	for (int nCount = 0; nCount < ITEM_MAX; nCount++)
+	{
+		BindModel(m_pMeshModel[nCount], m_pBuffMatModel[nCount], m_nNumMatModel[nCount]);
+	}
 	// 当たり判定の生成
 	m_pCollision = CCollision::CreateSphere(GetPos(), 100);
 	return S_OK;
@@ -148,6 +178,8 @@ void CItem::Update(void)
 
 	// 当たり判定の位置更新
 	m_pCollision->SetPos(GetPos());
+
+	CollisionItem();
 }
 
 //******************************
@@ -156,4 +188,30 @@ void CItem::Update(void)
 void CItem::Draw(void)
 {
 	CModel::Draw();
+}
+
+//******************************
+// 描画処理
+//******************************
+void CItem::CollisionItem(void)
+{
+	//プレイヤーの情報を取得
+	for (int nCount = 0; nCount < MAX_PLAYER; nCount++)
+	{
+		CPlayer*pPlayer = CGame::GetPlayer(nCount);
+
+		if (pPlayer != NULL)
+		{
+			//プレイヤーの位置情報を取得
+			D3DXVECTOR3 playerPos = pPlayer->GetPos();
+			//プレイヤーと敵の範囲の当たり判定
+			if (CCollision::CollisionSphere(m_pCollision, pPlayer->GetCollision()))
+			{
+				CScore::AddScore(1000);
+				Uninit();
+				return;
+			}
+			break;
+		}
+	}
 }

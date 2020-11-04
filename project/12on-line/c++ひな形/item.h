@@ -28,6 +28,13 @@ class CCollision;
 class CItem : public CModel
 {
 public:
+	typedef enum
+	{
+		CANDY = 0,	// 回収するやつ
+		KOBAN,		// スコアUP
+		LIFE,		// 体力回復
+		ITEM_MAX	// 
+	}ITME;
 
 	//メンバ関数
 	CItem();
@@ -42,12 +49,12 @@ public:
 
 private:
 	void Direction(void);
-	void Attack(void);
+	void CollisionItem(void);
 
 	// メンバ変数
-	static LPD3DXMESH m_pMeshModel;	//メッシュ情報へのポインタ
-	static LPD3DXBUFFER m_pBuffMatModel;	//マテリアル情報へのポインタ
-	static DWORD m_nNumMatModel;	//マテリアル情報の数
+	static LPD3DXMESH m_pMeshModel[ITEM_MAX];	//メッシュ情報へのポインタ
+	static LPD3DXBUFFER m_pBuffMatModel[ITEM_MAX];	//マテリアル情報へのポインタ
+	static DWORD m_nNumMatModel[ITEM_MAX];	//マテリアル情報の数
 	static LPDIRECT3DTEXTURE9 m_apTexture; // テクスチャ
 	CCollision*m_pCollision;    // コリジョンクラスのポインタ
 };

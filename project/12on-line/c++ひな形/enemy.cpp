@@ -263,33 +263,37 @@ void CEnemy::Hit(int nDamage)
 void CEnemy::RangeDecisionCarrier(void)
 {
 	//プレイヤーの情報を取得
-	CPlayer*pPlayer = CGame::GetPlayer();
-
-	if (pPlayer != NULL)
+	for (int nCount = 0; nCount < MAX_PLAYER; nCount++)
 	{
-		//プレイヤーの位置情報を取得
-		D3DXVECTOR3 playerPos = pPlayer->GetPos();
-		//エネミーの位置情報を取得
-		D3DXVECTOR3 enemyPos = GetPos();
-		//プレイヤーと敵の範囲の当たり判定
-		if (CCollision::CollisionSphere(m_pRadiusColision, pPlayer->GetCollision()))
-		{
-			//エネミーの移動をしなくする
-			m_bRd = true;
-			//向きの設定
-			m_fRotYDist = atan2((playerPos.x - enemyPos.x), (playerPos.z - enemyPos.z));
+		CPlayer*pPlayer = CGame::GetPlayer(nCount);
 
-			// 移動量
-			D3DXVECTOR3 Move;
-			Move.x = sinf(m_fRotYDist)*10.0f;
-			Move.y = 0.0f;
-			Move.z = cosf(m_fRotYDist)*10.0f;
-
-			m_moveDest -= Move;
-		}
-		else
+		if (pPlayer != NULL)
 		{
-			m_bRd = false;
+			//プレイヤーの位置情報を取得
+			D3DXVECTOR3 playerPos = pPlayer->GetPos();
+			//エネミーの位置情報を取得
+			D3DXVECTOR3 enemyPos = GetPos();
+			//プレイヤーと敵の範囲の当たり判定
+			if (CCollision::CollisionSphere(m_pRadiusColision, pPlayer->GetCollision()))
+			{
+				//エネミーの移動をしなくする
+				m_bRd = true;
+				//向きの設定
+				m_fRotYDist = atan2((playerPos.x - enemyPos.x), (playerPos.z - enemyPos.z));
+
+				// 移動量
+				D3DXVECTOR3 Move;
+				Move.x = sinf(m_fRotYDist)*10.0f;
+				Move.y = 0.0f;
+				Move.z = cosf(m_fRotYDist)*10.0f;
+
+				m_moveDest -= Move;
+				break;
+			}
+			else
+			{
+				m_bRd = false;
+			}
 		}
 	}
 }
@@ -300,46 +304,50 @@ void CEnemy::RangeDecisionCarrier(void)
 void CEnemy::RangeDecisionEscort(void)
 {
 	//プレイヤーの情報を取得
-	CPlayer*pPlayer = CGame::GetPlayer();
-
-	if (pPlayer != NULL)
+	for (int nCount = 0; nCount < MAX_PLAYER; nCount++)
 	{
-		//プレイヤーの位置情報を取得
-		D3DXVECTOR3 playerPos = pPlayer->GetPos();
-		//エネミーの位置情報を取得
-		D3DXVECTOR3 enemyPos = GetPos();
-		
+		CPlayer*pPlayer = CGame::GetPlayer(nCount);
 
-		//プレイヤーと敵の範囲の当たり判定
-		if (CCollision::CollisionSphere(m_pRadiusColision, pPlayer->GetCollision()))
+		if (pPlayer != NULL)
 		{
-			m_bRd = true;
-			m_nCount++;
-			m_nCntAttack++;
-			//向きの設定
-			m_fRotYDist = atan2((playerPos.x - enemyPos.x),(playerPos.z - enemyPos.z));
-			
-			// 移動量
-			D3DXVECTOR3 Move;
-			Move.x = sinf(m_fRotYDist)*10.0f;
-			Move.y = 0.0f;
-			Move.z = cosf(m_fRotYDist)*10.0f;
+			//プレイヤーの位置情報を取得
+			D3DXVECTOR3 playerPos = pPlayer->GetPos();
+			//エネミーの位置情報を取得
+			D3DXVECTOR3 enemyPos = GetPos();
 
-			m_moveDest = Move;
-			//等間隔で打つ
-			if (m_nCount == 50)
+
+			//プレイヤーと敵の範囲の当たり判定
+			if (CCollision::CollisionSphere(m_pRadiusColision, pPlayer->GetCollision()))
 			{
-				// 弾の生成
-				CScratch::Create(enemyPos, m_fRotYDist, CScratch::SCRATCHUSER_ENEMY, -1);
-				m_nCount = 0;
+				m_bRd = true;
+				m_nCount++;
+				m_nCntAttack++;
+				//向きの設定
+				m_fRotYDist = atan2((playerPos.x - enemyPos.x), (playerPos.z - enemyPos.z));
+
+				// 移動量
+				D3DXVECTOR3 Move;
+				Move.x = sinf(m_fRotYDist)*10.0f;
+				Move.y = 0.0f;
+				Move.z = cosf(m_fRotYDist)*10.0f;
+
+				m_moveDest = Move;
+				//等間隔で打つ
+				if (m_nCount == 50)
+				{
+					// 弾の生成
+					CScratch::Create(enemyPos, m_fRotYDist, CScratch::SCRATCHUSER_ENEMY, -1);
+					m_nCount = 0;
+				}
+				//弾の向きの設定
+				m_fRotYDist = atan2(-(playerPos.x - enemyPos.x), -(playerPos.z - enemyPos.z));
+				break;
 			}
-			//弾の向きの設定
-			m_fRotYDist = atan2(-(playerPos.x - enemyPos.x), -(playerPos.z - enemyPos.z));
-		}
-		else
-		{
-			//エネミーを再度動かす
-			m_bRd = false;
+			else
+			{
+				//エネミーを再度動かす
+				m_bRd = false;
+			}
 		}
 	}
 }

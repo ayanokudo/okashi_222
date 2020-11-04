@@ -20,6 +20,8 @@
 #include "scratch.h"
 #include "model_hierarchy.h"
 #include "motion.h"
+#include "ui.h"
+
 //*****************************
 // マクロ定義
 //*****************************
@@ -71,6 +73,7 @@ CPlayer::CPlayer() :CModelHierarchy(OBJTYPE_PLAYER)
 	m_motionState = WAIT;
 	m_nSpeed = 0;
 	m_bAttack = false;
+	m_pUi[1] = NULL;
 }
 
 //******************************
@@ -229,6 +232,18 @@ HRESULT CPlayer::Init(void)
 	// モーション状態の初期化
 	m_motionState = WAIT;
 
+	// アタックのUIの生成
+	m_pUi[0] = CUi::Create(D3DXVECTOR3(1200.0f, 550.0f, 0.0f),
+		D3DXVECTOR3(70, 70, 0),
+		D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
+		CUi::UI_ATTACK);
+
+	// ダッシュのUIの生成
+	m_pUi[1] = CUi::Create(D3DXVECTOR3(1080.0f, 640.0f, 0.0f),
+		D3DXVECTOR3(70, 70, 0),
+		D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
+		CUi::UI_DASH);
+
 	// 当たり判定の生成
 	m_pCollision = CCollision::CreateSphere(GetPos(), PLAYER_RADIUS);
 
@@ -248,6 +263,15 @@ void CPlayer::Uninit(void)
     {
         m_pCollision->Uninit();
     }
+	for (int nCount = 0; nCount <= 1; nCount++)
+	{
+		if (m_pUi != NULL)
+		{
+			m_pUi[nCount]->Uninit();
+			delete m_pUi[nCount];
+			m_pUi[nCount] = NULL;
+		}
+	}
 
     CModelHierarchy::Uninit();
 }
@@ -259,7 +283,13 @@ void CPlayer::Update(void)
 {
 	// 目標値の初期化
 	m_moveDest = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-
+	for (int nCount = 0; nCount <= 1; nCount++)
+	{
+		if (m_pUi != NULL)
+		{
+			m_pUi[nCount]->Update();
+		}
+	}
 	if (!m_bAttack)
 	{
 		// 移動（キーボード）
@@ -300,6 +330,13 @@ void CPlayer::Update(void)
 void CPlayer::Draw(void)
 {
     CModelHierarchy::Draw();
+	for (int nCount = 0; nCount <= 1; nCount++)
+	{
+		if (m_pUi != NULL)
+		{
+			m_pUi[nCount]->Draw();
+		}
+	}
 }
 
 //******************************

@@ -30,6 +30,7 @@ class CEnemy;
 class CItem;
 class CScore;
 class CTime;
+class CUi;
 
 //*****************************
 // É}ÉNÉçíËã`

@@ -73,11 +73,11 @@ void CModelHierarchy::LoadHierarchy(CModel::Model * model, char * pPath)
 				// インデックスの読み込み
 				fscanf(pFile, "%*s %*s %d # %*s", &nIndex );
 				// 親番号の読み込み
-				fscanf(pFile, "%*s %*s %d # %*s",&model[nIndex].nParent);
+				fscanf(pFile, "%*s %*s %d # %*s", &model[nIndex].nParent);
 				// 座標の読み込み
-				fscanf(pFile, "%*s %*s %f %f %f",  &model[nIndex].pos.x, &model[nIndex].pos.y, &model[nIndex].pos.z);
+				fscanf(pFile, "%*s %*s %f %f %f", &model[nIndex].pos.x, &model[nIndex].pos.y, &model[nIndex].pos.z);
 				// 回転の読み込み
-				fscanf(pFile, "%*s %*s %f %f %f",  &model[nIndex].rot.x, &model[nIndex].rot.y, &model[nIndex].rot.z);
+				fscanf(pFile, "%*s %*s %f %f %f", &model[nIndex].rot.x, &model[nIndex].rot.y, &model[nIndex].rot.z);
 				
 				fscanf(pFile, "%*s");
 			}

@@ -45,6 +45,7 @@ public:
 	void SetModel(CModel::Model*pModel) { m_pModel = pModel; }
 	void SetActiveAnimation(bool bActive);
 	bool GetActiveAnimation(void) { return m_bAnim; }
+	int GetKey(void) { return m_nCntKey; }
 private:
 	void Load(const char *pPath);
 	// ƒƒ“ƒo•Ï”

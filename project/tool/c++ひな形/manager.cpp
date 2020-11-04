@@ -105,7 +105,10 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, bool bWindow)
 	}
 
     // UI
-	
+#ifdef IMGUI_ON
+    CUI::Create(hWnd);
+#endif // IMGUI_ON
+
 	// フェードの生成
 	m_pFade = CFade::Create();
 	m_pFade->SetFade(m_mode);
@@ -203,42 +206,13 @@ void CManager::Uninit(void)
 		m_pFade = NULL;
 	}
 
-#ifdef IMGUI_ON
-    ImGui_ImplDX9_Shutdown();
-    ImGui_ImplWin32_Shutdown();
-    ImGui::DestroyContext();
-#endif
 }
-
 
 //=============================
 // 更新処理
 //=============================
 void CManager::Update(void)
 {
-#ifdef IMGUI_ON
-    // Start the Dear ImGui frame
-    ImGui_ImplDX9_NewFrame();
-    ImGui_ImplWin32_NewFrame();
-    ImGui::NewFrame();
-
-    bool show_demo_window = true;
-    bool show_another_window = false;
-    ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
-
-    // 1. Show the big demo window (Most of the sample code is in ImGui::ShowDemoWindow()! You can browse its code to learn more about Dear ImGui!).
-    if (show_demo_window)
-        ImGui::ShowDemoWindow(&show_demo_window);
-
-    ImGui::SetNextWindowSize(ImVec2(320, 100), 0);
-    ImGui::Begin("Another Window", &show_another_window);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked)
-    ImGui::Text("Hello from another window!");
-    if (ImGui::Button("Close Me"))
-        show_another_window = false;
-    ImGui::End();
-
-    ImGui::EndFrame();
-#endif //IMGUI_ON
 
 	// ジョイパッドクラスの更新処理
 	if (m_pJoypad != NULL)

@@ -4,9 +4,9 @@
 // Author : AYANO KUDO
 //
 //=============================================================================
-#ifdef IMGUI_ON
 #include "ui.h"
 
+#ifdef IMGUI_ON     // ImGui‚ðƒIƒ“‚É‚µ‚Ä‚¢‚é‚©
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_dx9.h"
 #include "imgui/imgui_impl_win32.h"
@@ -46,9 +46,7 @@ CUI* CUI::Create(HWND hWnd)
 //=============================================================================
 void CUI::Init(HWND hWnd)
 {
-
     // IMGUI‚ÌÝ’è
-#ifdef IMGUI_ON
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
     ImGuiIO& io = ImGui::GetIO(); (void)io;
@@ -56,8 +54,7 @@ void CUI::Init(HWND hWnd)
     ImGui::StyleColorsDark();
 
     ImGui_ImplWin32_Init(hWnd);
-    ImGui_ImplDX9_Init(m_pRenderer->GetDevice());
-#endif // IMGUI
+    ImGui_ImplDX9_Init(CManager::GetRenderer()->GetDevice());
 }
 
 //=============================================================================
@@ -65,6 +62,9 @@ void CUI::Init(HWND hWnd)
 //=============================================================================
 void CUI::Uninit(void)
 {
+    ImGui_ImplDX9_Shutdown();
+    ImGui_ImplWin32_Shutdown();
+    ImGui::DestroyContext();
 }
 
 //=============================================================================
@@ -72,6 +72,27 @@ void CUI::Uninit(void)
 //=============================================================================
 void CUI::Update(void)
 {
+    // Start the Dear ImGui frame
+    ImGui_ImplDX9_NewFrame();
+    ImGui_ImplWin32_NewFrame();
+    ImGui::NewFrame();
+
+    bool show_demo_window = true;
+    bool show_another_window = false;
+    ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
+
+    // 1. Show the big demo window (Most of the sample code is in ImGui::ShowDemoWindow()! You can browse its code to learn more about Dear ImGui!).
+    if (show_demo_window)
+        ImGui::ShowDemoWindow(&show_demo_window);
+
+    ImGui::SetNextWindowSize(ImVec2(320, 100), 0);
+    ImGui::Begin("Another Window", &show_another_window);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked)
+    ImGui::Text("Hello from another window!");
+    if (ImGui::Button("Close Me"))
+        show_another_window = false;
+    ImGui::End();
+
+    ImGui::EndFrame();
 }
 
 //=============================================================================

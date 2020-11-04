@@ -23,7 +23,7 @@
 // マクロ定義
 //*****************************************************************************
 #define MODEL_PATH "./data/Models/cat V1.x"    //モデルのパス
-#define GRID_MODE_MOVE   (GRID_SIZE * 2)      // グリッドモード時の移動量
+#define GRID_MODE_MOVE   (GRID_SIZE)      // グリッドモード時の移動量
 #define NORMAL_MODE_MOVE (10.0f)     // ノーマルモードの字の移動量
 #define INTERVAL         (10)                    //操作を受け付けるまでの間隔
 #define OBJECT_RADIUS    (50.0f)                // 選択範囲の半径

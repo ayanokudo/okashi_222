@@ -25,6 +25,7 @@
 #include "object.h"
 #include "file.h"
 #include "debug.h"
+#include "ui.h"
 
 //=============================
 // Ã“Iƒƒ“ƒo•Ï”éŒ¾

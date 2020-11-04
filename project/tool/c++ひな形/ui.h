@@ -7,11 +7,11 @@
 #ifndef _UI_H_
 #define _UI_H_
 
-
 #define IMGUI_ON    // imguiオン
-#undef  IMGUI_ON    // imguiオフ
-#ifdef IMGUI_ON
+//#undef  IMGUI_ON    // imguiオフ
 
+#ifdef IMGUI_ON
+#include "main.h"
 
 //*****************************************************************************
 // クラスの定義
@@ -22,7 +22,7 @@ public:
     CUI();
     ~CUI();
 
-    CUI* Create(HWND hWnd);
+    static CUI* Create(HWND hWnd);
 
     void Init(HWND hWnd);
     void Uninit(void);

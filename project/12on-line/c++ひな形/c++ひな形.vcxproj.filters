@@ -246,7 +246,9 @@
     <ClInclude Include="ui.h">
       <Filter>ヘッダーファイル</Filter>
     </ClInclude>
-    <ClInclude Include="collect.h" />
+    <ClInclude Include="collect.h">
+      <Filter>ヘッダーファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ヘッダーファイル">

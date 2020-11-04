@@ -107,7 +107,8 @@ void CCamera::Uninit(void)
 //******************************
 void CCamera::Update(void)
 {
-#ifdef _DE/BUG
+#ifdef _DEB/UG
+
 	m_fPhi -= CManager::GetMouse()->GetMouseMove().y / 100.0f;
 	m_fTheta -= CManager::GetMouse()->GetMouseMove().x / 100.0f;
 	// 注視点をプレイヤーにする
@@ -128,13 +129,16 @@ void CCamera::Update(void)
 
 #else
 
-	CPlayer*pPlayer[MAX_PLAYER] = {};
-	D3DXVECTOR3 playerPos[MAX_PLAYER] = {};
+	CPlayer*pPlayer[MAX_PLAYER] = {};       // プレイヤー情報
+	D3DXVECTOR3 playerPos[MAX_PLAYER] = {}; // プレイヤー座標
+	// プレイヤー数分ループ
 	for (int nCntPlayer = 0; nCntPlayer < MAX_PLAYER; nCntPlayer++)
 	{
+		// プレイヤー情報の取得
 		pPlayer[nCntPlayer] = CGame::GetPlayer(nCntPlayer);
 		if (pPlayer[nCntPlayer] != NULL)
 		{
+			// プレイヤー座標の取得
 			playerPos[nCntPlayer] = pPlayer[nCntPlayer]->GetPos();
 		}
 	}
@@ -144,12 +148,12 @@ void CCamera::Update(void)
 	// プレイヤー同士の位置の角度
 	float fAngle = atan2f(playerPos[1].z - playerPos[0].z, playerPos[1].x - playerPos[0].x);
 
-	if (fDistance >= 2000)
+	/*if (fDistance >= 2000)
 	{
-		/*playerPos[1].x = playerPos[0].x + cosf(fAngle)*(2000);
+		playerPos[1].x = playerPos[0].x + cosf(fAngle)*(2000);
 		playerPos[1].z = playerPos[0].z + sinf(fAngle)*(2000);
-		pPlayer[1]->SetPos(playerPos[1]);*/
-	}
+		pPlayer[1]->SetPos(playerPos[1]);
+	}*/
 
 	// 中心点をプレイヤー間の中心に設定
 	m_posR.x = playerPos[0].x + cosf(fAngle)*(fDistance / 2);

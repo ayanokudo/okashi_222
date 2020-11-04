@@ -29,6 +29,8 @@ class CMotion;
 class CEnemy : public CModelHierarchy
 {
 public:
+
+	// モーション列挙
 	typedef enum
 	{
 		WALK = 0,	  // 歩き
@@ -63,7 +65,6 @@ private:
 	void Move(void);
 	void Direction(void);
 
-	// メンバ変数
 	// メンバ変数
 	static CModel::Model m_model[ENEMY_MAX][MAX_PARTS_NUM]; // モデル情報
 	static int m_nNumModel;                      // モデル数

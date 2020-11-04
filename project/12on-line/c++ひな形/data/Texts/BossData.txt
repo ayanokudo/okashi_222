@@ -14,13 +14,13 @@ NUM_MODEL = 7
 #------------------------------------------------------------------------------
 # モデルファイル名
 #------------------------------------------------------------------------------
-MODEL_FILENAME = data/MODEL/Boss_karada.x	# [0]上半身
-MODEL_FILENAME = data/MODEL/Boss_atama.x		# [1]頭
-MODEL_FILENAME = data/MODEL/Boss_migimaeashi.x	# [2]右肩
-MODEL_FILENAME = data/MODEL/Boss_hidarimaeashi.x	# [3]左肩
-MODEL_FILENAME = data/MODEL/Boss_migiushiroashi.x		# [4]右後ろ足
-MODEL_FILENAME = data/MODEL/Boss_hidariushiroashi.x		# [5]左後ろ足
-MODEL_FILENAME = data/MODEL/Boss_shiipo.x	# [6]尻尾
+MODEL_FILENAME = data/Models/boss/Boss_karada.x					# [0]上半身
+MODEL_FILENAME = data/Models/boss/Boss_atama.x					# [1]頭
+MODEL_FILENAME = data/Models/boss/Boss_migimaeashi.x			# [2]右肩
+MODEL_FILENAME = data/Models/boss/Boss_hidarimaeashi.x			# [3]左肩
+MODEL_FILENAME = data/Models/boss/Boss_migiushiroashi.x			# [4]右後ろ足
+MODEL_FILENAME = data/Models/boss/Boss_hidariushiroashi.x		# [5]左後ろ足
+MODEL_FILENAME = data/Models/boss/Boss_shiipo.x					# [6]尻尾
 
 
 #------------------------------------------------------------------------------

@@ -37,6 +37,7 @@ public:
 		OBJTYPE_EFFECT,     // エフェクト
 		OBJTYPE_PLAYER,     // プレイヤー
 		OBJTYPE_ENEMY,      // エネミー
+		OBJTYPE_BOSS,      // エネミー
 		OBJTYPE_EXPLOSION,  // 爆発
 		OBJTYPE_PARTICLE,   // パーティクル
 		OBJTYPE_BOMB,       // ボム

@@ -62,6 +62,7 @@ CEnemy::CEnemy() :CModelHierarchy(OBJTYPE_ENEMY)
 	m_nCountMotion = 0;
 	m_bRd = false;
 	m_nLife = 0;
+	memset(&m_pMotion, 0, sizeof(m_pMotion));
 }
 
 //******************************
@@ -228,11 +229,12 @@ HRESULT CEnemy::Init(void)
 	
 	m_pRadiusColision = CCollision::CreateSphere(GetPos(), ENEMY_RANGE_RADIUS);
 
-	// アニメーションの生成
+	// モーションの生成
 	for (int nCntAnim = 0; nCntAnim < MOTION_MAX; nCntAnim++)
 	{
 		m_pMotion[nCntAnim] = CMotion::Create(GetPartsNum(), m_achAnimPath[nCntAnim], GetModelData());
 	}
+
 	m_pMotion[WALK]->SetActiveAnimation(true);
 	return S_OK;
 }

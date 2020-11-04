@@ -26,16 +26,22 @@
 //*****************************
 // 静的メンバ変数宣言
 //*****************************
-LPD3DXMESH   CPlayer::m_pMeshModel = NULL;   	//メッシュ情報へのポインタ
-LPD3DXBUFFER CPlayer::m_pBuffMatModel = NULL;	//マテリアル情報へのポインタ
-DWORD        CPlayer::m_nNumMatModel = 0;	    //マテリアル情報の数
+char* CPlayer::m_apModelData[CPlayer::MODEL_MAX] = {
+   "./data/Models/cat V1.x",
+   "./data/Models/test000.x"
+};// モデルのファイル名
+
+LPD3DXMESH   CPlayer::m_pMeshModel[CPlayer::MODEL_MAX] = {};   	//メッシュ情報へのポインタ
+LPD3DXBUFFER CPlayer::m_pBuffMatModel[CPlayer::MODEL_MAX] = {};	//マテリアル情報へのポインタ
+DWORD        CPlayer::m_nNumMatModel[CPlayer::MODEL_MAX] = {};	    //マテリアル情報の数
 
 //******************************
 // コンストラクタ
 //******************************
-CPlayer::CPlayer()
+CPlayer::CPlayer() : CModel(OBJTYPE_PLAYER)
 {
 	m_move = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+
 }
 
 //******************************
@@ -58,7 +64,7 @@ CPlayer * CPlayer::Create(D3DXVECTOR3 pos)
 	pPlayer->Init();
 	pPlayer->SetPos(pos);
 	// 各値の代入・セット
-	pPlayer->SetObjType(OBJTYPE_MAP); // オブジェクトタイプ
+	pPlayer->SetObjType(OBJTYPE_PLAYER); // オブジェクトタイプ
 
 	return pPlayer;
 }
@@ -70,15 +76,19 @@ HRESULT CPlayer::Load(void)
 {
 	// デバイスの取得
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+
 	//Xファイルの読み込み
+    for (int nCntModel = 0; nCntModel <MODEL_MAX; nCntModel++)
+    {
 	D3DXLoadMeshFromX(MODEL_PATH,
 		D3DXMESH_SYSTEMMEM,
 		pDevice,
 		NULL,
-		&m_pBuffMatModel,
+		&m_pBuffMatModel[nCntModel],
 		NULL,
-		&m_nNumMatModel,
-		&m_pMeshModel);
+		&m_nNumMatModel[nCntModel],
+		&m_pMeshModel[nCntModel]);
+    }
 
 	return S_OK;
 }
@@ -89,17 +99,20 @@ HRESULT CPlayer::Load(void)
 void CPlayer::Unload(void)
 {
 	//メッシュの破棄
-	if (m_pMeshModel != NULL)
-	{
-		m_pMeshModel->Release();
-		m_pMeshModel = NULL;
-	}
-	//マテリアルの破棄
-	if (m_pBuffMatModel != NULL)
-	{
-		m_pBuffMatModel->Release();
-		m_pBuffMatModel = NULL;
-	}
+    for (int nCntModel = 0; nCntModel < MODEL_MAX; nCntModel++)
+    {
+        if (m_pMeshModel[nCntModel] != NULL)
+        {
+            m_pMeshModel[nCntModel]->Release();
+            m_pMeshModel[nCntModel] = NULL;
+        }
+        //マテリアルの破棄
+        if (m_pBuffMatModel[nCntModel] != NULL)
+        {
+            m_pBuffMatModel[nCntModel]->Release();
+            m_pBuffMatModel[nCntModel] = NULL;
+        }
+    }
 }
 
 //******************************
@@ -113,7 +126,7 @@ HRESULT CPlayer::Init(void)
 	}
 
 	// テクスチャ割り当て
-	BindModel(m_pMeshModel, m_pBuffMatModel, m_nNumMatModel);
+	BindModel(m_pMeshModel[MODEL_PLAYER], m_pBuffMatModel[MODEL_PLAYER], m_nNumMatModel[MODEL_PLAYER]);
 
 	return S_OK;
 }
@@ -132,13 +145,12 @@ void CPlayer::Uninit(void)
 //******************************
 void CPlayer::Update(void)
 {
+    CModel::Update();
 	D3DXVECTOR3 rot = GetRot();
 	
 	SetRot(rot);
     // 操作の管理
-	Controll();
-
-
+	//Controll();
 }
 
 //******************************
@@ -148,6 +160,7 @@ void CPlayer::Draw(void)
 {
     // デバイスの取得
     LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+    // ワイヤーフレーム
     pDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
 	CModel::Draw();
     pDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
@@ -207,7 +220,7 @@ void CPlayer::Controll(void)
 	}
 
 	// 慣性
-	m_move += (moveDest - m_move) * PLAYER_MOVE_RATE;
+	m_move = (moveDest);
 	
 	// 移動量を足す
 	pos += m_move;

@@ -13,10 +13,15 @@
 #include "manager.h"
 #include <time.h>
 
+#include "imgui/imgui.h"
+#include "imgui/imgui_impl_dx9.h"
+#include "imgui/imgui_impl_win32.h"
+
 //*****************************************************************************
 // マクロ定義
 //*****************************************************************************
 #define WINDOW_NAME "Electro"	// ウインドウのキャプション名
+#define FONT "C:\\Windows\\Fonts\\meiryo.ttc"       // フォントファイル
 
 //*****************************************************************************
 // プロトタイプ宣言
@@ -101,6 +106,12 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	ShowWindow(hWnd, nCmdShow);
 	UpdateWindow(hWnd);
 
+#ifdef IMGUI_ON
+    // IMGUIの設定
+    ImGuiIO& io = ImGui::GetIO(); (void)io;
+    io.Fonts->AddFontFromFileTTF(FONT, 18.0f, NULL, io.Fonts->GetGlyphRangesJapanese());
+#endif
+
 	// メッセージループ
 	while (1)
 	{
@@ -170,12 +181,23 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	return (int)msg.wParam;
 }
-
+#ifdef IMGUI_ON
+// IMGUIの設定
+extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+#endif
 //=============================================================================
 // ウインドウプロシージャ
 //=============================================================================
 LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
+#ifdef IMGUI_ON
+    // IMGUIの設定
+    if (ImGui_ImplWin32_WndProcHandler(hWnd,uMsg, wParam, lParam))
+    {
+        return true;
+    }
+#endif
+
 	switch (uMsg)
 	{
 	case WM_CREATE:

@@ -1,50 +1,38 @@
 //=============================================================================
 //
-// gameヘッダ [game.h]
-// Author : 増澤 未来
+// 床クラス [flooh.h]
+// Author : AYANO KUDO
 //
 //=============================================================================
-
-//二重インクルード防止
 #ifndef _FLOOR_H_
 #define _FLOOR_H_
-
-//*****************************
-//インクルード
-//*****************************
 #include "main.h"
-#include "scene3d.h"
+#include "model.h"
 
-//*****************************
-//クラス定義
-//*****************************
-class CFloor : public CScene3d
+//*****************************************************************************
+// クラスの定義
+//*****************************************************************************
+// 敵クラス
+class CFloor : public CModel
 {
 public:
-	//床のテクスチャの種類
-	typedef enum
-	{
-		FLOOR_FLOORING = 0,	//フローリング
-		FLOOR_MAT,			//マット
-		FLOOR_KITCHEN,		//キッチン
-		FLOOR_MAX,			
-	}FLOOR;
+    // メンバ関数
+    CFloor();
+    ~CFloor();
 
-	//メンバ関数
-	CFloor();
-	~CFloor();
-	static CFloor * Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size, FLOOR type);
-	static HRESULT Load(void);
-	static void Unload(void);
-	HRESULT Init(void);
-	void Uninit(void);
-	void Update(void);
-	void Draw(void);
+    static CFloor *Create(D3DXVECTOR3 pos);
+    static HRESULT Load(void);
+    static void Unload(void);
+    HRESULT Init(void);
+    void Uninit(void);
+    void Update(void);
+    void Draw(void);
 
 private:
-	//メンバ変数
-	static LPDIRECT3DTEXTURE9 m_apTexture[FLOOR_MAX];//テクスチャ
-	FLOOR m_type;
+    // メンバ変数
+    static LPD3DXMESH           m_pMeshModel;       //メッシュ情報へのポインタ
+    static LPD3DXBUFFER         m_pBuffMatModel;    //マテリアル情報へのポインタ
+    static DWORD                m_nNumMatModel;     //マテリアル情報の数
+    static LPDIRECT3DTEXTURE9   m_apTexture;        // テクスチャ
 };
-
-#endif 
+#endif      // _FLOOR_H_

@@ -1,5 +1,3 @@
-
-
 //=============================
 // インクルード
 //=============================
@@ -26,15 +24,18 @@
 #include "tutorial.h"
 #include "pause.h"
 #include "player.h"
-#include "floor.h"
+#include "grid.h"
 #include "object.h"
 #include "stage.h"
 #include "enemy.h"
+#include "wall.h"
+#include "floor.h"
+#include "ui.h"
 
 //=============================
 // 静的メンバ変数宣言
 //=============================
-CManager::MODE   CManager::m_mode = MODE_TITLE;      // ゲームモード
+CManager::MODE   CManager::m_mode = MODE_GAME;      // ゲームモード
 CRenderer       *CManager::m_pRenderer = NULL;       // レンダラーポインタ
 CInputKeyboard  *CManager::m_pInputKeyboard = NULL;  // キーボード
 CInputJoypad    *CManager::m_pJoypad = NULL;         // ジョイパッド
@@ -103,14 +104,11 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, bool bWindow)
 		return E_FAIL;
 	}
 
-	//// サウンド
-	//m_pSound = new CSound;
-	//// サウンドクラスの初期化
-	//if (FAILED(m_pSound->Init(hWnd)))
-	//{
-	//	return E_FAIL;
-	//}
-	
+    // UI
+#ifdef IMGUI_ON
+    CUI::Create(hWnd);
+#endif // IMGUI_ON
+
 	// フェードの生成
 	m_pFade = CFade::Create();
 	m_pFade->SetFade(m_mode);
@@ -121,10 +119,13 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, bool bWindow)
 	CParticle::Load();	// パーティクル
 	CPause::Load();		// ポーズ
 	CPlayer::Load();	// プレイヤー
-	CFloor::Load();		// 床
+	CGrid::Load();		// 床
     CObject::Load();    // オブジェクト
     CStage::Load();     // ステージ
     CEnemy::Load();     // 敵
+    CWall::Load();      // 壁
+    CFloor::Load();     // 床
+
 
 	// ポーズ状態の時
 	return S_OK;
@@ -144,10 +145,12 @@ void CManager::Uninit(void)
 	CParticle::Unload();
 	CPause::UnLoad();
 	CPlayer::Unload();
-	CFloor::Unload();
+	CGrid::Unload();
     CObject::Unload();
     CStage::Unload();
     CEnemy::Unload();     // 敵
+    CWall::Unload();      // 壁
+    CFloor::Unload();     // 床
 
 	if (m_pSound != NULL)
 	{
@@ -202,14 +205,15 @@ void CManager::Uninit(void)
 		delete m_pFade;
 		m_pFade = NULL;
 	}
-}
 
+}
 
 //=============================
 // 更新処理
 //=============================
 void CManager::Update(void)
 {
+
 	// ジョイパッドクラスの更新処理
 	if (m_pJoypad != NULL)
 	{

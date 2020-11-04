@@ -1,127 +1,134 @@
-//===================================================
+//=============================================================================
 //
-//    床の処理[floor.cpp]
-//    Author:筒井　俊稀
+// 床クラス [floor.cpp]
+// Author : AYANO KUDO
 //
-//====================================================
-//**********************************
-//インクルード
-//**********************************
+//=============================================================================
 #include "floor.h"
 #include "manager.h"
 #include "renderer.h"
 
-//*****************************
+//*****************************************************************************
 // マクロ定義
-//*****************************
-#define FLOOR_FLOORING_TEXTURE_PATH "./data/Textures/particle001.png"    //フローリングのテクスチャのパス
-#define FLOOR_MAT_TEXTURE_PATH		"./data/Textures/particle001.png"	 //まっとのテクスチャのパス
-#define FLOOR_KITCHEN_TEXTURE_PATH  "./data/Textures/particle001.png"    //キッチンの床のテクスチャのパス
+//*****************************************************************************
+#define MODEL_PATH "./data/Models/floor000.x"    //モデルのパス
 
-//==================================
-// コンストラクタ
-//==================================
-LPDIRECT3DTEXTURE9 CFloor::m_apTexture[FLOOR_MAX] = {};
-
-//==================================
-// コンストラクタ
-//==================================
-CFloor::CFloor()
+//*****************************************************************************
+// 静的メンバ変数宣言
+//*****************************************************************************
+LPD3DXMESH   CFloor::m_pMeshModel = NULL;   	//メッシュ情報へのポインタ
+LPD3DXBUFFER CFloor::m_pBuffMatModel = NULL;	//マテリアル情報へのポインタ
+DWORD        CFloor::m_nNumMatModel = 0;	    //マテリアル情報の数
+//=============================================================================
+// [CFloor] コンストラクタ
+//=============================================================================
+CFloor::CFloor() : CModel(OBJTYPE_FLOOR)
 {
-	m_type = FLOOR_FLOORING;	//床の種類の初期化
+
 }
 
-//==================================
-// デストラクタ
-//==================================
+//=============================================================================
+// [~CFloor] デストラクタ
+//=============================================================================
 CFloor::~CFloor()
 {
+
 }
 
-//==================================
-// 生成処理
-//==================================
-CFloor * CFloor::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size, FLOOR type)
+//=============================================================================
+// [Create] オブジェクトの生成
+//=============================================================================
+CFloor * CFloor::Create(D3DXVECTOR3 pos)
 {
-	//CFloorのポインタ作成
-	CFloor *pFloor;
-	//インスタンスを生成
-	pFloor = new CFloor;
-	//NULLチェック
-	if (pFloor != NULL)
-	{
-		//それぞれの初期化処理
-		pFloor->Init();
-		pFloor->m_type = type;
-		pFloor->SetPos(pos);
-		pFloor->SetSize(size);
-		pFloor->SetObjType(OBJTYPE_FLOOR);
-	}
-	//ポインタを返す
-	return pFloor;
+    CFloor *pObject = NULL;
+    if (!pObject)
+    {
+        pObject = new CFloor;
+        // 初期化
+        pObject->Init();
+        pObject->SetPos(pos);
+
+        // 各値の代入・セット
+        pObject->SetObjType(OBJTYPE_FLOOR); // オブジェクトタイプ
+    }
+    return pObject;
 }
 
-//==================================
-// テクスチャロード処理
-//==================================
+//=============================================================================
+// [Load] テクスチャの読み込み
+//=============================================================================
 HRESULT CFloor::Load(void)
 {
-	// デバイスの取得
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+    // デバイスの取得
+    LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+    //Xファイルの読み込み
+    D3DXLoadMeshFromX(MODEL_PATH,
+        D3DXMESH_SYSTEMMEM,
+        pDevice,
+        NULL,
+        &m_pBuffMatModel,
+        NULL,
+        &m_nNumMatModel,
+        &m_pMeshModel);
 
-	// テクスチャの生成
-	D3DXCreateTextureFromFile(pDevice, FLOOR_FLOORING_TEXTURE_PATH, &m_apTexture[FLOOR_FLOORING]);
-	D3DXCreateTextureFromFile(pDevice, FLOOR_MAT_TEXTURE_PATH,		&m_apTexture[FLOOR_MAT]);
-	D3DXCreateTextureFromFile(pDevice, FLOOR_KITCHEN_TEXTURE_PATH,  &m_apTexture[FLOOR_KITCHEN]);
-
-	return S_OK;
+    return S_OK;
 }
 
-//==================================
-// テクスチャ破棄
-//==================================
+//=============================================================================
+// [Unload] テクスチャの破棄
+//=============================================================================
 void CFloor::Unload(void)
 {
-	for (int nCntFloor = 0; nCntFloor < FLOOR_MAX; nCntFloor++)
-	{
-		// テクスチャの解放処理
-		if (m_apTexture[nCntFloor] != NULL)
-		{
-			m_apTexture[nCntFloor]->Release();
-			m_apTexture[nCntFloor] = NULL;
-		}
-	}
+    //メッシュの破棄
+    if (m_pMeshModel != NULL)
+    {
+        m_pMeshModel->Release();
+        m_pMeshModel = NULL;
+    }
+    //マテリアルの破棄
+    if (m_pBuffMatModel != NULL)
+    {
+        m_pBuffMatModel->Release();
+        m_pBuffMatModel = NULL;
+    }
 }
 
-//==================================
-// 初期化処理
-//==================================
+//=============================================================================
+// [Init] 初期化処理
+//=============================================================================
 HRESULT CFloor::Init(void)
 {
-	CScene3d::Init();
-	CScene3d::BindTexture(m_apTexture[m_type]);
-	return S_OK;
+    if (FAILED(CModel::Init()))
+    {
+        return E_FAIL;
+    }
+
+    // テクスチャ割り当て
+    BindModel(m_pMeshModel, m_pBuffMatModel, m_nNumMatModel);
+
+    return S_OK;
 }
 
-//==================================
-// 終了処理
-//==================================
+//=============================================================================
+// [Uninit] 終了処理
+//=============================================================================
 void CFloor::Uninit(void)
 {
-	CScene3d::Uninit();
+    CModel::Uninit();
 }
 
-//==================================
-// 更新処理
-//==================================
+//=============================================================================
+// [Update] 更新処理
+//=============================================================================
 void CFloor::Update(void)
 {
+    CModel::Update();
 }
 
-//==================================
-// 描画処理
-//==================================
+//=============================================================================
+// [Draw] 描画処理
+//=============================================================================
 void CFloor::Draw(void)
 {
-	CScene3d::Draw();
+    CModel::Draw();
 }

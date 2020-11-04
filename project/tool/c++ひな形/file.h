@@ -7,6 +7,7 @@
 #ifndef _FILE_H_
 #define _FILE_H_
 #include "main.h"
+#include "scene.h"
 
 //*****************************************************************************
 // ƒNƒ‰ƒX’è‹`
@@ -25,6 +26,8 @@ public:
 
     static void Read(void);
     static void Writing(void);
+
+    static void ObjctWriting(FILE *pFile, CScene::OBJTYPE tye);
 
 private:
 

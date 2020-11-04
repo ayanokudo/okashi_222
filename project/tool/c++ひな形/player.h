@@ -18,11 +18,18 @@
 //*****************************
 // クラス定義
 //*****************************
-
-// パーティクルクラス
+// プレイヤークラス
 class CPlayer : public CModel
 {
 public:
+    // モデルの情報
+    typedef enum
+    {
+        MODEL_PLAYER,
+        MODEL_ENEMY,
+        MODEL_DELETE,
+        MODEL_MAX
+    }MODEL;      // モデルのファイル名
 
 	//メンバ関数
 	CPlayer();
@@ -39,11 +46,14 @@ private:
     // メンバ関数
 	void Controll(void);
 	// メンバ変数
-	static LPD3DXMESH m_pMeshModel;	//メッシュ情報へのポインタ
-	static LPD3DXBUFFER m_pBuffMatModel;	//マテリアル情報へのポインタ
-	static DWORD m_nNumMatModel;	//マテリアル情報の数
+    static char*              m_apModelData[MODEL_MAX];// モデルの情報
+	static LPD3DXMESH         m_pMeshModel[MODEL_MAX];	//メッシュ情報へのポインタ
+	static LPD3DXBUFFER       m_pBuffMatModel[MODEL_MAX];	//マテリアル情報へのポインタ
+	static DWORD              m_nNumMatModel[MODEL_MAX];	//マテリアル情報の数
 	static LPDIRECT3DTEXTURE9 m_apTexture; // テクスチャ
 	D3DXVECTOR3 m_move;        // 移動量
+
+
 };
 
 #endif

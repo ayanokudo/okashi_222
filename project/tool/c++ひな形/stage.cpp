@@ -23,7 +23,7 @@ DWORD        CStage::m_nNumMatModel = 0;	    //マテリアル情報の数
 //=============================================================================
 // [CStage] コンストラクタ
 //=============================================================================
-CStage::CStage()
+CStage::CStage() : CModel(OBJTYPE_MAP)
 {
 
 }
@@ -45,7 +45,6 @@ CStage * CStage::Create(D3DXVECTOR3 pos)
     if (!pObject)
     {
         pObject = new CStage;
-        pObject->Init();
         // 初期化
         pObject->Init();
         pObject->SetPos(pos);
@@ -131,5 +130,5 @@ void CStage::Update(void)
 //=============================================================================
 void CStage::Draw(void)
 {
-    CModel::Draw();
+    //CModel::Draw();
 }

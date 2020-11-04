@@ -7,18 +7,25 @@
 #include "model.h"
 #include "manager.h"
 #include "renderer.h"
+#include "collision.h"
+
+//=============================================================================
+//マクロ定義
+//=============================================================================
+#define MODEL_RADIUS (50.0f)        // モデルの当たり判定
 
 //=============================================================================
 //モデルクラスのコンストラクタ
 //=============================================================================
-CModel::CModel()
+CModel::CModel(int nPriority) :CScene(nPriority)
 {
 	// 変数のクリア
 	m_pBuffMatModel = NULL;
 	m_pMeshModel = NULL;
 	m_nNumMatModel = 0;
-	m_pos = D3DXVECTOR3();
-	m_rot = D3DXVECTOR3();
+	m_pos = {0.0f,0.0f,0.0f};
+	m_rot = {0.0f,0.0f,0.0f};
+    m_pCollision = NULL;
 }
 
 //=============================================================================
@@ -37,14 +44,14 @@ CModel * CModel::Create(D3DXVECTOR3 pos)
 	CModel *pModel = NULL;
 
 	//メモリ確保
-	pModel = new CModel;
+	pModel = new CModel(OBJTYPE_NONE);
 
 	//メモリが確保できていたら
 	if (pModel != NULL)
 	{
 		//初期化処理呼び出し
-		pModel->Init();
 		pModel->m_pos = pos;
+		pModel->Init();
 	}
 	//メモリ確保に失敗したとき
 	else
@@ -62,7 +69,7 @@ HRESULT CModel::Init()
 {
 	//向きの初期化
 	m_rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-
+    m_pCollision = CCollision::CreateSphere(m_pos, MODEL_RADIUS);
 	return S_OK;
 }
 
@@ -80,6 +87,8 @@ void CModel::Uninit(void)
 //=============================================================================
 void CModel::Update(void)
 {
+    // 当たり判定の位置更新
+    m_pCollision->SetPos(m_pos);
 }
 
 //=============================================================================

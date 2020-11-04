@@ -14,12 +14,13 @@
 #include "keyboard.h"
 #include "game.h"
 #include "player.h"
+#include "object.h"
 
 //******************************
 // マクロ定義
 //******************************
 #define CAMERA_DISTANCE 250    // カメラの距離
-#define CAMERA_LOCAL_POS D3DXVECTOR3(0.0f, 500.0f, 100.0f);
+#define CAMERA_LOCAL_POS D3DXVECTOR3(0.0f, 1500.0f, 100.0f);
 //******************************
 // 静的メンバ変数宣言
 //******************************
@@ -100,8 +101,9 @@ void CCamera::Uninit(void)
 //******************************
 void CCamera::Update(void)
 {
-	m_posV = CGame::GetPlayer()->GetPos() + CAMERA_LOCAL_POS;
-	m_posR = CGame::GetPlayer()->GetPos();
+	m_posV = CObject::GetPlayer()->GetPos() + CAMERA_LOCAL_POS;
+	m_posR = CObject::GetPlayer()->GetPos();
+
 #ifdef _DEBUG
 	if (CManager::GetKeyboard()->GetKeyPress(DIK_UP))
 	{
@@ -142,7 +144,7 @@ void CCamera::SetCamera(void)
 	D3DXMatrixIdentity(&m_pCamera->m_mtxProjection);
 
 	D3DXMatrixPerspectiveFovLH(&m_pCamera->m_mtxProjection,
-		D3DXToRadian(100.0f), 
+		D3DXToRadian(45.0f), 
 		(float)SCREEN_WIDTH / (float)SCREEN_HEIGHT, 0.0f, 1000.0f);
 	
 	//プロジェクションマトリックスの設定

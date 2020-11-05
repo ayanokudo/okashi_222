@@ -47,7 +47,7 @@ CWall::~CWall()
 //==================================
 // 生成処理
 //==================================
-CWall * CWall::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size, WALL type)
+CWall * CWall::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 rot, const D3DXVECTOR3 size, WALL type)
 {
 	//インスタンスを生成
 	CWall *pWall = new CWall;
@@ -56,10 +56,12 @@ CWall * CWall::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size, WALL type)
 	{
 		//それぞれの初期化処理
 		pWall->m_pos = pos;
+        pWall->m_rot = rot;
 		pWall->m_size = size;
 		pWall->Init();
 		pWall->m_type = type;
 		pWall->SetPos(pos);
+        pWall->SetRot(rot);
 		pWall->SetSize(size);
 		pWall->SetObjType(OBJTYPE_WALL);
 	}

@@ -33,7 +33,7 @@ public:
 	//ÉÅÉìÉoä÷êî
 	CFloor();
 	~CFloor();
-	static CFloor * Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size, FLOOR type);
+	static CFloor * Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 rot, const D3DXVECTOR3 size, FLOOR type);
 	static HRESULT Load(void);
 	static void Unload(void);
 	HRESULT Init(void);

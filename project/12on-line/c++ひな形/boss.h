@@ -56,6 +56,7 @@ private:
 	//各敵キャラの動きの処理
 	void Move(void);
 	void Direction(void);
+    void Attack(void);
 
 	// メンバ変数
 	static LPD3DXMESH m_pMeshModel;	//メッシュ情報へのポインタ

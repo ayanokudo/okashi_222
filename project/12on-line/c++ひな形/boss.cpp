@@ -28,6 +28,8 @@
 #define ENEMY_RANGE_RADIUS 600
 #define ENEMY_DIRECTION_RATE 0.1f              // 向きを変えるときの係数
 
+#define ATTACK_BASE 200             // 攻撃するタイミングのベース値
+
 //*****************************
 // 静的メンバ変数宣言
 //*****************************
@@ -237,4 +239,19 @@ void CBoss::Direction(void)
 	rot.y += (m_fRotYDist - rot.y)*ENEMY_DIRECTION_RATE;
 	// 向きの設定
 	SetRot(rot);
+}
+
+//=============================================================================
+// 攻撃処理
+// Author : AYANO KUDO
+//=============================================================================
+void CBoss::Attack(void)
+{
+    // ランダムなタイミングで攻撃する
+    if (rand() % ATTACK_BASE == 0)
+    {
+        // プレイヤーとの距離をを確認
+
+    }
+
 }

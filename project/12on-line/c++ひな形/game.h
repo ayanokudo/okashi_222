@@ -27,6 +27,7 @@ class CCamera;
 class CPlayer;
 class CLight;
 class CEnemy;
+class CBoss;
 class CItem;
 class CScore;
 class CTime;
@@ -58,6 +59,7 @@ public:
 	static CCamera *GetCamera(void) { return m_pCamera; }  // カメラの取得処理
 	static CPlayer *GetPlayer(int nIndex = 0) { return m_pPlayer[nIndex]; }  // プレイヤーの取得処理
 	static CEnemy  *GetEnemy(void)  { return m_pEnemy; }   // エネミーの取得処理
+    static CBoss   *GetBoss(void) { return m_pBoss; }
 	static CItem   *GetItem(void)	{ return m_pItem; }	   // アイテムの取得処理
 	static CScore  *GetScore(void)  { return m_pScore; }   // スコアの取得処理
 	static CTime   *GetTime(void)   { return m_pTime; }	   // タイムの取得処理
@@ -66,6 +68,7 @@ private:
 	static CCamera*m_pCamera;	// カメラ
 	static CPlayer*m_pPlayer[MAX_PLAYER];	// プレイヤー
 	static CEnemy*m_pEnemy;		// エネミー
+    static CBoss   *m_pBoss;    // ボス
 	static CItem*m_pItem;		// アイテム
 	static CScore*m_pScore;		// スコア
 	static CTime*m_pTime;		// アイテム

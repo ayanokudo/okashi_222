@@ -17,11 +17,20 @@
 #include "game.h"
 #include "player.h"
 #include "bullet.h"
+#include "motion.h"
 
 //*****************************
 // マクロ定義
 //*****************************
-#define BOSS_CARRIER_MODEL_PATH	"./data/Models/cube.x"	//運びネズミのモデル情報
+#define BOSS_PATH	"./data/Texts/BossData.txt"	//運びネズミのモデル情報
+
+#define WAIT_PATH    "data/Texts/BossMotion/Boss_taiki.txt"             // 待機モーションのパス
+#define BREATH_PATH  "data/Texts/BossMotion/Boss_Attack_breath.txt"     // ブレスモーションのパス
+#define SCRATH_PATH  "data/Texts/BossMotion/Boss_Attack_hikkaki.txt"    // 歩きモーションのパス
+#define TAIL_PATH    "data/Texts/BossMotion/Boss_Attack_kaiten.txt"     // しっぽモーションのパス
+
+
+
 #define ENEMY_SPEED 5
 #define ENEMY_MOVE_RATE 0.05f
 #define ENEMY_RADIUS  100
@@ -31,14 +40,23 @@
 //*****************************
 // 静的メンバ変数宣言
 //*****************************
-LPD3DXMESH   CBoss::m_pMeshModel = {};   	//メッシュ情報へのポインタ
-LPD3DXBUFFER CBoss::m_pBuffMatModel = {};	//マテリアル情報へのポインタ
-DWORD        CBoss::m_nNumMatModel = {};	//マテリアル情報の数
+//LPD3DXMESH   CBoss::m_pMeshModel = {};   	//メッシュ情報へのポインタ
+//LPD3DXBUFFER CBoss::m_pBuffMatModel = {};	//マテリアル情報へのポインタ
+//DWORD        CBoss::m_nNumMatModel = {};	//マテリアル情報の数
+CModel::Model CBoss::m_model[MAX_PARTS_NUM] = {};
+int CBoss::m_nNumModel = 0;
+char CBoss::m_achAnimPath[MOTION_MAX][64]
+{
+	{ WAIT_PATH },	  // 待機モーション
+	{ BREATH_PATH },  // ブレスモーション
+	{ SCRATH_PATH },  // 歩きモーション
+	{ TAIL_PATH },	  // しっぽモーション
+};
 
 //******************************
 // コンストラクタ
 //******************************
-CBoss::CBoss() :CModel(OBJTYPE_ENEMY)
+CBoss::CBoss() :CModelHierarchy(OBJTYPE_BOSS)
 {
 	m_move = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	m_moveDest = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
@@ -49,6 +67,7 @@ CBoss::CBoss() :CModel(OBJTYPE_ENEMY)
 	m_nCountMotion = 0;
 	m_bRd = false;
 	m_nLife = 0;
+	memset(&m_pMotion, 0, sizeof(m_pMotion));
 }
 
 //******************************
@@ -65,20 +84,20 @@ CBoss::~CBoss()
 CBoss * CBoss::Create(D3DXVECTOR3 pos)
 {
 	// メモリの確保
-	CBoss *pEnemy;
-	pEnemy = new CBoss;
+	CBoss *pBoss;
+	pBoss = new CBoss;
 
-	if (pEnemy != NULL)
+	if (pBoss != NULL)
 	{
 		// 初期化
-		pEnemy->Init();
+		pBoss->Init();
 
 		// 各値の代入・セット
-		pEnemy->SetPos(pos);
-		pEnemy->SetObjType(OBJTYPE_ENEMY); // オブジェクトタイプ
+		pBoss->SetPos(pos);               // 座標
+		pBoss->SetObjType(OBJTYPE_BOSS); // オブジェクトタイプ
 	}
 
-	return pEnemy;
+	return pBoss;
 }
 
 //******************************
@@ -89,16 +108,54 @@ HRESULT CBoss::Load(void)
 	// デバイスの取得
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
 
-	//Xファイルの読み込み
-	//運びネズミ
-	D3DXLoadMeshFromX(BOSS_CARRIER_MODEL_PATH,
-		D3DXMESH_SYSTEMMEM,
-		pDevice,
-		NULL,
-		&m_pBuffMatModel,
-		NULL,
-		&m_nNumMatModel,
-		&m_pMeshModel);
+	// ファイルオープン
+	FILE*pFile = NULL;
+
+	pFile = fopen(BOSS_PATH, "r");
+
+
+	if (pFile != NULL)
+	{
+		// テキストファイルの解析
+
+		char chChar[256] = {};
+		fscanf(pFile, "%s", chChar);
+
+		// "NUM_MODEL"読み込むまでループ
+		while (strcmp(chChar, "NUM_MODEL") != 0)
+		{
+			fscanf(pFile, "%s", chChar);
+		}
+
+		// 読み込むモデルの数
+		fscanf(pFile, "%*s %d # %*s", &m_nNumModel);
+
+		for (int nCnt = 0; nCnt < m_nNumModel; nCnt++)
+		{
+			// 読み込んだ文字格納用
+			char chPath[64] = {};
+			// "MODEL_FILENAME"を読み込むまでループ
+			while (strcmp(chChar, "MODEL_FILENAME") != 0)
+			{
+				fscanf(pFile, "%s", chChar);
+			}
+			// ファイルパスの読み込み
+			fscanf(pFile, "%*s %s", chPath);
+
+			// Xファイルの読み込み
+			D3DXLoadMeshFromX(chPath,
+				D3DXMESH_SYSTEMMEM,
+				pDevice,
+				NULL,
+				&m_model[nCnt].pBuffMat,
+				NULL,
+				&m_model[nCnt].nNumMat,
+				&m_model[nCnt].pMesh);
+
+			// 次の文字を読み込む
+			fscanf(pFile, "%s", chChar);
+		}
+	}
 
 	return S_OK;
 }
@@ -108,17 +165,20 @@ HRESULT CBoss::Load(void)
 //******************************
 void CBoss::Unload(void)
 {
-	//メッシュの破棄
-	if (m_pMeshModel != NULL)
+	for (int nCnt = 0; nCnt < m_nNumModel; nCnt++)
 	{
-		m_pMeshModel->Release();
-		m_pMeshModel = NULL;
-	}
-	//マテリアルの破棄
-	if (m_pBuffMatModel != NULL)
-	{
-		m_pBuffMatModel->Release();
-		m_pBuffMatModel = NULL;
+		//メッシュの破棄
+		if (m_model[nCnt].pMesh != NULL)
+		{
+			m_model[nCnt].pMesh->Release();
+			m_model[nCnt].pMesh = NULL;
+		}
+		//マテリアルの破棄
+		if (m_model[nCnt].pBuffMat != NULL)
+		{
+			m_model[nCnt].pBuffMat->Release();
+			m_model[nCnt].pBuffMat = NULL;
+		}
 	}
 }
 
@@ -128,17 +188,24 @@ void CBoss::Unload(void)
 //******************************
 HRESULT CBoss::Init(void)
 {
-	if (FAILED(CModel::Init()))
+	// 運びネズミ
+	if (FAILED(CModelHierarchy::Init(m_nNumModel, &m_model[0], BOSS_PATH)))
 	{
 		return E_FAIL;
 	}
 
-	// テクスチャ割り当て
-	BindModel(m_pMeshModel, m_pBuffMatModel, m_nNumMatModel);
-
 	m_pCollision = CCollision::CreateSphere(GetPos(), ENEMY_RADIUS);
 
 	m_pRadiusColision = CCollision::CreateSphere(GetPos(), ENEMY_RANGE_RADIUS);
+
+	// モーションの生成
+	for (int nCntAnim = 0; nCntAnim < MOTION_MAX; nCntAnim++)
+	{
+		m_pMotion[nCntAnim] = CMotion::Create(GetPartsNum(), m_achAnimPath[nCntAnim], GetModelData());
+	}
+
+	m_pMotion[WAIT]->SetActiveAnimation(true);
+
 	return S_OK;
 }
 
@@ -157,7 +224,7 @@ void CBoss::Uninit(void)
 		m_pRadiusColision->Uninit();
 	}
 
-	CModel::Uninit();
+	CModelHierarchy::Uninit();
 }
 
 //******************************
@@ -199,7 +266,7 @@ void CBoss::Update(void)
 //******************************
 void CBoss::Draw(void)
 {
-	CModel::Draw();
+	CModelHierarchy::Draw();
 }
 
 //******************************

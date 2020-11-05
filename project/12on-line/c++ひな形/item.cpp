@@ -18,6 +18,7 @@
 #include "collision.h"
 #include "player.h"
 #include "score.h"
+#include "collect.h"
 
 //*****************************
 // É}ÉNÉçíËã`

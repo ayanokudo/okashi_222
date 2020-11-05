@@ -189,6 +189,7 @@ void CModelHierarchy::Draw(void)
 		pDevice->GetMaterial(&matDef);
 
 		//マテリアルデータへのポインタを取得
+
 		pMat = (D3DXMATERIAL*)m_model[nCntParts].pBuffMat->GetBufferPointer();
 
 		for (int nCntMat = 0; nCntMat < (int)m_model[nCntParts].nNumMat; nCntMat++)

@@ -18,12 +18,16 @@
 #include "player.h"
 #include "bullet.h"
 #include "scratch.h"
+#include "motion.h"
 
 //*****************************
 // マクロ定義
 //*****************************
-#define ENEMY_CARRIER_MODEL_PATH	"./data/Models/cube.x"	//運びネズミのモデル情報
-#define ENEMY_ESCORT_MODEL_PATH		"./data/Models/cat_sakamoto.x"	//守りネズミのモデル情報
+#define ENEMY_CARRIER_MODEL_PATH	"./data/Texts/MouseData.txt"	//運びネズミのモデル情報
+#define ENEMY_ESCORT_MODEL_PATH		"./data/Texts/MouseData.txt"	//守りネズミのモデル情報
+
+#define WALK_ANIM_PATH  "data/Texts/nezumi_walk.txt"      // 歩きアニメーションのパス
+
 #define ENEMY_SPEED 5
 #define ENEMY_RAND rand() % 8 + 1
 #define ENEMY_MOVE_RATE 0.05f
@@ -37,14 +41,17 @@
 //*****************************
 // 静的メンバ変数宣言
 //*****************************
-LPD3DXMESH   CEnemy::m_pMeshModel[ENEMY_MAX] = {};   	//メッシュ情報へのポインタ
-LPD3DXBUFFER CEnemy::m_pBuffMatModel[ENEMY_MAX] = {};	//マテリアル情報へのポインタ
-DWORD        CEnemy::m_nNumMatModel[ENEMY_MAX] = {};	    //マテリアル情報の数
+CModel::Model CEnemy::m_model[MAX_PLAYER][MAX_PARTS_NUM] = {};
+int CEnemy::m_nNumModel = 0;
+char CEnemy::m_achAnimPath[MOTION_MAX][64]
+{
+	{ WALK_ANIM_PATH },	   // 歩きアニメーション
+};
 
 //******************************
 // コンストラクタ
 //******************************
-CEnemy::CEnemy() :CModel(OBJTYPE_ENEMY)
+CEnemy::CEnemy() :CModelHierarchy(OBJTYPE_ENEMY)
 {
 	m_move = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	m_moveDest = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
@@ -55,6 +62,7 @@ CEnemy::CEnemy() :CModel(OBJTYPE_ENEMY)
 	m_nCountMotion = 0;
 	m_bRd = false;
 	m_nLife = 0;
+	memset(&m_pMotion, 0, sizeof(m_pMotion));
 }
 
 //******************************
@@ -76,12 +84,13 @@ CEnemy * CEnemy::Create(D3DXVECTOR3 pos, ENEMY type)
 
 	if (pEnemy != NULL)
 	{
+		pEnemy->m_type = type;
+
 		// 初期化
 		pEnemy->Init();
 
 		// 各値の代入・セット
 		pEnemy->SetPos(pos);
-		pEnemy->m_type = type;
 		pEnemy->SetObjType(OBJTYPE_ENEMY); // オブジェクトタイプ
 	}
 
@@ -96,26 +105,64 @@ HRESULT CEnemy::Load(void)
 	// デバイスの取得
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
 
-	//Xファイルの読み込み
-	//運びネズミ
-	D3DXLoadMeshFromX(ENEMY_CARRIER_MODEL_PATH,
-		D3DXMESH_SYSTEMMEM,
-		pDevice,
-		NULL,
-		&m_pBuffMatModel[ENEMY_CARRIER],
-		NULL,
-		&m_nNumMatModel[ENEMY_CARRIER],
-		&m_pMeshModel[ENEMY_CARRIER]);
+	for (int nCntEnemy = 0; nCntEnemy < ENEMY_MAX; nCntEnemy++)
+	{
+		// ファイルオープン
+		FILE*pFile = NULL;
 
-	//守りネズミ
-	D3DXLoadMeshFromX(ENEMY_ESCORT_MODEL_PATH,
-		D3DXMESH_SYSTEMMEM,
-		pDevice,
-		NULL,
-		&m_pBuffMatModel[ENEMY_ESCORT],
-		NULL,
-		&m_nNumMatModel[ENEMY_ESCORT],
-		&m_pMeshModel[ENEMY_ESCORT]);
+		if (nCntEnemy == ENEMY_CARRIER)
+		{// プレイヤー１
+			pFile = fopen(ENEMY_CARRIER_MODEL_PATH, "r");
+
+		}
+		else
+		{// プレイヤー２
+			pFile = fopen(ENEMY_ESCORT_MODEL_PATH, "r");
+		}
+
+		if (pFile != NULL)
+		{
+			// テキストファイルの解析
+
+			char chChar[256] = {};
+			fscanf(pFile, "%s", chChar);
+
+			// "NUM_MODEL"読み込むまでループ
+			while (strcmp(chChar, "NUM_MODEL") != 0)
+			{
+				fscanf(pFile, "%s", chChar);
+			}
+
+			// 読み込むモデルの数
+			fscanf(pFile, "%*s %d # %*s", &m_nNumModel);
+
+			for (int nCnt = 0; nCnt < m_nNumModel; nCnt++)
+			{
+				// 読み込んだ文字格納用
+				char chPath[64] = {};
+				// "MODEL_FILENAME"を読み込むまでループ
+				while (strcmp(chChar, "MODEL_FILENAME") != 0)
+				{
+					fscanf(pFile, "%s", chChar);
+				}
+				// ファイルパスの読み込み
+				fscanf(pFile, "%*s %s", chPath);
+
+				// Xファイルの読み込み
+				D3DXLoadMeshFromX(chPath,
+					D3DXMESH_SYSTEMMEM,
+					pDevice,
+					NULL,
+					&m_model[nCntEnemy][nCnt].pBuffMat,
+					NULL,
+					&m_model[nCntEnemy][nCnt].nNumMat,
+					&m_model[nCntEnemy][nCnt].pMesh);
+
+				// 次の文字を読み込む
+				fscanf(pFile, "%s", chChar);
+			}
+		}
+	}
 
 	return S_OK;
 }
@@ -125,19 +172,22 @@ HRESULT CEnemy::Load(void)
 //******************************
 void CEnemy::Unload(void)
 {
-	for (int nCount = ENEMY_CARRIER; nCount < ENEMY_MAX; nCount++)
+	for (int nCntType = 0; nCntType < ENEMY_MAX; nCntType++)
 	{
-		//メッシュの破棄
-		if (m_pMeshModel[nCount] != NULL)
+		for (int nCnt = 0; nCnt < m_nNumModel; nCnt++)
 		{
-			m_pMeshModel[nCount]->Release();
-			m_pMeshModel[nCount] = NULL;
-		}
-		//マテリアルの破棄
-		if (m_pBuffMatModel[nCount] != NULL)
-		{
-			m_pBuffMatModel[nCount]->Release();
-			m_pBuffMatModel[nCount] = NULL;
+			//メッシュの破棄
+			if (m_model[nCntType][nCnt].pMesh != NULL)
+			{
+				m_model[nCntType][nCnt].pMesh->Release();
+				m_model[nCntType][nCnt].pMesh = NULL;
+			}
+			//マテリアルの破棄
+			if (m_model[nCntType][nCnt].pBuffMat != NULL)
+			{
+				m_model[nCntType][nCnt].pBuffMat->Release();
+				m_model[nCntType][nCnt].pBuffMat = NULL;
+			}
 		}
 	}
 }
@@ -148,15 +198,21 @@ void CEnemy::Unload(void)
 //******************************
 HRESULT CEnemy::Init(void)
 {
-	if (FAILED(CModel::Init()))
-	{
-		return E_FAIL;
+	if (m_type == ENEMY_CARRIER)
+	{// 運びネズミ
+		if (FAILED(CModelHierarchy::Init(m_nNumModel, &m_model[m_type][0], ENEMY_CARRIER_MODEL_PATH)))
+		{
+			return E_FAIL;
+		}
 	}
-	for (int nCount = ENEMY_CARRIER; nCount < ENEMY_MAX; nCount++)
-	{
-		// テクスチャ割り当て
-		BindModel(m_pMeshModel[nCount], m_pBuffMatModel[nCount], m_nNumMatModel[nCount]);
+	else
+	{// 守りネズミ
+		if (FAILED(CModelHierarchy::Init(m_nNumModel, &m_model[m_type][0], ENEMY_ESCORT_MODEL_PATH)))
+		{
+			return E_FAIL;
+		}
 	}
+
 	//ライフ設定
 	switch (m_type)
 	{
@@ -172,6 +228,14 @@ HRESULT CEnemy::Init(void)
 	m_pCollision = CCollision::CreateSphere(GetPos(), ENEMY_RADIUS);
 	
 	m_pRadiusColision = CCollision::CreateSphere(GetPos(), ENEMY_RANGE_RADIUS);
+
+	// モーションの生成
+	for (int nCntAnim = 0; nCntAnim < MOTION_MAX; nCntAnim++)
+	{
+		m_pMotion[nCntAnim] = CMotion::Create(GetPartsNum(), m_achAnimPath[nCntAnim], GetModelData());
+	}
+
+	m_pMotion[WALK]->SetActiveAnimation(true);
 	return S_OK;
 }
 
@@ -190,7 +254,7 @@ void CEnemy::Uninit(void)
 		m_pRadiusColision->Uninit();
 	}
 
-	CModel::Uninit();
+	CModelHierarchy::Uninit();
 }
 
 //******************************
@@ -246,7 +310,7 @@ void CEnemy::Update(void)
 //******************************
 void CEnemy::Draw(void)
 {
-	CModel::Draw();
+	CModelHierarchy::Draw();
 }
 
 //******************************

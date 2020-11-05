@@ -25,6 +25,8 @@
 #include "enemy.h"
 #include "item.h"
 #include "time.h"
+#include "collect.h"
+#include "boss.h"
 
 //=============================
 // 静的メンバ変数宣言
@@ -119,6 +121,8 @@ HRESULT CGame::Init(void)
 
 	// ポーズの初期化
 	CManager::SetActivePause(false);
+
+	CBoss::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 	return S_OK;
 }
 

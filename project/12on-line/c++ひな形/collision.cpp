@@ -229,8 +229,17 @@ void CCollision::Draw(void)
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
 	// ワイヤーフレームで描画
 	pDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
-	//　描画
-	//CModel::Draw();
+	static bool bView = false;
+	if (CManager::GetKeyboard()->GetKeyTrigger(DIK_F1))
+	{
+		bView ^= true;
+	}
+	if (bView)
+	{
+		//　描画
+		CModel::Draw();
+	}
+
 	// ワイヤーフレームをもどす
 	pDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
 }

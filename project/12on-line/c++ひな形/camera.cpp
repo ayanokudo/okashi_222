@@ -108,6 +108,7 @@ void CCamera::Uninit(void)
 void CCamera::Update(void)
 {
 #ifdef _DEB/UG
+
 	m_fPhi -= CManager::GetMouse()->GetMouseMove().y / 100.0f;
 	m_fTheta -= CManager::GetMouse()->GetMouseMove().x / 100.0f;
 	// 注視点をプレイヤーにする
@@ -128,13 +129,16 @@ void CCamera::Update(void)
 
 #else
 
-	CPlayer*pPlayer[MAX_PLAYER] = {};
-	D3DXVECTOR3 playerPos[MAX_PLAYER] = {};
+	CPlayer*pPlayer[MAX_PLAYER] = {};       // プレイヤー情報
+	D3DXVECTOR3 playerPos[MAX_PLAYER] = {}; // プレイヤー座標
+	// プレイヤー数分ループ
 	for (int nCntPlayer = 0; nCntPlayer < MAX_PLAYER; nCntPlayer++)
 	{
+		// プレイヤー情報の取得
 		pPlayer[nCntPlayer] = CGame::GetPlayer(nCntPlayer);
 		if (pPlayer[nCntPlayer] != NULL)
 		{
+			// プレイヤー座標の取得
 			playerPos[nCntPlayer] = pPlayer[nCntPlayer]->GetPos();
 		}
 	}
@@ -144,19 +148,19 @@ void CCamera::Update(void)
 	// プレイヤー同士の位置の角度
 	float fAngle = atan2f(playerPos[1].z - playerPos[0].z, playerPos[1].x - playerPos[0].x);
 
-	if (fDistance >= 3000)
+	/*if (fDistance >= 2000)
 	{
-		playerPos[1].x = playerPos[0].x + cosf(fAngle)*(3000);
-		playerPos[1].z = playerPos[0].z + sinf(fAngle)*(3000);
+		playerPos[1].x = playerPos[0].x + cosf(fAngle)*(2000);
+		playerPos[1].z = playerPos[0].z + sinf(fAngle)*(2000);
 		pPlayer[1]->SetPos(playerPos[1]);
-	}
+	}*/
 
 	// 中心点をプレイヤー間の中心に設定
 	m_posR.x = playerPos[0].x + cosf(fAngle)*(fDistance / 2);
 	m_posR.z = playerPos[0].z + sinf(fAngle)*(fDistance / 2);
 
 	// 距離でカメラを引く
-	m_fViewExtent = fDistance / 2;
+	m_fViewExtent = fDistance ;
 
 	// カメラ位置の設定
 	m_posV = m_posR + CAMERA_LOCAL_POS;
@@ -186,11 +190,9 @@ void CCamera::SetCamera(void)
 
 	D3DXMatrixPerspectiveFovLH(&m_pCamera->m_mtxProjection,
 		D3DXToRadian(45.0f),
-		(float)SCREEN_WIDTH / (float)SCREEN_HEIGHT,10.0f, 6000.0f);
+		(float)SCREEN_WIDTH / (float)SCREEN_HEIGHT,10.0f, 20000.0f);
 	//プロジェクションマトリックスの設定
 	pDevice->SetTransform(D3DTS_PROJECTION, &m_pCamera->m_mtxProjection);
 
 	pDevice->Clear(0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, D3DCOLOR_RGBA(0, 255, 0, 255), 1.0f, 0);
-
-	
 }

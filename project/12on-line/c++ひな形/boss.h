@@ -68,6 +68,7 @@ private:
 	//各敵キャラの動きの処理
 	void Move(void);
 	void Direction(void);
+    void Attack(void);
 	// メンバ変数
 	static CModel::Model m_model[MAX_PARTS_NUM]; // モデル情報
 	static int m_nNumModel;                      // モデル数

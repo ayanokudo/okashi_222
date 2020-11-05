@@ -76,7 +76,7 @@ CEnemy::~CEnemy()
 //******************************
 // クリエイト
 //******************************
-CEnemy * CEnemy::Create(D3DXVECTOR3 pos, ENEMY type)
+CEnemy *CEnemy::Create(D3DXVECTOR3 pos, ENEMY type)
 {
 	// メモリの確保
 	CEnemy *pEnemy;

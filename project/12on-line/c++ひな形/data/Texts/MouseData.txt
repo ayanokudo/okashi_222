@@ -14,9 +14,9 @@ NUM_MODEL = 3
 #------------------------------------------------------------------------------
 # モデルファイル名
 #------------------------------------------------------------------------------
-MODEL_FILENAME = data/Models/mouse/Mouse_jouhanshin.x	# [0]上半身
-MODEL_FILENAME = data/Models/mouse/Mouse_kahanshin.x	# [1]下半身
-MODEL_FILENAME = data/Models/mouse/Mouse_shiipo.x	# [2]尻尾
+MODEL_FILENAME = data/MODEL/Mouse_jouhanhsin.x	# [0]上半身
+MODEL_FILENAME = data/MODEL/Mouse_kahanshin.x	# [1]下半身
+MODEL_FILENAME = data/MODEL/Mouse_shiipo.x	    # [2]尻尾
 
 #------------------------------------------------------------------------------
 # キャラクター情報
@@ -27,21 +27,21 @@ CHARACTERSET
 	PARTSSET
 		INDEX = 0					# 上半身
 		PARENT = -1					# (親)NULL
-		POS = 0.0 20.0 0.0
+		POS = 0.0 50.0 3.0
 		ROT = 0.0 0.0 0.0
 	END_PARTSSET
 
 	PARTSSET
 		INDEX = 1					# 下半身
 		PARENT = 0					# (親)上半身
-		POS = 0.0 0.0 -2.0
+		POS = 0.0 0.0 -3.0
 		ROT = 0.0 0.0 0.0
 	END_PARTSSET
 
 	PARTSSET
 		INDEX = 2					# 尻尾
 		PARENT = 1					# (親)下半身
-		POS = 0.0 -5.0 10.0
+		POS = 0.0 -10.0 55.0
 		ROT = 0.0 0.0 0.0
 	END_PARTSSET
 END_CHARACTERSET

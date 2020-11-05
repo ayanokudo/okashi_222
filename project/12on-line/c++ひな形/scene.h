@@ -35,7 +35,6 @@ public:
 		OBJTYPE_MAP,        // マップ
 		OBJTYPE_ITEM,       // アイテム
 		OBJTYPE_EFFECT,     // エフェクト
-		OBJTYPE_BOSS,      // エネミー
 		OBJTYPE_EXPLOSION,  // 爆発
 		OBJTYPE_PARTICLE,   // パーティクル
 		OBJTYPE_BOMB,       // ボム
@@ -44,6 +43,7 @@ public:
 		OBJTYPE_WALL,		// 壁
         OBJTYPE_PLAYER,     // プレイヤー
         OBJTYPE_ENEMY,      // エネミー
+        OBJTYPE_BOSS,      // ボス
 		OBJTYPE_ATTACK,     // 攻撃
 		OBJTYPE_ANIMATION,  // アニメーション
 		OBJTYPE_COLLISION,  // コリジョン

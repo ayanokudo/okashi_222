@@ -4,7 +4,6 @@
 // Author : 筒井 俊稀
 //
 //=============================================================================
-
 //二重インクルード防止
 #ifndef _BOSS_H_
 #define _BOSS_H_
@@ -25,12 +24,10 @@ class CMotion;
 //*****************************
 // クラス定義
 //*****************************
-
 // パーティクルクラス
 class CBoss : public CModelHierarchy
 {
 public:
-
 	// モーション列挙
 	typedef enum
 	{
@@ -51,7 +48,6 @@ public:
 		TYPE_MAX
 	}BOSS;
 
-
 	//メンバ関数
 	CBoss();
 	~CBoss();
@@ -69,6 +65,10 @@ private:
 	void Move(void);
 	void Direction(void);
     void Attack(void);
+    void DoTailAttack(void);
+    void DoClawAttack(void);
+    void DoBreathAttack(void);
+
 	// メンバ変数
 	static CModel::Model m_model[MAX_PARTS_NUM]; // モデル情報
 	static int m_nNumModel;                      // モデル数
@@ -90,6 +90,11 @@ private:
 	int m_nCountMotion;
 	int m_nCountRand;
 	CMotion*m_pMotion[MOTION_MAX];  // アニメーションポインタ
+
+    CCollision *m_tailCollision;        // しっぽの当たり判定
+    CCollision *m_ClawCollision;        // ひっかきの当たり判定
+    CCollision *m_BreathCollision;      // ブレスの当たり判定
+
 };
 
 #endif

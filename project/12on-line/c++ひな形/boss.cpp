@@ -29,8 +29,6 @@
 #define SCRATH_PATH  "data/Texts/BossMotion/Boss_Attack_hikkaki.txt"    // 歩きモーションのパス
 #define TAIL_PATH    "data/Texts/BossMotion/Boss_Attack_kaiten.txt"     // しっぽモーションのパス
 
-
-
 #define ENEMY_SPEED 5
 #define ENEMY_MOVE_RATE 0.05f
 #define ENEMY_RADIUS  100
@@ -38,6 +36,7 @@
 #define ENEMY_DIRECTION_RATE 0.1f              // 向きを変えるときの係数
 
 #define ATTACK_BASE 200             // 攻撃するタイミングのベース値
+#define TAIL_COLLISION {}           // しっぽの攻撃範囲
 
 //*****************************
 // 静的メンバ変数宣言
@@ -70,6 +69,10 @@ CBoss::CBoss() :CModelHierarchy(OBJTYPE_BOSS)
 	m_bRd = false;
 	m_nLife = 0;
 	memset(&m_pMotion, 0, sizeof(m_pMotion));
+
+    m_tailCollision = NULL;
+    m_ClawCollision = NULL;
+    m_BreathCollision = NULL;
 }
 
 //******************************
@@ -309,7 +312,7 @@ void CBoss::Direction(void)
 }
 
 //=============================================================================
-// 攻撃処理
+// [Attack] 攻撃処理
 // Author : AYANO KUDO
 //=============================================================================
 void CBoss::Attack(void)
@@ -317,8 +320,36 @@ void CBoss::Attack(void)
     // ランダムなタイミングで攻撃する
     if (rand() % ATTACK_BASE == 0)
     {
+        //D3DXVECTOR3 pos =C
         // プレイヤーとの距離をを確認
-
+        //atan2();
     }
 
+}
+
+//=============================================================================
+// [DoTailAttack] しっぽ攻撃
+// Author : AYANO KUDO
+//=============================================================================
+void CBoss::DoTailAttack(void)
+{
+    // ボスの周り円形に当たり判定
+}
+
+//=============================================================================
+// [DoClawAttack] ひっかき攻撃
+// Author : AYANO KUDO
+//=============================================================================
+void CBoss::DoClawAttack(void)
+{
+    // ボスの正面に当たり判定
+}
+
+//=============================================================================
+// [DoBreathAttack] ブレス攻撃
+// Author : AYANO KUDO
+//=============================================================================
+void CBoss::DoBreathAttack(void)
+{
+    // ボスの正面に当たり判定・遠くまで届く
 }

@@ -14,9 +14,9 @@ NUM_MODEL = 3
 #------------------------------------------------------------------------------
 # モデルファイル名
 #------------------------------------------------------------------------------
-MODEL_FILENAME = data/MODEL/Mouse_jouhanhsin.x	# [0]上半身
-MODEL_FILENAME = data/MODEL/Mouse_kahanshin.x	# [1]下半身
-MODEL_FILENAME = data/MODEL/Mouse_shiipo.x	    # [2]尻尾
+MODEL_FILENAME = data/Models/mouse/Mouse_jouhanshin.x	# [0]上半身
+MODEL_FILENAME = data/Models/mouse/Mouse_kahanshin.x	# [1]下半身
+MODEL_FILENAME = data/Models/mouse/Mouse_shiipo.x	    # [2]尻尾
 
 #------------------------------------------------------------------------------
 # キャラクター情報

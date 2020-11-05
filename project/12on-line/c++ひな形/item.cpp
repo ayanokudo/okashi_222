@@ -212,6 +212,7 @@ void CItem::CollisionItem(void)
 			{
 				//è¨îªèàóù
 				CScore::AddScore(1000);
+				CCollect::Collect();
 				Uninit();
 				break;
 			}

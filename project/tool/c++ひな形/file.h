@@ -15,12 +15,6 @@
 class CFile
 {
 public:
-    // ì«Ç›çûÇÒÇæÉfÅ[É^
-    typedef struct
-    {
-
-    }FILE_DATA;
-
     CFile();
     ~CFile();
 
@@ -28,8 +22,5 @@ public:
     static void Writing(void);
 
     static void ObjctWriting(FILE *pFile, CScene::OBJTYPE tye);
-
-private:
-
 };
 #endif // !_FILE_H_

@@ -210,24 +210,10 @@ void CItem::CollisionItem(void)
 			//プレイヤーと敵の範囲の当たり判定
 			if (CCollision::CollisionSphere(m_pCollision, pPlayer->GetCollision()))
 			{
-				//処理分け
-				switch (m_type)
-				{
-					//キャンディ処理
-				case CANDY:
-					break;
-					//小判処理
-				case KOBAN:
-					CScore::AddScore(1000);
-					Uninit();
-					break;
-					//回復アイテム処理
-				case LIFE:
-
-				default:
-					break;
-				}
-
+				//小判処理
+				CScore::AddScore(1000);
+				Uninit();
+				break;
 			}
 		}
 	}

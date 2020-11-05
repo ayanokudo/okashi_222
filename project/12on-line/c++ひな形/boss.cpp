@@ -205,7 +205,7 @@ HRESULT CBoss::Init(void)
 		m_pMotion[nCntAnim] = CMotion::Create(GetPartsNum(), m_achAnimPath[nCntAnim], GetModelData());
 	}
 	
-	m_pMotion[TAIL]->SetActiveAnimation(true);
+	m_pMotion[WAIT]->SetActiveAnimation(true);
 
 	return S_OK;
 }

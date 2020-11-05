@@ -238,7 +238,7 @@ void CScratch::CollisionScratch(SCRATCHUSER user)
 				CPlayer*pPlayer = CGame::GetPlayer(nCount);
 				if (pPlayer != NULL)
 				{
-					if (CPlayer::GetDeath(nCount))
+					if (!CPlayer::GetDeath(nCount))
 					{
 						if (CCollision::CollisionSphere(m_pCollision, pPlayer->GetCollision()))
 						{

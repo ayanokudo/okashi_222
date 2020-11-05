@@ -33,13 +33,13 @@ public:
 		CANDY = 0,	// 回収するやつ
 		KOBAN,		// スコアUP
 		LIFE,		// 体力回復
-		ITEM_MAX	// 
-	}ITME;
+		ITEM_MAX	
+	}ITEM;
 
 	//メンバ関数
 	CItem();
 	~CItem();
-	static CItem *Create(D3DXVECTOR3 pos);
+	static CItem *Create(D3DXVECTOR3 pos, ITEM type);
 	static HRESULT Load(void);
 	static void Unload(void);
 	HRESULT Init(void);
@@ -50,6 +50,8 @@ public:
 private:
 	void Direction(void);
 	void CollisionItem(void);
+	void Candy(void);
+	void Life(void);
 
 	// メンバ変数
 	static LPD3DXMESH m_pMeshModel[ITEM_MAX];	//メッシュ情報へのポインタ
@@ -57,6 +59,8 @@ private:
 	static DWORD m_nNumMatModel[ITEM_MAX];	//マテリアル情報の数
 	static LPDIRECT3DTEXTURE9 m_apTexture; // テクスチャ
 	CCollision*m_pCollision;    // コリジョンクラスのポインタ
+	ITEM m_type;				// アイテムの種類情報
+	int m_nCandy;				// キャンディの数
 };
 
 #endif

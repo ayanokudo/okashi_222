@@ -23,11 +23,14 @@
 // マクロ定義
 //*****************************
 #define SCRATCH_TEXTURE_PATH "./data/Textures/scratch.png" //テクスチャのパス
+#define SCRATCH_TEXTURE_PATH "./data/Textures/scratch.png" //テクスチャのパス
 #define SCRATCH_COLOR D3DXCOLOR(1.0f,1.0f,0.3f,1.0f)       // アニメーション速度
 #define SCRATCH_ANIM_SPEED 4                               // アニメーション速度
 #define SCRATCH_MAX_ANIMATION_X 5                          // アニメーション数 横
 #define SCRATCH_MAX_ANIMATION_Y 2                          // アニメーション数 縦
 #define SCRATCH_ANIM_PATTERN 10                            // アニメーションのパターン数
+#define SCRATCH_ATTACK_PLAYER 50							//プレイヤー攻撃力
+#define SCRATCH_ATTACK_ENEMY 1								//エネミー攻撃力
 
 //******************************
 // 静的メンバ変数宣言
@@ -45,6 +48,8 @@ CScratch::CScratch() :CScene3d(OBJTYPE_ATTACK)
 	m_nCntAnim = 0;
 	m_nAnimX = 0;
 	m_nAnimY = 0;
+	m_bAttackPlayer = true;
+	m_bAttackEnemy = true;
 }
 
 //******************************
@@ -221,27 +226,55 @@ void CScratch::Draw(void)
 //******************************
 void CScratch::CollisionScratch(SCRATCHUSER user)
 {
+
 	switch (user)
 	{
 	case SCRATCHUSER_ENEMY:
+	{
+		if (m_bAttackEnemy)
+		{
+			for (int nCount = 0; nCount < MAX_PLAYER; nCount++)
+			{
+				CPlayer*pPlayer = CGame::GetPlayer(nCount);
+				if (pPlayer != NULL)
+				{
+					if (!CPlayer::GetDeath(nCount))
+					{
+						if (CCollision::CollisionSphere(m_pCollision, pPlayer->GetCollision()))
+						{
+							pPlayer->Hit(SCRATCH_ATTACK_ENEMY);
+							m_bAttackEnemy = false;
+							//Uninit();
+							break;
+						}
+					}
+				}
+			}
+		}
 		break;
+	}
 	case SCRATCHUSER_PLAYER:
 	{
-		CEnemy*pEnemy = (CEnemy*)CScene::GetTop(OBJTYPE_ENEMY);
-		while (pEnemy != NULL)
+		if (m_bAttackPlayer)
 		{
-
-			if (CCollision::CollisionSphere(m_pCollision, pEnemy->GetCollision()))
+			CEnemy*pEnemy = (CEnemy*)CScene::GetTop(OBJTYPE_ENEMY);
+			while (pEnemy != NULL)
 			{
-				pEnemy->Uninit();
-				//Uninit();
-				break;
+
+				if (CCollision::CollisionSphere(m_pCollision, pEnemy->GetCollision()))
+				{
+					pEnemy->Hit(SCRATCH_ATTACK_PLAYER);
+					m_bAttackPlayer = false;
+					//Uninit();
+					break;
+				}
+				pEnemy = (CEnemy*)pEnemy->GetNext();
 			}
-			pEnemy = (CEnemy*)pEnemy->GetNext();
+
 		}
-	}
 	default:
 		break;
+	}
 	}
 }
 
@@ -259,6 +292,8 @@ void CScratch::Animation(void)
 
 		if (m_nCntAnim >= SCRATCH_ANIM_PATTERN*SCRATCH_ANIM_SPEED)
 		{
+			m_bAttackPlayer = true;
+			m_bAttackEnemy = true;
 			Uninit();
 			return;
 		}

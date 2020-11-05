@@ -134,12 +134,22 @@ void CMotion::Update(void)
 				}
 				else
 				{
+					// ƒOƒ‹‚ñ‚Æ‰ñ“]‚µ‚È‚¢‚æ‚¤’²®
+					if (m_rot[m_nCntKey][nCntParts].y - m_pModel[nCntParts].rot.y > D3DXToRadian(180))
+					{
+						m_pModel[nCntParts].rot.y += D3DXToRadian(360);
+					}
+					if (m_rot[m_nCntKey][nCntParts].y - m_pModel[nCntParts].rot.y < D3DXToRadian(-180))
+					{
+						m_pModel[nCntParts].rot.y -= D3DXToRadian(360);
+					}
+
 					m_addPos[nCntParts] = (m_pos[m_nCntKey][nCntParts] - m_pos[m_nCntKey - 1][nCntParts]) / (float)m_nNumFrame[m_nCntKey];
-					m_addRot[nCntParts] = (m_rot[m_nCntKey][nCntParts] - m_rot[m_nCntKey - 1][nCntParts]) / (float)m_nNumFrame[m_nCntKey];
+					m_addRot[nCntParts] = (m_rot[m_nCntKey][nCntParts] - m_pModel[nCntParts].rot) / (float)m_nNumFrame[m_nCntKey];
 				}
 			}
 		}
-
+		
 		// ‰ÁŽZ’l‚ð‘«‚·
 		for (int nCntParts = 0; nCntParts < m_nNumParts; nCntParts++)
 		{

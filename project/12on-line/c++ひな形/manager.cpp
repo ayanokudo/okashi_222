@@ -41,7 +41,7 @@
 #include "scratch.h"
 #include "ui.h"
 #include "boss.h"
-
+#include "collect.h"
 //=============================
 // 静的メンバ変数宣言
 //=============================
@@ -144,6 +144,7 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, bool bWindow)
 	CScratch::Load();	// ひっかき
 	CUi::Load();		// ui
 	CBoss::Load();      // ボス
+	CCollect::Load();   // コレクト
 	// ポーズ状態の時
 	return S_OK;
 }
@@ -171,6 +172,8 @@ void CManager::Uninit(void)
 	CScratch::Unload();  // ひっかき
 	CUi::Unload();		 // ui
 	CBoss::Unload();     // ボス
+	CCollect::Unload();  // コレクト
+
 	if (m_pSound != NULL)
 	{
 		// 終了処理

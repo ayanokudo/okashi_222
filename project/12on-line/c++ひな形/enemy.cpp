@@ -36,7 +36,7 @@
 #define ENEMY_MOVE_RATE 0.05f 
 #define ENEMY_DIRECTION_RATE 0.1f              // 向きを変えるときの係数
 #define ENEMY_ESCORT_LIFE 100
-#define ENEMY_CARRIER_LIFE 100
+#define ENEMY_CARRIER_LIFE 200
 
 //*****************************
 // 静的メンバ変数宣言
@@ -216,10 +216,11 @@ HRESULT CEnemy::Init(void)
 	//ライフ設定
 	switch (m_type)
 	{
+		//運びネズミ
 	case ENEMY_CARRIER:
 		m_nLife = ENEMY_CARRIER_LIFE;
 		break;
-
+		//守りネズミ
 	case ENEMY_ESCORT:
 		m_nLife = ENEMY_ESCORT_LIFE;
 		break;
@@ -318,7 +319,13 @@ void CEnemy::Draw(void)
 //******************************
 void CEnemy::Hit(int nDamage)
 {
+	m_nLife -= nDamage;
 
+	if (m_nLife <= 0)
+	{
+		Uninit();
+		return;
+	}
 }
 
 //******************************
@@ -374,43 +381,46 @@ void CEnemy::RangeDecisionEscort(void)
 
 		if (pPlayer != NULL)
 		{
-			//プレイヤーの位置情報を取得
-			D3DXVECTOR3 playerPos = pPlayer->GetPos();
-			//エネミーの位置情報を取得
-			D3DXVECTOR3 enemyPos = GetPos();
-
-
-			//プレイヤーと敵の範囲の当たり判定
-			if (CCollision::CollisionSphere(m_pRadiusColision, pPlayer->GetCollision()))
+			if (!CPlayer::GetDeath(nCount))
 			{
-				m_bRd = true;
-				m_nCount++;
-				m_nCntAttack++;
-				//向きの設定
-				m_fRotYDist = atan2((playerPos.x - enemyPos.x), (playerPos.z - enemyPos.z));
+				//プレイヤーの位置情報を取得
+				D3DXVECTOR3 playerPos = pPlayer->GetPos();
+				//エネミーの位置情報を取得
+				D3DXVECTOR3 enemyPos = GetPos();
 
-				// 移動量
-				D3DXVECTOR3 Move;
-				Move.x = sinf(m_fRotYDist)*10.0f;
-				Move.y = 0.0f;
-				Move.z = cosf(m_fRotYDist)*10.0f;
 
-				m_moveDest = Move;
-				//等間隔で打つ
-				if (m_nCount == 50)
+				//プレイヤーと敵の範囲の当たり判定
+				if (CCollision::CollisionSphere(m_pRadiusColision, pPlayer->GetCollision()))
 				{
-					// 弾の生成
-					CScratch::Create(enemyPos, m_fRotYDist, CScratch::SCRATCHUSER_ENEMY, -1);
-					m_nCount = 0;
+					m_bRd = true;
+					m_nCount++;
+					m_nCntAttack++;
+					//向きの設定
+					m_fRotYDist = atan2((playerPos.x - enemyPos.x), (playerPos.z - enemyPos.z));
+
+					// 移動量
+					D3DXVECTOR3 Move;
+					Move.x = sinf(m_fRotYDist)*10.0f;
+					Move.y = 0.0f;
+					Move.z = cosf(m_fRotYDist)*10.0f;
+
+					m_moveDest = Move;
+					//等間隔で打つ
+					if (m_nCount == 50)
+					{
+						// 弾の生成
+						CScratch::Create(enemyPos, m_fRotYDist, CScratch::SCRATCHUSER_ENEMY, -1);
+						m_nCount = 0;
+					}
+					//弾の向きの設定
+					m_fRotYDist = atan2(-(playerPos.x - enemyPos.x), -(playerPos.z - enemyPos.z));
+					break;
 				}
-				//弾の向きの設定
-				m_fRotYDist = atan2(-(playerPos.x - enemyPos.x), -(playerPos.z - enemyPos.z));
-				break;
-			}
-			else
-			{
-				//エネミーを再度動かす
-				m_bRd = false;
+				else
+				{
+					//エネミーを再度動かす
+					m_bRd = false;
+				}
 			}
 		}
 	}

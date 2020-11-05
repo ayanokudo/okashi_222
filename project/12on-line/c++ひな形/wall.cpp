@@ -151,28 +151,31 @@ void CWall::CollisionPlayer(void)
 		CPlayer*pPlayer = CGame::GetPlayer(nCntPlayer);
 		if (pPlayer != NULL)
 		{
-			if (CCollision::CollisionSphereToBox(pPlayer->GetCollision(), m_pCollision))
+			if (!CPlayer::GetDeath(nCntPlayer))
 			{
-				// プレイヤー座標の取得
-				D3DXVECTOR3 playerPos = pPlayer->GetPos();
-				// 当たり判定のサイズの取得
-				D3DXVECTOR3 collsionSize = m_pCollision->GetCollisionSize();
+				if (CCollision::CollisionSphereToBox(pPlayer->GetCollision(), m_pCollision))
+				{
+					// プレイヤー座標の取得
+					D3DXVECTOR3 playerPos = pPlayer->GetPos();
+					// 当たり判定のサイズの取得
+					D3DXVECTOR3 collsionSize = m_pCollision->GetCollisionSize();
 
-				// ボックス内の最短地点の検索
-				D3DXVECTOR3 shortrectPos;
-				shortrectPos.x = CCollision::OnRange(playerPos.x, GetPos().x - collsionSize.x / 2, GetPos().x + collsionSize.x / 2);
-				shortrectPos.y = CCollision::OnRange(playerPos.y, GetPos().y - collsionSize.y / 2, GetPos().y + collsionSize.y / 2);
-				shortrectPos.z = CCollision::OnRange(playerPos.z, GetPos().z - collsionSize.z / 2, GetPos().z + collsionSize.z / 2);
-				// ボックスからプレイヤーの方向ベクトル
-				playerPos = playerPos - shortrectPos;
-				// 正規化
-				D3DXVec3Normalize(&playerPos, &playerPos);
-				// 最短地点から当たり判定の半径分離す
-				playerPos = shortrectPos + playerPos * pPlayer->GetCollision()->GetCollisionRadius();
-				// プレイヤー座標のセット
-				pPlayer->SetPos(playerPos);
-				// プレイヤーのコリジョンの座標のセット
-				pPlayer->GetCollision()->SetPos(playerPos);
+					// ボックス内の最短地点の検索
+					D3DXVECTOR3 shortrectPos;
+					shortrectPos.x = CCollision::OnRange(playerPos.x, GetPos().x - collsionSize.x / 2, GetPos().x + collsionSize.x / 2);
+					shortrectPos.y = CCollision::OnRange(playerPos.y, GetPos().y - collsionSize.y / 2, GetPos().y + collsionSize.y / 2);
+					shortrectPos.z = CCollision::OnRange(playerPos.z, GetPos().z - collsionSize.z / 2, GetPos().z + collsionSize.z / 2);
+					// ボックスからプレイヤーの方向ベクトル
+					playerPos = playerPos - shortrectPos;
+					// 正規化
+					D3DXVec3Normalize(&playerPos, &playerPos);
+					// 最短地点から当たり判定の半径分離す
+					playerPos = shortrectPos + playerPos * pPlayer->GetCollision()->GetCollisionRadius();
+					// プレイヤー座標のセット
+					pPlayer->SetPos(playerPos);
+					// プレイヤーのコリジョンの座標のセット
+					pPlayer->GetCollision()->SetPos(playerPos);
+				}
 			}
 		}
 	}

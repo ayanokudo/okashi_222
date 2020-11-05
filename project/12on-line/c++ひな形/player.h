@@ -36,6 +36,7 @@ class CUi;
 class CPlayer : public CModelHierarchy
 {
 public:
+	//各パーツタイプ分け
 	typedef enum
 	{
 		WAIT = 0, // 待機
@@ -46,10 +47,11 @@ public:
 		MOTION_MAX
 	}MOTION;
 
+	//移動タイプ分け
 	typedef enum
 	{
-		TYPE_WALK,
-		TYPE_DASH,
+		TYPE_WALK = 0,	//歩き
+		TYPE_DASH,		//ダッシュ
 		TYPE_MAX
 	}PLAYERTYPE;
 
@@ -63,7 +65,9 @@ public:
 	void Uninit(void);
 	void Update(void);
 	void Draw(void);
+	void Hit(int nDamage);
 
+	static bool GetDeath(int nPlayer) { return m_bDeath[nPlayer]; }
 	CCollision*GetCollision(void) { return m_pCollision; }
 	D3DXVECTOR3 GetMove(void) { return m_move; }
 	void GetMove(D3DXVECTOR3 move) { m_move = move; }
@@ -73,6 +77,7 @@ private:
 	void MoveController(void);
 	void Direction(void);
 	void Attack(void);
+	void Life(void);
 	void MotionManager(void);
 	void MotionFalse(void);
 	void SetMotion(MOTION motionState);
@@ -81,6 +86,7 @@ private:
 	static CModel::Model m_model[MAX_PLAYER][MAX_PARTS_NUM]; // モデル情報
 	static int m_nNumModel;                      // モデル数
 	static char m_achAnimPath[MOTION_MAX][64];   // アニメーションテキストのパス格納用
+	static bool m_bDeath[MAX_PLAYER];
 
 	D3DXVECTOR3 m_move;             // 移動量
 	D3DXVECTOR3 m_moveDest;         // 移動量の目標値
@@ -88,7 +94,7 @@ private:
 	int m_nPlayerNum;               // プレイヤー番号
 	CCollision*m_pCollision;        // コリジョンクラスのポインタ
 	CMotion*m_pMotion[MOTION_MAX];  // アニメーションポインタ
-	int m_nLife;				    // プレイヤーのライフ
+	int m_nLife;					// プレイヤーのライフ
 	MOTION m_motionState;           // 現在のモーション状態
 	int m_nSpeed;
 	bool m_bAttack;                 // 攻撃しているかの判定用

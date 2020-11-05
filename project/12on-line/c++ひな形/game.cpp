@@ -99,7 +99,7 @@ HRESULT CGame::Init(void)
     // ボスの生成
     m_pBoss = CBoss::Create(D3DXVECTOR3(100.0f, 0.0f, -500.0f));
 	// アイテムの生成
-	m_pItem = CItem::Create(D3DXVECTOR3(200.0f, 0.0f, -800.0f));
+	m_pItem = CItem::Create(D3DXVECTOR3(200.0f, 0.0f, -800.0f),CItem::CANDY);
 	// スコアの生成
 	m_pScore = CScore::Create();
 	// タイムの生成
@@ -132,6 +132,8 @@ HRESULT CGame::Init(void)
 	CManager::SetActivePause(false);
 
 	CBoss::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+
+	CCollect::Create();
 	return S_OK;
 }
 

@@ -18,6 +18,7 @@
 #include "player.h"
 #include "bullet.h"
 #include "motion.h"
+#include "debug_log.h"
 
 //*****************************
 // マクロ定義
@@ -205,7 +206,7 @@ HRESULT CBoss::Init(void)
 	{
 		m_pMotion[nCntAnim] = CMotion::Create(GetPartsNum(), m_achAnimPath[nCntAnim], GetModelData());
 	}
-
+	
 	m_pMotion[WAIT]->SetActiveAnimation(true);
 
 	return S_OK;
@@ -261,6 +262,13 @@ void CBoss::Update(void)
 
 	// 座標のセット
 	SetPos(pos);
+	if (CManager::GetKeyboard()->GetKeyTrigger(DIK_RETURN))
+	{
+		m_pMotion[TAIL]->SetActiveAnimation(true);
+	}
+
+	CDebugLog::Init();
+	CDebugLog::Print("%f", GetModelData()[0].rot.y);
 }
 
 //******************************

@@ -40,6 +40,7 @@ DWORD        CItem::m_nNumMatModel[ITEM_MAX] = {};	    //マテリアル情報の数
 CItem::CItem() :CModel(OBJTYPE_PLAYER)
 {
 	m_pCollision = NULL;
+	m_type = CANDY;
 }
 
 //******************************
@@ -52,7 +53,7 @@ CItem::~CItem()
 //******************************
 // クリエイト
 //******************************
-CItem * CItem::Create(D3DXVECTOR3 pos)
+CItem * CItem::Create(D3DXVECTOR3 pos, ITEM type)
 {
 	// メモリの確保
 	CItem *pItem;
@@ -63,6 +64,7 @@ CItem * CItem::Create(D3DXVECTOR3 pos)
 
 	// 各値の代入・セット
 	pItem->SetPos(pos);
+	pItem->m_type = type;
 	// 各値の代入・セット
 	pItem->SetObjType(OBJTYPE_ITEM); // オブジェクトタイプ
 	return pItem;
@@ -207,10 +209,40 @@ void CItem::CollisionItem(void)
 			//プレイヤーと敵の範囲の当たり判定
 			if (CCollision::CollisionSphere(m_pCollision, pPlayer->GetCollision()))
 			{
-				CScore::AddScore(1000);
-				Uninit();
-				break;
+				//処理分け
+				switch (m_type)
+				{
+					//キャンディ処理
+				case CANDY:
+					break;
+					//小判処理
+				case KOBAN:
+					CScore::AddScore(1000);
+					Uninit();
+					break;
+					//回復アイテム処理
+				case LIFE:
+
+				default:
+					break;
+				}
+
 			}
 		}
 	}
+}
+
+//******************************
+// キャンディ処理
+//******************************
+void CItem::Candy(void)
+{
+}
+
+//******************************
+// 回復アイテム処理
+//******************************
+void CItem::Life(void)
+{
+	CPlayer *pPlayer = CGame::GetPlayer();
 }

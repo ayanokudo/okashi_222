@@ -75,14 +75,14 @@ HRESULT CTime::Init(void)
 	for (int nCntDigit = 0; nCntDigit < MAX_TIME_DIGIT; nCntDigit++)
 	{
 		m_apNumber[nCntDigit] = CNumber::Create(0,
-			D3DXVECTOR3(580 + nCntDigit * 35 * 2, 95.0f, 0.0f),
-			D3DXVECTOR3(40, 40, 0),
+			D3DXVECTOR3(55 + nCntDigit * 25 * 2, 65.0f, 0.0f),
+			D3DXVECTOR3(30, 25, 0),
 			D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 	}
 
 	//ƒ^ƒCƒ€‚Ì•¶Žš•\Ž¦
-	m_pUi = CUi::Create(D3DXVECTOR3(650.0f, 30.0f, 0.0f),
-		D3DXVECTOR3(60, 20, 0),
+	m_pUi = CUi::Create(D3DXVECTOR3(100.0f, 20.0f, 0.0f),
+		D3DXVECTOR3(40, 15, 0),
 		D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
 		CUi::UI_TIME);
 

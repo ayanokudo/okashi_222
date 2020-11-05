@@ -38,8 +38,7 @@
 #define PLAYER_MOVE_RATE 0.2f                   // 移動の慣性の係数
 #define PLAYER_DIRECTION_RATE 0.1f              // 向きを変えるときの係数
 #define PLAYER_RADIUS 100						// プレイヤーの半径
-#define PLAYER_1_LIFE 100						// プレイヤー１のライフ
-#define PLAYER_2_LIFE 100						// プレイヤー２のライフ
+#define PLAYER_LIFE 100						// プレイヤー１のライフ
 #define PLAYER_SPEED_MAX 5
 
 
@@ -68,12 +67,12 @@ CPlayer::CPlayer() :CModelHierarchy(OBJTYPE_PLAYER)
     m_fRotYDist = 0.0f;
     m_nPlayerNum = 0;
     m_pCollision = NULL;
-    m_nLife = 0;
 	memset(&m_pMotion, 0, sizeof(m_pMotion));
 	m_motionState = WAIT;
 	m_nSpeed = 0;
 	m_bAttack = false;
 	m_pUi[1] = NULL;
+	m_nLife = 0;
 }
 
 //******************************
@@ -222,7 +221,8 @@ HRESULT CPlayer::Init(void)
 		}
 	}
 
-    m_nLife = PLAYER_1_LIFE;
+	//プレイヤーライフ設定
+	m_nLife = PLAYER_LIFE;
 
     // サイズの調整
     SetSize(D3DXVECTOR3(1.5f, 1.5f, 1.5f));
@@ -243,20 +243,20 @@ HRESULT CPlayer::Init(void)
 	SetMotion(WAIT);
 
 	// アタックのUIの生成
-	m_pUi[0] = CUi::Create(D3DXVECTOR3(1050.0f, 510.0f, 0.0f),
-		D3DXVECTOR3(60, 60, 0),
+	m_pUi[0] = CUi::Create(D3DXVECTOR3(550.0f, 660.0f, 0.0f),
+		D3DXVECTOR3(45, 45, 0),
 		D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
 		CUi::UI_ATTACK_NAIL);
 
 	// ダッシュのUIの生成
-	m_pUi[1] = CUi::Create(D3DXVECTOR3(1180.0f, 580.0f, 0.0f),
-		D3DXVECTOR3(60, 60, 0),
+	m_pUi[1] = CUi::Create(D3DXVECTOR3(640.0f, 660.0f, 0.0f),
+		D3DXVECTOR3(45, 45, 0),
 		D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
 		CUi::UI_ATTACK_CRY);
 
 	// ダッシュのUIの生成
-	m_pUi[2] = CUi::Create(D3DXVECTOR3(1050.0f, 660.0f, 0.0f),
-		D3DXVECTOR3(60, 60, 0),
+	m_pUi[2] = CUi::Create(D3DXVECTOR3(730.0f, 660.0f, 0.0f),
+		D3DXVECTOR3(45, 45, 0),
 		D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
 		CUi::UI_DASH);
 
@@ -607,6 +607,14 @@ void CPlayer::Attack(void)
 			m_bAttack = false;
 		}
 	}
+}
+
+//******************************
+// 体力設定
+//******************************
+void CPlayer::Life(void)
+{
+
 }
 
 //******************************

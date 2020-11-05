@@ -36,6 +36,7 @@ class CUi;
 class CPlayer : public CModelHierarchy
 {
 public:
+	//各パーツタイプ分け
 	typedef enum
 	{
 		WAIT = 0, // 待機
@@ -46,10 +47,11 @@ public:
 		MOTION_MAX
 	}MOTION;
 
+	//移動タイプ分け
 	typedef enum
 	{
-		TYPE_WALK,
-		TYPE_DASH,
+		TYPE_WALK = 0,	//歩き
+		TYPE_DASH,		//ダッシュ
 		TYPE_MAX
 	}PLAYERTYPE;
 
@@ -73,6 +75,7 @@ private:
 	void MoveController(void);
 	void Direction(void);
 	void Attack(void);
+	void Life(void);
 	void MotionManager(void);
 	void MotionFalse(void);
 	void SetMotion(MOTION motionState);
@@ -88,7 +91,7 @@ private:
 	int m_nPlayerNum;               // プレイヤー番号
 	CCollision*m_pCollision;        // コリジョンクラスのポインタ
 	CMotion*m_pMotion[MOTION_MAX];  // アニメーションポインタ
-	int m_nLife;				    // プレイヤーのライフ
+	int m_nLife;					// プレイヤーのライフ
 	MOTION m_motionState;           // 現在のモーション状態
 	int m_nSpeed;
 	bool m_bAttack;                 // 攻撃しているかの判定用

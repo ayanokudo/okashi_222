@@ -63,6 +63,8 @@ private:
 	int m_nCntAnim;     // アニメーションカウント
 	int m_nAnimX;       // アニメーションX軸
 	int m_nAnimY;       // アニメーションY軸
+	bool m_bAttackEnemy;
+	bool m_bAttackPlayer;
 };
 
 #endif

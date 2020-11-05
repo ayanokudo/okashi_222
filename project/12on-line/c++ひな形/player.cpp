@@ -38,7 +38,7 @@
 #define PLAYER_MOVE_RATE 0.2f                   // 移動の慣性の係数
 #define PLAYER_DIRECTION_RATE 0.1f              // 向きを変えるときの係数
 #define PLAYER_RADIUS 100						// プレイヤーの半径
-#define PLAYER_LIFE 100						// プレイヤー１のライフ
+#define PLAYER_LIFE 9						// プレイヤー１のライフ
 #define PLAYER_SPEED_MAX 5
 
 
@@ -47,6 +47,7 @@
 //*****************************
 CModel::Model CPlayer::m_model[MAX_PLAYER][MAX_PARTS_NUM] = {};
 int CPlayer::m_nNumModel = 0;
+bool CPlayer::m_bDeath[MAX_PLAYER] = {};
 char CPlayer::m_achAnimPath[MOTION_MAX][64]
 {
     { WAIT_ANIM_PATH },    // 待機アニメーション
@@ -221,7 +222,20 @@ HRESULT CPlayer::Init(void)
 	}
 
 	//プレイヤーライフ設定
-	m_nLife = PLAYER_LIFE;
+	switch (m_nPlayerNum)
+	{
+		//1P
+	case 0:
+		m_nLife = PLAYER_LIFE;
+		break;
+		//2P
+	case 1:
+		m_nLife = PLAYER_LIFE;
+	default:
+		break;
+	}
+	
+	m_bDeath[m_nPlayerNum] = false;
 
     // サイズの調整
     SetSize(D3DXVECTOR3(1.5f, 1.5f, 1.5f));
@@ -613,6 +627,21 @@ void CPlayer::Attack(void)
 void CPlayer::Life(void)
 {
 
+}
+
+//******************************
+// ダメージ判定
+//******************************
+void CPlayer::Hit(int nDamage)
+{
+	m_nLife -= nDamage;
+
+	if (m_nLife <= 0)
+	{
+		m_bDeath[m_nPlayerNum] = true;
+		Uninit();
+		return;
+	}
 }
 
 //******************************

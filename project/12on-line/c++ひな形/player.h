@@ -65,7 +65,9 @@ public:
 	void Uninit(void);
 	void Update(void);
 	void Draw(void);
+	void Hit(int nDamage);
 
+	static bool GetDeath(int nPlayer) { return m_bDeath[nPlayer]; }
 	CCollision*GetCollision(void) { return m_pCollision; }
 	D3DXVECTOR3 GetMove(void) { return m_move; }
 	void GetMove(D3DXVECTOR3 move) { m_move = move; }
@@ -84,6 +86,7 @@ private:
 	static CModel::Model m_model[MAX_PLAYER][MAX_PARTS_NUM]; // モデル情報
 	static int m_nNumModel;                      // モデル数
 	static char m_achAnimPath[MOTION_MAX][64];   // アニメーションテキストのパス格納用
+	static bool m_bDeath[MAX_PLAYER];
 
 	D3DXVECTOR3 m_move;             // 移動量
 	D3DXVECTOR3 m_moveDest;         // 移動量の目標値

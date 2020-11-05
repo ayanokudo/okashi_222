@@ -28,6 +28,8 @@
 #define MODEL_PATH "./data/Models/cat_sakamoto.x"    //モデルのパス
 #define MODEL_PATH "./data/Models/cat_sakamoto.x"    //モデルのパス
 
+#define CANDY_MAX 20
+
 //*****************************
 // 静的メンバ変数宣言
 //*****************************
@@ -42,6 +44,7 @@ CItem::CItem() :CModel(OBJTYPE_PLAYER)
 {
 	m_pCollision = NULL;
 	m_type = CANDY;
+	m_nCandy = 0;
 }
 
 //******************************
@@ -148,6 +151,8 @@ HRESULT CItem::Init(void)
 	{
 		BindModel(m_pMeshModel[nCount], m_pBuffMatModel[nCount], m_nNumMatModel[nCount]);
 	}
+
+	m_nCandy = CANDY_MAX;
 	// 当たり判定の生成
 	m_pCollision = CCollision::CreateSphere(GetPos(), 100);
 	return S_OK;
@@ -198,24 +203,76 @@ void CItem::Draw(void)
 //******************************
 void CItem::CollisionItem(void)
 {
-	//プレイヤーの情報を取得
-	for (int nCount = 0; nCount < MAX_PLAYER; nCount++)
+	switch (m_type)
 	{
-		CPlayer*pPlayer = CGame::GetPlayer(nCount);
-
-		if (pPlayer != NULL)
+		//キャンディ
+	case CANDY:
+		//プレイヤーの情報を取得
+		for (int nCount = 0; nCount < MAX_PLAYER; nCount++)
 		{
-			//プレイヤーの位置情報を取得
-			D3DXVECTOR3 playerPos = pPlayer->GetPos();
-			//プレイヤーと敵の範囲の当たり判定
-			if (CCollision::CollisionSphere(m_pCollision, pPlayer->GetCollision()))
+			CPlayer*pPlayer = CGame::GetPlayer(nCount);
+
+			if (pPlayer != NULL)
 			{
-				//小判処理
-				CScore::AddScore(1000);
-				Uninit();
-				break;
+				if (!CPlayer::GetDeath(nCount))
+				{
+					//プレイヤーの位置情報を取得
+					D3DXVECTOR3 playerPos = pPlayer->GetPos();
+					//プレイヤーと敵の範囲の当たり判定
+					if (CCollision::CollisionSphere(m_pCollision, pPlayer->GetCollision()))
+					{
+						m_nCandy--;
+						Uninit();
+						break;
+					}
+				}
 			}
 		}
+		break;
+		//コバン
+	case KOBAN:
+		//プレイヤーの情報を取得
+		for (int nCount = 0; nCount < MAX_PLAYER; nCount++)
+		{
+			CPlayer*pPlayer = CGame::GetPlayer(nCount);
+
+			if (pPlayer != NULL)
+			{
+				//プレイヤーの位置情報を取得
+				D3DXVECTOR3 playerPos = pPlayer->GetPos();
+				//プレイヤーと敵の範囲の当たり判定
+				if (CCollision::CollisionSphere(m_pCollision, pPlayer->GetCollision()))
+				{
+					//小判処理
+					CScore::AddScore(1000);
+					Uninit();
+					break;
+				}
+			}
+		}
+		break;
+		//回復
+	case LIFE:
+		//プレイヤーの情報を取得
+		for (int nCount = 0; nCount < MAX_PLAYER; nCount++)
+		{
+			CPlayer*pPlayer = CGame::GetPlayer(nCount);
+
+			if (pPlayer != NULL)
+			{
+				//プレイヤーの位置情報を取得
+				D3DXVECTOR3 playerPos = pPlayer->GetPos();
+				//プレイヤーと敵の範囲の当たり判定
+				if (CCollision::CollisionSphere(m_pCollision, pPlayer->GetCollision()))
+				{
+					Life();
+					Uninit();
+					break;
+				}
+			}
+		}
+	default:
+		break;
 	}
 }
 
@@ -224,6 +281,7 @@ void CItem::CollisionItem(void)
 //******************************
 void CItem::Candy(void)
 {
+
 }
 
 //******************************

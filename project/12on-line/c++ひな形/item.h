@@ -60,6 +60,7 @@ private:
 	static LPDIRECT3DTEXTURE9 m_apTexture; // テクスチャ
 	CCollision*m_pCollision;    // コリジョンクラスのポインタ
 	ITEM m_type;				// アイテムの種類情報
+	int m_nCandy;				// キャンディの数
 };
 
 #endif

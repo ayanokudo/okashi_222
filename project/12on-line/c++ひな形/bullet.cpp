@@ -23,8 +23,8 @@
 // マクロ定義
 //*****************************
 #define BULLET_TEXTURE_PATH "./data/Textures/Catvoice_Barrett.png" //テクスチャのパス
-#define ENEMY_ESCOAT_DAMAGE 12					//攻撃ネズミの攻撃力
-#define PLAYER_BULLET_DAMAGE 50					//プレイヤーの攻撃力
+#define PLAYER_BULLET_DAMAGE 100				//プレイヤーの攻撃力
+
 //******************************
 // 静的メンバ変数宣言
 //******************************

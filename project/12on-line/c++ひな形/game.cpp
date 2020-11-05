@@ -93,7 +93,7 @@ HRESULT CGame::Init(void)
 	// エネミーの生成
 	m_pEnemy = CEnemy::Create(D3DXVECTOR3(0.0f, 0.0f, -800.0f), CEnemy::ENEMY_ESCORT);
 	// アイテムの生成
-	m_pItem = CItem::Create(D3DXVECTOR3(200.0f, 0.0f, -800.0f),CItem::KOBAN);
+	m_pItem = CItem::Create(D3DXVECTOR3(200.0f, 0.0f, -800.0f),CItem::CANDY);
 	// スコアの生成
 	m_pScore = CScore::Create();
 	// タイムの生成
@@ -122,7 +122,7 @@ HRESULT CGame::Init(void)
 	// ポーズの初期化
 	CManager::SetActivePause(false);
 
-	CBoss::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+	//CBoss::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 	return S_OK;
 }
 

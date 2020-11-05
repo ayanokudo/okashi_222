@@ -121,7 +121,7 @@ HRESULT CGame::Init(void)
 
 	// ƒ|[ƒY‚Ì‰Šú‰»
 	CManager::SetActivePause(false);
-	CCollect::Create();
+
 	CBoss::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 
 	CCollect::Create();

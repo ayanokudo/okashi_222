@@ -26,7 +26,8 @@ public:
 	CPolygon();
 	~CPolygon();
 	static CPolygon *Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size, const D3DXCOLOR col= D3DXCOLOR(1.0f,1.0f,1.0f,1.0f));
-
+	static HRESULT Load(void);
+	static void Unload(void);
 	HRESULT Init(const D3DXVECTOR3 pos, const D3DXVECTOR3 size, const D3DXCOLOR col);
 	void Uninit(void);
 	void Update(void);
@@ -37,7 +38,7 @@ public:
 private:
 
 	// メンバ変数
-	LPDIRECT3DTEXTURE9        m_pTexture;	 // テクスチャへのポインタ
+	LPDIRECT3DTEXTURE9 m_pTexture;	 // テクスチャへのポインタ
 	LPDIRECT3DVERTEXBUFFER9   m_pVtxBuff;	 // 頂点バッファへのポイン
 };
 

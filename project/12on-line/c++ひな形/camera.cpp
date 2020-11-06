@@ -21,7 +21,7 @@
 // マクロ定義
 //******************************
 #define CAMERA_DISTANCE 250    // カメラの距離
-#define CAMERA_LOCAL_POS D3DXVECTOR3(0.0f, 1500.0f, 1000.0f)
+#define CAMERA_LOCAL_POS D3DXVECTOR3(0.0f, 1500.0f, 500.0f)
 
 //******************************
 // 静的メンバ変数宣言

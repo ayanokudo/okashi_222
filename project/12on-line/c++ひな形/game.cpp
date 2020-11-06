@@ -28,6 +28,7 @@
 #include "time.h"
 #include "collect.h"
 #include "boss.h"
+#include "ui.h"
 #include "file.h"
 
 //=============================
@@ -47,6 +48,7 @@ CLight  *CGame::m_pLight  = NULL;	// ライトクラスのポインタ変数
 //=============================
 CGame::CGame()
 {
+	m_pUi[0] = NULL;
 }
 
 //=============================
@@ -99,34 +101,44 @@ HRESULT CGame::Init(void)
     // ボスの生成
     m_pBoss = CBoss::Create(D3DXVECTOR3(100.0f, 0.0f, -500.0f));
 	// アイテムの生成
-	m_pItem = CItem::Create(D3DXVECTOR3(200.0f, 0.0f, -800.0f),CItem::CANDY);
+	m_pItem = CItem::Create(D3DXVECTOR3(200.0f, 0.0f, -800.0f),CItem::LIFE);
 	// スコアの生成
 	m_pScore = CScore::Create();
 	// タイムの生成
 	m_pTime = CTime::Create();
 
-	
+	// アタックのUIの生成
+	m_pUi[0] = CUi::Create(D3DXVECTOR3(550.0f, 660.0f, 0.0f),
+		D3DXVECTOR3(45, 45, 0),
+		D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
+		CUi::UI_ATTACK_NAIL);
+
+	// ダッシュのUIの生成
+	m_pUi[1] = CUi::Create(D3DXVECTOR3(640.0f, 660.0f, 0.0f),
+		D3DXVECTOR3(45, 45, 0),
+		D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
+		CUi::UI_ATTACK_CRY);
+
+	// ダッシュのUIの生成
+	m_pUi[2] = CUi::Create(D3DXVECTOR3(730.0f, 660.0f, 0.0f),
+		D3DXVECTOR3(45, 45, 0),
+		D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
+		CUi::UI_DASH);
+
+	// アタックのUIの生成
+	m_pUi[3] = CUi::Create(D3DXVECTOR3(80.0f, 630.0f, 0.0f),
+		D3DXVECTOR3(60, 60, 0),
+		D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
+		CUi::UI_CHOCO);
+
+	// ダッシュのUIの生成
+	m_pUi[4] = CUi::Create(D3DXVECTOR3(1200.0f, 630.0f, 0.0f),
+		D3DXVECTOR3(60, 60, 0),
+		D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
+		CUi::UI_MILK);
+
     // ステージファイルの読み込み
     CFile::Read();
-
-	//// 床の生成
-	//CFloor::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(1000.0f, 0.0f, 1000.0f), CFloor::FLOOR_FLOORING);
-	//CFloor::Create(D3DXVECTOR3(0.0f, 0.0f, 2000.0f), D3DXVECTOR3(1000.0f, 0.0f, 1000.0f), CFloor::FLOOR_FLOORING);
-	//CFloor::Create(D3DXVECTOR3(0.0f, 0.0f, -2000.0f), D3DXVECTOR3(1000.0f, 0.0f, 1000.0f), CFloor::FLOOR_FLOORING);
-	//CFloor::Create(D3DXVECTOR3(-2000.0f, 0.0f, 2000.0f), D3DXVECTOR3(1000.0f, 0.0f, 1000.0f), CFloor::FLOOR_FLOORING);
-	//CFloor::Create(D3DXVECTOR3(2000.0f, 0.0f, -2000.0f), D3DXVECTOR3(1000.0f, 0.0f, 1000.0f), CFloor::FLOOR_FLOORING);
-	//CFloor::Create(D3DXVECTOR3(-2000.0f, 0.0f, -2000.0f), D3DXVECTOR3(1000.0f, 0.0f, 1000.0f), CFloor::FLOOR_FLOORING);
-	//CFloor::Create(D3DXVECTOR3(2000.0f, 0.0f, 2000.0f), D3DXVECTOR3(1000.0f, 0.0f, 1000.0f), CFloor::FLOOR_FLOORING);
-	//CFloor::Create(D3DXVECTOR3(-2000.0f, 0.0f, 0.0f), D3DXVECTOR3(1000.0f, 0.0f, 1000.0f), CFloor::FLOOR_FLOORING);
-	//CFloor::Create(D3DXVECTOR3(2000.0f, 0.0f, 0.0f), D3DXVECTOR3(1000.0f, 0.0f, 1000.0f), CFloor::FLOOR_FLOORING);
-
-	//// 壁の生成
-	//CWall::Create(D3DXVECTOR3(0.0f, 0.0f, 3000.0f), D3DXVECTOR3(1000.0f, 1000.0f, 0.0f), CWall::WALL_1);
-	//CWall::Create(D3DXVECTOR3(0.0f, 0.0f, -3000.0f), D3DXVECTOR3(1000.0f, 1000.0f, 0.0f), CWall::WALL_1);
-	//CWall::Create(D3DXVECTOR3(2000.0f, 0.0f, 3000.0f), D3DXVECTOR3(1000.0f, 1000.0f, 0.0f), CWall::WALL_1);
-	//CWall::Create(D3DXVECTOR3(2000.0f, 0.0f, -3000.0f), D3DXVECTOR3(1000.0f, 1000.0f, 0.0f), CWall::WALL_1);
-	//CWall::Create(D3DXVECTOR3(-2000.0f, 0.0f, 3000.0f), D3DXVECTOR3(1000.0f, 1000.0f, 0.0f), CWall::WALL_1);
-	//CWall::Create(D3DXVECTOR3(-2000.0f, 0.0f, -3000.0f), D3DXVECTOR3(1000.0f, 1000.0f, 0.0f), CWall::WALL_1);
 
 	// ポーズの初期化
 	CManager::SetActivePause(false);
@@ -151,6 +163,15 @@ void CGame::Uninit(void)
 		m_pLight->Uninit();
 		delete m_pLight;
 		m_pLight = NULL;
+	}
+	for (int nCount = 0; nCount <= 4; nCount++)
+	{
+		if (m_pUi != NULL)
+		{
+			m_pUi[nCount]->Uninit();
+			delete m_pUi[nCount];
+			m_pUi[nCount] = NULL;
+		}
 	}
 
 	// 開放処理
@@ -182,5 +203,12 @@ void CGame::Draw(void)
 	if (m_pCamera != NULL)
 	{
 		m_pCamera->SetCamera();
+	}
+	for (int nCount = 0; nCount <= 4; nCount++)
+	{
+		if (m_pUi != NULL)
+		{
+			m_pUi[nCount]->Draw();
+		}
 	}
 }

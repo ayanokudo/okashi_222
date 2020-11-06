@@ -127,6 +127,9 @@
     <ClCompile Include="collect.cpp">
       <Filter>ソースファイル</Filter>
     </ClCompile>
+    <ClCompile Include="life.cpp">
+      <Filter>ソースファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bg.h">
@@ -253,6 +256,9 @@
       <Filter>ヘッダーファイル</Filter>
     </ClInclude>
     <ClInclude Include="collect.h">
+      <Filter>ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="life.h">
       <Filter>ヘッダーファイル</Filter>
     </ClInclude>
   </ItemGroup>

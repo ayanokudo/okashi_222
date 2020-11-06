@@ -60,6 +60,7 @@ private:
 	CCollision*m_pCollision;    // コリジョンクラスのポインタ
 	ITEM m_type;				// アイテムの種類情報
 	int m_nCandy;				// キャンディの数
+	float m_fRotYDist;
 };
 
 #endif

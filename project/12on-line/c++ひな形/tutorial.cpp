@@ -122,7 +122,7 @@ void CTutorial::Update(void)
 		m_nNumTutorial++;
 		if (m_nNumTutorial >= TUTORIAL_NUM)
 		{
-			CManager::GetFade()->SetFade(CManager::MODE_GAME);
+			CManager::GetFade()->SetFade(CManager::MODE_TITLE);
 		}
 		else
 		{

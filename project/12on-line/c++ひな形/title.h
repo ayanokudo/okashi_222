@@ -55,6 +55,7 @@ private:
 	CPolygon *m_apPolygon[MENU_MAX];
 	CUi* m_pUi;
 	int m_nMenu;
+	bool m_bStick;
 
 };
 

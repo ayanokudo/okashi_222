@@ -45,6 +45,7 @@ CItem::CItem() :CModel(OBJTYPE_PLAYER)
 	m_pCollision = NULL;
 	m_type = CANDY;
 	m_nCandy = 0;
+	m_fRotYDist = 0.0f;
 }
 
 //******************************
@@ -187,6 +188,8 @@ void CItem::Update(void)
 	// “–‚½‚è”»’è‚ÌˆÊ’uXV
 	m_pCollision->SetPos(GetPos());
 
+	Direction();
+
 	CollisionItem();
 }
 
@@ -196,6 +199,24 @@ void CItem::Update(void)
 void CItem::Draw(void)
 {
 	CModel::Draw();
+}
+
+//******************************
+// Œü‚«
+//******************************
+void CItem::Direction(void)
+{
+	//int nCount = 0;
+	//nCount++;
+	//if (nCount <= 360)
+	//{
+	//	// Œü‚«‚ÌÝ’è
+	//	m_fRotYDist = D3DXToRadian(nCount);
+	//}
+	//else
+	//{
+	//	nCount = 0;
+	//}
 }
 
 //******************************

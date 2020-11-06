@@ -19,7 +19,7 @@
 #include "fade.h"
 #include "sound.h"
 #include "ui.h"
-
+#include "player.h"
 //**********************************
 // 静的メンバ変数宣言
 //**********************************
@@ -28,20 +28,21 @@ LPDIRECT3DTEXTURE9 CTitle::m_apTexture[MENU_MAX] = {};
 //**********************************
 // マクロ定義
 //**********************************
-#define  EXIT_TEXTURE_PATH "./data/Textures/title00.png" // テクスチャ
-#define  START_TEXTURE_PATH "./data/Textures/title00.png" // テクスチャ
-#define  TUTORIAL_TEXTURE_PATH "./data/Textures/title00.png" // テクスチャ
+#define  TITLE_TEXTURE_PATH "./data/Textures/Title.png"			// テクスチャ
+#define  EXIT_TEXTURE_PATH "./data/Textures/Out_button.png"			// テクスチャ
+#define  START_TEXTURE_PATH "./data/Textures/Play_button.png"		// テクスチャ
+#define  TUTORIAL_TEXTURE_PATH "./data/Textures/Tutorial_button.png" // テクスチャ
 
-#define BACK_SIZE D3DXVECTOR3(200.0f,180.0f,0.0f)                  // 背面サイズ
-#define BACK_POS D3DXVECTOR3(SCREEN_WIDTH/2,SCREEN_HEIGHT/2,0.0f) // 背面座標
+#define BACK_SIZE D3DXVECTOR3(200.0f,180.0f,0.0f)					// 背面サイズ
+#define BACK_POS D3DXVECTOR3(SCREEN_WIDTH/2,SCREEN_HEIGHT/2,0.0f)	// 背面座標
 
-#define STRING_SIZE D3DXVECTOR3(120.0f,50.0f,0.0f)                                  // 文字列
-#define TUTORIAL_POS  D3DXVECTOR3(150.0f,600.0f,0.0f) // 続ける
-#define START_POS D3DXVECTOR3(640.0f, 600.0f,0.0f)                        // リスタート
-#define EXIT_POS   	D3DXVECTOR3(1150.0f,600.0f,0.0f) // 終了
+#define STRING_SIZE D3DXVECTOR3(170.0f,100.0f,0.0f)					// 文字列
+#define EXIT_POS  D3DXVECTOR3(180.0f,580.0f,0.0f)					// 続ける
+#define START_POS D3DXVECTOR3(645.0f, 580.0f,0.0f)                  // リスタート
+#define TUTORIAL_POS   	D3DXVECTOR3(1100.0f,580.0f,0.0f)			// 終了
 
-#define MENU_ENTER_COL D3DXCOLOR(0.0f, 1.0f, 1.0f, 1.0f)     // 選んでるメニューの色
-#define MENU_NOT_ENTER_COL D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f) // 選んでないメニューの色
+#define MENU_ENTER_COL D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f)			// 選んでるメニューの色
+#define MENU_NOT_ENTER_COL D3DXCOLOR(0.4f, 0.4f, 0.4f, 1.0f)		// 選んでないメニューの色
 
 //=============================
 // コンストラクタ
@@ -50,7 +51,8 @@ CTitle::CTitle()
 {
 	memset(&m_apPolygon, 0, sizeof(m_apPolygon));
 	m_pUi = NULL;
-	m_nMenu = BG;
+	m_nMenu = START;
+	m_bStick = false;
 }
 
 //=============================
@@ -85,9 +87,10 @@ HRESULT CTitle::Load(void)
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
 
 	//テクスチャの読み込み
-	D3DXCreateTextureFromFile(pDevice, "data/Textures/Voice.png", &m_apTexture[EXIT]);
-	D3DXCreateTextureFromFile(pDevice, "data/Textures/Voice.png", &m_apTexture[START]);
-	D3DXCreateTextureFromFile(pDevice, "data/Textures/Voice.png", &m_apTexture[TUTORIAL]);
+	D3DXCreateTextureFromFile(pDevice, TITLE_TEXTURE_PATH, &m_apTexture[BG]);
+	D3DXCreateTextureFromFile(pDevice, EXIT_TEXTURE_PATH, &m_apTexture[EXIT]);
+	D3DXCreateTextureFromFile(pDevice, START_TEXTURE_PATH, &m_apTexture[START]);
+	D3DXCreateTextureFromFile(pDevice, TUTORIAL_TEXTURE_PATH, &m_apTexture[TUTORIAL]);
 
 	return S_OK;
 }
@@ -116,6 +119,7 @@ HRESULT CTitle::Init(void)
 	m_apPolygon[BG] = CPolygon::Create(D3DXVECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0.0f),
 		D3DXVECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0.0f),
 		D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+	m_apPolygon[BG]->SetTexture(m_apTexture[BG]);
 
 	//タイムの文字表示
 	m_pUi = CUi::Create(D3DXVECTOR3(650.0f, 200.0f, 0.0f),
@@ -123,15 +127,15 @@ HRESULT CTitle::Init(void)
 		D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
 		CUi::UI_TITLE);
 
-	// 再開のやつ
+	// EXITのやつ
 	m_apPolygon[EXIT] = CPolygon::Create(EXIT_POS, STRING_SIZE);
 	m_apPolygon[EXIT]->SetTexture(m_apTexture[EXIT]);
-	// リスタートのやつ
+	// スタートのやつ
 	m_apPolygon[START] = CPolygon::Create(START_POS, STRING_SIZE);
 	m_apPolygon[START]->SetTexture(m_apTexture[START]);
-	// EXITのやつ
+	// Tutorialのやつ
 	m_apPolygon[TUTORIAL] = CPolygon::Create(TUTORIAL_POS, STRING_SIZE);
-	m_apPolygon[TUTORIAL]->SetTexture(m_apTexture[EXIT]);
+	m_apPolygon[TUTORIAL]->SetTexture(m_apTexture[TUTORIAL]);
 	
 	return S_OK;
 }
@@ -141,15 +145,6 @@ HRESULT CTitle::Init(void)
 //=============================
 void CTitle::Uninit(void)
 {
-	for (int nCntTex = 0; nCntTex < MENU_MAX; nCntTex++)
-	{
-		// テクスチャの解放
-		if (m_apTexture[nCntTex] != NULL)
-		{
-			m_apTexture[nCntTex]->Release();
-			m_apTexture[nCntTex] = NULL;
-		}
-	}
 	for (int nCntTex = 0; nCntTex < MENU_MAX; nCntTex++)
 	{
 		if (m_apPolygon[nCntTex] != NULL)
@@ -183,6 +178,7 @@ void CTitle::Uninit(void)
 //=============================
 void CTitle::Update(void)
 {
+	
 	m_pUi->Update();
 	// 選んでるメニューで色分け
 	for (int nCntMenu = EXIT; nCntMenu < MENU_MAX; nCntMenu++)
@@ -197,16 +193,32 @@ void CTitle::Update(void)
 		}
 	}
 
+	DIJOYSTATE js[MAX_PLAYER] ={ CManager::GetJoypad()->GetStick(0), CManager::GetJoypad()->GetStick(1) };
 	// メニュー操作
-	if (CManager::GetKeyboard()->GetKeyTrigger(DIK_A) || CManager::GetKeyboard()->GetKeyTrigger(DIK_LEFT))
-	{// ↑
-		m_nMenu--;
+	if (CManager::GetKeyboard()->GetKeyTrigger(DIK_A) ||
+		CManager::GetKeyboard()->GetKeyTrigger(DIK_LEFT) ||
+		js[0].lX <= -100 || js[1].lX <= -100)
+	{// ←
+		if (!m_bStick)
+		{
+			m_nMenu--;
+			m_bStick = true;
+		}
 	}
-	else if (CManager::GetKeyboard()->GetKeyTrigger(DIK_D) || CManager::GetKeyboard()->GetKeyTrigger(DIK_RIGHT))
-	{// ↓
-		m_nMenu++;
+	else if (CManager::GetKeyboard()->GetKeyTrigger(DIK_D) ||
+		CManager::GetKeyboard()->GetKeyTrigger(DIK_RIGHT) ||
+		js[0].lX >= 100 || js[1].lX >= 100)
+	{// →
+		if (!m_bStick)
+		{
+			m_nMenu++;
+			m_bStick = true;
+		}
 	}
-
+	else
+	{
+		m_bStick = false;
+	}
 	// 範囲外に行かないように
 	if (m_nMenu > TUTORIAL)
 	{
@@ -219,7 +231,8 @@ void CTitle::Update(void)
 
 	if (CManager::GetKeyboard()->GetKeyTrigger(DIK_RETURN) || 
 		CManager::GetMouse()->GetMouseTrigger(0) || 
-		CManager::GetJoypad()->GetJoystickTrigger(3, 0))
+		CManager::GetJoypad()->GetJoystickTrigger(3, 0)|| 
+		CManager::GetJoypad()->GetJoystickTrigger(3, 1))
 	{
 		switch (m_nMenu)
 		{

@@ -21,6 +21,7 @@ public:
     static void Read(void);
     static void Writing(void);
 
-    static void ObjctWriting(FILE *pFile, CScene::OBJTYPE tye);
+    static void ObjctWriting(FILE *pFile, CScene::OBJTYPE type);
+    static int GetObjectType(CScene* pScene);
 };
 #endif // !_FILE_H_

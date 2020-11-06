@@ -55,6 +55,9 @@ public:
 
    void ChangeObject(void);
 
+   // オブジェクトの種類変更
+   void ChangeType(void);
+
     // オブジェクトの削除
     void DeleteObject(void);
 

@@ -16,6 +16,14 @@
 class CEnemy : public CModel
 {
 public:
+    // 敵の種類
+    typedef enum
+    {
+        ENEMY_CARRIER = 0,		//お菓子運んでる敵
+        ENEMY_ESCORT,			//BOSS守ってる敵
+        ENEMY_MAX,
+    }ENEMY;
+
     // メンバ関数
     CEnemy();
     ~CEnemy();
@@ -28,8 +36,15 @@ public:
     void Update(void);
     void Draw(void);
 
+    void ChangeType(void);
+
+    // タイプのセッタ/ゲッタ
+    void SetType(ENEMY type) { m_type = type; }
+    ENEMY GetType(void) { return m_type; }
+    
 private:
     // メンバ変数
+    ENEMY m_type;       // タイプ
     static LPD3DXMESH m_pMeshModel;	//メッシュ情報へのポインタ
     static LPD3DXBUFFER m_pBuffMatModel;	//マテリアル情報へのポインタ
     static DWORD m_nNumMatModel;	//マテリアル情報の数

@@ -7,11 +7,12 @@
 #include "enemy.h"
 #include "manager.h"
 #include "renderer.h"
+#include "keyboard.h"
 
 //*****************************************************************************
 // マクロ定義
 //*****************************************************************************
-#define MODEL_PATH "./data/Models/test000.x"    //モデルのパス
+#define MODEL_PATH "./data/Models/Mouse_jouhanshin.x"    //モデルのパス
 
 //*****************************************************************************
 // 静的メンバ変数宣言
@@ -25,7 +26,7 @@ DWORD        CEnemy::m_nNumMatModel = 0;	    //マテリアル情報の数
 //=============================================================================
 CEnemy::CEnemy() : CModel(OBJTYPE_ENEMY)
 {
-
+    m_type = ENEMY::ENEMY_CARRIER;
 }
 
 //=============================================================================
@@ -125,6 +126,28 @@ void CEnemy::Uninit(void)
 void CEnemy::Update(void)
 {
     CModel::Update();
+
+    D3DXMATERIAL*pMat;  	//マテリアルデータへのポインタ
+
+    //マテリアルデータへのポインタを取得
+    pMat = (D3DXMATERIAL*)m_pBuffMatModel->GetBufferPointer();
+
+    for (int nCntMat = 0; nCntMat < (int)m_nNumMatModel; nCntMat++)
+    {
+        switch (m_type)
+        {
+        case ENEMY_CARRIER:
+            //マテリアルのアンビエントにディフューズカラーを設定
+            pMat[nCntMat].MatD3D.Diffuse = { 0,0,255,255 };
+            break;
+        case ENEMY_ESCORT:
+            //マテリアルのアンビエントにディフューズカラーを設定
+            pMat[nCntMat].MatD3D.Diffuse = { 255,0,0,255 };
+            break;
+
+        }
+    }
+
 }
 
 //=============================================================================
@@ -133,4 +156,35 @@ void CEnemy::Update(void)
 void CEnemy::Draw(void)
 {
     CModel::Draw();
+}
+
+
+//=============================================================================
+// [ChangeType] 種類の変更
+//=============================================================================
+void CEnemy::ChangeType(void)
+{
+    int nType=m_type;
+    
+    if (CManager::GetKeyboard()->GetKeyTrigger(DIK_3))
+    {
+        nType -= 1;
+    }
+    if (CManager::GetKeyboard()->GetKeyTrigger(DIK_4))
+    {
+        nType += 1;
+    }
+
+    // 最大値以上/最小値以下になったらループ
+    if (nType >= ENEMY_MAX)
+    {
+        nType = ENEMY_CARRIER;
+    }
+    if (nType < ENEMY_CARRIER)
+    {
+        nType = ENEMY_MAX - 1;
+    }
+
+    // 種類を反映
+    SetType((ENEMY)nType);
 }

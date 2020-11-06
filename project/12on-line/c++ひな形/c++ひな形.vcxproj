@@ -149,6 +149,7 @@
   <ItemGroup>
     <ClCompile Include="collect.cpp" />
     <ClCompile Include="life.cpp" />
+    <ClCompile Include="file.cpp" />
     <ClCompile Include="motion.cpp" />
     <ClCompile Include="bg.cpp" />
     <ClCompile Include="billboard.cpp" />
@@ -191,6 +192,7 @@
     <ClCompile Include="wall.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="file.h" />
     <ClInclude Include="collect.h" />
     <ClInclude Include="life.h" />
     <ClInclude Include="motion.h" />

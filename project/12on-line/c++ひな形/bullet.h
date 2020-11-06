@@ -52,6 +52,7 @@ public:
 	void Uninit(void);
 	void Update(void);
 	void Draw(void);
+	CCollision* GetCollision(void) { return m_pCollision; }
 	
 private:
 	void CollisionBullet(BULLETUSER user);

@@ -41,7 +41,7 @@ CFloor::~CFloor()
 //==================================
 // ¶¬ˆ—
 //==================================
-CFloor * CFloor::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size, FLOOR type)
+CFloor * CFloor::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 rot, const D3DXVECTOR3 size, FLOOR type)
 {
 	//CFloor‚Ìƒ|ƒCƒ“ƒ^ì¬
 	CFloor *pFloor;
@@ -54,6 +54,7 @@ CFloor * CFloor::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size, FLOOR typ
 		pFloor->Init();
 		pFloor->m_type = type;
 		pFloor->SetPos(pos);
+        pFloor->SetRot(rot);
 		pFloor->SetSize(size);
 		pFloor->SetObjType(OBJTYPE_FLOOR);
 	}

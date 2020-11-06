@@ -39,7 +39,7 @@ public:
 	//メンバ関数
 	CWall();
 	~CWall();
-	static CWall * Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size, WALL type);
+	static CWall * Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 rot, const D3DXVECTOR3 size, WALL type);
 	static HRESULT Load(void);
 	static void Unload(void);
 	HRESULT Init(void);
@@ -51,13 +51,15 @@ public:
 private:
 	void CollisionPlayer(void);
 	void CollisionEnemy(void);
+	void CollisionBullet(void);
 
 	// メンバ変数
 	static LPDIRECT3DTEXTURE9 m_apTexture[WALL_MAX];//テクスチャ
 	WALL m_type;
-	D3DXVECTOR3 m_pos;
+	D3DXVECTOR3 m_pos;      // 位置
+    D3DXVECTOR3 m_rot;      // 角度
 	D3DXVECTOR3 m_posold;
-	D3DXVECTOR3 m_size;
+	D3DXVECTOR3 m_size;     // サイズ
 	CCollision *m_pCollision;
 };
 

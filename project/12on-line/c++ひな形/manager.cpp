@@ -35,6 +35,7 @@
 #include "wall.h"
 #include "bullet.h"
 #include "enemy.h"
+#include "boss.h"
 #include "item.h"
 #include "debug_log.h"
 #include "scratch.h"
@@ -140,6 +141,7 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, bool bWindow)
 	CWall::Load();		// 壁
 	CBullet::Load();    // 弾
 	CEnemy::Load();		// 敵
+    CBoss::Load();      // ボス
 	CItem::Load();		// アイテム
 	CScratch::Load();	// ひっかき
 	CUi::Load();		// ui
@@ -168,6 +170,7 @@ void CManager::Uninit(void)
 	CBullet::Unload();   // 弾
 	CWall::Unload();	 //	壁
 	CEnemy::Unload();	 // 敵
+    CBoss::Unload();     // ボス
 	CItem::Unload();	 //	アイテム
 	CScratch::Unload();  // ひっかき
 	CUi::Unload();		 // ui

@@ -8,6 +8,7 @@
 #define _FILE_H_
 #include "main.h"
 #include "scene.h"
+#include "model.h"
 
 //*****************************************************************************
 // ƒNƒ‰ƒX’è‹`
@@ -19,8 +20,8 @@ public:
     ~CFile();
 
     static void Read(void);
-    static void Writing(void);
 
-    static void ObjctWriting(FILE *pFile, CScene::OBJTYPE tye);
+private:
+    static void SetObject(D3DXVECTOR3 pos, D3DXVECTOR3 rot, CModel::OBJTYPE type);
 };
 #endif // !_FILE_H_

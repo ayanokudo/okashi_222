@@ -14,6 +14,8 @@
 #include "game.h"
 #include "player.h"
 #include "enemy.h"
+#include "bullet.h"
+
 //*****************************
 // マクロ定義
 //*****************************
@@ -47,7 +49,7 @@ CWall::~CWall()
 //==================================
 // 生成処理
 //==================================
-CWall * CWall::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size, WALL type)
+CWall * CWall::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 rot, const D3DXVECTOR3 size, WALL type)
 {
 	//インスタンスを生成
 	CWall *pWall = new CWall;
@@ -56,10 +58,12 @@ CWall * CWall::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size, WALL type)
 	{
 		//それぞれの初期化処理
 		pWall->m_pos = pos;
+        pWall->m_rot = rot;
 		pWall->m_size = size;
 		pWall->Init();
 		pWall->m_type = type;
 		pWall->SetPos(pos);
+        pWall->SetRot(rot);
 		pWall->SetSize(size);
 		pWall->SetObjType(OBJTYPE_WALL);
 	}
@@ -108,8 +112,19 @@ HRESULT CWall::Init(void)
 	CScene3d::BindTexture(m_apTexture[m_type]);
 	// 壁よりちょっと大きめに当たり判定をとる
 	D3DXVECTOR3 collisionSize = m_size + D3DXVECTOR3(5.0f, 5.0f, 5.0f);
-	// 当たり判定の生成
-	m_pCollision = CCollision::CreateBox(m_pos , collisionSize *2);
+	if (m_rot.y == 0)
+	{
+		// 当たり判定の生成
+		m_pCollision = CCollision::CreateBox(m_pos, collisionSize * 2);
+	}
+	else
+	{
+		float fSize = collisionSize.x;
+		collisionSize.x = collisionSize.z;
+		collisionSize.z = fSize;
+		// 当たり判定の生成
+		m_pCollision = CCollision::CreateBox(m_pos, collisionSize * 2);
+	}
 	return S_OK;
 }
 
@@ -126,9 +141,10 @@ void CWall::Uninit(void)
 //==================================
 void CWall::Update(void)
 {
-	//プレイヤーとエネミーのCollisionを呼び出す
-	CollisionPlayer();
-	CollisionEnemy();
+	// 当たり判定
+	CollisionPlayer(); // プレイヤー
+	CollisionEnemy();  // エネミー
+	CollisionBullet(); // 弾
 }
 
 //==================================
@@ -212,6 +228,33 @@ void CWall::CollisionEnemy(void)
 			pEnemy->GetCollision()->SetPos(playerPos);
 		}
 		pEnemy = (CEnemy*)pEnemy->GetNext();
+	}
+
+}
+
+//==================================
+// 弾と壁の当たり判定
+//==================================
+void CWall::CollisionBullet(void)
+{
+	CBullet*pBullet = (CBullet*)CScene::GetTop(OBJTYPE_BULLET);
+	while (pBullet != NULL)
+	{
+		// 元の半径を保持
+		float fRadius = pBullet->GetCollision()->GetCollisionRadius();
+		// 半径を半分にする
+		pBullet->GetCollision()->SetCollisionRadius(fRadius / 2);
+		if (CCollision::CollisionSphereToBox(pBullet->GetCollision(), m_pCollision))
+		{
+			// プレイヤーのコリジョンの座標のセット
+			pBullet->Uninit();
+		}
+		else
+		{
+			// 元の半径に戻す
+			pBullet->GetCollision()->SetCollisionRadius(fRadius);
+		}
+		pBullet = (CBullet*)pBullet->GetNext();
 	}
 
 }

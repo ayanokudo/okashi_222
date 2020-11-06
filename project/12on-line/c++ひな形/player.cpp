@@ -20,7 +20,7 @@
 #include "scratch.h"
 #include "model_hierarchy.h"
 #include "motion.h"
-#include "ui.h"
+#include "life.h"
 
 //*****************************
 // マクロ定義
@@ -72,7 +72,7 @@ CPlayer::CPlayer() :CModelHierarchy(OBJTYPE_PLAYER)
 	m_motionState = WAIT;
 	m_nSpeed = 0;
 	m_bMotion = false;
-	m_pUi[1] = NULL;
+	memset(&m_pLife, 0, sizeof(m_pLife));
 	m_nLife = 0;
 	m_bKeyboardMove = false;
 }
@@ -256,23 +256,23 @@ HRESULT CPlayer::Init(void)
 	// モーション状態の初期化
 	SetMotion(WAIT);
 
-	// アタックのUIの生成
-	m_pUi[0] = CUi::Create(D3DXVECTOR3(550.0f, 660.0f, 0.0f),
-		D3DXVECTOR3(45, 45, 0),
-		D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
-		CUi::UI_ATTACK_NAIL);
 
-	// ダッシュのUIの生成
-	m_pUi[1] = CUi::Create(D3DXVECTOR3(640.0f, 660.0f, 0.0f),
-		D3DXVECTOR3(45, 45, 0),
-		D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
-		CUi::UI_ATTACK_CRY);
-
-	// ダッシュのUIの生成
-	m_pUi[2] = CUi::Create(D3DXVECTOR3(730.0f, 660.0f, 0.0f),
-		D3DXVECTOR3(45, 45, 0),
-		D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
-		CUi::UI_DASH);
+	//プレイヤー１のライフ表示
+	if (m_nPlayerNum == 0)
+	{
+		for (int nCount = 0; nCount < PLAYER_LIFE; nCount++)
+		{
+			m_pLife[nCount] = CLife::Create(D3DXVECTOR3(160 + nCount * LIFE_SIZE.x * 2, 660.0f, 0.0f));
+		}
+	}
+	//プレイヤー2のライフ表示
+	else
+	{
+		for (int nCount = 0; nCount < PLAYER_LIFE; nCount++)
+		{
+			m_pLife[nCount] = CLife::Create(D3DXVECTOR3(1120 - nCount * LIFE_SIZE.x * 2, 660.0f, 0.0f));
+		}
+	}
 
 	// 当たり判定の生成
 	m_pCollision = CCollision::CreateSphere(GetPos(), PLAYER_RADIUS);
@@ -292,16 +292,17 @@ void CPlayer::Uninit(void)
     if (m_pCollision != NULL)
     {
         m_pCollision->Uninit();
-    }
-	for (int nCount = 0; nCount <= 2; nCount++)
-	{
-		if (m_pUi != NULL)
-		{
-			m_pUi[nCount]->Uninit();
-			delete m_pUi[nCount];
-			m_pUi[nCount] = NULL;
-		}
+    
 	}
+	/*for (int nCount = 0; nCount <= PLAYER_LIFE; nCount++)
+	{
+		if (m_pLife[nCount] != NULL)
+		{
+			m_pLife[nCount]->Uninit();
+			delete m_pLife[nCount];
+			m_pLife[nCount] = NULL;
+		}
+	}*/
 
     CModelHierarchy::Uninit();
 }
@@ -313,13 +314,6 @@ void CPlayer::Update(void)
 {
 	// 目標値の初期化
 	m_moveDest = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-	for (int nCount = 0; nCount <= 2; nCount++)
-	{
-		if (m_pUi != NULL)
-		{
-			m_pUi[nCount]->Update();
-		}
-	}
 
 	if (!m_bMotion)
 	{// 攻撃中じゃないとき
@@ -368,11 +362,11 @@ void CPlayer::Update(void)
 void CPlayer::Draw(void)
 {
     CModelHierarchy::Draw();
-	for (int nCount = 0; nCount <= 2; nCount++)
+	for (int nCount = 0; nCount < m_nLife; nCount++)
 	{
-		if (m_pUi != NULL)
+		if (m_pLife[nCount] != NULL)
 		{
-			m_pUi[nCount]->Draw();
+			m_pLife[nCount]->Draw();
 		}
 	}
 }
@@ -635,9 +629,19 @@ void CPlayer::Attack(void)
 //******************************
 // 体力設定
 //******************************
-void CPlayer::Life(void)
+void CPlayer::Life(int nLife)
 {
-
+	//ライフが最大値以下だった場合
+	if (m_nLife <= PLAYER_LIFE)
+	{
+		m_nLife += nLife;
+		//超えてしまった場合
+		if (m_nLife >= PLAYER_LIFE)
+		{
+			//マックスを代入
+			m_nLife = PLAYER_LIFE;
+		}
+	}
 }
 
 //******************************

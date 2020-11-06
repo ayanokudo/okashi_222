@@ -25,7 +25,7 @@
 #define SCRATCH_TEXTURE_PATH_PLAYER "./data/Textures/scratch.png" //テクスチャのパス
 #define SCRATCH_TEXTURE_PATH_ENEMY  "./data/Textures/Enemy_Attack.png" //テクスチャのパス
 #define SCRATCH_COLOR D3DXCOLOR(1.0f,1.0f,0.3f,1.0f)       // アニメーション速度
-#define SCRATCH_ANIM_SPEED 4                               // アニメーション速度
+#define SCRATCH_ANIM_SPEED 2                               // アニメーション速度
 #define SCRATCH_MAX_ANIMATION_X 5                          // アニメーション数 横
 #define SCRATCH_MAX_ANIMATION_Y 2                          // アニメーション数 縦
 #define SCRATCH_ANIM_PATTERN 10                            // アニメーションのパターン数

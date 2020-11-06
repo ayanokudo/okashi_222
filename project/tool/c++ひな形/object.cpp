@@ -156,8 +156,12 @@ void CObject::Update(void)
     {
         DeleteObject();
     }
+
     // オブジェクトの回転
     Rotation();
+    // オブジェクトのタイプ変更
+    ChangeType();
+
     // 当たり判定の位置更新
     m_pCollision->SetPos(GetPos());
 }
@@ -193,7 +197,7 @@ CModel::OBJTYPE CObject::changeType(void)
     case MODEL_FLOOR:
         type = OBJTYPE_FLOOR;
         break;
-        
+
     }
 
     return type;
@@ -273,6 +277,44 @@ void CObject::ChangeObject(void)
     }
 
     m_type = (MODEL)nModel;
+}
+
+//=============================================================================
+// [ChangeType] オブジェクトのタイプ変更
+//=============================================================================
+void CObject::ChangeType(void)
+{
+    // 配置したオブジェクトと当たっているか調べる
+    for (int nCount = 0; nCount < PRIORITY_NUM; nCount++)
+    {
+        // 先頭のアドレスを取得
+        CScene *pScene = CScene::GetTop(nCount);
+        while (pScene != NULL)
+        {
+            // 次のアドレスを保存
+            CScene *pNext = pScene->GetNext();
+
+            if (pScene != m_pPlayer&&
+                pScene->GetType() == OBJTYPE_ENEMY ||
+                pScene->GetType() == OBJTYPE_WALL ||
+                pScene->GetType() == OBJTYPE_FLOOR)
+            {
+                // カーソルが当たっていたら
+                if (CCollision::CollisionSphere(m_pCollision, ((CModel*)pScene)->GetCollision()))
+                {
+                    switch (pScene->GetType())
+                    {
+                    case OBJTYPE_ENEMY:
+                        ((CEnemy*)pScene)->CEnemy::ChangeType();
+                        break;
+                    }
+                    return;
+                }
+            }
+            // 次のアドレスを取得
+            pScene = pNext;
+        }
+    }
 }
 
 //=============================================================================

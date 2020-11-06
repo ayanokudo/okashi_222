@@ -23,8 +23,8 @@
 //*****************************
 // マクロ定義
 //*****************************
-#define ENEMY_CARRIER_MODEL_PATH	"./data/Texts/MouseData.txt"	//運びネズミのモデル情報
-#define ENEMY_ESCORT_MODEL_PATH		"./data/Texts/MouseData.txt"	//守りネズミのモデル情報
+#define ENEMY_CARRIER_MODEL_PATH	"./data/Texts/MouseData_Red.txt"	//運びネズミのモデル情報
+#define ENEMY_ESCORT_MODEL_PATH		"./data/Texts/MouseData_Bule.txt"	//守りネズミのモデル情報
 
 #define WALK_ANIM_PATH  "data/Texts/nezumi_walk.txt"      // 歩きアニメーションのパス
 
@@ -41,7 +41,7 @@
 //*****************************
 // 静的メンバ変数宣言
 //*****************************
-CModel::Model CEnemy::m_model[MAX_PLAYER][MAX_PARTS_NUM] = {};
+CModel::Model CEnemy::m_model[ENEMY_MAX][MAX_PARTS_NUM] = {};
 int CEnemy::m_nNumModel = 0;
 char CEnemy::m_achAnimPath[MOTION_MAX][64]
 {
@@ -408,8 +408,8 @@ void CEnemy::RangeDecisionEscort(void)
 					//等間隔で打つ
 					if (m_nCount == 50)
 					{
-						// 弾の生成
-						CScratch::Create(enemyPos, m_fRotYDist, CScratch::SCRATCHUSER_ENEMY, -1);
+						// 攻撃の生成
+						CScratch::Create(enemyPos, m_fRotYDist + D3DXToRadian(90), CScratch::SCRATCHUSER_ENEMY, -1);
 						m_nCount = 0;
 					}
 					//弾の向きの設定

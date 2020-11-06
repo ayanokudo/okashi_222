@@ -47,6 +47,7 @@ private:
 	D3DXMATRIX  m_mtxProjection;//プロジェクションマトリックス
 	D3DXMATRIX  m_mtxView;//ビューマトリックス
 	float m_fViewExtent; // 視野角の拡縮用
+	int m_nCntPlayerDeath;// プレイヤーの片方が死んでから一定カウント挙動を変える
 #ifdef _DEBUG
 	// 球面座標
 	float m_fRad;   // 目標からの距離

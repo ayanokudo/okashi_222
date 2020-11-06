@@ -277,18 +277,21 @@ void CItem::CollisionItem(void)
 		//プレイヤーの情報を取得
 		for (int nCount = 0; nCount < MAX_PLAYER; nCount++)
 		{
-			CPlayer*pPlayer = CGame::GetPlayer(nCount);
-
-			if (pPlayer != NULL)
+			if (!CPlayer::GetDeath(nCount))
 			{
-				//プレイヤーの位置情報を取得
-				D3DXVECTOR3 playerPos = pPlayer->GetPos();
-				//プレイヤーと敵の範囲の当たり判定
-				if (CCollision::CollisionSphere(m_pCollision, pPlayer->GetCollision()))
+				CPlayer*pPlayer = CGame::GetPlayer(nCount);
+
+				if (pPlayer != NULL)
 				{
-					Life();
-					Uninit();
-					break;
+					//プレイヤーの位置情報を取得
+					D3DXVECTOR3 playerPos = pPlayer->GetPos();
+					//プレイヤーと敵の範囲の当たり判定
+					if (CCollision::CollisionSphere(m_pCollision, pPlayer->GetCollision()))
+					{
+						Life();
+						Uninit();
+						break;
+					}
 				}
 			}
 		}

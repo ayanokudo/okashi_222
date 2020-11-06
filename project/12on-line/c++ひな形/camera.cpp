@@ -21,8 +21,9 @@
 // マクロ定義
 //******************************
 #define CAMERA_DISTANCE 250    // カメラの距離
-#define CAMERA_LOCAL_POS D3DXVECTOR3(0.0f, 1500.0f, 500.0f)
-
+#define CAMERA_LOCAL_POS D3DXVECTOR3(0.0f, 1500.0f, 500.0f) // 注視点からのローカル座標
+#define CAMERA_LOOK_RATE 0.5f  // 注視点を少しずつ変えるときの係数
+#define PLAYER_DEATH_COUNT 40  // プレイヤーが死んでから生きてるプレイヤーの方に少しずつ注視点を変える用
 //******************************
 // 静的メンバ変数宣言
 //******************************
@@ -40,6 +41,7 @@ CCamera::CCamera()
 	D3DXMatrixIdentity(&m_mtxProjection);
 	D3DXMatrixIdentity(&m_mtxView);
 	m_fViewExtent = 0.0f;
+	m_nCntPlayerDeath = 0;
 #ifdef _DEBUG
 	m_fRad = CAMERA_DISTANCE;
 	m_fTheta = D3DXToRadian(-90);
@@ -87,11 +89,13 @@ HRESULT CCamera::Init(void)
 	m_posV = CAMERA_LOCAL_POS;
 	m_posR = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	m_vecU = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
-
+	m_nCntPlayerDeath = 0;
+#ifdef _DEBUG
 	m_fRad = CAMERA_DISTANCE;
 	m_fTheta = D3DXToRadian(-90);
 	m_fPhi = atanf(m_posV.z / m_posV.x);
 	m_fViewExtent = 1.0f;
+#endif
 	return S_OK;
 }
 
@@ -162,17 +166,42 @@ void CCamera::Update(void)
 	}
 	else if(!CPlayer::GetDeath(0))
 	{
-		m_posR += (CGame::GetPlayer(0)->GetPos() - m_posR)*0.05f;
+		
+		if (m_nCntPlayerDeath < PLAYER_DEATH_COUNT)
+		{
+			// カウントを進める
+			m_nCntPlayerDeath++;
+			// だんだんと注視点を変える
+			m_posR += (CGame::GetPlayer(0)->GetPos() - m_posR)*CAMERA_LOOK_RATE;
+		}
+		else
+		{
+			// 一瞬で注視点を変える
+			m_posR = CGame::GetPlayer(0)->GetPos();
+		}
+
 		// カメラ位置の設定
 		m_posV += m_posR + CAMERA_LOCAL_POS;
-		m_posV.y = CAMERA_LOCAL_POS.y;
+		m_posV.y = CAMERA_LOCAL_POS.y + 300;
 	}
 	else if (!CPlayer::GetDeath(1))
 	{
-		m_posR += (CGame::GetPlayer(1)->GetPos() - m_posR)*0.05f;
+		if (m_nCntPlayerDeath < PLAYER_DEATH_COUNT)
+		{
+			// カウントを進める
+			m_nCntPlayerDeath++;
+			// だんだんと注視点を変える
+			m_posR += (CGame::GetPlayer(1)->GetPos() - m_posR)*CAMERA_LOOK_RATE;
+		}
+		else
+		{
+			// 一瞬で注視点を変える
+			m_posR = CGame::GetPlayer(1)->GetPos();
+		}
+
 		// カメラ位置の設定
 		m_posV = m_posR + CAMERA_LOCAL_POS;
-		m_posV.y = CAMERA_LOCAL_POS.y;
+		m_posV.y = CAMERA_LOCAL_POS.y+300;
 	}
 
 

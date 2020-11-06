@@ -81,6 +81,7 @@ private:
 	void MotionManager(void);
 	void MotionFalse(void);
 	void SetMotion(MOTION motionState);
+	void Dash(void);
 
 	// メンバ変数
 	static CModel::Model m_model[MAX_PLAYER][MAX_PARTS_NUM]; // モデル情報
@@ -97,7 +98,8 @@ private:
 	int m_nLife;					// プレイヤーのライフ
 	MOTION m_motionState;           // 現在のモーション状態
 	int m_nSpeed;
-	bool m_bAttack;                 // 攻撃しているかの判定用
+	bool m_bMotion;                 // 移動を止める系のモーション判定用
+	bool m_bKeyboardMove;           // キーボードで移動しているかの判定用
 	CLife *m_pLife[PLAYER_LIFE];
 };
 

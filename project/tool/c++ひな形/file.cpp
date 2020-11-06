@@ -6,6 +6,9 @@
 //=============================================================================
 #include "file.h"
 #include "object.h"
+#include "enemy.h"
+#include "wall.h"
+#include "floor.h"
 
 //*****************************************************************************
 // マクロ定義
@@ -41,7 +44,8 @@ void CFile::Read(void)
     FILE *pFile = fopen(FILE_NAME, "r");
     D3DXVECTOR3 pos;            // 読み込んだ位置
     D3DXVECTOR3 rot;            // 読み込んだ角度
-    CModel::OBJTYPE type;
+    CModel::OBJTYPE type;       // オブジェクトの種類
+    int ntype;                 // オブジェクトごとのタイプ
 
     if (pFile)
     {// ファイル読み込み
@@ -74,11 +78,15 @@ void CFile::Read(void)
                         // 角度の設定
                         if (strcmp(aHead, "ROT") == 0)
                         {
-                            sscanf(aRead, "%s %f %f %f", &aDie, &rot.x, &rot.y, &rot.z);//位置を格納
+                            sscanf(aRead, "%s %f %f %f", &aDie, &rot.x, &rot.y, &rot.z);//角度を格納
                         }
                         if (strcmp(aHead, "TYPE") == 0)
                         {
-                            sscanf(aRead, "%s %d", &aDie, &type);//位置を格納
+                            sscanf(aRead, "%s %d", &aDie, &type);//種類を格納
+                        }
+                        if (strcmp(aHead, "OBJ_TYPE") == 0)
+                        {
+                            sscanf(aRead, "%s %d", &aDie, &ntype);//オブジェクトのタイプをを格納
                         }
                     }
                     CObject::SetObject(pos, D3DXToRadian(rot),type);
@@ -106,7 +114,6 @@ void CFile::Writing(void)
         // オブジェクトの数分データを書きだす
         while (pScene != NULL)
         {
-
             if (pScene != CObject::GetPlayer())
             {// カーソルに使われていないオブジェクトを書き込み
                 if (pScene)
@@ -158,9 +165,26 @@ void CFile::ObjctWriting(FILE *pFile,CScene::OBJTYPE type)
             fprintf(pFile, "\t\t POS %.1f %.1f %.1f \n", pos.x, pos.y, pos.z);
             fprintf(pFile, "\t\t ROT %.1f %.1f %.1f \n", rot.x, rot.y, rot.z);
             fprintf(pFile, "\t\t TYPE %d \n", pScene->GetType());
+            fprintf(pFile, "\t\t OBJ_TYPE %d \n", GetObjectType(pScene));
             fprintf(pFile, "\tEND_OBJ_SET\n");
             fprintf(pFile, "\n");
         }
         pScene = pScene->GetNext();
     }
 }
+
+//=============================================================================
+// [GetObjectType] オブジェクトごとのタイプを取得
+//=============================================================================
+int CFile::GetObjectType(CScene* pScene)
+{
+    int nType=0;
+    switch (pScene->GetType())
+    {
+    case CScene::OBJTYPE_ENEMY:
+        nType =((CEnemy*)pScene)->CEnemy::GetType();
+        break;
+    }
+    return nType;
+}
+

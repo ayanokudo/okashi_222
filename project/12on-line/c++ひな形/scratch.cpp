@@ -22,8 +22,8 @@
 //*****************************
 // マクロ定義
 //*****************************
-#define SCRATCH_TEXTURE_PATH "./data/Textures/scratch.png" //テクスチャのパス
-#define SCRATCH_TEXTURE_PATH "./data/Textures/scratch.png" //テクスチャのパス
+#define SCRATCH_TEXTURE_PATH_PLAYER "./data/Textures/scratch.png" //テクスチャのパス
+#define SCRATCH_TEXTURE_PATH_ENEMY  "./data/Textures/Enemy_Attack.png" //テクスチャのパス
 #define SCRATCH_COLOR D3DXCOLOR(1.0f,1.0f,0.3f,1.0f)       // アニメーション速度
 #define SCRATCH_ANIM_SPEED 4                               // アニメーション速度
 #define SCRATCH_MAX_ANIMATION_X 5                          // アニメーション数 横
@@ -35,7 +35,7 @@
 //******************************
 // 静的メンバ変数宣言
 //******************************
-LPDIRECT3DTEXTURE9  CScratch::m_pTexture = NULL; // テクスチャポインタ
+LPDIRECT3DTEXTURE9  CScratch::m_apTexture[SCRATCHUSER_MAX] = {}; // テクスチャポインタ
 
 //******************************
 // コンストラクタ
@@ -67,6 +67,9 @@ CScratch * CScratch::Create(const D3DXVECTOR3 pos, const float fAngle,  const  S
 	// メモリの確保
 	CScratch *pScratch;
 	pScratch = new CScratch;
+
+	// ユーザーの設定
+	pScratch->m_user = user;
 	// 初期化
 	pScratch->Init();
 
@@ -74,7 +77,7 @@ CScratch * CScratch::Create(const D3DXVECTOR3 pos, const float fAngle,  const  S
 	pScratch->SetPos(pos);                             // 座標
 	pScratch->SetRot(D3DXVECTOR3(0.0f, fAngle, 0.0f)); // 角度
 	pScratch->SetObjType(OBJTYPE_ATTACK);              // オブジェクトタイプ
-	pScratch->m_user = user;                           // バレットユーザー
+	
 	pScratch->m_nPlayerNum = nPlayerNum;
 	// 当たり判定の生成
 	pScratch->m_pCollision = CCollision::CreateSphere(D3DXVECTOR3(pos.x, pos.y-SCRATCH_HEIGHT, pos.z), SCRATCH_COLLISION_SIZE);
@@ -91,8 +94,8 @@ HRESULT CScratch::Load(void)
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
 
 	// テクスチャの生成
-	D3DXCreateTextureFromFile(pDevice, SCRATCH_TEXTURE_PATH, &m_pTexture);
-
+	D3DXCreateTextureFromFile(pDevice, SCRATCH_TEXTURE_PATH_PLAYER, &m_apTexture[SCRATCHUSER_PLAYER]);
+	D3DXCreateTextureFromFile(pDevice, SCRATCH_TEXTURE_PATH_ENEMY, &m_apTexture[SCRATCHUSER_ENEMY]);
 
 	return S_OK;
 }
@@ -102,10 +105,13 @@ HRESULT CScratch::Load(void)
 //******************************
 void CScratch::Unload(void)
 {
-	if (m_pTexture != NULL)
+	for (int nCnt = 0; nCnt < SCRATCHUSER_MAX; nCnt++)
 	{
-		m_pTexture->Release();
-		m_pTexture = NULL;
+		if (m_apTexture[nCnt] != NULL)
+		{
+			m_apTexture[nCnt]->Release();
+			m_apTexture[nCnt] = NULL;
+		}
 	}
 }
 
@@ -121,9 +127,17 @@ HRESULT CScratch::Init(void)
 	}
 
 	// テクスチャ割り当て
-	BindTexture(m_pTexture);
-	// サイズの設定
-	SetSize(D3DXVECTOR3(-SCRATCH_SIZE, 0.0f, -SCRATCH_SIZE));
+	BindTexture(m_apTexture[m_user]);
+	if (m_user == SCRATCHUSER_PLAYER)
+	{
+		// サイズの設定
+		SetSize(D3DXVECTOR3(-SCRATCH_SIZE_PLAYER, 0.0f, -SCRATCH_SIZE_PLAYER));
+	}
+	else
+	{
+		// サイズの設定
+		SetSize(D3DXVECTOR3(-SCRATCH_SIZE_ENEMY, 0.0f, -SCRATCH_SIZE_ENEMY));
+	}
 
 	// UV座標の設定
 	D3DXVECTOR2 uv[NUM_VERTEX];
@@ -175,13 +189,13 @@ void CScratch::Update(void)
 			// 座標の設定
 			D3DXVECTOR3 pos;
 			float fRotY = pEnemy->GetRot().y - D3DXToRadian(90);
-			pos.x = pEnemy->GetPos().x + cosf(fRotY) * -SCRATCH_SIZE;
+			pos.x = pEnemy->GetPos().x + cosf(fRotY) * -SCRATCH_SIZE_ENEMY;
 			pos.y = pEnemy->GetPos().y + SCRATCH_HEIGHT;
-			pos.z = pEnemy->GetPos().z + sinf(fRotY) * SCRATCH_SIZE;
+			pos.z = pEnemy->GetPos().z + sinf(fRotY) * SCRATCH_SIZE_ENEMY;
 			SetPos(pos);
 
 			// 角度
-			SetRot(D3DXVECTOR3(0.0f, fRotY, 0.0f));
+			SetRot(D3DXVECTOR3(0.0f, fRotY + D3DXToRadian(90), 0.0f));
 			m_pCollision->SetPos(D3DXVECTOR3(pos.x, pos.y - SCRATCH_HEIGHT, pos.z));
 		}
 	}
@@ -195,9 +209,9 @@ void CScratch::Update(void)
 			// 座標の設定
 			D3DXVECTOR3 pos;
 			float fRotY = pPlayer->GetRot().y - D3DXToRadian(90);
-			pos.x = pPlayer->GetPos().x + cosf(fRotY) * -SCRATCH_SIZE;
+			pos.x = pPlayer->GetPos().x + cosf(fRotY) * -SCRATCH_SIZE_PLAYER;
 			pos.y = pPlayer->GetPos().y + SCRATCH_HEIGHT;
-			pos.z = pPlayer->GetPos().z + sinf(fRotY) * SCRATCH_SIZE;
+			pos.z = pPlayer->GetPos().z + sinf(fRotY) * SCRATCH_SIZE_PLAYER;
 			SetPos(pos);
 
 			// 角度

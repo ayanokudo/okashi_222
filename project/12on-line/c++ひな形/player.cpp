@@ -71,9 +71,10 @@ CPlayer::CPlayer() :CModelHierarchy(OBJTYPE_PLAYER)
 	memset(&m_pMotion, 0, sizeof(m_pMotion));
 	m_motionState = WAIT;
 	m_nSpeed = 0;
-	m_bAttack = false;
+	m_bMotion = false;
 	m_pUi[1] = NULL;
 	m_nLife = 0;
+	m_bKeyboardMove = false;
 }
 
 //******************************
@@ -236,7 +237,7 @@ HRESULT CPlayer::Init(void)
 	}
 	
 	m_bDeath[m_nPlayerNum] = false;
-
+	m_bKeyboardMove = false;
     // サイズの調整
     SetSize(D3DXVECTOR3(1.5f, 1.5f, 1.5f));
     // アニメーションの生成
@@ -277,7 +278,7 @@ HRESULT CPlayer::Init(void)
 	m_pCollision = CCollision::CreateSphere(GetPos(), PLAYER_RADIUS);
 
 	// 攻撃フラグの初期化
-	m_bAttack = false;
+	m_bMotion = false;
 
 	return S_OK;
 }
@@ -320,14 +321,17 @@ void CPlayer::Update(void)
 		}
 	}
 
-	if (!m_bAttack)
+	if (!m_bMotion)
 	{// 攻撃中じゃないとき
 
-		// 移動（キーボード）
-		MoveKeyboard();
-
-		// 移動（コントローラー）
+		 // 移動（コントローラー）
 		MoveController();
+		if (m_nPlayerNum == 1)
+		{
+			// 移動（キーボード）
+			MoveKeyboard();
+		}
+		
 
 		// 慣性
 		m_move += (m_moveDest - m_move) * PLAYER_MOVE_RATE;
@@ -341,6 +345,9 @@ void CPlayer::Update(void)
 		// 座標のセット
 		SetPos(pos);
 	}
+
+	// ダッシュ処理
+	Dash();
 
 	// 攻撃
 	Attack();
@@ -381,6 +388,10 @@ void CPlayer::MoveKeyboard(void)
 
     if (CManager::GetKeyboard()->GetKeyPress(DIK_W))
     {// ↑移動
+
+		// 移動中にする
+		m_bKeyboardMove = true;
+
         m_moveDest.z = -PLAYER_SPEED - m_nSpeed;
 
         // 向きの設定
@@ -408,6 +419,10 @@ void CPlayer::MoveKeyboard(void)
     }
     else if (CManager::GetKeyboard()->GetKeyPress(DIK_S))
     {// ↓移動
+	   
+	    // 移動中にする
+		m_bKeyboardMove = true;
+
 		m_moveDest.z = PLAYER_SPEED + m_nSpeed;
 
         // 向きの設定
@@ -436,6 +451,8 @@ void CPlayer::MoveKeyboard(void)
     else if (CManager::GetKeyboard()->GetKeyPress(DIK_A))
     {// ←移動
      
+	    // 移動中にする
+		m_bKeyboardMove = true;
         // 向きの設定
         m_fRotYDist = D3DXToRadian(-90);
 
@@ -448,6 +465,9 @@ void CPlayer::MoveKeyboard(void)
     else if (CManager::GetKeyboard()->GetKeyPress(DIK_D))
     {// →移動
      
+	   // 移動中にする
+		m_bKeyboardMove = true;
+
         // 向きの設定
         m_fRotYDist = D3DXToRadian(90);
 
@@ -458,8 +478,8 @@ void CPlayer::MoveKeyboard(void)
     }
 	else
 	{
-		// モーションの設定
-		//SetMotion(WAIT);
+		// 移動状態の解除
+		m_bKeyboardMove = false;
 	}
 
 	//ダッシュ処理
@@ -520,8 +540,11 @@ void CPlayer::MoveController(void)
     }
 	else
 	{
-		// モーションの設定
-		SetMotion(WAIT);
+		if (!m_bKeyboardMove)
+		{
+			// モーションの設定
+			SetMotion(WAIT);
+		}
 	}
 }
 
@@ -554,41 +577,29 @@ void CPlayer::Direction(void)
 //******************************
 void CPlayer::Attack(void)
 {
-	if (!m_bAttack)
+	if (!m_bMotion)
 	{// 攻撃中じゃないとき
 
-		if (CManager::GetKeyboard()->GetKeyTrigger(DIK_SPACE) || CManager::GetJoypad()->GetJoystickTrigger(2, m_nPlayerNum))
+		if (m_nPlayerNum == 1&& CManager::GetKeyboard()->GetKeyTrigger(DIK_SPACE) || CManager::GetJoypad()->GetJoystickTrigger(2, m_nPlayerNum))
 		{// 弾を撃つ
-			//// プレイヤーの向いている方向の取得
-			//float fRotY = GetRot().y - D3DXToRadian(90);
-			//// 移動量
-			//D3DXVECTOR3 bulletMove;
-			//bulletMove.x = cosf(fRotY)*-BULLET_SPEED_PLAYER;
-			//bulletMove.y = 0.0f;
-			//bulletMove.z = sinf(fRotY)*BULLET_SPEED_PLAYER;
-			//// 弾を撃つ位置の調整
-			//D3DXVECTOR3 pos = GetPos();
-			//pos.y += 10.0f;
-			//// 弾の生成
-			//CBullet::Create(pos, bulletMove, 300, CBullet::BULLETUSER_PLAYER);
-
-			// モーションステートの設定
+			
+		    // モーションステートの設定
 			SetMotion(VOICE);
 
 			// 攻撃フラグを立てる
-			m_bAttack = true;
+			m_bMotion = true;
 
 		}
 
-		if (CManager::GetKeyboard()->GetKeyTrigger(DIK_B) || CManager::GetJoypad()->GetJoystickTrigger(0, m_nPlayerNum))
+		if (m_nPlayerNum == 1 && CManager::GetKeyboard()->GetKeyTrigger(DIK_B) || CManager::GetJoypad()->GetJoystickTrigger(0, m_nPlayerNum))
 		{// 弾を撃つ
 			// プレイヤーの向いている方向の取得
 			float fRotY = GetRot().y - D3DXToRadian(90);
 			// 弾を撃つ位置の調整
 			D3DXVECTOR3 pos = GetPos();
-			pos.x = pos.x + cosf(fRotY)*-SCRATCH_SIZE;
+			pos.x = pos.x + cosf(fRotY)*-SCRATCH_SIZE_PLAYER;
 			pos.y = pos.y + SCRATCH_HEIGHT;
-			pos.z = pos.z + sinf(fRotY) * SCRATCH_SIZE;
+			pos.z = pos.z + sinf(fRotY) * SCRATCH_SIZE_PLAYER;
 
 			// ひっかきの生成
 			CScratch::Create(pos, fRotY, CScratch::SCRATCHUSER_PLAYER, m_nPlayerNum);
@@ -597,7 +608,7 @@ void CPlayer::Attack(void)
 			SetMotion(PUNCH);
 
 			// 攻撃フラグを立てる
-			m_bAttack = true;
+			m_bMotion = true;
 		}
 	}
 	else
@@ -649,12 +660,12 @@ void CPlayer::Hit(int nDamage)
 //******************************
 void CPlayer::MotionManager(void)
 {
-	if (m_bAttack)
+	if (m_bMotion)
 	{// 攻撃フラグが立ってるとき
-		if (!m_pMotion[VOICE]->GetActiveAnimation() && !m_pMotion[PUNCH]->GetActiveAnimation())
+		if (!m_pMotion[VOICE]->GetActiveAnimation() && !m_pMotion[PUNCH]->GetActiveAnimation() && !m_pMotion[DASH]->GetActiveAnimation())
 		{// 攻撃モーションがfalseの時
 			m_motionState = WAIT;
-			m_bAttack = false;
+			m_bMotion = false;
 		}
 	}
 }
@@ -684,6 +695,27 @@ void CPlayer::SetMotion(MOTION motionState)
 		MotionFalse();
 		// 現在のモーションをtrueにする
 		m_pMotion[m_motionState]->SetActiveAnimation(true);
+	}
+}
+
+//******************************
+// ダッシュの処理
+//******************************
+void CPlayer::Dash(void)
+{
+	if (m_motionState != DASH)
+	{// モーションがダッシュ状態じゃないとき
+		if (m_nPlayerNum == 1 && CManager::GetKeyboard()->GetKeyTrigger(DIK_LSHIFT) || CManager::GetJoypad()->GetJoystickTrigger(5, m_nPlayerNum))
+		{// ダッシュ
+			// モーションフラグをtrue
+			m_bMotion = true;
+			// モーションセット
+			SetMotion(DASH);
+		}
+	}
+	else
+	{// モーションがダッシュ状態の時
+
 	}
 }
 

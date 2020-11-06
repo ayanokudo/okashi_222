@@ -18,8 +18,9 @@
 //*****************************
 // マクロ定義
 //*****************************
-#define SCRATCH_SIZE 150   // サイズ
-#define SCRATCH_COLLISION_SIZE 100   // サイズ
+#define SCRATCH_SIZE_PLAYER 150   // サイズ
+#define SCRATCH_SIZE_ENEMY 100   // サイズ
+#define SCRATCH_COLLISION_SIZE 100   // 当たり判定のサイズ
 #define SCRATCH_HEIGHT 75 // プレイヤーより高い位置に置く
 //*****************************
 // 前方宣言
@@ -56,7 +57,7 @@ private:
 	void CollisionScratch(SCRATCHUSER user);
 	void Animation(void);
 	// メンバ変数
-	static LPDIRECT3DTEXTURE9 m_pTexture; // テクスチャ
+	static LPDIRECT3DTEXTURE9 m_apTexture[SCRATCHUSER_MAX]; // テクスチャ
 	SCRATCHUSER m_user; // バレットユーザー
 	CCollision*m_pCollision;    // コリジョンクラスのポインタ
 	int m_nPlayerNum;   // どのプレイヤーの攻撃か

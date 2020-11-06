@@ -41,6 +41,8 @@
 #include "ui.h"
 #include "boss.h"
 #include "collect.h"
+#include "life.h"
+
 //=============================
 // 静的メンバ変数宣言
 //=============================
@@ -143,6 +145,7 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, bool bWindow)
 	CUi::Load();		// ui
 	CBoss::Load();      // ボス
 	CCollect::Load();   // コレクト
+	CLife::Load();
 	// ポーズ状態の時
 	return S_OK;
 }
@@ -170,7 +173,7 @@ void CManager::Uninit(void)
 	CUi::Unload();		 // ui
 	CBoss::Unload();     // ボス
 	CCollect::Unload();  // コレクト
-
+	CLife::Unload();
 	if (m_pSound != NULL)
 	{
 		// 終了処理

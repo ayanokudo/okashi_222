@@ -20,9 +20,11 @@
 #define UI_TITLE_TEXTURE_PATH		"./data/Textures/title000.png"		// タイトルのパス
 #define UI_ENTER_TEXTURE_PATH		"./data/Textures/title000.png"		// エンターのパス
 #define UI_WARNING_TEXTURE_PATH		"./data/Textures/TIME.png"			// ワーニングのパス
-#define UI_ATTACK_NAIL_TEXTURE_PATH	"./data/Textures/Attack.png"			// ワーニングのパス
-#define UI_ATTACK_CRY_TEXTURE_PATH	"./data/Textures/Voice.png"		// ワーニングのパス
+#define UI_ATTACK_NAIL_TEXTURE_PATH	"./data/Textures/Attack.png"		// ワーニングのパス
+#define UI_ATTACK_CRY_TEXTURE_PATH	"./data/Textures/Voice.png"			// ワーニングのパス
 #define UI_DASH_TEXTURE_PATH		"./data/Textures/Dash.png"			// ワーニングのパス
+#define UI_CHOCO_TEXTURE_PATH		"./data/Textures/chocolate_HP.png"	// ワーニングのパス
+#define UI_MILK_TEXTURE_PATH		"./data/Textures/Milk_HP.png"		// ワーニングのパス
 
 #define UI_SIZE 100
 //**********************************
@@ -79,6 +81,8 @@ HRESULT CUi::Load(void)
 	D3DXCreateTextureFromFile(pDevice, UI_ATTACK_CRY_TEXTURE_PATH, &m_apTexture[UI_ATTACK_NAIL]);
 	D3DXCreateTextureFromFile(pDevice, UI_ATTACK_NAIL_TEXTURE_PATH, &m_apTexture[UI_ATTACK_CRY]);
 	D3DXCreateTextureFromFile(pDevice, UI_DASH_TEXTURE_PATH, &m_apTexture[UI_DASH]);
+	D3DXCreateTextureFromFile(pDevice, UI_CHOCO_TEXTURE_PATH, &m_apTexture[UI_CHOCO]);
+	D3DXCreateTextureFromFile(pDevice, UI_MILK_TEXTURE_PATH, &m_apTexture[UI_MILK]);
 
 	return S_OK;
 }

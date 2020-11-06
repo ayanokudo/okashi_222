@@ -44,6 +44,7 @@ public:
 	void Update(void);
 	void Draw(void);
 	D3DXVECTOR3 GetCollisionSize(void) { return m_size; }
+	void SetCollisionRadius(float fRad) { m_fRadius = fRad; }
 	float GetCollisionRadius(void) { return m_fRadius; }
 private:
 	void CreateMesh(void);

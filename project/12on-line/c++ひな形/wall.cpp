@@ -14,6 +14,8 @@
 #include "game.h"
 #include "player.h"
 #include "enemy.h"
+#include "bullet.h"
+
 //*****************************
 // マクロ定義
 //*****************************
@@ -139,9 +141,10 @@ void CWall::Uninit(void)
 //==================================
 void CWall::Update(void)
 {
-	//プレイヤーとエネミーのCollisionを呼び出す
-	CollisionPlayer();
-	CollisionEnemy();
+	// 当たり判定
+	CollisionPlayer(); // プレイヤー
+	CollisionEnemy();  // エネミー
+	CollisionBullet(); // 弾
 }
 
 //==================================
@@ -225,6 +228,33 @@ void CWall::CollisionEnemy(void)
 			pEnemy->GetCollision()->SetPos(playerPos);
 		}
 		pEnemy = (CEnemy*)pEnemy->GetNext();
+	}
+
+}
+
+//==================================
+// 弾と壁の当たり判定
+//==================================
+void CWall::CollisionBullet(void)
+{
+	CBullet*pBullet = (CBullet*)CScene::GetTop(OBJTYPE_BULLET);
+	while (pBullet != NULL)
+	{
+		// 元の半径を保持
+		float fRadius = pBullet->GetCollision()->GetCollisionRadius();
+		// 半径を半分にする
+		pBullet->GetCollision()->SetCollisionRadius(fRadius / 2);
+		if (CCollision::CollisionSphereToBox(pBullet->GetCollision(), m_pCollision))
+		{
+			// プレイヤーのコリジョンの座標のセット
+			pBullet->Uninit();
+		}
+		else
+		{
+			// 元の半径に戻す
+			pBullet->GetCollision()->SetCollisionRadius(fRadius);
+		}
+		pBullet = (CBullet*)pBullet->GetNext();
 	}
 
 }

@@ -232,7 +232,11 @@ void CCollision::Draw(void)
 	static bool bView = false;
 	if (CManager::GetKeyboard()->GetKeyTrigger(DIK_F1))
 	{
-		bView ^= true;
+		bView = true;
+	}
+	else if(CManager::GetKeyboard()->GetKeyTrigger(DIK_F2))
+	{
+		bView = false;
 	}
 	if (bView)
 	{

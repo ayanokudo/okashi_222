@@ -33,7 +33,7 @@ LPDIRECT3DTEXTURE9  CBullet::m_pTexture = NULL; // テクスチャポインタ
 //******************************
 // コンストラクタ
 //******************************
-CBullet::CBullet():CScene3d(OBJTYPE_ATTACK)
+CBullet::CBullet():CScene3d(OBJTYPE_BULLET)
 {
 	// 変数のクリア
 	m_move = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
@@ -62,7 +62,7 @@ CBullet * CBullet::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 move, const i
 
 	// 各値の代入・セット
 	pBullet->SetPos(pos);                // 座標
-	pBullet->SetObjType(OBJTYPE_ATTACK); // オブジェクトタイプ
+	pBullet->SetObjType(OBJTYPE_BULLET); // オブジェクトタイプ
 	pBullet->m_move = move;              // 移動量
 	pBullet->m_nLife = nLife;            // 寿命
 	pBullet->m_user = user;              // バレットユーザー

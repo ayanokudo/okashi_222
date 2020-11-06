@@ -148,6 +148,7 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, bool bWindow)
 	CBoss::Load();      // ボス
 	CCollect::Load();   // コレクト
 	CLife::Load();
+	CTitle::Load();
 	// ポーズ状態の時
 	return S_OK;
 }
@@ -177,6 +178,8 @@ void CManager::Uninit(void)
 	CBoss::Unload();     // ボス
 	CCollect::Unload();  // コレクト
 	CLife::Unload();
+	CTitle::UnLoad();
+
 	if (m_pSound != NULL)
 	{
 		// 終了処理

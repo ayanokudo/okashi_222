@@ -29,11 +29,21 @@ class CUi;
 class CTitle : public CScene
 {
 public:
+	typedef enum
+	{
+		BG = 0,
+		EXIT,
+		START,
+		TUTORIAL,
+		MENU_MAX
+	}TITLE_MENU;
+
 	// メンバ関数
 	CTitle();
 	~CTitle();
 	static CTitle *Create(void);
-
+	static HRESULT Load(void);
+	static void CTitle::UnLoad(void);
 	HRESULT Init(void);
 	void Uninit(void);
 	void Update(void);
@@ -41,9 +51,10 @@ public:
 
 private:
 	// メンバ変数
-	static LPDIRECT3DTEXTURE9 m_pTexture;        // テクスチャへのポインタ
-	CPolygon *m_pPolygon;
+	static LPDIRECT3DTEXTURE9 m_apTexture[MENU_MAX];        // テクスチャへのポインタ
+	CPolygon *m_apPolygon[MENU_MAX];
 	CUi* m_pUi;
+	int m_nMenu;
 
 };
 

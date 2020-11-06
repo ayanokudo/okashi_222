@@ -34,7 +34,7 @@
 //=======================================================================================
 // ‘O•ûéŒ¾
 //=======================================================================================
-LPDIRECT3DTEXTURE9 CPause::m_apTexture[CPause::PARTS_MAX] = {};
+LPDIRECT3DTEXTURE9 CPause::m_apTexture[PARTS_MAX] = {};
 
 //=======================================================================================
 // 
@@ -60,7 +60,10 @@ CPause* CPause::Create(void)
 {
 	CPause* pPause = new CPause();
 
-	pPause->Init();
+	if (pPause != NULL)
+	{
+		pPause->Init();
+	}
 
 	return pPause;
 }

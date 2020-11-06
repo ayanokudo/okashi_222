@@ -277,17 +277,11 @@ void CItem::CollisionItem(void)
 }
 
 //******************************
-// キャンディ処理
-//******************************
-void CItem::Candy(void)
-{
-
-}
-
-//******************************
 // 回復アイテム処理
 //******************************
 void CItem::Life(void)
 {
-	CPlayer *pPlayer = CGame::GetPlayer();
+	CPlayer*pPlayer = CGame::GetPlayer();
+
+	pPlayer->Life(1);
 }

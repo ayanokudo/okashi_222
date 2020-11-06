@@ -21,12 +21,12 @@
 //*****************************
 class CCollision;
 class CMotion;
-class CUi;
+class CLife;
 
 //*****************************
 // マクロ定義
 //*****************************
-#define UI_PLAYER 3
+#define PLAYER_LIFE 9		// プレイヤー１のライフ
 
 //*****************************
 // クラス定義
@@ -66,6 +66,7 @@ public:
 	void Update(void);
 	void Draw(void);
 	void Hit(int nDamage);
+	void Life(int nLife);
 
 	static bool GetDeath(int nPlayer) { return m_bDeath[nPlayer]; }
 	CCollision*GetCollision(void) { return m_pCollision; }
@@ -77,7 +78,6 @@ private:
 	void MoveController(void);
 	void Direction(void);
 	void Attack(void);
-	void Life(void);
 	void MotionManager(void);
 	void MotionFalse(void);
 	void SetMotion(MOTION motionState);
@@ -100,7 +100,7 @@ private:
 	int m_nSpeed;
 	bool m_bMotion;                 // 移動を止める系のモーション判定用
 	bool m_bKeyboardMove;           // キーボードで移動しているかの判定用
-	CUi* m_pUi[UI_PLAYER];
+	CLife *m_pLife[PLAYER_LIFE];
 };
 
 #endif

@@ -17,8 +17,8 @@
 //==================================
 CPolygon::CPolygon()
 {
-	m_pTexture = NULL;
 	m_pVtxBuff = NULL;
+	m_pTexture = NULL;
 }
 
 //==================================
@@ -127,6 +127,9 @@ void CPolygon::Draw(void)
 	pDevice->SetTexture(0, 0);
 }
 
+//==================================
+// 座標設定
+//==================================
 void CPolygon::SetVertexPos(D3DXVECTOR3 pos[NUM_VERTEX])
 {
 	VERTEX_2D *pVtx;// 頂点情報ポインタ
@@ -144,6 +147,9 @@ void CPolygon::SetVertexPos(D3DXVECTOR3 pos[NUM_VERTEX])
 	m_pVtxBuff->Unlock();
 }
 
+//==================================
+// カラー設定
+//==================================
 void CPolygon::SetColor(const D3DXCOLOR col)
 {
 	VERTEX_2D *pVtx;// 頂点情報ポインタ

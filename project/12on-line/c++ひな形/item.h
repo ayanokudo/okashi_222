@@ -50,8 +50,7 @@ public:
 private:
 	void Direction(void);
 	void CollisionItem(void);
-	void Candy(void);
-	void Life(void);
+	static void Life(void);
 
 	// メンバ変数
 	static LPD3DXMESH m_pMeshModel[ITEM_MAX];	//メッシュ情報へのポインタ

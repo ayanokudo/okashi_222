@@ -37,6 +37,7 @@ class CUi;
 // マクロ定義
 //*****************************
 #define MAX_PLAYER 2
+#define UI_PLAYER 5
 
 //*****************************
 //クラス定義
@@ -74,6 +75,7 @@ private:
 	static CScore*m_pScore;		// スコア
 	static CTime*m_pTime;		// アイテム
 	static CLight *m_pLight;	// ライト
+	CUi* m_pUi[UI_PLAYER];
 }; 
 
 #endif

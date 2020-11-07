@@ -62,7 +62,7 @@ public:
     void DeleteObject(void);
 
     // オブジェクトのセッタ
-    static void SetObject(D3DXVECTOR3 pos, D3DXVECTOR3 rot, CModel::OBJTYPE type);
+    static void SetObject(D3DXVECTOR3 pos, D3DXVECTOR3 rot, CModel::OBJTYPE type, int ntype);
 
     // プレイヤーのゲッタ
     static CPlayer *GetPlayer(void) { return m_pPlayer; }

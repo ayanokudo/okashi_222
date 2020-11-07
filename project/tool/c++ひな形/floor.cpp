@@ -7,6 +7,7 @@
 #include "floor.h"
 #include "manager.h"
 #include "renderer.h"
+#include "keyboard.h"
 
 //*****************************************************************************
 // マクロ定義
@@ -38,14 +39,14 @@ CFloor::~CFloor()
 //=============================================================================
 // [Create] オブジェクトの生成
 //=============================================================================
-CFloor * CFloor::Create(D3DXVECTOR3 pos)
+CFloor * CFloor::Create(D3DXVECTOR3 pos, FLOOR type)
 {
     CFloor *pObject = NULL;
     if (!pObject)
     {
         pObject = new CFloor;
         // 初期化
-        pObject->Init();
+        pObject->Init(type);
         pObject->SetPos(pos);
 
         // 各値の代入・セット
@@ -96,7 +97,7 @@ void CFloor::Unload(void)
 //=============================================================================
 // [Init] 初期化処理
 //=============================================================================
-HRESULT CFloor::Init(void)
+HRESULT CFloor::Init(FLOOR type)
 {
     if (FAILED(CModel::Init()))
     {
@@ -123,6 +124,30 @@ void CFloor::Uninit(void)
 void CFloor::Update(void)
 {
     CModel::Update();
+
+    D3DXMATERIAL*pMat;      //マテリアルデータへのポインタ
+                            //マテリアルデータへのポインタを取得
+    pMat = (D3DXMATERIAL*)m_pBuffMatModel->GetBufferPointer();
+
+    for (int nCntMat = 0; nCntMat < (int)m_nNumMatModel; nCntMat++)
+    {
+        switch (m_type)
+        {
+        case FLOOR_FLOORING:
+            //マテリアルのアンビエントにディフューズカラーを設定
+            pMat[nCntMat].MatD3D.Diffuse = { 0,0,255,255 };
+            break;
+        case FLOOR_MAT:
+            //マテリアルのアンビエントにディフューズカラーを設定
+            pMat[nCntMat].MatD3D.Diffuse = { 255,0,0,255 };
+            break;
+
+        case FLOOR_KITCHEN:
+            //マテリアルのアンビエントにディフューズカラーを設定
+            pMat[nCntMat].MatD3D.Diffuse = { 0,255,0,255 };
+            break;
+        }
+    }
 }
 
 //=============================================================================
@@ -131,4 +156,34 @@ void CFloor::Update(void)
 void CFloor::Draw(void)
 {
     CModel::Draw();
+}
+
+//=============================================================================
+// [ChangeType] 種類の変更
+//=============================================================================
+void CFloor::ChangeType(void)
+{
+    int nType = m_type;
+
+    if (CManager::GetKeyboard()->GetKeyTrigger(DIK_3))
+    {
+        nType -= 1;
+    }
+    if (CManager::GetKeyboard()->GetKeyTrigger(DIK_4))
+    {
+        nType += 1;
+    }
+
+    // 最大値以上/最小値以下になったらループ
+    if (nType >= FLOOR_MAX)
+    {
+        nType = FLOOR_FLOORING;
+    }
+    if (nType < FLOOR_FLOORING)
+    {
+        nType = FLOOR_MAX - 1;
+    }
+
+    // 種類を反映
+    SetType((FLOOR)nType);
 }

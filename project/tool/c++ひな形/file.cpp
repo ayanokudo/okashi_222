@@ -89,7 +89,7 @@ void CFile::Read(void)
                             sscanf(aRead, "%s %d", &aDie, &ntype);//オブジェクトのタイプをを格納
                         }
                     }
-                    CObject::SetObject(pos, D3DXToRadian(rot),type);
+                    CObject::SetObject(pos, D3DXToRadian(rot),type,ntype);
                 }
             }
         }

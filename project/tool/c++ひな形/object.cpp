@@ -132,10 +132,11 @@ void CObject::Update(void)
     }
 
     // オブジェクトの配置
+
     if (CManager::GetKeyboard()->GetKeyTrigger(DIK_SPACE))
     {
         // タイプを配置用に変換
-        SetObject(CObject::GetPlayer()->GetPos(), {0.0f,0.0f,0.0f}, changeType());
+        SetObject(CObject::GetPlayer()->GetPos(), {0.0f,0.0f,0.0f}, changeType(),0);
     }
 
     // ファイル書き込み
@@ -307,6 +308,10 @@ void CObject::ChangeType(void)
                     case OBJTYPE_ENEMY:
                         ((CEnemy*)pScene)->CEnemy::ChangeType();
                         break;
+
+                    case OBJTYPE_FLOOR:
+                        ((CFloor*)pScene)->CFloor::ChangeType();
+                        break;
                     }
                     return;
                 }
@@ -357,7 +362,7 @@ void CObject::DeleteObject(void)
 // 引数
 //pos : 位置
 //=============================================================================
-void CObject::SetObject(D3DXVECTOR3 pos, D3DXVECTOR3 rot, CModel::OBJTYPE type)
+void CObject::SetObject(D3DXVECTOR3 pos, D3DXVECTOR3 rot, CModel::OBJTYPE type ,int ntype)
 {
     switch (type)
     {
@@ -375,7 +380,7 @@ void CObject::SetObject(D3DXVECTOR3 pos, D3DXVECTOR3 rot, CModel::OBJTYPE type)
         break;
 
     case CModel::OBJTYPE_FLOOR:
-        m_pModel = CFloor::Create(pos);
+        m_pModel = CFloor::Create(pos, (CFloor::FLOOR)ntype);
         break;
     }
     m_pModel->SetRot(rot);

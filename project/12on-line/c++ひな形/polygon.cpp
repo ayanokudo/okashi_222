@@ -12,6 +12,7 @@
 #include "manager.h"
 #include "renderer.h"
 
+#define FLASH_RATE 0.04f
 //==================================
 // コンストラクタ
 //==================================
@@ -19,6 +20,9 @@ CPolygon::CPolygon()
 {
 	m_pVtxBuff = NULL;
 	m_pTexture = NULL;
+	m_col = D3DXCOLOR(1.0f,1.0f,1.0f,1.0f);
+	m_bFlash = true;
+	m_FlashState = FLASH_STATE_IN;
 }
 
 //==================================
@@ -47,7 +51,6 @@ CPolygon * CPolygon::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size, const
 //==================================
 HRESULT CPolygon::Init(const D3DXVECTOR3 pos, const D3DXVECTOR3 size, const D3DXCOLOR col)
 {
-
 	VERTEX_2D *pVtx;// 頂点情報ポインタ
 
 	// デバイスの取得
@@ -165,4 +168,42 @@ void CPolygon::SetColor(const D3DXCOLOR col)
 
 	// アンロック
 	m_pVtxBuff->Unlock();
+}
+
+//==================================
+// フラッシング
+//==================================
+void CPolygon::Flashing(void)
+{
+	VERTEX_2D *pVtx; //頂点情報へのポインタ
+
+	if (m_FlashState == FLASH_STATE_IN)
+	{
+		m_col.a -= FLASH_RATE;
+		if (m_col.a <= 0.0f)
+		{
+			m_col.a = 0.0f;
+			m_FlashState = FLASH_STATE_OUT;
+		}
+	}
+	else if (m_FlashState == FLASH_STATE_OUT)
+	{
+		m_col.a += FLASH_RATE;
+		if (m_col.a >= 1.0f)
+		{
+			m_col.a = 1.0f;
+			m_FlashState = FLASH_STATE_IN;
+		}
+	}
+	//頂点データの範囲をロックし、頂点バッファへのポインタを取得
+	m_pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);
+
+	pVtx[0].col = m_col;
+	pVtx[1].col = m_col;
+	pVtx[2].col = m_col;
+	pVtx[3].col = m_col;
+
+	//頂点データをアンロックする
+	m_pVtxBuff->Unlock();
+
 }

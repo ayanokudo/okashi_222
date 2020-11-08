@@ -19,6 +19,7 @@
 #include "bullet.h"
 #include "scratch.h"
 #include "motion.h"
+#include "item.h"
 
 //*****************************
 // マクロ定義
@@ -319,10 +320,28 @@ void CEnemy::Draw(void)
 //******************************
 void CEnemy::Hit(int nDamage)
 {
+	// 座標
+	D3DXVECTOR3 pos = GetPos();
 	m_nLife -= nDamage;
 
 	if (m_nLife <= 0)
 	{
+		switch (m_type)
+		{
+		case ENEMY_CARRIER:
+			if (rand() % 10 + 1 == 5)
+			{
+				CItem::Create(pos, CItem::KOBAN);
+			}
+			break;
+		case ENEMY_ESCORT:
+			if (rand() % 10 + 1 == 5)
+			{
+				CItem::Create(pos, CItem::KOBAN);
+			}
+		default:
+			break;
+		}
 		Uninit();
 		return;
 	}

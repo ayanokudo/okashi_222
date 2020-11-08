@@ -66,6 +66,8 @@ public:
 	static CScore  *GetScore(void)  { return m_pScore; }   // スコアの取得処理
 	static CTime   *GetTime(void)   { return m_pTime; }	   // タイムの取得処理
 private:
+	void Ui(void);
+
 	// メンバ変数
 	static CCamera*m_pCamera;	// カメラ
 	static CPlayer*m_pPlayer[MAX_PLAYER];	// プレイヤー

@@ -259,15 +259,18 @@ void CItem::CollisionItem(void)
 
 			if (pPlayer != NULL)
 			{
-				//プレイヤーの位置情報を取得
-				D3DXVECTOR3 playerPos = pPlayer->GetPos();
-				//プレイヤーと敵の範囲の当たり判定
-				if (CCollision::CollisionSphere(m_pCollision, pPlayer->GetCollision()))
+				if (!CPlayer::GetDeath(nCount))
 				{
-					//小判処理
-					CScore::AddScore(1000);
-					Uninit();
-					break;
+					//プレイヤーの位置情報を取得
+					D3DXVECTOR3 playerPos = pPlayer->GetPos();
+					//プレイヤーと敵の範囲の当たり判定
+					if (CCollision::CollisionSphere(m_pCollision, pPlayer->GetCollision()))
+					{
+						//小判処理
+						CScore::AddScore(1000);
+						Uninit();
+						break;
+					}
 				}
 			}
 		}
@@ -283,14 +286,17 @@ void CItem::CollisionItem(void)
 
 				if (pPlayer != NULL)
 				{
-					//プレイヤーの位置情報を取得
-					D3DXVECTOR3 playerPos = pPlayer->GetPos();
-					//プレイヤーと敵の範囲の当たり判定
-					if (CCollision::CollisionSphere(m_pCollision, pPlayer->GetCollision()))
+					if (!CPlayer::GetDeath(nCount))
 					{
-						Life();
-						Uninit();
-						break;
+						//プレイヤーの位置情報を取得
+						D3DXVECTOR3 playerPos = pPlayer->GetPos();
+						//プレイヤーと敵の範囲の当たり判定
+						if (CCollision::CollisionSphere(m_pCollision, pPlayer->GetCollision()))
+						{
+							pPlayer->Life(1);
+							Uninit();
+							break;
+						}
 					}
 				}
 			}
@@ -298,14 +304,4 @@ void CItem::CollisionItem(void)
 	default:
 		break;
 	}
-}
-
-//******************************
-// 回復アイテム処理
-//******************************
-void CItem::Life(void)
-{
-	CPlayer*pPlayer = CGame::GetPlayer();
-
-	pPlayer->Life(1);
 }

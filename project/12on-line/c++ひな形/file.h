@@ -22,6 +22,6 @@ public:
     static void Read(void);
 
 private:
-    static void SetObject(D3DXVECTOR3 pos, D3DXVECTOR3 rot, CModel::OBJTYPE type);
+    static void SetObject(D3DXVECTOR3 pos, D3DXVECTOR3 rot, CModel::OBJTYPE type, int ntype);
 };
 #endif // !_FILE_H_

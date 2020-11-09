@@ -1,24 +1,220 @@
 SCRIPT          // スクリプト開始 
 
 	OBJ_SET
-		 POS -480.0 0.0 -420.0 
-		 ROT 0.0 0.0 0.0 
-		 TYPE 12 
+		 POS 0.0 0.0 -2460.0 
+		 ROT 0.0 180.0 0.0 
+		 TYPE 8 
 		 OBJ_TYPE 0 
 	END_OBJ_SET
 
 	OBJ_SET
-		 POS -540.0 0.0 -600.0 
-		 ROT 0.0 0.0 0.0 
-		 TYPE 12 
-		 OBJ_TYPE 0 
-	END_OBJ_SET
-
-	OBJ_SET
-		 POS -660.0 0.0 -480.0 
-		 ROT 0.0 0.0 0.0 
-		 TYPE 12 
+		 POS 0.0 0.0 -2160.0 
+		 ROT 0.0 180.0 0.0 
+		 TYPE 8 
 		 OBJ_TYPE 1 
+	END_OBJ_SET
+
+	OBJ_SET
+		 POS -120.0 0.0 -2280.0 
+		 ROT 0.0 180.0 0.0 
+		 TYPE 8 
+		 OBJ_TYPE 0 
+	END_OBJ_SET
+
+	OBJ_SET
+		 POS 120.0 0.0 -2280.0 
+		 ROT 0.0 180.0 0.0 
+		 TYPE 8 
+		 OBJ_TYPE 0 
+	END_OBJ_SET
+
+	OBJ_SET
+		 POS -60.0 0.0 -3540.0 
+		 ROT 0.0 180.0 0.0 
+		 TYPE 8 
+		 OBJ_TYPE 1 
+	END_OBJ_SET
+
+	OBJ_SET
+		 POS 120.0 0.0 -3420.0 
+		 ROT 0.0 180.0 0.0 
+		 TYPE 8 
+		 OBJ_TYPE 0 
+	END_OBJ_SET
+
+	OBJ_SET
+		 POS -240.0 0.0 -3420.0 
+		 ROT 0.0 180.0 0.0 
+		 TYPE 8 
+		 OBJ_TYPE 0 
+	END_OBJ_SET
+
+	OBJ_SET
+		 POS -240.0 0.0 -3720.0 
+		 ROT 0.0 0.0 0.0 
+		 TYPE 8 
+		 OBJ_TYPE 0 
+	END_OBJ_SET
+
+	OBJ_SET
+		 POS 120.0 0.0 -3720.0 
+		 ROT 0.0 0.0 0.0 
+		 TYPE 8 
+		 OBJ_TYPE 0 
+	END_OBJ_SET
+
+	OBJ_SET
+		 POS -4020.0 0.0 -3900.0 
+		 ROT 0.0 270.0 0.0 
+		 TYPE 8 
+		 OBJ_TYPE 1 
+	END_OBJ_SET
+
+	OBJ_SET
+		 POS -4200.0 0.0 -4020.0 
+		 ROT 0.0 270.0 0.0 
+		 TYPE 8 
+		 OBJ_TYPE 0 
+	END_OBJ_SET
+
+	OBJ_SET
+		 POS -4200.0 0.0 -3780.0 
+		 ROT 0.0 270.0 0.0 
+		 TYPE 8 
+		 OBJ_TYPE 0 
+	END_OBJ_SET
+
+	OBJ_SET
+		 POS -6180.0 0.0 -3420.0 
+		 ROT 0.0 270.0 0.0 
+		 TYPE 8 
+		 OBJ_TYPE 0 
+	END_OBJ_SET
+
+	OBJ_SET
+		 POS -6480.0 0.0 -3180.0 
+		 ROT 0.0 270.0 0.0 
+		 TYPE 8 
+		 OBJ_TYPE 0 
+	END_OBJ_SET
+
+	OBJ_SET
+		 POS -6480.0 0.0 -3660.0 
+		 ROT 0.0 270.0 0.0 
+		 TYPE 8 
+		 OBJ_TYPE 0 
+	END_OBJ_SET
+
+	OBJ_SET
+		 POS -6480.0 0.0 -3420.0 
+		 ROT 0.0 270.0 0.0 
+		 TYPE 8 
+		 OBJ_TYPE 1 
+	END_OBJ_SET
+
+	OBJ_SET
+		 POS -6480.0 0.0 -4500.0 
+		 ROT 0.0 270.0 0.0 
+		 TYPE 8 
+		 OBJ_TYPE 1 
+	END_OBJ_SET
+
+	OBJ_SET
+		 POS -6180.0 0.0 -4500.0 
+		 ROT 0.0 270.0 0.0 
+		 TYPE 8 
+		 OBJ_TYPE 0 
+	END_OBJ_SET
+
+	OBJ_SET
+		 POS -6480.0 0.0 -4260.0 
+		 ROT 0.0 270.0 0.0 
+		 TYPE 8 
+		 OBJ_TYPE 0 
+	END_OBJ_SET
+
+	OBJ_SET
+		 POS -6480.0 0.0 -4740.0 
+		 ROT 0.0 270.0 0.0 
+		 TYPE 8 
+		 OBJ_TYPE 0 
+	END_OBJ_SET
+
+	OBJ_SET
+		 POS -7080.0 0.0 -5760.0 
+		 ROT 0.0 540.0 0.0 
+		 TYPE 8 
+		 OBJ_TYPE 1 
+	END_OBJ_SET
+
+	OBJ_SET
+		 POS -7260.0 0.0 -6060.0 
+		 ROT 0.0 180.0 0.0 
+		 TYPE 8 
+		 OBJ_TYPE 0 
+	END_OBJ_SET
+
+	OBJ_SET
+		 POS -6900.0 0.0 -6060.0 
+		 ROT 0.0 180.0 0.0 
+		 TYPE 8 
+		 OBJ_TYPE 0 
+	END_OBJ_SET
+
+	OBJ_SET
+		 POS -7080.0 0.0 -6900.0 
+		 ROT 0.0 180.0 0.0 
+		 TYPE 8 
+		 OBJ_TYPE 1 
+	END_OBJ_SET
+
+	OBJ_SET
+		 POS -7260.0 0.0 -7260.0 
+		 ROT 0.0 180.0 0.0 
+		 TYPE 8 
+		 OBJ_TYPE 0 
+	END_OBJ_SET
+
+	OBJ_SET
+		 POS -6900.0 0.0 -7260.0 
+		 ROT 0.0 180.0 0.0 
+		 TYPE 8 
+		 OBJ_TYPE 0 
+	END_OBJ_SET
+
+	OBJ_SET
+		 POS -7080.0 0.0 -9420.0 
+		 ROT 0.0 180.0 0.0 
+		 TYPE 8 
+		 OBJ_TYPE 0 
+	END_OBJ_SET
+
+	OBJ_SET
+		 POS -7380.0 0.0 -9540.0 
+		 ROT 0.0 180.0 0.0 
+		 TYPE 8 
+		 OBJ_TYPE 0 
+	END_OBJ_SET
+
+	OBJ_SET
+		 POS -7380.0 0.0 -9180.0 
+		 ROT 0.0 180.0 0.0 
+		 TYPE 8 
+		 OBJ_TYPE 0 
+	END_OBJ_SET
+
+	OBJ_SET
+		 POS -6780.0 0.0 -9180.0 
+		 ROT 0.0 180.0 0.0 
+		 TYPE 8 
+		 OBJ_TYPE 0 
+	END_OBJ_SET
+
+	OBJ_SET
+		 POS -6780.0 0.0 -9540.0 
+		 ROT 0.0 180.0 0.0 
+		 TYPE 8 
+		 OBJ_TYPE 0 
 	END_OBJ_SET
 
 	OBJ_SET
@@ -6350,48 +6546,6 @@ SCRIPT          // スクリプト開始
 	END_OBJ_SET
 
 	OBJ_SET
-		 POS -7380.0 0.0 -3060.0 
-		 ROT 0.0 0.0 0.0 
-		 TYPE 9 
-		 OBJ_TYPE 0 
-	END_OBJ_SET
-
-	OBJ_SET
-		 POS -7260.0 0.0 -3060.0 
-		 ROT 0.0 0.0 0.0 
-		 TYPE 9 
-		 OBJ_TYPE 0 
-	END_OBJ_SET
-
-	OBJ_SET
-		 POS -7260.0 0.0 -2940.0 
-		 ROT 0.0 0.0 0.0 
-		 TYPE 9 
-		 OBJ_TYPE 0 
-	END_OBJ_SET
-
-	OBJ_SET
-		 POS -7380.0 0.0 -2940.0 
-		 ROT 0.0 0.0 0.0 
-		 TYPE 9 
-		 OBJ_TYPE 0 
-	END_OBJ_SET
-
-	OBJ_SET
-		 POS -7140.0 0.0 -2940.0 
-		 ROT 0.0 0.0 0.0 
-		 TYPE 9 
-		 OBJ_TYPE 0 
-	END_OBJ_SET
-
-	OBJ_SET
-		 POS -7140.0 0.0 -3060.0 
-		 ROT 0.0 0.0 0.0 
-		 TYPE 9 
-		 OBJ_TYPE 0 
-	END_OBJ_SET
-
-	OBJ_SET
 		 POS -7020.0 0.0 -3060.0 
 		 ROT 0.0 0.0 0.0 
 		 TYPE 9 
@@ -6546,56 +6700,7 @@ SCRIPT          // スクリプト開始
 	END_OBJ_SET
 
 	OBJ_SET
-		 POS -7140.0 0.0 -3180.0 
-		 ROT 0.0 0.0 0.0 
-		 TYPE 9 
-		 OBJ_TYPE 0 
-	END_OBJ_SET
-
-	OBJ_SET
 		 POS -7020.0 0.0 -3180.0 
-		 ROT 0.0 0.0 0.0 
-		 TYPE 9 
-		 OBJ_TYPE 0 
-	END_OBJ_SET
-
-	OBJ_SET
-		 POS -7260.0 0.0 -3180.0 
-		 ROT 0.0 0.0 0.0 
-		 TYPE 9 
-		 OBJ_TYPE 0 
-	END_OBJ_SET
-
-	OBJ_SET
-		 POS -7380.0 0.0 -3180.0 
-		 ROT 0.0 0.0 0.0 
-		 TYPE 9 
-		 OBJ_TYPE 0 
-	END_OBJ_SET
-
-	OBJ_SET
-		 POS -7380.0 0.0 -3300.0 
-		 ROT 0.0 0.0 0.0 
-		 TYPE 9 
-		 OBJ_TYPE 0 
-	END_OBJ_SET
-
-	OBJ_SET
-		 POS -7260.0 0.0 -3300.0 
-		 ROT 0.0 0.0 0.0 
-		 TYPE 9 
-		 OBJ_TYPE 0 
-	END_OBJ_SET
-
-	OBJ_SET
-		 POS -7140.0 0.0 -3300.0 
-		 ROT 0.0 0.0 0.0 
-		 TYPE 9 
-		 OBJ_TYPE 0 
-	END_OBJ_SET
-
-	OBJ_SET
-		 POS -7020.0 0.0 -3300.0 
 		 ROT 0.0 0.0 0.0 
 		 TYPE 9 
 		 OBJ_TYPE 0 
@@ -6778,48 +6883,6 @@ SCRIPT          // スクリプト開始
 
 	OBJ_SET
 		 POS -7020.0 0.0 -3420.0 
-		 ROT 0.0 0.0 0.0 
-		 TYPE 9 
-		 OBJ_TYPE 0 
-	END_OBJ_SET
-
-	OBJ_SET
-		 POS -7140.0 0.0 -3420.0 
-		 ROT 0.0 0.0 0.0 
-		 TYPE 9 
-		 OBJ_TYPE 0 
-	END_OBJ_SET
-
-	OBJ_SET
-		 POS -7260.0 0.0 -3420.0 
-		 ROT 0.0 0.0 0.0 
-		 TYPE 9 
-		 OBJ_TYPE 0 
-	END_OBJ_SET
-
-	OBJ_SET
-		 POS -7380.0 0.0 -3420.0 
-		 ROT 0.0 0.0 0.0 
-		 TYPE 9 
-		 OBJ_TYPE 0 
-	END_OBJ_SET
-
-	OBJ_SET
-		 POS -7380.0 0.0 -3540.0 
-		 ROT 0.0 90.0 0.0 
-		 TYPE 9 
-		 OBJ_TYPE 0 
-	END_OBJ_SET
-
-	OBJ_SET
-		 POS -7260.0 0.0 -3540.0 
-		 ROT 0.0 0.0 0.0 
-		 TYPE 9 
-		 OBJ_TYPE 0 
-	END_OBJ_SET
-
-	OBJ_SET
-		 POS -7140.0 0.0 -3540.0 
 		 ROT 0.0 0.0 0.0 
 		 TYPE 9 
 		 OBJ_TYPE 0 
@@ -7036,49 +7099,7 @@ SCRIPT          // スクリプト開始
 	END_OBJ_SET
 
 	OBJ_SET
-		 POS -7140.0 0.0 -3660.0 
-		 ROT 0.0 0.0 0.0 
-		 TYPE 9 
-		 OBJ_TYPE 0 
-	END_OBJ_SET
-
-	OBJ_SET
 		 POS -7020.0 0.0 -3660.0 
-		 ROT 0.0 0.0 0.0 
-		 TYPE 9 
-		 OBJ_TYPE 0 
-	END_OBJ_SET
-
-	OBJ_SET
-		 POS -7260.0 0.0 -3660.0 
-		 ROT 0.0 0.0 0.0 
-		 TYPE 9 
-		 OBJ_TYPE 0 
-	END_OBJ_SET
-
-	OBJ_SET
-		 POS -7260.0 0.0 -3660.0 
-		 ROT 0.0 0.0 0.0 
-		 TYPE 9 
-		 OBJ_TYPE 0 
-	END_OBJ_SET
-
-	OBJ_SET
-		 POS -7380.0 0.0 -3660.0 
-		 ROT 0.0 0.0 0.0 
-		 TYPE 9 
-		 OBJ_TYPE 0 
-	END_OBJ_SET
-
-	OBJ_SET
-		 POS -7380.0 0.0 -3780.0 
-		 ROT 0.0 0.0 0.0 
-		 TYPE 9 
-		 OBJ_TYPE 0 
-	END_OBJ_SET
-
-	OBJ_SET
-		 POS -7260.0 0.0 -3780.0 
 		 ROT 0.0 0.0 0.0 
 		 TYPE 9 
 		 OBJ_TYPE 0 
@@ -7365,28 +7386,7 @@ SCRIPT          // スクリプト開始
 	END_OBJ_SET
 
 	OBJ_SET
-		 POS -7380.0 0.0 -4020.0 
-		 ROT 0.0 0.0 0.0 
-		 TYPE 9 
-		 OBJ_TYPE 0 
-	END_OBJ_SET
-
-	OBJ_SET
 		 POS -7380.0 0.0 -4140.0 
-		 ROT 0.0 0.0 0.0 
-		 TYPE 9 
-		 OBJ_TYPE 0 
-	END_OBJ_SET
-
-	OBJ_SET
-		 POS -7380.0 0.0 -3900.0 
-		 ROT 0.0 0.0 0.0 
-		 TYPE 9 
-		 OBJ_TYPE 0 
-	END_OBJ_SET
-
-	OBJ_SET
-		 POS -7260.0 0.0 -3900.0 
 		 ROT 0.0 0.0 0.0 
 		 TYPE 9 
 		 OBJ_TYPE 0 
@@ -8654,7 +8654,7 @@ SCRIPT          // スクリプト開始
 
 	OBJ_SET
 		 POS -7020.0 0.0 -5700.0 
-		 ROT 0.0 0.0 0.0 
+		 ROT 0.0 540.0 0.0 
 		 TYPE 9 
 		 OBJ_TYPE 0 
 	END_OBJ_SET
@@ -8703,7 +8703,7 @@ SCRIPT          // スクリプト開始
 
 	OBJ_SET
 		 POS -7140.0 0.0 -5700.0 
-		 ROT 0.0 0.0 0.0 
+		 ROT 0.0 540.0 0.0 
 		 TYPE 9 
 		 OBJ_TYPE 0 
 	END_OBJ_SET
@@ -15031,6 +15031,195 @@ SCRIPT          // スクリプト開始
 
 	OBJ_SET
 		 POS -6900.0 0.0 -10260.0 
+		 ROT 0.0 0.0 0.0 
+		 TYPE 9 
+		 OBJ_TYPE 0 
+	END_OBJ_SET
+
+	OBJ_SET
+		 POS -7260.0 0.0 -3900.0 
+		 ROT 0.0 0.0 0.0 
+		 TYPE 9 
+		 OBJ_TYPE 0 
+	END_OBJ_SET
+
+	OBJ_SET
+		 POS -7380.0 0.0 -3900.0 
+		 ROT 0.0 0.0 0.0 
+		 TYPE 9 
+		 OBJ_TYPE 0 
+	END_OBJ_SET
+
+	OBJ_SET
+		 POS -7380.0 0.0 -4020.0 
+		 ROT 0.0 0.0 0.0 
+		 TYPE 9 
+		 OBJ_TYPE 0 
+	END_OBJ_SET
+
+	OBJ_SET
+		 POS -7380.0 0.0 -3780.0 
+		 ROT 0.0 0.0 0.0 
+		 TYPE 9 
+		 OBJ_TYPE 0 
+	END_OBJ_SET
+
+	OBJ_SET
+		 POS -7260.0 0.0 -3780.0 
+		 ROT 0.0 0.0 0.0 
+		 TYPE 9 
+		 OBJ_TYPE 0 
+	END_OBJ_SET
+
+	OBJ_SET
+		 POS -7260.0 0.0 -3660.0 
+		 ROT 0.0 0.0 0.0 
+		 TYPE 9 
+		 OBJ_TYPE 0 
+	END_OBJ_SET
+
+	OBJ_SET
+		 POS -7140.0 0.0 -3660.0 
+		 ROT 0.0 0.0 0.0 
+		 TYPE 9 
+		 OBJ_TYPE 0 
+	END_OBJ_SET
+
+	OBJ_SET
+		 POS -7380.0 0.0 -3660.0 
+		 ROT 0.0 0.0 0.0 
+		 TYPE 9 
+		 OBJ_TYPE 0 
+	END_OBJ_SET
+
+	OBJ_SET
+		 POS -7380.0 0.0 -3540.0 
+		 ROT 0.0 0.0 0.0 
+		 TYPE 9 
+		 OBJ_TYPE 0 
+	END_OBJ_SET
+
+	OBJ_SET
+		 POS -7260.0 0.0 -3540.0 
+		 ROT 0.0 0.0 0.0 
+		 TYPE 9 
+		 OBJ_TYPE 0 
+	END_OBJ_SET
+
+	OBJ_SET
+		 POS -7140.0 0.0 -3540.0 
+		 ROT 0.0 0.0 0.0 
+		 TYPE 9 
+		 OBJ_TYPE 0 
+	END_OBJ_SET
+
+	OBJ_SET
+		 POS -7140.0 0.0 -3420.0 
+		 ROT 0.0 0.0 0.0 
+		 TYPE 9 
+		 OBJ_TYPE 0 
+	END_OBJ_SET
+
+	OBJ_SET
+		 POS -7260.0 0.0 -3420.0 
+		 ROT 0.0 0.0 0.0 
+		 TYPE 9 
+		 OBJ_TYPE 0 
+	END_OBJ_SET
+
+	OBJ_SET
+		 POS -7380.0 0.0 -3420.0 
+		 ROT 0.0 0.0 0.0 
+		 TYPE 9 
+		 OBJ_TYPE 0 
+	END_OBJ_SET
+
+	OBJ_SET
+		 POS -7380.0 0.0 -3300.0 
+		 ROT 0.0 0.0 0.0 
+		 TYPE 9 
+		 OBJ_TYPE 0 
+	END_OBJ_SET
+
+	OBJ_SET
+		 POS -7260.0 0.0 -3300.0 
+		 ROT 0.0 0.0 0.0 
+		 TYPE 9 
+		 OBJ_TYPE 0 
+	END_OBJ_SET
+
+	OBJ_SET
+		 POS -7140.0 0.0 -3300.0 
+		 ROT 0.0 0.0 0.0 
+		 TYPE 9 
+		 OBJ_TYPE 0 
+	END_OBJ_SET
+
+	OBJ_SET
+		 POS -7020.0 0.0 -3300.0 
+		 ROT 0.0 0.0 0.0 
+		 TYPE 9 
+		 OBJ_TYPE 0 
+	END_OBJ_SET
+
+	OBJ_SET
+		 POS -7140.0 0.0 -3180.0 
+		 ROT 0.0 0.0 0.0 
+		 TYPE 9 
+		 OBJ_TYPE 0 
+	END_OBJ_SET
+
+	OBJ_SET
+		 POS -7260.0 0.0 -3180.0 
+		 ROT 0.0 0.0 0.0 
+		 TYPE 9 
+		 OBJ_TYPE 0 
+	END_OBJ_SET
+
+	OBJ_SET
+		 POS -7380.0 0.0 -3180.0 
+		 ROT 0.0 0.0 0.0 
+		 TYPE 9 
+		 OBJ_TYPE 0 
+	END_OBJ_SET
+
+	OBJ_SET
+		 POS -7380.0 0.0 -3060.0 
+		 ROT 0.0 0.0 0.0 
+		 TYPE 9 
+		 OBJ_TYPE 0 
+	END_OBJ_SET
+
+	OBJ_SET
+		 POS -7260.0 0.0 -3060.0 
+		 ROT 0.0 0.0 0.0 
+		 TYPE 9 
+		 OBJ_TYPE 0 
+	END_OBJ_SET
+
+	OBJ_SET
+		 POS -7140.0 0.0 -3060.0 
+		 ROT 0.0 0.0 0.0 
+		 TYPE 9 
+		 OBJ_TYPE 0 
+	END_OBJ_SET
+
+	OBJ_SET
+		 POS -7140.0 0.0 -2940.0 
+		 ROT 0.0 0.0 0.0 
+		 TYPE 9 
+		 OBJ_TYPE 0 
+	END_OBJ_SET
+
+	OBJ_SET
+		 POS -7260.0 0.0 -2940.0 
+		 ROT 0.0 0.0 0.0 
+		 TYPE 9 
+		 OBJ_TYPE 0 
+	END_OBJ_SET
+
+	OBJ_SET
+		 POS -7380.0 0.0 -2940.0 
 		 ROT 0.0 0.0 0.0 
 		 TYPE 9 
 		 OBJ_TYPE 0 

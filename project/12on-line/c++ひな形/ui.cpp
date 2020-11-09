@@ -170,6 +170,10 @@ void CUi::Draw(void)
 	//デバイスの取得
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
 
+	// アルファテストのしきい値の変更
+	pDevice->SetRenderState(D3DRS_ALPHAREF, 200);
+
+
 	// 頂点バッファをデバイスのデータストリームにバインド
 	pDevice->SetStreamSource(0, m_pVtxBuff, 0, sizeof(VERTEX_2D));
 
@@ -186,6 +190,9 @@ void CUi::Draw(void)
 	pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, NUM_POLYGON);
 
 	pDevice->SetTexture(0, 0);
+
+	// アルファテストのしきい値をもどす
+	pDevice->SetRenderState(D3DRS_ALPHAREF, 50);
 }
 
 //==================================

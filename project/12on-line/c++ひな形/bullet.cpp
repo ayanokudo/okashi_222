@@ -23,13 +23,15 @@
 //*****************************
 // マクロ定義
 //*****************************
-#define BULLET_TEXTURE_PATH "./data/Textures/Catvoice_Barrett.png" //テクスチャのパス
+#define BULLET_TEXTURE_PATH_PLAYER "./data/Textures/Catvoice_Barrett.png" //テクスチャのパス
+#define BULLET_TEXTURE_PATH_ENEMY  "./data/Textures/Catvoice_Barrett.png" //テクスチャのパス
 #define PLAYER_BULLET_DAMAGE 100				//プレイヤーの攻撃力
-
+#define BULLET_SIZE_PLAYER 100                  // サイズ
+#define BULLET_SIZE_ENEMY 70                    // サイズ
 //******************************
 // 静的メンバ変数宣言
 //******************************
-LPDIRECT3DTEXTURE9  CBullet::m_pTexture = NULL; // テクスチャポインタ
+LPDIRECT3DTEXTURE9  CBullet::m_apTexture[BULLETUSER_MAX] = {}; // テクスチャポインタ
 
 //******************************
 // コンストラクタ
@@ -58,6 +60,10 @@ CBullet * CBullet::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 move, const i
 	// メモリの確保
 	CBullet *pBullet;
 	pBullet = new CBullet;
+
+	// バレットユーザーの設定
+	pBullet->m_user = user;
+
 	// 初期化
 	pBullet->Init();
 
@@ -66,10 +72,9 @@ CBullet * CBullet::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 move, const i
 	pBullet->SetObjType(OBJTYPE_BULLET); // オブジェクトタイプ
 	pBullet->m_move = move;              // 移動量
 	pBullet->m_nLife = nLife;            // 寿命
-	pBullet->m_user = user;              // バレットユーザー
 
 	// 当たり判定の生成
-	pBullet->m_pCollision = CCollision::CreateSphere(pos, BULLET_SIZE);
+	pBullet->m_pCollision = CCollision::CreateSphere(pos, BULLET_SIZE_PLAYER);
 	return pBullet;
 }
 
@@ -82,9 +87,8 @@ HRESULT CBullet::Load(void)
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
 
 	// テクスチャの生成
-	D3DXCreateTextureFromFile(pDevice, BULLET_TEXTURE_PATH, &m_pTexture);
-
-
+	D3DXCreateTextureFromFile(pDevice, BULLET_TEXTURE_PATH_PLAYER, &m_apTexture[BULLETUSER_PLAYER]);
+	D3DXCreateTextureFromFile(pDevice, BULLET_TEXTURE_PATH_ENEMY, &m_apTexture[BULLETUSER_ENEMY]);
 	return S_OK;
 }
 
@@ -93,10 +97,13 @@ HRESULT CBullet::Load(void)
 //******************************
 void CBullet::Unload(void)
 {
-	if (m_pTexture != NULL)
+	for (int nCnt = 0; nCnt < BULLETUSER_MAX; nCnt++)
 	{
-		m_pTexture->Release();
-		m_pTexture = NULL;
+		if (m_apTexture[nCnt] != NULL)
+		{
+			m_apTexture[nCnt]->Release();
+			m_apTexture[nCnt] = NULL;
+		}
 	}
 }
 
@@ -112,10 +119,22 @@ HRESULT CBullet::Init(void)
 	}
 
 	// テクスチャ割り当て
-	BindTexture(m_pTexture);
-	// サイズの設定
-	SetSize(D3DXVECTOR3(BULLET_SIZE, 0.0f, BULLET_SIZE));
+	BindTexture(m_apTexture[m_user]);
 
+	switch (m_user)
+	{
+	case BULLETUSER_PLAYER:
+		// サイズの設定
+		SetSize(D3DXVECTOR3(BULLET_SIZE_PLAYER, 0.0f, BULLET_SIZE_PLAYER));
+		break;
+	case BULLETUSER_ENEMY:
+		// サイズの設定
+		SetSize(D3DXVECTOR3(BULLET_SIZE_ENEMY, 0.0f, BULLET_SIZE_ENEMY));
+		break;
+	default:
+		break;
+	}
+	
 
 	return S_OK;
 }

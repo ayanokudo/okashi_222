@@ -34,11 +34,13 @@
 #define ENEMY_MOVE_RATE 0.05f
 #define ENEMY_RADIUS  100
 #define ENEMY_RANGE_RADIUS 600
-#define ENEMY_DIRECTION_RATE 0.1f              // 向きを変えるときの係数
+#define ENEMY_DIRECTION_RATE 0.1f  // 向きを変えるときの係数
+#define TAIL_RADIUS 50             // しっぽの半径
 
 #define ATTACK_PATTARN 3            // 攻撃パターン
 #define ATTACK_BASE 200             // 攻撃するタイミングのベース値
 #define BOSS_LIFE 1500              // ボスのライフ
+#define BULLET_INTERVAL 20          // 弾のインターバル
 
 //*****************************
 // 静的メンバ変数宣言
@@ -71,6 +73,10 @@ CBoss::CBoss() :CModelHierarchy(OBJTYPE_BOSS)
 	m_bRd = false;
 	m_nLife = 0;
 	memset(&m_pMotion, 0, sizeof(m_pMotion));
+	m_motionState = WALK;
+	m_bMotion = false;
+	m_nCntBullet = 0;
+	m_pCollisionTail = NULL;
 }
 
 //******************************
@@ -200,6 +206,7 @@ HRESULT CBoss::Init(void)
 
 	m_pRadiusColision = CCollision::CreateSphere(GetPos(), ENEMY_RANGE_RADIUS);
 
+	m_pCollisionTail = CCollision::CreateSphere(GetPos(), TAIL_RADIUS);
 	m_nLife = BOSS_LIFE;
 	// モーションの生成
 	for (int nCntAnim = 0; nCntAnim < MOTION_MAX; nCntAnim++)
@@ -262,13 +269,21 @@ void CBoss::Update(void)
 
 	// 座標のセット
 	SetPos(pos);
+
+
 	if (CManager::GetKeyboard()->GetKeyTrigger(DIK_RETURN))
 	{
-		m_pMotion[TAIL]->SetActiveAnimation(true);
+		SetMotion(BREARH);
+		m_bMotion = true;
 	}
 
-	CDebugLog::Init();
-	CDebugLog::Print("%f", GetModelData()[0].rot.y);
+	if (m_motionState == BREARH)
+	{
+		Brearh();
+	}
+
+	// モーション管理
+	MotionManager();
 }
 
 //******************************
@@ -335,4 +350,82 @@ void CBoss::Attack(void)
 
     }
 
+}
+
+//=============================================================================
+// ブレス
+// Author : 増澤 未来
+//=============================================================================
+void CBoss::Brearh(void)
+{
+
+	if (m_pMotion[BREARH]->GetKey() >= 3)
+	{
+		// カウントを進める
+		m_nCntBullet++;
+
+		if (m_nCntBullet%BULLET_INTERVAL == 0)
+		{//一定の間隔で球を出す
+
+			// 弾を出す方向
+			float fAngle = GetModelData()[0].rot.y + GetModelData()[1].rot.y + GetRot().y - D3DXToRadian(90);
+			// 弾の移動量
+			D3DXVECTOR3 bulletMove;
+			bulletMove.x = cosf(fAngle) * -BULLET_SPEED_ENEMY;
+			bulletMove.y = 0.0f;
+			bulletMove.z = sinf(fAngle) * BULLET_SPEED_ENEMY;
+			CBullet::Create(GetPos(), bulletMove, 100, CBullet::BULLETUSER_ENEMY);
+		}
+	}
+
+}
+
+void CBoss::Tail(void)
+{
+}
+
+//=============================================================================
+// モーション管理
+// Author : 増澤 未来
+//=============================================================================
+void CBoss::MotionManager(void)
+{
+	if (m_bMotion)
+	{// 攻撃フラグが立ってるとき
+		if (!m_pMotion[BREARH]->GetActiveAnimation() && !m_pMotion[SCRATCH]->GetActiveAnimation() && !m_pMotion[TAIL]->GetActiveAnimation())
+		{// 攻撃モーションがfalseの時
+			SetMotion(WALK);
+			m_bMotion = false;
+		}
+	}
+}
+
+//=============================================================================
+// モーションをすべてfalseにする
+// Author : 増澤 未来
+//=============================================================================
+void CBoss::MotionFalse(void)
+{
+	// アニメーションをすべてfalseにする
+	for (int nCntAnim = 0; nCntAnim < MOTION_MAX; nCntAnim++)
+	{
+		m_pMotion[nCntAnim]->SetActiveAnimation(false);
+	}
+}
+
+//=============================================================================
+// モーションセット
+// Author : 増澤 未来
+//=============================================================================
+void CBoss::SetMotion(MOTION motionState)
+{
+	m_motionState = motionState;
+
+	if (!m_pMotion[m_motionState]->GetActiveAnimation())
+	{// 現在のモーションがfalseのとき
+	 // モーションの初期化
+		MotionFalse();
+		// 現在のモーションをtrueにする
+		m_pMotion[m_motionState]->SetActiveAnimation(true);
+	}
 }

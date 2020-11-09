@@ -95,7 +95,7 @@ CEnemy *CEnemy::Create(D3DXVECTOR3 pos, ENEMY type)
 		pEnemy->SetPos(pos);
 		pEnemy->SetObjType(OBJTYPE_ENEMY); // オブジェクトタイプ
 	}
-	CParticle::Create(pos, D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(30.0f, 30.0f, 30.0f), 300,D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+	
 	return pEnemy;
 }
 

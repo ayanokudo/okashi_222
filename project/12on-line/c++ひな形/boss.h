@@ -63,6 +63,7 @@ public:
 	void Draw(void);
 	void Hit(int nDamage);
 	CCollision *GetCollision(void) { return m_pCollision; }
+
 private:
 	//Še“GƒLƒƒƒ‰‚Ì“®‚«‚Ìˆ—
 	void Move(void);

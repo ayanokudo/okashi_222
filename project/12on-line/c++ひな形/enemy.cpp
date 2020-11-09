@@ -25,8 +25,8 @@
 //*****************************
 // マクロ定義
 //*****************************
-#define ENEMY_CARRIER_MODEL_PATH	"./data/Texts/MouseData_Red.txt"	//運びネズミのモデル情報
-#define ENEMY_ESCORT_MODEL_PATH		"./data/Texts/MouseData_Bule.txt"	//守りネズミのモデル情報
+#define ENEMY_CARRIER_MODEL_PATH	"./data/Texts/MouseData_Bule.txt"	//運びネズミのモデル情報
+#define ENEMY_ESCORT_MODEL_PATH		"./data/Texts/MouseData_Red.txt"	//守りネズミのモデル情報
 
 #define WALK_ANIM_PATH  "data/Texts/nezumi_walk.txt"      // 歩きアニメーションのパス
 

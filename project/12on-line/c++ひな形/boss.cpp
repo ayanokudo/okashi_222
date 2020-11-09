@@ -38,7 +38,7 @@
 
 #define ATTACK_PATTARN 3            // 攻撃パターン
 #define ATTACK_BASE 200             // 攻撃するタイミングのベース値
-#define BOSS_LIFE 1500
+#define BOSS_LIFE 1500              // ボスのライフ
 
 //*****************************
 // 静的メンバ変数宣言
@@ -191,7 +191,6 @@ void CBoss::Unload(void)
 //******************************
 HRESULT CBoss::Init(void)
 {
-	// 運びネズミ
 	if (FAILED(CModelHierarchy::Init(m_nNumModel, &m_model[0], BOSS_PATH)))
 	{
 		return E_FAIL;

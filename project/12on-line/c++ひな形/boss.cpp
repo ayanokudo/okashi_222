@@ -30,14 +30,13 @@
 #define SCRATH_PATH  "data/Texts/BossMotion/Boss_Attack_hikkaki.txt"    // ひっかきモーションのパス
 #define TAIL_PATH    "data/Texts/BossMotion/Boss_Attack_kaiten.txt"     // しっぽモーションのパス
 
-
-
 #define ENEMY_SPEED 5
 #define ENEMY_MOVE_RATE 0.05f
 #define ENEMY_RADIUS  100
 #define ENEMY_RANGE_RADIUS 600
 #define ENEMY_DIRECTION_RATE 0.1f              // 向きを変えるときの係数
 
+#define ATTACK_PATTARN 3            // 攻撃パターン
 #define ATTACK_BASE 200             // 攻撃するタイミングのベース値
 
 //*****************************

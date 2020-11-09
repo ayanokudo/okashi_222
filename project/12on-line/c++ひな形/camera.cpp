@@ -21,7 +21,7 @@
 // マクロ定義
 //******************************
 #define CAMERA_DISTANCE 250    // カメラの距離
-#define CAMERA_LOCAL_POS D3DXVECTOR3(0.0f, 1700.0f, 200.0f) // 注視点からのローカル座標
+#define CAMERA_LOCAL_POS D3DXVECTOR3(0.0f, 1900.0f, 200.0f) // 注視点からのローカル座標
 #define CAMERA_LOOK_RATE 0.5f  // 注視点を少しずつ変えるときの係数
 #define PLAYER_DEATH_COUNT 40  // プレイヤーが死んでから生きてるプレイヤーの方に少しずつ注視点を変える用
 //******************************

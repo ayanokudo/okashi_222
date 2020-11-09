@@ -21,7 +21,7 @@
 // マクロ定義
 //******************************
 #define CAMERA_DISTANCE 250    // カメラの距離
-#define CAMERA_LOCAL_POS D3DXVECTOR3(0.0f, 1500.0f, 500.0f) // 注視点からのローカル座標
+#define CAMERA_LOCAL_POS D3DXVECTOR3(0.0f, 1700.0f, 200.0f) // 注視点からのローカル座標
 #define CAMERA_LOOK_RATE 0.5f  // 注視点を少しずつ変えるときの係数
 #define PLAYER_DEATH_COUNT 40  // プレイヤーが死んでから生きてるプレイヤーの方に少しずつ注視点を変える用
 //******************************
@@ -157,8 +157,11 @@ void CCamera::Update(void)
 		m_posR.x = playerPos[0].x + cosf(fAngle)*(fDistance / 2);
 		m_posR.z = playerPos[0].z + sinf(fAngle)*(fDistance / 2);
 
-		// 距離でカメラを引く
-		m_fViewExtent = fDistance;
+		if (fDistance >= 500)
+		{
+			// 距離でカメラを引く
+			m_fViewExtent = fDistance-500;
+		}
 
 		// カメラ位置の設定
 		m_posV = m_posR + CAMERA_LOCAL_POS;
@@ -181,7 +184,7 @@ void CCamera::Update(void)
 		}
 
 		// カメラ位置の設定
-		m_posV += m_posR + CAMERA_LOCAL_POS;
+		m_posV = m_posR + CAMERA_LOCAL_POS;
 		m_posV.y = CAMERA_LOCAL_POS.y + 300;
 	}
 	else if (!CPlayer::GetDeath(1))

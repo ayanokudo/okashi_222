@@ -19,6 +19,7 @@
 #include "bullet.h"
 #include "scratch.h"
 #include "motion.h"
+#include "particle.h"
 
 //*****************************
 // マクロ定義
@@ -93,7 +94,7 @@ CEnemy *CEnemy::Create(D3DXVECTOR3 pos, ENEMY type)
 		pEnemy->SetPos(pos);
 		pEnemy->SetObjType(OBJTYPE_ENEMY); // オブジェクトタイプ
 	}
-
+	CParticle::Create(pos, D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(30.0f, 30.0f, 30.0f), 300,D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 	return pEnemy;
 }
 
@@ -333,6 +334,10 @@ void CEnemy::Hit(int nDamage)
 //******************************
 void CEnemy::RangeDecisionCarrier(void)
 {
+
+	// プレイヤーとの距離*初期値は適当に大きい値を入れとく
+	float fDistance = 99999.0f;
+
 	//プレイヤーの情報を取得
 	for (int nCount = 0; nCount < MAX_PLAYER; nCount++)
 	{
@@ -347,19 +352,25 @@ void CEnemy::RangeDecisionCarrier(void)
 			//プレイヤーと敵の範囲の当たり判定
 			if (CCollision::CollisionSphere(m_pRadiusColision, pPlayer->GetCollision()))
 			{
-				//エネミーの移動をしなくする
-				m_bRd = true;
-				//向きの設定
-				m_fRotYDist = atan2((playerPos.x - enemyPos.x), (playerPos.z - enemyPos.z));
+				// 距離を比べる
+				if (sqrtf(powf(enemyPos.x - playerPos.x, 2) + powf(enemyPos.y - playerPos.y, 2) + powf(enemyPos.z - playerPos.z, 2)) <= fDistance)
+				{// 距離が近かった時
+					fDistance = sqrtf(powf(enemyPos.x - playerPos.x, 2) + powf(enemyPos.y - playerPos.y, 2) + powf(enemyPos.z - playerPos.z, 2));
+					
+					//エネミーの移動をしなくする
+					m_bRd = true;
+					//向きの設定
+					m_fRotYDist = atan2((playerPos.x - enemyPos.x), (playerPos.z - enemyPos.z));
 
-				// 移動量
-				D3DXVECTOR3 Move;
-				Move.x = sinf(m_fRotYDist)*10.0f;
-				Move.y = 0.0f;
-				Move.z = cosf(m_fRotYDist)*10.0f;
+					// 移動量
+					D3DXVECTOR3 Move;
+					Move.x = sinf(m_fRotYDist)*10.0f;
+					Move.y = 0.0f;
+					Move.z = cosf(m_fRotYDist)*10.0f;
 
-				m_moveDest -= Move;
-				break;
+					m_moveDest -= Move;
+				}
+				//break;
 			}
 			else
 			{
@@ -374,6 +385,8 @@ void CEnemy::RangeDecisionCarrier(void)
 //******************************
 void CEnemy::RangeDecisionEscort(void)
 {
+	// プレイヤーとの距離*初期値は適当に大きい値を入れとく
+	float fDistance = 99999.0f;
 	//プレイヤーの情報を取得
 	for (int nCount = 0; nCount < MAX_PLAYER; nCount++)
 	{
@@ -392,29 +405,34 @@ void CEnemy::RangeDecisionEscort(void)
 				//プレイヤーと敵の範囲の当たり判定
 				if (CCollision::CollisionSphere(m_pRadiusColision, pPlayer->GetCollision()))
 				{
-					m_bRd = true;
-					m_nCount++;
-					m_nCntAttack++;
-					//向きの設定
-					m_fRotYDist = atan2((playerPos.x - enemyPos.x), (playerPos.z - enemyPos.z));
+					// 距離を比べる
+					if (sqrtf(powf(enemyPos.x - playerPos.x, 2) + powf(enemyPos.y - playerPos.y, 2) + powf(enemyPos.z - playerPos.z, 2)) <= fDistance)
+					{// 距離が近かった時
+						fDistance = sqrtf(powf(enemyPos.x - playerPos.x, 2) + powf(enemyPos.y - playerPos.y, 2) + powf(enemyPos.z - playerPos.z, 2));
+						m_bRd = true;
+						m_nCount++;
+						m_nCntAttack++;
+						//向きの設定
+						m_fRotYDist = atan2((playerPos.x - enemyPos.x), (playerPos.z - enemyPos.z));
 
-					// 移動量
-					D3DXVECTOR3 Move;
-					Move.x = sinf(m_fRotYDist)*10.0f;
-					Move.y = 0.0f;
-					Move.z = cosf(m_fRotYDist)*10.0f;
+						// 移動量
+						D3DXVECTOR3 Move;
+						Move.x = sinf(m_fRotYDist)*10.0f;
+						Move.y = 0.0f;
+						Move.z = cosf(m_fRotYDist)*10.0f;
 
-					m_moveDest = Move;
-					//等間隔で打つ
-					if (m_nCount == 50)
-					{
-						// 攻撃の生成
-						CScratch::Create(enemyPos, m_fRotYDist + D3DXToRadian(90), CScratch::SCRATCHUSER_ENEMY, -1);
-						m_nCount = 0;
+						m_moveDest = Move;
+						//等間隔で打つ
+						if (m_nCount == 50)
+						{
+							// 攻撃の生成
+							CScratch::Create(enemyPos, m_fRotYDist + D3DXToRadian(90), CScratch::SCRATCHUSER_ENEMY, -1);
+							m_nCount = 0;
+						}
+						//弾の向きの設定
+						m_fRotYDist = atan2(-(playerPos.x - enemyPos.x), -(playerPos.z - enemyPos.z));
 					}
-					//弾の向きの設定
-					m_fRotYDist = atan2(-(playerPos.x - enemyPos.x), -(playerPos.z - enemyPos.z));
-					break;
+					//break;
 				}
 				else
 				{

@@ -105,6 +105,15 @@ void CLife::Update(void)
 // 描画処理
 //=======================================================================================
 void CLife::Draw(void)
-{
+{	
+	// デバイスの取得
+	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+	// アルファテストのしきい値の変更
+	pDevice->SetRenderState(D3DRS_ALPHAREF, 100);
+
+	// 描画
 	CPolygon::Draw();
+
+	// アルファテストのしきい値をもどす
+	pDevice->SetRenderState(D3DRS_ALPHAREF, 50);
 }

@@ -66,6 +66,7 @@ CBullet * CBullet::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 move, const i
 	pBullet->m_move = move;              // 移動量
 	pBullet->m_nLife = nLife;            // 寿命
 	pBullet->m_user = user;              // バレットユーザー
+
 	// 当たり判定の生成
 	pBullet->m_pCollision = CCollision::CreateSphere(pos, BULLET_SIZE);
 	return pBullet;

@@ -15,9 +15,8 @@
 //*****************************
 // マクロ定義
 //*****************************
-#define PARTICLE_BOX_TEXTURE_PATH "./data/Textures/particle001.png"    //テクスチャのパス
-#define PARTICLE_STAR_TEXTURE_PATH "./data/Textures/particle000.png"   //テクスチャのパス
-#define PARTICLE_CIRCLE_TEXTURE_PATH "./data/Textures/particle004.png" //テクスチャのパス
+#define PARTICLE_PAD_TEXTURE_PATH    "./data/Textures/pad.png"    //テクスチャのパス
+
 
 //******************************
 // 静的メンバ変数宣言
@@ -27,11 +26,11 @@ LPDIRECT3DTEXTURE9  CParticle::m_apTexture[PARTICLE_MAX] = {}; // テクスチャポイ
 //******************************
 // コンストラクタ
 //******************************
-CParticle::CParticle():CScene3d(OBJTYPE_PARTICLE)
+CParticle::CParticle():CBillboard(OBJTYPE_PARTICLE)
 {
 	m_move = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	m_nLife = 0;
-	m_type = PARTICLE_BOX;
+	m_type = PARTICLE_PAD;
 }
 
 //******************************
@@ -63,7 +62,7 @@ CParticle * CParticle::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 move, con
 	pParticle->m_nLife = nLife;              // 寿命
 	pParticle->SetColor(col);                // カラー
 	pParticle->SetObjType(OBJTYPE_PARTICLE); // オブジェクトタイプ
-	//pParticle->SetAngle(rand() % 360);       // 回転角度をランダム
+	pParticle->SetAngle(rand() % 360);       // 回転角度をランダム
 	pParticle->SetAddMode(true);             // 加算合成
 	return pParticle;
 }
@@ -77,9 +76,7 @@ HRESULT CParticle::Load(void)
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
 
 	// テクスチャの生成
-	D3DXCreateTextureFromFile(pDevice, PARTICLE_BOX_TEXTURE_PATH, &m_apTexture[PARTICLE_BOX]);
-	D3DXCreateTextureFromFile(pDevice, PARTICLE_STAR_TEXTURE_PATH, &m_apTexture[PARTICLE_STAR]);
-	D3DXCreateTextureFromFile(pDevice, PARTICLE_CIRCLE_TEXTURE_PATH, &m_apTexture[PARTICLE_CIRCLE]);
+	D3DXCreateTextureFromFile(pDevice, PARTICLE_PAD_TEXTURE_PATH, &m_apTexture[PARTICLE_PAD]);
 	return S_OK;
 }
 
@@ -105,7 +102,7 @@ void CParticle::Unload(void)
 //******************************
 HRESULT CParticle::Init(void)
 {
-	if (FAILED(CScene3d::Init()))
+	if (FAILED(CBillboard::Init()))
 	{
 		return E_FAIL;
 	}
@@ -122,7 +119,7 @@ HRESULT CParticle::Init(void)
 void CParticle::Uninit(void)
 {
 
-	CScene3d::Uninit();
+	CBillboard::Uninit();
 }
 
 //******************************
@@ -149,5 +146,5 @@ void CParticle::Draw(void)
 	// デバイスの取得
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
 
-	CScene3d::Draw();
+	CBillboard::Draw();
 }

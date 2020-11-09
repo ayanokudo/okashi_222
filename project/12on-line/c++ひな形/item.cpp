@@ -243,6 +243,10 @@ void CItem::CollisionItem(void)
 					if (CCollision::CollisionSphere(m_pCollision, pPlayer->GetCollision()))
 					{
 						m_nCandy--;
+						
+						// 回収率を増やす
+						CCollect::Collect();
+
 						Uninit();
 						break;
 					}
@@ -259,15 +263,18 @@ void CItem::CollisionItem(void)
 
 			if (pPlayer != NULL)
 			{
-				//プレイヤーの位置情報を取得
-				D3DXVECTOR3 playerPos = pPlayer->GetPos();
-				//プレイヤーと敵の範囲の当たり判定
-				if (CCollision::CollisionSphere(m_pCollision, pPlayer->GetCollision()))
+				if (!CPlayer::GetDeath(nCount))
 				{
-					//小判処理
-					CScore::AddScore(1000);
-					Uninit();
-					break;
+					//プレイヤーの位置情報を取得
+					D3DXVECTOR3 playerPos = pPlayer->GetPos();
+					//プレイヤーと敵の範囲の当たり判定
+					if (CCollision::CollisionSphere(m_pCollision, pPlayer->GetCollision()))
+					{
+						//小判処理
+						CScore::AddScore(1000);
+						Uninit();
+						break;
+					}
 				}
 			}
 		}
@@ -277,11 +284,12 @@ void CItem::CollisionItem(void)
 		//プレイヤーの情報を取得
 		for (int nCount = 0; nCount < MAX_PLAYER; nCount++)
 		{
-			if (!CPlayer::GetDeath(nCount))
-			{
-				CPlayer*pPlayer = CGame::GetPlayer(nCount);
 
-				if (pPlayer != NULL)
+			CPlayer*pPlayer = CGame::GetPlayer(nCount);
+
+			if (pPlayer != NULL)
+			{
+				if (!CPlayer::GetDeath(nCount))
 				{
 					//プレイヤーの位置情報を取得
 					D3DXVECTOR3 playerPos = pPlayer->GetPos();

@@ -25,8 +25,8 @@
 //*****************************
 // マクロ定義
 //*****************************
-#define PLAYER_1_PATH "data/Texts/CatData_Milk.txt"              //モデルのパス
-#define PLAYER_2_PATH "data/Texts/CatData_Choco.txt"              //モデルのパス
+#define PLAYER_1_PATH "data/Texts/CatData_Choco.txt"          // モデルのパス
+#define PLAYER_2_PATH "data/Texts/CatData_Milk.txt"           // モデルのパス
 
 #define WAIT_ANIM_PATH  "data/Texts/NekoMotion/Wait.txt"      // 待機アニメーションのパス
 #define WALK_ANIM_PATH  "data/Texts/NekoMotion/Walk.txt"      // 歩きアニメーションのパス
@@ -37,10 +37,10 @@
 #define PLAYER_SPEED 20                          // 移動スピード
 #define PLAYER_MOVE_RATE 0.2f                   // 移動の慣性の係数
 #define PLAYER_DIRECTION_RATE 0.1f              // 向きを変えるときの係数
-#define PLAYER_RADIUS 100						// プレイヤーの半径
-#define PLAYER_LIFE 9						// プレイヤー１のライフ
+#define PLAYER_RADIUS 100                       // プレイヤーの半径
+#define PLAYER_LIFE 9                           // プレイヤー１のライフ
 #define PLAYER_SPEED_MAX 5
-
+#define PLAYER_DASH_SPEED PLAYER_SPEED * 1.5f                 // ダッシュ時のスピード
 
 //*****************************
 // 静的メンバ変数宣言
@@ -100,7 +100,7 @@ CPlayer * CPlayer::Create(D3DXVECTOR3 pos, int nPlayerNum)
     pPlayer->Init();
 
     // 各値の代入・セット
-    pPlayer->SetPos(pos);
+    pPlayer->SetPos(pos);                // 座標
     pPlayer->SetObjType(OBJTYPE_PLAYER); // オブジェクトタイプ
     
     return pPlayer;
@@ -255,7 +255,6 @@ HRESULT CPlayer::Init(void)
 	}
 	// モーション状態の初期化
 	SetMotion(WAIT);
-
 
 	//プレイヤー１のライフ表示
 	if (m_nPlayerNum == 0)
@@ -621,7 +620,7 @@ void CPlayer::Attack(void)
 			D3DXVECTOR3 pos = GetPos();
 			pos.y += 10.0f;
 			// 弾の生成
-			CBullet::Create(pos, bulletMove, 300, CBullet::BULLETUSER_PLAYER);
+			CBullet::Create(pos, bulletMove, 300, CBullet::BULLETUSER_PLAYER)->SetRot(GetRot());
 		}
 	}
 }
@@ -719,7 +718,19 @@ void CPlayer::Dash(void)
 	}
 	else
 	{// モーションがダッシュ状態の時
+		D3DXVECTOR3 move;
+		move.x = cosf(GetRot().y + D3DXToRadian(-90))*-PLAYER_DASH_SPEED;
+		move.y = 0.0f;
+		move.z = sinf(GetRot().y + D3DXToRadian(-90))*PLAYER_DASH_SPEED;
 
+		// 座標
+		D3DXVECTOR3 pos = GetPos();
+
+		// 移動量を足す
+		pos += move;
+
+		// 座標のセット
+		SetPos(pos);
 	}
 }
 

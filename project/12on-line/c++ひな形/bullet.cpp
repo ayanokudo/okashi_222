@@ -18,6 +18,7 @@
 #include "game.h"
 #include "collision.h"
 #include "enemy.h"
+#include "boss.h"
 
 //*****************************
 // マクロ定義
@@ -183,6 +184,9 @@ void CBullet::CollisionBullet(BULLETUSER user)
 	case BULLETUSER_PLAYER:
 	{
 		CEnemy*pEnemy = (CEnemy*)CScene::GetTop(OBJTYPE_ENEMY);
+		CBoss*pBoss = (CBoss*)CScene::GetTop(OBJTYPE_BOSS);
+
+		//敵全般
 		while (pEnemy != NULL)
 		{
 
@@ -193,6 +197,18 @@ void CBullet::CollisionBullet(BULLETUSER user)
 				break;
 			}
 			pEnemy = (CEnemy*)pEnemy->GetNext();
+		}
+
+		//ボス
+		while (pBoss != NULL)
+		{
+			if (CCollision::CollisionSphere(m_pCollision, pBoss->GetCollision()))
+			{
+				pBoss->Hit(PLAYER_BULLET_DAMAGE);
+				Uninit();
+				break;
+			}
+			pBoss = (CBoss*)pBoss->GetNext();
 		}
 	}
 		break;

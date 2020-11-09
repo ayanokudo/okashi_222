@@ -18,6 +18,7 @@
 #include "game.h"
 #include "collision.h"
 #include "enemy.h"
+#include "boss.h"
 
 //*****************************
 // マクロ定義
@@ -272,6 +273,9 @@ void CScratch::CollisionScratch(SCRATCHUSER user)
 		if (m_bAttackPlayer)
 		{
 			CEnemy*pEnemy = (CEnemy*)CScene::GetTop(OBJTYPE_ENEMY);
+			CBoss*pBoss = (CBoss*)CScene::GetTop(OBJTYPE_BOSS);
+			
+			//敵全般
 			while (pEnemy != NULL)
 			{
 
@@ -283,6 +287,19 @@ void CScratch::CollisionScratch(SCRATCHUSER user)
 					break;
 				}
 				pEnemy = (CEnemy*)pEnemy->GetNext();
+			}
+
+			//ボス
+			while (pBoss != NULL)
+			{
+				if (CCollision::CollisionSphere(m_pCollision, pBoss->GetCollision()))
+				{
+					pBoss->Hit(SCRATCH_ATTACK_PLAYER);
+					m_bAttackPlayer = false;
+					//Uninit();
+					break;
+				}
+				pBoss = (CBoss*)pBoss->GetNext();
 			}
 
 		}

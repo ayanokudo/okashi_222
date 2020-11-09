@@ -38,6 +38,7 @@
 
 #define ATTACK_PATTARN 3            // 攻撃パターン
 #define ATTACK_BASE 200             // 攻撃するタイミングのベース値
+#define BOSS_LIFE 1500
 
 //*****************************
 // 静的メンバ変数宣言
@@ -200,6 +201,7 @@ HRESULT CBoss::Init(void)
 
 	m_pRadiusColision = CCollision::CreateSphere(GetPos(), ENEMY_RANGE_RADIUS);
 
+	m_nLife = BOSS_LIFE;
 	// モーションの生成
 	for (int nCntAnim = 0; nCntAnim < MOTION_MAX; nCntAnim++)
 	{
@@ -283,7 +285,13 @@ void CBoss::Draw(void)
 //******************************
 void CBoss::Hit(int nDamage)
 {
+	m_nLife -= nDamage;
 
+	if (m_nLife <= 0)
+	{
+		Uninit();
+		return;
+	}
 }
 
 ////******************************

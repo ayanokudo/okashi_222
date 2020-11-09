@@ -1,10 +1,10 @@
 //=============================================================================
 //
-// 床クラス [floor.cpp]
+// 家具クラス [furniture.cpp]
 // Author : AYANO KUDO
 //
 //=============================================================================
-#include "floor.h"
+#include "furniture.h"
 #include "manager.h"
 #include "renderer.h"
 #include "keyboard.h"
@@ -12,27 +12,27 @@
 //*****************************************************************************
 // マクロ定義
 //*****************************************************************************
-#define MODEL_PATH "./data/Models/floor000.x"    //モデルのパス
+#define MODEL_PATH "./data/Models/chest.x"    //モデルのパス
 
 //*****************************************************************************
 // 静的メンバ変数宣言
 //*****************************************************************************
-LPD3DXMESH   CFloor::m_pMeshModel = NULL;   	//メッシュ情報へのポインタ
-LPD3DXBUFFER CFloor::m_pBuffMatModel = NULL;	//マテリアル情報へのポインタ
-DWORD        CFloor::m_nNumMatModel = 0;	    //マテリアル情報の数
+LPD3DXMESH   CFumiture::m_pMeshModel = NULL;   	//メッシュ情報へのポインタ
+LPD3DXBUFFER CFumiture::m_pBuffMatModel = NULL;	//マテリアル情報へのポインタ
+DWORD        CFumiture::m_nNumMatModel = 0;	    //マテリアル情報の数
 
 //=============================================================================
-// [CFloor] コンストラクタ
+// [CFumiture] コンストラクタ
 //=============================================================================
-CFloor::CFloor() : CModel(OBJTYPE_FLOOR)
+CFumiture::CFumiture() : CModel(OBJTYPE_FURNITURE)
 {
-
+    m_type = TYPE::TYPE_CHAIR;
 }
 
 //=============================================================================
-// [~CFloor] デストラクタ
+// [~CFumiture] デストラクタ
 //=============================================================================
-CFloor::~CFloor()
+CFumiture::~CFumiture()
 {
 
 }
@@ -40,18 +40,19 @@ CFloor::~CFloor()
 //=============================================================================
 // [Create] オブジェクトの生成
 //=============================================================================
-CFloor * CFloor::Create(D3DXVECTOR3 pos, FLOOR type)
+CFumiture * CFumiture::Create(D3DXVECTOR3 pos)
 {
-    CFloor *pObject = NULL;
+    CFumiture *pObject = NULL;
     if (!pObject)
     {
-        pObject = new CFloor;
+        pObject = new CFumiture;
+        pObject->Init();
         // 初期化
-        pObject->Init(type);
+        pObject->Init();
         pObject->SetPos(pos);
 
         // 各値の代入・セット
-        pObject->SetObjType(OBJTYPE_FLOOR); // オブジェクトタイプ
+        pObject->SetObjType(OBJTYPE_FURNITURE); // オブジェクトタイプ
     }
     return pObject;
 }
@@ -59,7 +60,7 @@ CFloor * CFloor::Create(D3DXVECTOR3 pos, FLOOR type)
 //=============================================================================
 // [Load] テクスチャの読み込み
 //=============================================================================
-HRESULT CFloor::Load(void)
+HRESULT CFumiture::Load(void)
 {
     // デバイスの取得
     LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
@@ -79,7 +80,7 @@ HRESULT CFloor::Load(void)
 //=============================================================================
 // [Unload] テクスチャの破棄
 //=============================================================================
-void CFloor::Unload(void)
+void CFumiture::Unload(void)
 {
     //メッシュの破棄
     if (m_pMeshModel != NULL)
@@ -98,7 +99,7 @@ void CFloor::Unload(void)
 //=============================================================================
 // [Init] 初期化処理
 //=============================================================================
-HRESULT CFloor::Init(FLOOR type)
+HRESULT CFumiture::Init(void)
 {
     if (FAILED(CModel::Init()))
     {
@@ -114,7 +115,7 @@ HRESULT CFloor::Init(FLOOR type)
 //=============================================================================
 // [Uninit] 終了処理
 //=============================================================================
-void CFloor::Uninit(void)
+void CFumiture::Uninit(void)
 {
     CModel::Uninit();
 }
@@ -122,11 +123,12 @@ void CFloor::Uninit(void)
 //=============================================================================
 // [Update] 更新処理
 //=============================================================================
-void CFloor::Update(void)
+void CFumiture::Update(void)
 {
     CModel::Update();
 
-    D3DXMATERIAL*pMat;      //マテリアルデータへのポインタ
+    D3DXMATERIAL*pMat;  	//マテリアルデータへのポインタ
+
                             //マテリアルデータへのポインタを取得
     pMat = (D3DXMATERIAL*)m_pBuffMatModel->GetBufferPointer();
 
@@ -134,57 +136,55 @@ void CFloor::Update(void)
     {
         switch (m_type)
         {
-        case FLOOR_FLOORING:
+        case TYPE_CHAIR:
             //マテリアルのアンビエントにディフューズカラーを設定
             pMat[nCntMat].MatD3D.Diffuse = { 0,0,255,255 };
             break;
-        case FLOOR_MAT:
+        case TYPE_CHEST:
             //マテリアルのアンビエントにディフューズカラーを設定
             pMat[nCntMat].MatD3D.Diffuse = { 255,0,0,255 };
             break;
 
-        case FLOOR_KITCHEN:
-            //マテリアルのアンビエントにディフューズカラーを設定
-            pMat[nCntMat].MatD3D.Diffuse = { 0,255,0,255 };
-            break;
         }
     }
+
 }
 
 //=============================================================================
 // [Draw] 描画処理
 //=============================================================================
-void CFloor::Draw(void)
+void CFumiture::Draw(void)
 {
-    //CModel::Draw();
+    CModel::Draw();
 }
+
 
 //=============================================================================
 // [ChangeType] 種類の変更
 //=============================================================================
-void CFloor::ChangeType(void)
+void CFumiture::ChangeType(void)
 {
-    //int nType = m_type;
+    int nType = m_type;
 
-    //if (CManager::GetKeyboard()->GetKeyTrigger(DIK_3))
-    //{
-    //    nType -= 1;
-    //}
-    //if (CManager::GetKeyboard()->GetKeyTrigger(DIK_4))
-    //{
-    //    nType += 1;
-    //}
+    if (CManager::GetKeyboard()->GetKeyTrigger(DIK_3))
+    {
+        nType -= 1;
+    }
+    if (CManager::GetKeyboard()->GetKeyTrigger(DIK_4))
+    {
+        nType += 1;
+    }
 
-    //// 最大値以上/最小値以下になったらループ
-    //if (nType >= FLOOR_MAX)
-    //{
-    //    nType = FLOOR_FLOORING;
-    //}
-    //if (nType < FLOOR_FLOORING)
-    //{
-    //    nType = FLOOR_MAX - 1;
-    //}
+    // 最大値以上/最小値以下になったらループ
+    if (nType >= TYPE_MAX)
+    {
+        nType = TYPE_CHAIR;
+    }
+    if (nType < TYPE_CHAIR)
+    {
+        nType = TYPE_MAX - 1;
+    }
 
-    //// 種類を反映
-    //SetType((FLOOR)nType);
+    // 種類を反映
+    SetType((TYPE)nType);
 }

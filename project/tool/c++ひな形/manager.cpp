@@ -31,6 +31,7 @@
 #include "wall.h"
 #include "floor.h"
 #include "ui.h"
+#include "furniture.h"
 
 //=============================
 // 静的メンバ変数宣言
@@ -125,7 +126,7 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, bool bWindow)
     CEnemy::Load();     // 敵
     CWall::Load();      // 壁
     CFloor::Load();     // 床
-
+    CFumiture::Load();  // 家具
 
 	// ポーズ状態の時
 	return S_OK;
@@ -151,6 +152,7 @@ void CManager::Uninit(void)
     CEnemy::Unload();     // 敵
     CWall::Unload();      // 壁
     CFloor::Unload();     // 床
+    CFumiture::Unload();    // 家具
 
 	if (m_pSound != NULL)
 	{

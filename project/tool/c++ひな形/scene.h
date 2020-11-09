@@ -36,14 +36,17 @@ public:
         OBJTYPE_EFFECT,     // エフェクト
         OBJTYPE_EXPLOSION,  // 爆発
         OBJTYPE_PARTICLE,   // パーティクル
-        OBJTYPE_BOMB,       // ボム
-        OBJTYPE_UI,         // UI
-        OBJTYPE_FLOOR,      // 床
-        OBJTYPE_WALL,		// 壁
         OBJTYPE_PLAYER,     // プレイヤー
         OBJTYPE_ENEMY,      // エネミー
+        OBJTYPE_FLOOR,      // 床
+        OBJTYPE_WALL,       // 壁
+        OBJTYPE_FURNITURE,  // 家具
+        OBJTYPE_BOSS,       // エネミー
         OBJTYPE_ATTACK,     // 攻撃
+        OBJTYPE_BULLET,     // 攻撃
         OBJTYPE_ANIMATION,  // アニメーション
+        OBJTYPE_BOMB,       // ボム
+        OBJTYPE_UI,         // UI
         OBJTYPE_COLLISION,  // コリジョン
         OBJTYPE_MAX,        // タイプの最大数
     }OBJTYPE;

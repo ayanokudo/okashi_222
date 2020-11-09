@@ -18,6 +18,7 @@
 #include "collision.h"
 #include "wall.h"
 #include "floor.h"
+#include "furniture.h"
 
 //*****************************************************************************
 // マクロ定義
@@ -36,7 +37,6 @@ int CObject::m_ObjctNum = 0;
 CModel *CObject::m_pModel = NULL;
 CPlayer *CObject::m_pPlayer = NULL;
 CCursor *CObject::m_pCursor = NULL;                     // カーソルへのポインタ
-
 
 //=============================================================================
 // [CObject] コンストラクタ
@@ -180,7 +180,7 @@ void CObject::Draw(void)
 //=============================================================================
 CModel::OBJTYPE CObject::changeType(void)
 {
-    CModel::OBJTYPE type;
+    CModel::OBJTYPE type = OBJTYPE_NONE;
     switch (m_type)
     {
     case MODEL_PLAYER:
@@ -197,6 +197,10 @@ CModel::OBJTYPE CObject::changeType(void)
 
     case MODEL_FLOOR:
         type = OBJTYPE_FLOOR;
+        break;
+
+    case MODEL_FURNITURE:
+        type = OBJTYPE_FURNITURE;
         break;
 
     }
@@ -231,7 +235,7 @@ void CObject::Rotation(void)
                 pScene->GetType() == OBJTYPE_PLAYER ||
                 pScene->GetType() == OBJTYPE_ENEMY ||
                 pScene->GetType() == OBJTYPE_WALL ||
-                pScene->GetType() == OBJTYPE_FLOOR)
+                pScene->GetType() == OBJTYPE_FURNITURE)
             {
                 if (CCollision::CollisionSphere(m_pCollision, ((CModel*)pScene)->GetCollision()))
                 {
@@ -297,8 +301,9 @@ void CObject::ChangeType(void)
 
             if (pScene != m_pPlayer&&
                 pScene->GetType() == OBJTYPE_ENEMY ||
-                pScene->GetType() == OBJTYPE_WALL ||
-                pScene->GetType() == OBJTYPE_FLOOR)
+                pScene->GetType() == OBJTYPE_WALL  ||
+                pScene->GetType() == OBJTYPE_FLOOR ||
+                pScene->GetType() == OBJTYPE_FURNITURE)
             {
                 // カーソルが当たっていたら
                 if (CCollision::CollisionSphere(m_pCollision, ((CModel*)pScene)->GetCollision()))
@@ -341,7 +346,8 @@ void CObject::DeleteObject(void)
                 pScene->GetType() == OBJTYPE_PLAYER ||
                 pScene->GetType() == OBJTYPE_ENEMY ||
                 pScene->GetType() == OBJTYPE_WALL||
-                pScene->GetType() == OBJTYPE_FLOOR)
+                pScene->GetType() == OBJTYPE_FURNITURE
+/*                ||pScene->GetType() == OBJTYPE_FLOOR*/)
             {
                 if (CCollision::CollisionSphere(m_pCollision, ((CModel*)pScene)->GetCollision()))
                 {
@@ -382,8 +388,15 @@ void CObject::SetObject(D3DXVECTOR3 pos, D3DXVECTOR3 rot, CModel::OBJTYPE type ,
     case CModel::OBJTYPE_FLOOR:
         m_pModel = CFloor::Create(pos, (CFloor::FLOOR)ntype);
         break;
+
+    case CModel::OBJTYPE_FURNITURE:
+        m_pModel = CFumiture::Create(pos);
+        break;
     }
+    if (m_pModel)
+    {
     m_pModel->SetRot(rot);
+    }
 }
 
 //=============================================================================

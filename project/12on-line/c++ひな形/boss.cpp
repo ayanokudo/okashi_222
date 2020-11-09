@@ -18,6 +18,7 @@
 #include "player.h"
 #include "bullet.h"
 #include "motion.h"
+#include "score.h"
 #include "debug_log.h"
 
 //*****************************
@@ -303,6 +304,7 @@ void CBoss::Hit(int nDamage)
 
 	if (m_nLife <= 0)
 	{
+		CScore::AddScore(15000);
 		Uninit();
 		return;
 	}

@@ -21,6 +21,7 @@
 #include "motion.h"
 #include "particle.h"
 #include "item.h"
+#include "score.h"
 
 //*****************************
 // É}ÉNÉçíËã`
@@ -330,12 +331,14 @@ void CEnemy::Hit(int nDamage)
 		switch (m_type)
 		{
 		case ENEMY_CARRIER:
+			CScore::AddScore(1000);
 			if (rand() % 10 + 1 == 5)
 			{
 				CItem::Create(pos, CItem::KOBAN);
 			}
 			break;
 		case ENEMY_ESCORT:
+			CScore::AddScore(1000);
 			if (rand() % 10 + 1 == 5)
 			{
 				CItem::Create(pos, CItem::KOBAN);

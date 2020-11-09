@@ -20,11 +20,11 @@
 #define UI_TITLE_TEXTURE_PATH		"./data/Textures/title000.png"		// タイトルのパス
 #define UI_ENTER_TEXTURE_PATH		"./data/Textures/title000.png"		// エンターのパス
 #define UI_WARNING_TEXTURE_PATH		"./data/Textures/TIME.png"			// ワーニングのパス
-#define UI_ATTACK_NAIL_TEXTURE_PATH	"./data/Textures/Attack.png"		// ワーニングのパス
-#define UI_ATTACK_CRY_TEXTURE_PATH	"./data/Textures/Voice.png"			// ワーニングのパス
-#define UI_DASH_TEXTURE_PATH		"./data/Textures/Dash.png"			// ワーニングのパス
-#define UI_CHOCO_TEXTURE_PATH		"./data/Textures/chocolate_HP.png"	// ワーニングのパス
-#define UI_MILK_TEXTURE_PATH		"./data/Textures/Milk_HP.png"		// ワーニングのパス
+#define UI_ATTACK_NAIL_TEXTURE_PATH	"./data/Textures/Attack.png"		// アタックのパス
+#define UI_ATTACK_CRY_TEXTURE_PATH	"./data/Textures/Voice.png"			// 鳴き声のパス
+#define UI_DASH_TEXTURE_PATH		"./data/Textures/Dash.png"			// ダッシュのパス
+#define UI_CHOCO_TEXTURE_PATH		"./data/Textures/chocolate_HP.png"	// チョコのパス
+#define UI_MILK_TEXTURE_PATH		"./data/Textures/Milk_HP.png"		// ミルクのパス
 
 #define UI_SIZE 100
 //**********************************

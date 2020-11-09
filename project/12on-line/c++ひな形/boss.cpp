@@ -25,9 +25,9 @@
 //*****************************
 #define BOSS_PATH	"./data/Texts/BossData.txt"	//運びネズミのモデル情報
 
-#define WAIT_PATH    "data/Texts/BossMotion/Boss_taiki.txt"             // 待機モーションのパス
+#define WALK_PATH    "data/Texts/BossMotion/Boss_taiki.txt"             // 歩きモーションのパス
 #define BREATH_PATH  "data/Texts/BossMotion/Boss_Attack_breath.txt"     // ブレスモーションのパス
-#define SCRATH_PATH  "data/Texts/BossMotion/Boss_Attack_hikkaki.txt"    // 歩きモーションのパス
+#define SCRATH_PATH  "data/Texts/BossMotion/Boss_Attack_hikkaki.txt"    // ひっかきモーションのパス
 #define TAIL_PATH    "data/Texts/BossMotion/Boss_Attack_kaiten.txt"     // しっぽモーションのパス
 
 
@@ -50,9 +50,9 @@ CModel::Model CBoss::m_model[MAX_PARTS_NUM] = {};
 int CBoss::m_nNumModel = 0;
 char CBoss::m_achAnimPath[MOTION_MAX][64]
 {
-	{ WAIT_PATH },	  // 待機モーション
+	{ WALK_PATH },	  // 歩きモーション
 	{ BREATH_PATH },  // ブレスモーション
-	{ SCRATH_PATH },  // 歩きモーション
+	{ SCRATH_PATH },  // ひっかきモーション
 	{ TAIL_PATH },	  // しっぽモーション
 };
 
@@ -207,7 +207,7 @@ HRESULT CBoss::Init(void)
 		m_pMotion[nCntAnim] = CMotion::Create(GetPartsNum(), m_achAnimPath[nCntAnim], GetModelData());
 	}
 	
-	m_pMotion[WAIT]->SetActiveAnimation(true);
+	m_pMotion[WALK]->SetActiveAnimation(true);
 
 	return S_OK;
 }

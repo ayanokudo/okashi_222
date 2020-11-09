@@ -364,36 +364,39 @@ void CEnemy::RangeDecisionCarrier(void)
 
 		if (pPlayer != NULL)
 		{
-			//プレイヤーの位置情報を取得
-			D3DXVECTOR3 playerPos = pPlayer->GetPos();
-			//エネミーの位置情報を取得
-			D3DXVECTOR3 enemyPos = GetPos();
-			//プレイヤーと敵の範囲の当たり判定
-			if (CCollision::CollisionSphere(m_pRadiusColision, pPlayer->GetCollision()))
+			if (!CPlayer::GetDeath(nCount))
 			{
-				// 距離を比べる
-				if (sqrtf(powf(enemyPos.x - playerPos.x, 2) + powf(enemyPos.y - playerPos.y, 2) + powf(enemyPos.z - playerPos.z, 2)) <= fDistance)
-				{// 距離が近かった時
-					fDistance = sqrtf(powf(enemyPos.x - playerPos.x, 2) + powf(enemyPos.y - playerPos.y, 2) + powf(enemyPos.z - playerPos.z, 2));
-					
-					//エネミーの移動をしなくする
-					m_bRd = true;
-					//向きの設定
-					m_fRotYDist = atan2((playerPos.x - enemyPos.x), (playerPos.z - enemyPos.z));
+				//プレイヤーの位置情報を取得
+				D3DXVECTOR3 playerPos = pPlayer->GetPos();
+				//エネミーの位置情報を取得
+				D3DXVECTOR3 enemyPos = GetPos();
+				//プレイヤーと敵の範囲の当たり判定
+				if (CCollision::CollisionSphere(m_pRadiusColision, pPlayer->GetCollision()))
+				{
+					// 距離を比べる
+					if (sqrtf(powf(enemyPos.x - playerPos.x, 2) + powf(enemyPos.y - playerPos.y, 2) + powf(enemyPos.z - playerPos.z, 2)) <= fDistance)
+					{// 距離が近かった時
+						fDistance = sqrtf(powf(enemyPos.x - playerPos.x, 2) + powf(enemyPos.y - playerPos.y, 2) + powf(enemyPos.z - playerPos.z, 2));
 
-					// 移動量
-					D3DXVECTOR3 Move;
-					Move.x = sinf(m_fRotYDist)*10.0f;
-					Move.y = 0.0f;
-					Move.z = cosf(m_fRotYDist)*10.0f;
+						//エネミーの移動をしなくする
+						m_bRd = true;
+						//向きの設定
+						m_fRotYDist = atan2((playerPos.x - enemyPos.x), (playerPos.z - enemyPos.z));
 
-					m_moveDest -= Move;
+						// 移動量
+						D3DXVECTOR3 Move;
+						Move.x = sinf(m_fRotYDist)*10.0f;
+						Move.y = 0.0f;
+						Move.z = cosf(m_fRotYDist)*10.0f;
+
+						m_moveDest -= Move;
+					}
+					//break;
 				}
-				//break;
-			}
-			else
-			{
-				m_bRd = false;
+				else
+				{
+					m_bRd = false;
+				}
 			}
 		}
 	}

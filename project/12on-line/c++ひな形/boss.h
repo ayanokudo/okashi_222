@@ -34,7 +34,7 @@ public:
 	// モーション列挙
 	typedef enum
 	{
-		WAIT = 0,   // 待機
+		WALK = 0,   // 歩き
 		BREARH,     // ブレス
 		SCRATCH,    // ひっかき
 		TAIL,       // しっぽ
@@ -50,7 +50,6 @@ public:
 		TYPE_NUMB,					// 麻痺
 		TYPE_MAX
 	}BOSS;
-
 
 	//メンバ関数
 	CBoss();

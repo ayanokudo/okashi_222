@@ -130,6 +130,9 @@
     <ClCompile Include="life.cpp">
       <Filter>ソースファイル</Filter>
     </ClCompile>
+    <ClCompile Include="object.cpp">
+      <Filter>ソースファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bg.h">
@@ -259,6 +262,9 @@
       <Filter>ヘッダーファイル</Filter>
     </ClInclude>
     <ClInclude Include="life.h">
+      <Filter>ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="object.h">
       <Filter>ヘッダーファイル</Filter>
     </ClInclude>
   </ItemGroup>

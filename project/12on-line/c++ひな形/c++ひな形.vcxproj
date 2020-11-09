@@ -173,6 +173,7 @@
     <ClCompile Include="model_hierarchy.cpp" />
     <ClCompile Include="mouse.cpp" />
     <ClCompile Include="number.cpp" />
+    <ClCompile Include="object.cpp" />
     <ClCompile Include="particle.cpp" />
     <ClCompile Include="pause.cpp" />
     <ClCompile Include="player.cpp" />
@@ -218,6 +219,7 @@
     <ClInclude Include="model_hierarchy.h" />
     <ClInclude Include="mouse.h" />
     <ClInclude Include="number.h" />
+    <ClInclude Include="object.h" />
     <ClInclude Include="particle.h" />
     <ClInclude Include="pause.h" />
     <ClInclude Include="player.h" />

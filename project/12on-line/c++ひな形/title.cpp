@@ -186,6 +186,7 @@ void CTitle::Update(void)
 		if (m_nMenu == nCntMenu)
 		{// ‘I‚ñ‚Å‚é‚Æ‚«
 			m_apPolygon[nCntMenu]->SetColor(MENU_ENTER_COL);
+			m_apPolygon[nCntMenu]->Flashing();
 		}
 		else
 		{// ‘I‚ñ‚Å‚È‚¢‚Æ‚«

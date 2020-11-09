@@ -107,35 +107,8 @@ HRESULT CGame::Init(void)
 	// タイムの生成
 	m_pTime = CTime::Create();
 
-	// アタックのUIの生成
-	m_pUi[0] = CUi::Create(D3DXVECTOR3(550.0f, 660.0f, 0.0f),
-		D3DXVECTOR3(45, 45, 0),
-		D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
-		CUi::UI_ATTACK_NAIL);
-
-	// ダッシュのUIの生成
-	m_pUi[1] = CUi::Create(D3DXVECTOR3(640.0f, 660.0f, 0.0f),
-		D3DXVECTOR3(45, 45, 0),
-		D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
-		CUi::UI_ATTACK_CRY);
-
-	// ダッシュのUIの生成
-	m_pUi[2] = CUi::Create(D3DXVECTOR3(730.0f, 660.0f, 0.0f),
-		D3DXVECTOR3(45, 45, 0),
-		D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
-		CUi::UI_DASH);
-
-	// アタックのUIの生成
-	m_pUi[3] = CUi::Create(D3DXVECTOR3(80.0f, 630.0f, 0.0f),
-		D3DXVECTOR3(60, 60, 0),
-		D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
-		CUi::UI_CHOCO);
-
-	// ダッシュのUIの生成
-	m_pUi[4] = CUi::Create(D3DXVECTOR3(1200.0f, 630.0f, 0.0f),
-		D3DXVECTOR3(60, 60, 0),
-		D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
-		CUi::UI_MILK);
+	//UIの生成
+	Ui();
 
     // ステージファイルの読み込み
     CFile::Read();
@@ -145,7 +118,7 @@ HRESULT CGame::Init(void)
 
 	CBoss::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 
-	CCollect::Create();
+	//CCollect::Create();
 	return S_OK;
 }
 
@@ -211,4 +184,40 @@ void CGame::Draw(void)
 			m_pUi[nCount]->Draw();
 		}
 	}
+}
+
+//=============================
+// UIの生成処理
+//=============================
+void CGame::Ui(void)
+{
+	// アタックのUIの生成
+	m_pUi[0] = CUi::Create(D3DXVECTOR3(550.0f, 660.0f, 0.0f),
+		D3DXVECTOR3(45, 45, 0),
+		D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
+		CUi::UI_ATTACK_NAIL);
+
+	// ダッシュのUIの生成
+	m_pUi[1] = CUi::Create(D3DXVECTOR3(640.0f, 660.0f, 0.0f),
+		D3DXVECTOR3(45, 45, 0),
+		D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
+		CUi::UI_ATTACK_CRY);
+
+	// ダッシュのUIの生成
+	m_pUi[2] = CUi::Create(D3DXVECTOR3(730.0f, 660.0f, 0.0f),
+		D3DXVECTOR3(45, 45, 0),
+		D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
+		CUi::UI_DASH);
+
+	// アタックのUIの生成
+	m_pUi[3] = CUi::Create(D3DXVECTOR3(80.0f, 630.0f, 0.0f),
+		D3DXVECTOR3(60, 60, 0),
+		D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
+		CUi::UI_CHOCO);
+
+	// ダッシュのUIの生成
+	m_pUi[4] = CUi::Create(D3DXVECTOR3(1200.0f, 630.0f, 0.0f),
+		D3DXVECTOR3(60, 60, 0),
+		D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
+		CUi::UI_MILK);
 }

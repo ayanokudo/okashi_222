@@ -47,6 +47,7 @@ void CFile::Read(void)
     D3DXVECTOR3 pos;            // 読み込んだ位置
     D3DXVECTOR3 rot;            // 読み込んだ角度
     CModel::OBJTYPE type;
+    int ntype;                 // オブジェクトごとのタイプ
 
     if (pFile)
     {// ファイル読み込み
@@ -85,12 +86,16 @@ void CFile::Read(void)
                         {
                             sscanf(aRead, "%s %d", &aDie, &type);//位置を格納
                         }
+                        if (strcmp(aHead, "OBJ_TYPE") == 0)
+                        {
+                            sscanf(aRead, "%s %d", &aDie, &ntype);//オブジェクトのタイプをを格納
+                        }
                     }
-                    SetObject(pos, D3DXToRadian(rot), type);
+                    SetObject(pos, D3DXToRadian(rot), type, ntype);
                 }
             }
+            fclose(pFile);
         }
-    fclose(pFile);
     }
 }
 
@@ -100,12 +105,12 @@ void CFile::Read(void)
 // 引数
 //pos : 位置
 //=============================================================================
-void CFile::SetObject(D3DXVECTOR3 pos, D3DXVECTOR3 rot, CModel::OBJTYPE type)
+void CFile::SetObject(D3DXVECTOR3 pos, D3DXVECTOR3 rot, CModel::OBJTYPE type, int ntype)
 {
     switch (type)
     {
     case CModel::OBJTYPE_ENEMY:
-        CEnemy::Create(pos, CEnemy::ENEMY_CARRIER);
+        CEnemy::Create(pos, (CEnemy::ENEMY)ntype);
         break;
 
     case CModel::OBJTYPE_WALL:
@@ -113,9 +118,8 @@ void CFile::SetObject(D3DXVECTOR3 pos, D3DXVECTOR3 rot, CModel::OBJTYPE type)
         break;
         
     case CModel::OBJTYPE_FLOOR:
-        CFloor::Create(pos,rot, FLOOR_SIZE, CFloor::FLOOR_FLOORING);
+        CFloor::Create(pos,rot, FLOOR_SIZE, (CFloor::FLOOR)ntype);
         break;
     }
-    //pModel->SetRot(rot);
 }
 

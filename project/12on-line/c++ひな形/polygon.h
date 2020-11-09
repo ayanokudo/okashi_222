@@ -22,12 +22,17 @@
 class CPolygon
 {
 public:
+	typedef enum
+	{
+		FLASH_STATE_NONE = 0,
+		FLASH_STATE_IN,
+		FLASH_STATE_OUT,
+		FLASH_STATE_MAX
+	}FLASH_STATE;
 	// メンバ関数
 	CPolygon();
 	~CPolygon();
 	static CPolygon *Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size, const D3DXCOLOR col= D3DXCOLOR(1.0f,1.0f,1.0f,1.0f));
-	static HRESULT Load(void);
-	static void Unload(void);
 	HRESULT Init(const D3DXVECTOR3 pos, const D3DXVECTOR3 size, const D3DXCOLOR col);
 	void Uninit(void);
 	void Update(void);
@@ -35,11 +40,15 @@ public:
 	void SetTexture(LPDIRECT3DTEXTURE9 pTexture) { m_pTexture = pTexture; }
 	void SetVertexPos(D3DXVECTOR3 pos[NUM_VERTEX]);
 	void SetColor(const D3DXCOLOR col);
+	void Flashing(void);
 private:
 
 	// メンバ変数
 	LPDIRECT3DTEXTURE9 m_pTexture;	 // テクスチャへのポインタ
 	LPDIRECT3DVERTEXBUFFER9   m_pVtxBuff;	 // 頂点バッファへのポイン
+	D3DXCOLOR m_col;
+	bool m_bFlash;
+	FLASH_STATE m_FlashState;
 };
 
 #endif

@@ -36,7 +36,7 @@
 #define ENEMY_RADIUS  100
 #define ENEMY_RANGE_RADIUS 600
 #define ENEMY_DIRECTION_RATE 0.1f  // 向きを変えるときの係数
-#define TAIL_RADIUS 50             // しっぽの半径
+#define TAIL_RADIUS 100             // しっぽの半径
 
 #define ATTACK_PATTARN 3            // 攻撃パターン
 #define ATTACK_BASE 200             // 攻撃するタイミングのベース値
@@ -215,7 +215,7 @@ HRESULT CBoss::Init(void)
 		m_pMotion[nCntAnim] = CMotion::Create(GetPartsNum(), m_achAnimPath[nCntAnim], GetModelData());
 	}
 	
-	m_pMotion[WALK]->SetActiveAnimation(true);
+	SetMotion(WALK);
 
 	return S_OK;
 }
@@ -233,6 +233,10 @@ void CBoss::Uninit(void)
 	if (m_pRadiusColision != NULL)
 	{
 		m_pRadiusColision->Uninit();
+	}
+	if (m_pCollisionTail != NULL)
+	{
+		m_pCollisionTail->Uninit();
 	}
 
 	CModelHierarchy::Uninit();
@@ -274,7 +278,7 @@ void CBoss::Update(void)
 
 	if (CManager::GetKeyboard()->GetKeyTrigger(DIK_RETURN))
 	{
-		SetMotion(BREARH);
+		SetMotion(TAIL);
 		m_bMotion = true;
 	}
 
@@ -282,6 +286,17 @@ void CBoss::Update(void)
 	{
 		Brearh();
 	}
+
+	// しっぽの位置に当たり判定を置く
+	// 角度の算出
+	float fAngleTail = (GetModelData()[6].rot.y + GetModelData()[0].rot.y + GetRot().y)+D3DXToRadian(90);
+	// 座標の算出
+	D3DXVECTOR3 tailPos;
+	tailPos.x = GetPos().x + cosf(fAngleTail)*-TAIL_RADIUS * 2;
+	tailPos.y = GetPos().y;
+	tailPos.z = GetPos().z + sinf(fAngleTail)*TAIL_RADIUS * 2;
+	// 座標の設定
+	m_pCollisionTail->SetPos(tailPos);
 
 	// モーション管理
 	MotionManager();

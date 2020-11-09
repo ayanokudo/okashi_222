@@ -27,21 +27,21 @@ CHARACTERSET
 	PARTSSET
 		INDEX = 0					# 上半身
 		PARENT = -1					# (親)NULL
-		POS = 0.0 50.0 0.0
+		POS = 0.0 25.0 0.0
 		ROT = 0.0 0.0 0.0
 	END_PARTSSET
 
 	PARTSSET
 		INDEX = 1					# 下半身
 		PARENT = 0					# (親)上半身
-		POS = 0.0 4.0 14.0
+		POS = 0.0 0.0 26.0
 		ROT = 0.0 0.0 0.0
 	END_PARTSSET
 
 	PARTSSET
 		INDEX = 2					# 尻尾
 		PARENT = 1					# (親)下半身
-		POS = 0.0 0.0 16.0
+		POS = 0.0 0.0 20.0
 		ROT = 0.0 0.0 0.0
 	END_PARTSSET
 END_CHARACTERSET

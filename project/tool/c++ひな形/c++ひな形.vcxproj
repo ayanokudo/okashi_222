@@ -156,6 +156,7 @@
     <ClCompile Include="fade.cpp" />
     <ClCompile Include="file.cpp" />
     <ClCompile Include="floor.cpp" />
+    <ClCompile Include="furniture.cpp" />
     <ClCompile Include="grid.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="imgui\imgui.cpp" />
@@ -202,6 +203,7 @@
     <ClInclude Include="fade.h" />
     <ClInclude Include="file.h" />
     <ClInclude Include="floor.h" />
+    <ClInclude Include="furniture.h" />
     <ClInclude Include="grid.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="imgui\imconfig.h" />

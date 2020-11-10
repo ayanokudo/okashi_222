@@ -97,7 +97,7 @@ HRESULT CGame::Init(void)
 	
 	// エネミーの生成
 	m_pEnemy = CEnemy::Create(D3DXVECTOR3(0.0f, 0.0f, -800.0f), CEnemy::ENEMY_ESCORT);
-
+	CEnemy::Create(D3DXVECTOR3(0.0f, 0.0f, -850.0f), CEnemy::ENEMY_ESCORT);
     // ボスの生成
     m_pBoss = CBoss::Create(D3DXVECTOR3(100.0f, 0.0f, -500.0f));
 	// アイテムの生成

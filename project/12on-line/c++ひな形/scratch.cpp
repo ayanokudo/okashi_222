@@ -264,7 +264,7 @@ void CScratch::CollisionScratch(SCRATCHUSER user)
 							pPlayer->Hit(SCRATCH_ATTACK_ENEMY);
 							m_bAttackEnemy = false;
 							//Uninit();
-							break;
+							//break;
 						}
 					}
 				}
@@ -288,7 +288,7 @@ void CScratch::CollisionScratch(SCRATCHUSER user)
 					pEnemy->Hit(SCRATCH_ATTACK_PLAYER);
 					m_bAttackPlayer = false;
 					//Uninit();
-					break;
+					//break;
 				}
 				pEnemy = (CEnemy*)pEnemy->GetNext();
 			}
@@ -301,6 +301,7 @@ void CScratch::CollisionScratch(SCRATCHUSER user)
 					pBoss->Hit(SCRATCH_ATTACK_PLAYER);
 					m_bAttackPlayer = false;
 					//Uninit();
+					//
 					break;
 				}
 				pBoss = (CBoss*)pBoss->GetNext();

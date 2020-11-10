@@ -26,10 +26,11 @@ class CObject : public CScene
 {
     typedef enum
     {
-        MODEL_PLAYER=0, // プレイヤー
-        MODEL_ENEMY,    // 敵
-        MODEL_WALL,     // 壁
-        MODEL_FLOOR,    // 床
+        MODEL_PLAYER=0,     // プレイヤー
+        MODEL_ENEMY,        // 敵
+        MODEL_WALL,         // 壁
+        MODEL_FLOOR,        // 床
+        MODEL_FURNITURE,    // 家具
         MODEL_MAX
     }MODEL;      // モデルのファイル名
 

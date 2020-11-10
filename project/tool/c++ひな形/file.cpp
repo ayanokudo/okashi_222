@@ -140,6 +140,9 @@ void CFile::Writing(void)
         // 壁オブジェクト書き込み
         ObjctWriting(pFile, CScene::OBJTYPE_WALL);
 
+        // 家具オブジェクト書き込み
+        ObjctWriting(pFile, CScene::OBJTYPE_FURNITURE);
+
         fprintf(pFile, "\n");
         fprintf(pFile, "END_SCRIPT      // スクリプト終了");   // スクリプト終了
         fclose(pFile);                  // ファイル書き込み終了

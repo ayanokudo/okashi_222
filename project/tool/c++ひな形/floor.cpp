@@ -156,7 +156,7 @@ void CFloor::Update(void)
 //=============================================================================
 void CFloor::Draw(void)
 {
-    //CModel::Draw();
+    CModel::Draw();
 }
 
 //=============================================================================
@@ -164,27 +164,27 @@ void CFloor::Draw(void)
 //=============================================================================
 void CFloor::ChangeType(void)
 {
-    //int nType = m_type;
+    int nType = m_type;
 
-    //if (CManager::GetKeyboard()->GetKeyTrigger(DIK_3))
-    //{
-    //    nType -= 1;
-    //}
-    //if (CManager::GetKeyboard()->GetKeyTrigger(DIK_4))
-    //{
-    //    nType += 1;
-    //}
+    if (CManager::GetKeyboard()->GetKeyTrigger(DIK_3))
+    {
+        nType -= 1;
+    }
+    if (CManager::GetKeyboard()->GetKeyTrigger(DIK_4))
+    {
+        nType += 1;
+    }
 
-    //// 最大値以上/最小値以下になったらループ
-    //if (nType >= FLOOR_MAX)
-    //{
-    //    nType = FLOOR_FLOORING;
-    //}
-    //if (nType < FLOOR_FLOORING)
-    //{
-    //    nType = FLOOR_MAX - 1;
-    //}
+    // 最大値以上/最小値以下になったらループ
+    if (nType >= FLOOR_MAX)
+    {
+        nType = FLOOR_FLOORING;
+    }
+    if (nType < FLOOR_FLOORING)
+    {
+        nType = FLOOR_MAX - 1;
+    }
 
-    //// 種類を反映
-    //SetType((FLOOR)nType);
+    // 種類を反映
+    SetType((FLOOR)nType);
 }

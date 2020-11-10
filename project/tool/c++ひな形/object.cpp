@@ -347,7 +347,7 @@ void CObject::DeleteObject(void)
                 pScene->GetType() == OBJTYPE_ENEMY ||
                 pScene->GetType() == OBJTYPE_WALL||
                 pScene->GetType() == OBJTYPE_FURNITURE
-/*                ||pScene->GetType() == OBJTYPE_FLOOR*/)
+                ||pScene->GetType() == OBJTYPE_FLOOR)
             {
                 if (CCollision::CollisionSphere(m_pCollision, ((CModel*)pScene)->GetCollision()))
                 {

@@ -184,21 +184,25 @@ void CScratch::Update(void)
 	case SCRATCHUSER_ENEMY:
 	{
 		// プレイヤーの取得
-		CEnemy*pEnemy = CGame::GetEnemy();
+		CEnemy*pEnemy = (CEnemy*)GetTop(OBJTYPE_ENEMY);
 		if (pEnemy != NULL)
 		{
-			// 座標の設定
-			D3DXVECTOR3 pos;
-			float fRotY = pEnemy->GetRot().y - D3DXToRadian(90);
-			pos.x = pEnemy->GetPos().x + cosf(fRotY) * -SCRATCH_SIZE_ENEMY;
-			pos.y = pEnemy->GetPos().y + SCRATCH_HEIGHT;
-			pos.z = pEnemy->GetPos().z + sinf(fRotY) * SCRATCH_SIZE_ENEMY;
-			SetPos(pos);
+			if (m_nPlayerNum == pEnemy->GetID())
+			{
+				// 座標の設定
+				D3DXVECTOR3 pos;
+				float fRotY = pEnemy->GetRot().y - D3DXToRadian(90);
+				pos.x = pEnemy->GetPos().x + cosf(fRotY) * -SCRATCH_SIZE_ENEMY;
+				pos.y = pEnemy->GetPos().y + SCRATCH_HEIGHT;
+				pos.z = pEnemy->GetPos().z + sinf(fRotY) * SCRATCH_SIZE_ENEMY;
+				SetPos(pos);
 
-			// 角度
-			SetRot(D3DXVECTOR3(0.0f, fRotY + D3DXToRadian(90), 0.0f));
-			m_pCollision->SetPos(D3DXVECTOR3(pos.x, pos.y - SCRATCH_HEIGHT, pos.z));
+				// 角度
+				SetRot(D3DXVECTOR3(0.0f, fRotY + D3DXToRadian(90), 0.0f));
+				m_pCollision->SetPos(D3DXVECTOR3(pos.x, pos.y - SCRATCH_HEIGHT, pos.z));
+			}
 		}
+		pEnemy = (CEnemy*)pEnemy->GetNext();
 	}
 		break;
 	case SCRATCHUSER_PLAYER:

@@ -22,6 +22,7 @@
 #include "particle.h"
 #include "item.h"
 #include "score.h"
+#include "scene.h"
 
 //*****************************
 // ƒ}ƒNƒ’è‹`
@@ -451,7 +452,7 @@ void CEnemy::RangeDecisionEscort(void)
 						if (m_nCount == 50)
 						{
 							// UŒ‚‚Ì¶¬
-							CScratch::Create(enemyPos, m_fRotYDist + D3DXToRadian(90), CScratch::SCRATCHUSER_ENEMY, -1);
+							CScratch::Create(enemyPos, m_fRotYDist + D3DXToRadian(90), CScratch::SCRATCHUSER_ENEMY,GetID());
 							m_nCount = 0;
 						}
 						//’e‚ÌŒü‚«‚Ìİ’è

@@ -185,7 +185,7 @@ void CScratch::Update(void)
 	{
 		// ƒvƒŒƒCƒ„[‚ÌŽæ“¾
 		CEnemy*pEnemy = (CEnemy*)GetTop(OBJTYPE_ENEMY);
-		if (pEnemy != NULL)
+		while (pEnemy != NULL)
 		{
 			if (m_nPlayerNum == pEnemy->GetID())
 			{
@@ -201,8 +201,9 @@ void CScratch::Update(void)
 				SetRot(D3DXVECTOR3(0.0f, fRotY + D3DXToRadian(90), 0.0f));
 				m_pCollision->SetPos(D3DXVECTOR3(pos.x, pos.y - SCRATCH_HEIGHT, pos.z));
 			}
+			pEnemy = (CEnemy*)pEnemy->GetNext();
 		}
-		pEnemy = (CEnemy*)pEnemy->GetNext();
+		
 	}
 		break;
 	case SCRATCHUSER_PLAYER:

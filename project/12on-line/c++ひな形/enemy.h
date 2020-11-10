@@ -81,6 +81,7 @@ private:
 	ENEMY m_type;
 	int m_nLife;
 	bool m_bRd;
+	bool m_bCarrier;
 	float m_fRotYDist;
 	int m_nCount;
 	int m_nCntAttack;

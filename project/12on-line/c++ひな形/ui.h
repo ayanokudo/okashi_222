@@ -59,6 +59,8 @@ private:
 	static LPDIRECT3DTEXTURE9 m_apTexture[MAX_UI];	 // テクスチャへのポインタ
 	LPDIRECT3DVERTEXBUFFER9   m_pVtxBuff;	 // 頂点バッファへのポイン
 	D3DXCOLOR m_col;
+	D3DXVECTOR3 m_move;					 // 移動量
+	D3DXVECTOR3 m_pos;
 	UI m_type;
 	float m_fAngle;                      // ポリゴンの回転角度
 	D3DXVECTOR3 m_size;                  // ポリゴンのサイズ

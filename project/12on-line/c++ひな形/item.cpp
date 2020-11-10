@@ -29,6 +29,7 @@
 #define MODEL_PATH "./data/Models/cat_sakamoto.x"    //モデルのパス
 
 #define CANDY_MAX 20
+#define LIFE_NUM 5
 
 //*****************************
 // 静的メンバ変数宣言
@@ -298,7 +299,7 @@ void CItem::CollisionItem(void)
 						//プレイヤーと敵の範囲の当たり判定
 						if (CCollision::CollisionSphere(m_pCollision, pPlayer->GetCollision()))
 						{
-							pPlayer->Life(1);
+							pPlayer->Life(LIFE_NUM);
 							Uninit();
 							break;
 						}

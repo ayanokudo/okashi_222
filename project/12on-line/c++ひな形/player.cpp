@@ -620,7 +620,7 @@ void CPlayer::Attack(void)
 			D3DXVECTOR3 pos = GetPos();
 			pos.y += 10.0f;
 			// 弾の生成
-			CBullet::Create(pos, bulletMove, 300, CBullet::BULLETUSER_PLAYER)->SetRot(GetRot());
+			CBullet::Create(pos, bulletMove, 70, CBullet::BULLETUSER_PLAYER)->SetRot(GetRot());
 		}
 	}
 }

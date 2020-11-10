@@ -69,6 +69,14 @@ private:
 	void Move(void);
 	void Direction(void);
     void Attack(void);
+
+	void Brearh(void);
+	void Tail(void);
+
+	void MotionManager(void);
+	void MotionFalse(void);
+	void SetMotion(MOTION motionState);
+
 	// メンバ変数
 	static CModel::Model m_model[MAX_PARTS_NUM]; // モデル情報
 	static int m_nNumModel;                      // モデル数
@@ -81,7 +89,8 @@ private:
 	//static LPDIRECT3DTEXTURE9 m_apTexture; // テクスチャ
 	D3DXVECTOR3 m_move;        // 移動量
 	D3DXVECTOR3 m_moveDest;
-	CCollision *m_pCollision;    // 当たり判定
+	CCollision *m_pCollision;        // 当たり判定
+	CCollision *m_pCollisionTail;    // しっぽの当たり判定
 	CCollision *m_pRadiusColision;
 	int m_nLife;
 	bool m_bRd;
@@ -89,7 +98,12 @@ private:
 	int m_nCount;
 	int m_nCountMotion;
 	int m_nCountRand;
+	int m_nCntBullet;               // 弾を撃つときのカウント
+
 	CMotion*m_pMotion[MOTION_MAX];  // アニメーションポインタ
+	MOTION m_motionState;           // モーションステート
+	bool m_bMotion;                 // 移動を止める系のモーション判定用
+
 };
 
 #endif

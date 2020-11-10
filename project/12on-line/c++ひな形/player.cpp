@@ -21,6 +21,7 @@
 #include "model_hierarchy.h"
 #include "motion.h"
 #include "life.h"
+#include "fade.h"
 
 //*****************************
 // マクロ定義
@@ -654,6 +655,10 @@ void CPlayer::Hit(int nDamage)
 	{
 		m_bDeath[m_nPlayerNum] = true;
 		Uninit();
+		if (m_bDeath[0] == true && m_bDeath[1] == true)
+		{
+			CManager::GetFade()->SetFade(CManager::MODE_RESULT);
+		}
 		return;
 	}
 }

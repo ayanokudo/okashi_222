@@ -39,6 +39,9 @@ CUi::CUi()
 {
 	m_pVtxBuff = NULL;
 	m_col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+	m_pos = D3DXVECTOR3();
+	m_move = D3DXVECTOR3();
+	m_type = UI_TIME;
 }
 
 //==================================

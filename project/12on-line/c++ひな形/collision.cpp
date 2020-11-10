@@ -212,6 +212,7 @@ void CCollision::Uninit(void)
 //******************************
 void CCollision::Update(void)
 {
+
 }
 
 //******************************

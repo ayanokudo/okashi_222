@@ -333,9 +333,9 @@ void CBoss::Move(void)
 }
 
 //******************************
-// 移動方向を変える
+// ターゲットを変える
 //******************************
-void CBoss::ChangeMove(int nNum)
+void CBoss::ChangeTarget(int nNum)
 {
 	if (nNum == 1)
 	{// 引数が一の時

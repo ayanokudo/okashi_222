@@ -99,7 +99,8 @@ HRESULT CGame::Init(void)
 	m_pEnemy = CEnemy::Create(D3DXVECTOR3(0.0f, 0.0f, -800.0f), CEnemy::ENEMY_ESCORT);
 	CEnemy::Create(D3DXVECTOR3(0.0f, 0.0f, -850.0f), CEnemy::ENEMY_ESCORT);
     // ボスの生成
-    m_pBoss = CBoss::Create(D3DXVECTOR3(-7100, 0.0f, -9400));
+    m_pBoss = CBoss::Create(D3DXVECTOR3(-15000.0f, 0.0f, -18000.0f));
+
 	// アイテムの生成
 	m_pItem = CItem::Create(D3DXVECTOR3(200.0f, 0.0f, -800.0f),CItem::LIFE);
 	// スコアの生成

@@ -67,7 +67,7 @@ public:
 private:
 	//Še“GƒLƒƒƒ‰‚Ì“®‚«‚Ìˆ—
 	void Move(void);
-	void ChangeMove(int nNum = 0);
+	void ChangeTarget(int nNum = 0);
 	void Direction(void);
     void Attack(void);
 

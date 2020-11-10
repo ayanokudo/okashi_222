@@ -274,12 +274,6 @@ void CEnemy::Update(void)
 	// À•W
 	D3DXVECTOR3 pos = GetPos();
 
-	// Œü‚«
-	D3DXVECTOR3 rot = GetRot();
-
-	// Œü‚«‚Ìİ’è
-	SetRot(rot);
-
 	// Œü‚«‚ÌŠÇ—
 	Direction();
 

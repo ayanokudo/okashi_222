@@ -104,7 +104,7 @@ HRESULT CFloor::Init(FLOOR type)
     {
         return E_FAIL;
     }
-
+    m_type = type;
     // テクスチャ割り当て
     BindModel(m_pMeshModel, m_pBuffMatModel, m_nNumMatModel);
 
@@ -125,8 +125,16 @@ void CFloor::Uninit(void)
 void CFloor::Update(void)
 {
     CModel::Update();
+}
 
-    D3DXMATERIAL*pMat;      //マテリアルデータへのポインタ
+//=============================================================================
+// [Draw] 描画処理
+//=============================================================================
+void CFloor::Draw(void)
+{
+
+    D3DXMATERIAL*pMat;  	//マテリアルデータへのポインタ
+
                             //マテリアルデータへのポインタを取得
     pMat = (D3DXMATERIAL*)m_pBuffMatModel->GetBufferPointer();
 
@@ -149,14 +157,14 @@ void CFloor::Update(void)
             break;
         }
     }
-}
-
-//=============================================================================
-// [Draw] 描画処理
-//=============================================================================
-void CFloor::Draw(void)
-{
     CModel::Draw();
+
+    // マテリアル情報を元に戻す
+    for (int nCntMat = 0; nCntMat < (int)m_nNumMatModel; nCntMat++)
+    {
+        pMat[nCntMat].MatD3D.Diffuse = { 255,255,255,255 };
+    }
+
 }
 
 //=============================================================================

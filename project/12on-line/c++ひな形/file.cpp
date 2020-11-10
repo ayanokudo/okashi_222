@@ -16,7 +16,7 @@
 #define FILE_NAME "data/Texts/StageData/stage.txt"      // 使用するファイルの名前
 #define READ_BUFFER (128)                   // 読み込み用バッファ
 #define WALL_SIZE {60.0f,500.0f,0.0f}        // 壁の大きさ
-#define FLOOR_SIZE {60.0f,0.0f,60.0f}       // 床の大きさ
+#define FLOOR_SIZE {120.0f,0.0f,120.0f}       // 床の大きさ
 
 //=============================================================================
 // [CFile] コンストラクタ

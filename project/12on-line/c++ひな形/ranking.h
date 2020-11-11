@@ -20,8 +20,8 @@
 //------------------------------------------
 class CNumber;
 
-#define MAX_RANKING_DIGIT 6		// スコアの最大桁数
-#define MAX_NUMBER_DIGIT 5		// 
+#define MAX_RANKING_DIGIT 5		// スコアの最大桁数
+#define MAX_NUMBER_DIGIT 6		// 
 //------------------------------------------
 //	ランキングクラス
 //------------------------------------------
@@ -38,7 +38,7 @@ public:
 	void Draw(void);
 private:
 	CNumber *m_apNumber[MAX_RANKING_DIGIT][MAX_NUMBER_DIGIT];//ナンバー情報
-//	int m_anRankingDate[MAX_RANKING];	//ランキング情報
+	int m_anRankingDate[MAX_RANKING_DIGIT];	//ランキング情報
 	int m_nCount;						//
 	int m_nRank;						//
 	D3DXVECTOR3 m_pos;

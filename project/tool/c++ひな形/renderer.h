@@ -12,10 +12,15 @@
 //インクルード
 #include "main.h"
 
+
+//=============================
+//前方宣言
+//=============================
+class CUI;
+
 //=============================
 //クラス定義
 //=============================
-
 //レンダラークラス
 class CRenderer
 {
@@ -40,6 +45,11 @@ private:
 #ifdef _DEBUG
 	LPD3DXFONT				m_pFont;	// フォントへのポインタ
 #endif
+
+#ifdef IMGUI_ON
+    static CUI*m_pUI;                         // UIクラスのポインタ
+#endif // IMGUI_ON
+
 };
 
 #endif

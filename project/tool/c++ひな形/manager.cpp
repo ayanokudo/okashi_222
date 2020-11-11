@@ -30,25 +30,25 @@
 #include "enemy.h"
 #include "wall.h"
 #include "floor.h"
-#include "ui.h"
 #include "furniture.h"
+#include "cube.h"
 
 //=============================
 // 静的メンバ変数宣言
 //=============================
-CManager::MODE   CManager::m_mode = MODE_GAME;      // ゲームモード
-CRenderer       *CManager::m_pRenderer = NULL;       // レンダラーポインタ
-CInputKeyboard  *CManager::m_pInputKeyboard = NULL;  // キーボード
-CInputJoypad    *CManager::m_pJoypad = NULL;         // ジョイパッド
-CInputMouse     *CManager::m_pInputMouse = NULL;     //　マウス
-CSound          *CManager::m_pSound = NULL;          // サウンド
-CGame           *CManager::m_pGame = NULL;           // ゲーム
-CTitle          *CManager::m_pTitle = NULL;          // タイトル
-CResult         *CManager::m_pResult = NULL;         // リザルト
-CFade           *CManager::m_pFade = NULL;           // フェード
-CTutorial       *CManager::m_pTutorial = NULL;       // チュートリアル
-CPause          *CManager::m_pPause = NULL;          // ポーズポインタ
-bool             CManager::m_bPause = false;         // ポーズフラグ
+CManager::MODE   CManager::m_mode           = MODE_GAME;    // ゲームモード
+CRenderer       *CManager::m_pRenderer      = NULL;         // レンダラーポインタ
+CInputKeyboard  *CManager::m_pInputKeyboard = NULL;         // キーボード
+CInputJoypad    *CManager::m_pJoypad        = NULL;         // ジョイパッド
+CInputMouse     *CManager::m_pInputMouse    = NULL;         //　マウス
+CSound          *CManager::m_pSound         = NULL;         // サウンド
+CGame           *CManager::m_pGame          = NULL;         // ゲーム
+CTitle          *CManager::m_pTitle         = NULL;         // タイトル
+CResult         *CManager::m_pResult        = NULL;         // リザルト
+CFade           *CManager::m_pFade          = NULL;         // フェード
+CTutorial       *CManager::m_pTutorial      = NULL;         // チュートリアル
+CPause          *CManager::m_pPause         = NULL;         // ポーズポインタ
+bool             CManager::m_bPause = false;                // ポーズフラグ
 
 //=============================
 // コンストラクタ
@@ -127,6 +127,7 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, bool bWindow)
     CWall::Load();      // 壁
     CFloor::Load();     // 床
     CFumiture::Load();  // 家具
+    CCube::Load();      // キューブ
 
 	// ポーズ状態の時
 	return S_OK;
@@ -137,76 +138,78 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, bool bWindow)
 //=============================
 void CManager::Uninit(void)
 {
-	// 開放処理
-	CScene::ReleaseAll();
+    // 開放処理
+    CScene::ReleaseAll();
 
-	// テクスチャのアンロード
-	CBg::Unload();
-	CNumber::Unload();
-	CParticle::Unload();
-	CPause::UnLoad();
-	CPlayer::Unload();
-	CGrid::Unload();
+    // テクスチャのアンロード
+    CBg::Unload();
+    CNumber::Unload();
+    CParticle::Unload();
+    CPause::UnLoad();
+    CPlayer::Unload();
+    CGrid::Unload();
     CObject::Unload();
     CStage::Unload();
     CEnemy::Unload();     // 敵
     CWall::Unload();      // 壁
     CFloor::Unload();     // 床
-    CFumiture::Unload();    // 家具
+    CFumiture::Unload();  // 家具
+    CCube::Unload();      // キューブ
 
-	if (m_pSound != NULL)
-	{
-		// 終了処理
-		m_pSound->Uninit();
-		// メモリの解放
-		delete m_pSound;
-		m_pSound = NULL;
-	}
+    if (m_pSound != NULL)
+    {
+        // 終了処理
+        m_pSound->Uninit();
+        // メモリの解放
+        delete m_pSound;
+        m_pSound = NULL;
+    }
 
-	if (m_pRenderer != NULL)
-	{
-		// 終了処理
-		m_pRenderer->Uninit();
-		// メモリの解放
-		delete m_pRenderer;
-		m_pRenderer = NULL;
-	}
+    if (m_pRenderer != NULL)
+    {
+        // 終了処理
+        m_pRenderer->Uninit();
+        // メモリの解放
+        delete m_pRenderer;
+        m_pRenderer = NULL;
+    }
 
-	if (m_pInputKeyboard != NULL)
-	{
-		// 終了処理
-		m_pInputKeyboard->Uninit();
-		// メモリの解放
-		delete m_pInputKeyboard;
-		m_pInputKeyboard = NULL;
-	}
+    if (m_pInputKeyboard != NULL)
+    {
+        // 終了処理
+        m_pInputKeyboard->Uninit();
+        // メモリの解放
+        delete m_pInputKeyboard;
+        m_pInputKeyboard = NULL;
+    }
 
-	if (m_pJoypad != NULL)
-	{
-		// 終了処理
-		m_pJoypad->Uninit();
-		// メモリの解放
-		delete m_pJoypad;
-		m_pJoypad = NULL;
-	}
+    if (m_pJoypad != NULL)
+    {
+        // 終了処理
+        m_pJoypad->Uninit();
+        // メモリの解放
+        delete m_pJoypad;
+        m_pJoypad = NULL;
+    }
 
-	if (m_pInputMouse != NULL)
-	{
-		// 終了処理
-		m_pInputMouse->Uninit();
-		// メモリの解放
-		delete m_pInputMouse;
-		m_pInputMouse = NULL;
-	}
+    if (m_pInputMouse != NULL)
+    {
+        // 終了処理
+        m_pInputMouse->Uninit();
+        // メモリの解放
+        delete m_pInputMouse;
+        m_pInputMouse = NULL;
+    }
 
-	if (m_pFade != NULL)
-	{
-		// 終了処理
-		m_pFade->Uninit();
-		// メモリの解放
-		delete m_pFade;
-		m_pFade = NULL;
-	}
+    if (m_pFade != NULL)
+    {
+        // 終了処理
+        m_pFade->Uninit();
+        // メモリの解放
+        delete m_pFade;
+        m_pFade = NULL;
+    }
+
 
 }
 
@@ -232,8 +235,6 @@ void CManager::Update(void)
 	{
 		m_pInputMouse->Update();
 	}
-
-	
 
 	// レンダラークラスの更新処理
 	if (m_pRenderer != NULL)

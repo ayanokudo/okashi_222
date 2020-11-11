@@ -1,10 +1,10 @@
 //=============================================================================
 //
-// 床クラス [floor.cpp]
+// 敵クラス [cube.cpp]
 // Author : AYANO KUDO
 //
 //=============================================================================
-#include "floor.h"
+#include "cube.h"
 #include "manager.h"
 #include "renderer.h"
 #include "keyboard.h"
@@ -12,27 +12,27 @@
 //*****************************************************************************
 // マクロ定義
 //*****************************************************************************
-#define MODEL_PATH "./data/Models/floor000.x"    //モデルのパス
+#define MODEL_PATH "./data/Models/cube.x"    //モデルのパス
 
 //*****************************************************************************
 // 静的メンバ変数宣言
 //*****************************************************************************
-LPD3DXMESH   CFloor::m_pMeshModel = NULL;   	//メッシュ情報へのポインタ
-LPD3DXBUFFER CFloor::m_pBuffMatModel = NULL;	//マテリアル情報へのポインタ
-DWORD        CFloor::m_nNumMatModel = 0;	    //マテリアル情報の数
+LPD3DXMESH   CCube::m_pMeshModel = NULL;   	//メッシュ情報へのポインタ
+LPD3DXBUFFER CCube::m_pBuffMatModel = NULL;	//マテリアル情報へのポインタ
+DWORD        CCube::m_nNumMatModel = 0;	    //マテリアル情報の数
 
 //=============================================================================
-// [CFloor] コンストラクタ
+// [CCube] コンストラクタ
 //=============================================================================
-CFloor::CFloor() : CModel(OBJTYPE_FLOOR)
+CCube::CCube() : CModel(OBJTYPE_COLLISION)
 {
-
+    m_type = CUBE::CUBE_CARRIER;
 }
 
 //=============================================================================
-// [~CFloor] デストラクタ
+// [~CCube] デストラクタ
 //=============================================================================
-CFloor::~CFloor()
+CCube::~CCube()
 {
 
 }
@@ -40,18 +40,18 @@ CFloor::~CFloor()
 //=============================================================================
 // [Create] オブジェクトの生成
 //=============================================================================
-CFloor * CFloor::Create(D3DXVECTOR3 pos, FLOOR type)
+CCube * CCube::Create(D3DXVECTOR3 pos)
 {
-    CFloor *pObject = NULL;
+    CCube *pObject = NULL;
     if (!pObject)
     {
-        pObject = new CFloor;
+        pObject = new CCube;
         // 初期化
-        pObject->Init(type);
+        pObject->Init();
         pObject->SetPos(pos);
 
         // 各値の代入・セット
-        pObject->SetObjType(OBJTYPE_FLOOR); // オブジェクトタイプ
+        pObject->SetObjType(OBJTYPE_COLLISION); // オブジェクトタイプ
     }
     return pObject;
 }
@@ -59,7 +59,7 @@ CFloor * CFloor::Create(D3DXVECTOR3 pos, FLOOR type)
 //=============================================================================
 // [Load] テクスチャの読み込み
 //=============================================================================
-HRESULT CFloor::Load(void)
+HRESULT CCube::Load(void)
 {
     // デバイスの取得
     LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
@@ -79,7 +79,7 @@ HRESULT CFloor::Load(void)
 //=============================================================================
 // [Unload] テクスチャの破棄
 //=============================================================================
-void CFloor::Unload(void)
+void CCube::Unload(void)
 {
     //メッシュの破棄
     if (m_pMeshModel != NULL)
@@ -98,13 +98,13 @@ void CFloor::Unload(void)
 //=============================================================================
 // [Init] 初期化処理
 //=============================================================================
-HRESULT CFloor::Init(FLOOR type)
+HRESULT CCube::Init(void)
 {
     if (FAILED(CModel::Init()))
     {
         return E_FAIL;
     }
-    m_type = type;
+
     // テクスチャ割り当て
     BindModel(m_pMeshModel, m_pBuffMatModel, m_nNumMatModel);
 
@@ -114,7 +114,7 @@ HRESULT CFloor::Init(FLOOR type)
 //=============================================================================
 // [Uninit] 終了処理
 //=============================================================================
-void CFloor::Uninit(void)
+void CCube::Uninit(void)
 {
     CModel::Uninit();
 }
@@ -122,7 +122,7 @@ void CFloor::Uninit(void)
 //=============================================================================
 // [Update] 更新処理
 //=============================================================================
-void CFloor::Update(void)
+void CCube::Update(void)
 {
     CModel::Update();
 }
@@ -130,7 +130,7 @@ void CFloor::Update(void)
 //=============================================================================
 // [Draw] 描画処理
 //=============================================================================
-void CFloor::Draw(void)
+void CCube::Draw(void)
 {
 
     D3DXMATERIAL*pMat;  	//マテリアルデータへのポインタ
@@ -142,19 +142,15 @@ void CFloor::Draw(void)
     {
         switch (m_type)
         {
-        case FLOOR_FLOORING:
+        case CUBE_CARRIER:
             //マテリアルのアンビエントにディフューズカラーを設定
-            pMat[nCntMat].MatD3D.Diffuse = { 0,0,255,128 };
+            pMat[nCntMat].MatD3D.Diffuse = { 0,0,0,128 };
             break;
-        case FLOOR_MAT:
+        case CUBE_ESCORT:
             //マテリアルのアンビエントにディフューズカラーを設定
-            pMat[nCntMat].MatD3D.Diffuse = { 255,0,0,128 };
+            pMat[nCntMat].MatD3D.Diffuse = { 0,0,0,128 };
             break;
 
-        case FLOOR_KITCHEN:
-            //マテリアルのアンビエントにディフューズカラーを設定
-            pMat[nCntMat].MatD3D.Diffuse = { 0,255,0,128 };
-            break;
         }
     }
     CModel::Draw();
@@ -170,7 +166,7 @@ void CFloor::Draw(void)
 //=============================================================================
 // [ChangeType] 種類の変更
 //=============================================================================
-void CFloor::ChangeType(void)
+void CCube::ChangeType(void)
 {
     int nType = m_type;
 
@@ -184,15 +180,15 @@ void CFloor::ChangeType(void)
     }
 
     // 最大値以上/最小値以下になったらループ
-    if (nType >= FLOOR_MAX)
+    if (nType >= CUBE_MAX)
     {
-        nType = FLOOR_FLOORING;
+        nType = CUBE_CARRIER;
     }
-    if (nType < FLOOR_FLOORING)
+    if (nType < CUBE_CARRIER)
     {
-        nType = FLOOR_MAX - 1;
+        nType = CUBE_MAX - 1;
     }
 
     // 種類を反映
-    SetType((FLOOR)nType);
+    SetType((CUBE)nType);
 }

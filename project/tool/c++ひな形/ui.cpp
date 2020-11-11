@@ -55,6 +55,7 @@ void CUI::Init(HWND hWnd)
 
     ImGui_ImplWin32_Init(hWnd);
     ImGui_ImplDX9_Init(CManager::GetRenderer()->GetDevice());
+
 }
 
 //=============================================================================
@@ -77,7 +78,7 @@ void CUI::Update(void)
     ImGui_ImplWin32_NewFrame();
     ImGui::NewFrame();
 
-    bool show_demo_window = true;
+    bool show_demo_window = true;//サンプルのウィンドウ
     bool show_another_window = false;
     ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
@@ -100,5 +101,7 @@ void CUI::Update(void)
 //=============================================================================
 void CUI::Draw(void)
 {
+    ImGui::Render();
+    ImGui_ImplDX9_RenderDrawData(ImGui::GetDrawData());
 }
 #endif // IMGUI_ON

@@ -18,13 +18,14 @@
 #include "joypad.h"
 #include "fade.h"
 #include "score.h"
+#include "ranking.h"
 #include "collect.h"
 
 //**********************************
 // 静的メンバ変数宣言
 //**********************************
 LPDIRECT3DTEXTURE9 CResult::m_pTexture = NULL;
-
+CRanking *CResult::m_pRanking = NULL;
 //**********************************
 // マクロ定義
 //**********************************
@@ -71,6 +72,8 @@ HRESULT CResult::Init(void)
 	m_pPolygon = CPolygon::Create(D3DXVECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0.0f),
 		D3DXVECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0.0f),
 		D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+
+	m_pRanking = CRanking::Create();
 
 	m_pPolygon->SetTexture(m_pTexture);
 	

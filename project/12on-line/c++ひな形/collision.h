@@ -29,6 +29,7 @@ public:
 		COLLISIONTYPE_SPHERE,
 		COLLISIONTYPE_MAX,
 	}COLLISIONTYPE;
+
 	//ƒƒ“ƒoŠÖ”
 	CCollision();
 	~CCollision();

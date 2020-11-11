@@ -246,7 +246,6 @@ void CBullet::CollisionBullet(BULLETUSER user)
 			pBoss = (CBoss*)pBoss->GetNext();
 		}
 	}
-		break;
 	default:
 		break;
 	}

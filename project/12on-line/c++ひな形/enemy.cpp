@@ -275,12 +275,6 @@ void CEnemy::Update(void)
 	// 座標
 	D3DXVECTOR3 pos = GetPos();
 
-	// 向き
-	D3DXVECTOR3 rot = GetRot();
-
-	// 向きの設定
-	SetRot(rot);
-
 	// 向きの管理
 	Direction();
 
@@ -420,7 +414,6 @@ void CEnemy::RangeDecisionEscort(void)
 				D3DXVECTOR3 playerPos = pPlayer->GetPos();
 				//エネミーの位置情報を取得
 				D3DXVECTOR3 enemyPos = GetPos();
-
 
 				//プレイヤーと敵の範囲の当たり判定
 				if (CCollision::CollisionSphere(m_pRadiusColision, pPlayer->GetCollision()))

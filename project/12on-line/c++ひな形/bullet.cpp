@@ -204,12 +204,14 @@ void CBullet::CollisionBullet(BULLETUSER user)
 
 		while (pPlayer != NULL)
 		{
+
 			if (CCollision::CollisionSphere(m_pCollision, pPlayer->GetCollision()))
 			{
 				pPlayer->Hit(ENEMY_BULLET_DAMAGE);
 				Uninit();
 				break;
 			}
+
 			pPlayer = (CPlayer*)pPlayer->GetNext();
 		}
 	}

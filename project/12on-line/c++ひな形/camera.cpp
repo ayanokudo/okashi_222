@@ -21,7 +21,7 @@
 // マクロ定義
 //******************************
 #define CAMERA_DISTANCE 250    // カメラの距離
-#define CAMERA_LOCAL_POS D3DXVECTOR3(0.0f, 1900.0f, 200.0f) // 注視点からのローカル座標
+#define CAMERA_LOCAL_POS D3DXVECTOR3(0.0f, 2300.0f, 200.0f) // 注視点からのローカル座標
 #define CAMERA_LOOK_RATE 0.5f  // 注視点を少しずつ変えるときの係数
 #define PLAYER_DEATH_COUNT 40  // プレイヤーが死んでから生きてるプレイヤーの方に少しずつ注視点を変える用
 //******************************
@@ -116,7 +116,7 @@ void CCamera::Update(void)
 	m_fPhi -= CManager::GetMouse()->GetMouseMove().y / 100.0f;
 	m_fTheta -= CManager::GetMouse()->GetMouseMove().x / 100.0f;
 	// 注視点をプレイヤーにする
-	m_posR = CGame::GetPlayer(0)->GetPos();
+	m_posR = CGame::GetPlayer(1)->GetPos();
 	// 球面座標の設定
 	m_posV.x = m_posR.x + (m_fRad)* sinf(-m_fPhi)*cosf(m_fTheta);
 	m_posV.y = m_posR.y + (m_fRad)* cosf(-m_fPhi);
@@ -232,7 +232,7 @@ void CCamera::SetCamera(void)
 
 	D3DXMatrixPerspectiveFovLH(&m_pCamera->m_mtxProjection,
 		D3DXToRadian(45.0f),
-		(float)SCREEN_WIDTH / (float)SCREEN_HEIGHT,10.0f, 20000.0f);
+		(float)SCREEN_WIDTH / (float)SCREEN_HEIGHT,10.0f, 40000.0f);
 	//プロジェクションマトリックスの設定
 	pDevice->SetTransform(D3DTS_PROJECTION, &m_pCamera->m_mtxProjection);
 

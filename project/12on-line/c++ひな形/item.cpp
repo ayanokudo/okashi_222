@@ -41,7 +41,7 @@ DWORD        CItem::m_nNumMatModel[ITEM_MAX] = {};	    //マテリアル情報の数
 //******************************
 // コンストラクタ
 //******************************
-CItem::CItem() :CModel(OBJTYPE_PLAYER)
+CItem::CItem() :CModel(OBJTYPE_ITEM)
 {
 	m_pCollision = NULL;
 	m_type = CANDY;

@@ -19,6 +19,7 @@
 #include "fade.h"
 #include "score.h"
 #include "ranking.h"
+#include "collect.h"
 
 //**********************************
 // 静的メンバ変数宣言
@@ -28,7 +29,7 @@ CRanking *CResult::m_pRanking = NULL;
 //**********************************
 // マクロ定義
 //**********************************
-#define  TITLE_TEXTURE_PATH "./data/Textures/result001.png" // テクスチャ
+#define  TITLE_TEXTURE_PATH "./data/Textures/Ranking.png" // テクスチャ
 
 //=============================
 // コンストラクタ
@@ -76,6 +77,8 @@ HRESULT CResult::Init(void)
 
 	m_pPolygon->SetTexture(m_pTexture);
 	
+	// 生成
+	CCollect::Create();
 	return S_OK;
 }
 

@@ -294,7 +294,7 @@ void CPlayer::Uninit(void)
         m_pCollision->Uninit();
     
 	}
-	/*for (int nCount = 0; nCount <= PLAYER_LIFE; nCount++)
+	for (int nCount = 0; nCount < PLAYER_LIFE; nCount++)
 	{
 		if (m_pLife[nCount] != NULL)
 		{
@@ -302,7 +302,7 @@ void CPlayer::Uninit(void)
 			delete m_pLife[nCount];
 			m_pLife[nCount] = NULL;
 		}
-	}*/
+	}
 
     CModelHierarchy::Uninit();
 }
@@ -354,6 +354,25 @@ void CPlayer::Update(void)
 
     // 当たり判定の位置更新
     m_pCollision->SetPos(GetPos());
+
+#ifdef _DEBUG
+	// デバッグ用死亡コマンド
+	if (CManager::GetKeyboard()->GetKeyTrigger(DIK_NUMPAD1))
+	{
+		if (m_nPlayerNum == 0)
+		{
+			Hit(999);
+		}
+	}
+	if (CManager::GetKeyboard()->GetKeyTrigger(DIK_NUMPAD2))
+	{
+		if (m_nPlayerNum == 1)
+		{
+			Hit(999);
+		}
+	}
+#endif // _DEBUG
+
 }
 
 //******************************

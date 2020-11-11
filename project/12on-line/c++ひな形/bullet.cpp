@@ -199,18 +199,22 @@ void CBullet::CollisionBullet(BULLETUSER user)
 	switch (user)
 	{
 	case BULLETUSER_ENEMY:
+	{
 		CPlayer*pPlayer = (CPlayer*)CScene::GetTop(OBJTYPE_PLAYER);
 
 		while (pPlayer != NULL)
 		{
+
 			if (CCollision::CollisionSphere(m_pCollision, pPlayer->GetCollision()))
 			{
 				pPlayer->Hit(ENEMY_BULLET_DAMAGE);
 				Uninit();
 				break;
 			}
+
 			pPlayer = (CPlayer*)pPlayer->GetNext();
 		}
+	}
 		break;
 	case BULLETUSER_PLAYER:
 	{

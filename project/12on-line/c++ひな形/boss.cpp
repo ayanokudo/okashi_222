@@ -33,9 +33,9 @@
 #define SCRATH_PATH  "data/Texts/BossMotion/Boss_Attack_hikkaki.txt"    // ひっかきモーションのパス
 #define TAIL_PATH    "data/Texts/BossMotion/Boss_Attack_kaiten.txt"     // しっぽモーションのパス
 
-#define ENEMY_SPEED 5
+#define BOSS_SPEED 5
 #define ENEMY_MOVE_RATE 0.05f
-#define ENEMY_RADIUS  100
+#define ENEMY_RADIUS  130
 #define ENEMY_RANGE_RADIUS 600
 #define ENEMY_DIRECTION_RATE 0.1f   // 向きを変えるときの係数
 #define TAIL_RADIUS 100             // しっぽの半径
@@ -45,7 +45,7 @@
 #define BOSS_LIFE 1500              // ボスのライフ
 #define BULLET_INTERVAL 15          // 弾のインターバル
 
-#define MOVE_COUNT 300             // 移動時のカウント
+#define MOVE_COUNT 100             // 移動時のカウント
 
 //*****************************
 // 静的メンバ変数宣言
@@ -223,6 +223,8 @@ HRESULT CBoss::Init(void)
 	}
 	// 初期モーションを歩きに
 	SetMotion(WALK);
+	// ターゲットの初期化
+	ChangeTarget(1);
 
 	// しっぽのヒット確認の初期化
 	memset(m_bHitTail, 0, sizeof(m_bHitTail));
@@ -256,39 +258,20 @@ void CBoss::Uninit(void)
 //******************************
 void CBoss::Update(void)
 {
-	// 目標値の初期化
-	m_moveDest = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-
-	// 座標
-	D3DXVECTOR3 pos = GetPos();
-
-	// 向き
-	D3DXVECTOR3 rot = GetRot();
-
-	// 向きの設定
-	SetRot(rot);
-
-	// 向きの管理
-	Direction();
-
 	// コリジョンの位置更新
 	m_pCollision->SetPos(GetPos());
 	m_pRadiusColision->SetPos(GetPos());
 
-	// 慣性
-	m_move += (m_moveDest - m_move) * ENEMY_MOVE_RATE;
 
-	// 移動量を足す
-	pos += m_move;
-
-	// 座標のセット
-	SetPos(pos);
-
-	if (CManager::GetKeyboard()->GetKeyTrigger(DIK_RETURN))
+	if (!m_bMotion)
 	{
-		SetMotion(BREARH);
-		m_bMotion = true;
+		// ターゲット管理
+		ChangeTarget();
+		// 移動処理
+		Move();
 	}
+	// 向きの管理
+	Direction();
 
 	Scratch();
 	// ブレス
@@ -326,39 +309,103 @@ void CBoss::Hit(int nDamage)
 
 //******************************
 // 移動処理
+// Author : 増澤 未来
 //******************************
 void CBoss::Move(void)
 {
-	
+
+	if (!CPlayer::GetDeath(0) || !CPlayer::GetDeath(1))
+	{// どっちかのプレイヤーが生きているとき
+
+		// 座標
+		D3DXVECTOR3 pos = GetPos();
+
+		// 目標値の初期化
+		m_moveDest = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+		// ターゲットのプレイヤー座標の設定
+		D3DXVECTOR3 playerPos = CGame::GetPlayer(m_nTargetNum)->GetPos();
+
+		// 移動量の計算
+		m_moveDest = playerPos - pos;
+		D3DXVec3Normalize(&m_moveDest, &m_moveDest);
+		m_moveDest *= BOSS_SPEED;
+		m_moveDest.y = 0.0f;
+
+		// 慣性
+		m_move += (m_moveDest - m_move) * ENEMY_MOVE_RATE;
+
+		// 移動量を足す
+		pos += m_move;
+
+		m_fRotYDist = atan2f(m_move.x, m_move.z) + D3DXToRadian(180);
+		// 座標のセット
+		SetPos(pos);
+	}
+
 }
 
 //******************************
 // ターゲットを変える
+// Author : 増澤 未来
 //******************************
 void CBoss::ChangeTarget(int nNum)
 {
-	if (nNum == 1)
-	{// 引数が一の時
-		if (!CPlayer::GetDeath(0) && !CPlayer::GetDeath(0))
-		{
-			m_nTargetNum = rand() % MAX_PLAYER;
-		}
-		else if (!CPlayer::GetDeath(0))
-		{
-			m_nTargetNum = 0;
-		}
-		else
-		{
-			m_nTargetNum = 1;
-		}
-	}
-	else
-	{// その他
+
+	if (!CPlayer::GetDeath(0) && CPlayer::GetDeath(1))
+	{// プレイヤー0だけが生きているとき
+		m_nTargetNum = 0;
+
+		// カウントを進める
 		m_nCntMove++;
 
 		if (m_nCntMove%MOVE_COUNT == 0)
-		{
+		{// 一定カウントで
 
+			// 攻撃する
+			Attack();
+		}
+	}
+	else if (!CPlayer::GetDeath(1) && CPlayer::GetDeath(0))
+	{// プレイヤー1だけが生きているとき
+		m_nTargetNum = 1;
+
+
+		// カウントを進める
+		m_nCntMove++;
+
+		if (m_nCntMove%MOVE_COUNT == 0)
+		{// 一定カウントで
+
+		 // 攻撃する
+			Attack();
+		}
+	}
+	else
+	{// 両方生きているとき
+
+		if (nNum == 1)
+		{// 引数が一の時
+		
+			// ターゲットをランダムに変更
+			m_nTargetNum = rand() % MAX_PLAYER;
+			// カウントの初期化
+			m_nCntMove = 0;
+		}
+		else
+		{// 引数が一じゃないとき
+
+			// カウントを進める
+			m_nCntMove++;
+		
+			if (m_nCntMove%MOVE_COUNT == 0)
+			{// 一定カウントで
+
+				// ターゲットをランダムに変更
+				m_nTargetNum = rand() % MAX_PLAYER;
+
+				// 攻撃する
+				Attack();
+			}
 		}
 	}
 }
@@ -389,16 +436,33 @@ void CBoss::Direction(void)
 
 //=============================================================================
 // 攻撃処理
-// Author : AYANO KUDO
+// Author : 増澤 未来
 //=============================================================================
 void CBoss::Attack(void)
 {
     // ランダムなタイミングで攻撃する
-    if (rand() % ATTACK_BASE == 0)
-    {
-        // プレイヤーとの距離をを確認
+	int nRandAttack = rand() % ATTACK_PATTARN;
 
-    }
+	switch (nRandAttack)
+	{
+	case ATTACK_BREARH:
+		// ブレス
+		SetMotion(BREARH);
+		m_bMotion = true;
+		break;
+	case ATTACK_SCRATCH:
+		// ひっかき
+		SetMotion(SCRATCH);
+		m_bMotion = true;
+		break;
+	case ATTACK_TAIL:
+		// しっぽ
+		SetMotion(TAIL);
+		m_bMotion = true;
+		break;
+	default:
+		break;
+	}
 
 }
 
@@ -425,7 +489,7 @@ void CBoss::Brearh(void)
 				bulletMove.x = cosf(fAngle) * -BULLET_SPEED_ENEMY;
 				bulletMove.y = 0.0f;
 				bulletMove.z = sinf(fAngle) * BULLET_SPEED_ENEMY;
-				CBullet::Create(GetPos(), bulletMove, 100, CBullet::BULLETUSER_ENEMY);
+				CBullet::Create(GetPos(), bulletMove, 150, CBullet::BULLETUSER_ENEMY);
 			}
 		}
 	}

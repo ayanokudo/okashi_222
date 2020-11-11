@@ -41,6 +41,15 @@ public:
 		MOTION_MAX
 	}MOTION;
 
+	// 攻撃列挙
+	typedef enum
+	{
+		ATTACK_BREARH = 0,     // ブレス
+		ATTACK_SCRATCH,        // ひっかき
+		ATTACK_TAIL,           // しっぽ
+		ATTACK_MAX
+	}ATTACK;
+
 	//ボスの攻撃方法とスタンのタイプ分け
 	typedef enum
 	{

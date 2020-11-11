@@ -9,14 +9,16 @@
 #include "enemy.h"
 #include "wall.h"
 #include "floor.h"
+#include "collision.h"
 
 //*****************************************************************************
 // マクロ定義
 //*****************************************************************************
 #define FILE_NAME "data/Texts/StageData/stage.txt"      // 使用するファイルの名前
-#define READ_BUFFER (128)                   // 読み込み用バッファ
-#define WALL_SIZE {60.0f,500.0f,0.0f}        // 壁の大きさ
-#define FLOOR_SIZE {120.0f,0.0f,120.0f}       // 床の大きさ
+#define READ_BUFFER (128)                               // 読み込み用バッファ
+#define WALL_SIZE {60.0f,500.0f,0.0f}                   // 壁の大きさ
+#define FLOOR_SIZE {120.0f,0.0f,120.0f}                 // 床の大きさ
+#define COLLISION_SIZE {200.0f,500.0f,50.0f}            // 当たり判定の大きさ
 
 //=============================================================================
 // [CFile] コンストラクタ
@@ -119,6 +121,10 @@ void CFile::SetObject(D3DXVECTOR3 pos, D3DXVECTOR3 rot, CModel::OBJTYPE type, in
         
     case CModel::OBJTYPE_FLOOR:
         CFloor::Create(pos,rot, FLOOR_SIZE, (CFloor::FLOOR)ntype);
+        break;
+
+    case CModel::OBJTYPE_COLLISION:
+        CCollision::CreateBox(pos, FLOOR_SIZE);
         break;
     }
 }

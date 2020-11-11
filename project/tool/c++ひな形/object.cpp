@@ -19,6 +19,7 @@
 #include "wall.h"
 #include "floor.h"
 #include "furniture.h"
+#include "cube.h"
 
 //*****************************************************************************
 // ƒ}ƒNƒ’è‹`
@@ -203,6 +204,10 @@ CModel::OBJTYPE CObject::changeType(void)
         type = OBJTYPE_FURNITURE;
         break;
 
+    case MODEL_CUBE:
+        type = OBJTYPE_COLLISION;
+        break;
+
     }
 
     return type;
@@ -343,11 +348,13 @@ void CObject::DeleteObject(void)
             CScene *pNext = pScene->GetNext();
 
             if (pScene !=m_pPlayer&&
-                pScene->GetType() == OBJTYPE_PLAYER ||
-                pScene->GetType() == OBJTYPE_ENEMY ||
-                pScene->GetType() == OBJTYPE_WALL||
-                pScene->GetType() == OBJTYPE_FURNITURE
-                ||pScene->GetType() == OBJTYPE_FLOOR)
+                pScene->GetType() == OBJTYPE_PLAYER    ||
+                pScene->GetType() == OBJTYPE_ENEMY     ||
+                pScene->GetType() == OBJTYPE_WALL      ||
+                pScene->GetType() == OBJTYPE_FLOOR     ||
+                pScene->GetType() == OBJTYPE_FURNITURE ||
+                pScene->GetType() == OBJTYPE_COLLISION
+                )
             {
                 if (CCollision::CollisionSphere(m_pCollision, ((CModel*)pScene)->GetCollision()))
                 {
@@ -392,7 +399,12 @@ void CObject::SetObject(D3DXVECTOR3 pos, D3DXVECTOR3 rot, CModel::OBJTYPE type ,
     case CModel::OBJTYPE_FURNITURE:
         m_pModel = CFumiture::Create(pos);
         break;
+
+    case CModel::OBJTYPE_COLLISION:
+        m_pModel = CCube::Create(pos);
+        break;
     }
+
     if (m_pModel)
     {
     m_pModel->SetRot(rot);
@@ -476,3 +488,4 @@ void CObject::Move(void)
     m_pCursor->SetPos(m_pos);
 
 }
+ 

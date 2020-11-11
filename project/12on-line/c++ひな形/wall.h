@@ -51,6 +51,7 @@ public:
 private:
 	void CollisionPlayer(void);
 	void CollisionEnemy(void);
+	void CollisionBoss(void);
 	void CollisionBullet(void);
 
 	// ƒƒ“ƒo•Ï”

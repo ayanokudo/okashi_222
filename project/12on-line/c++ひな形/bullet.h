@@ -19,7 +19,7 @@
 // マクロ定義
 //*****************************
 #define BULLET_SPEED_PLAYER 30    // 速度(プレイヤーの弾)
-#define BULLET_SPEED_ENEMY 10     // 速度(エネミーの弾)
+#define BULLET_SPEED_ENEMY 15     // 速度(エネミーの弾)
 
 //*****************************
 // 前方宣言

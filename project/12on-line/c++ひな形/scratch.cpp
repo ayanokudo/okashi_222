@@ -25,7 +25,9 @@
 //*****************************
 #define SCRATCH_TEXTURE_PATH_PLAYER "./data/Textures/scratch.png" //テクスチャのパス
 #define SCRATCH_TEXTURE_PATH_ENEMY  "./data/Textures/Enemy_Attack.png" //テクスチャのパス
+#define SCRATCH_TEXTURE_PATH_BOSS "./data/Textures/scratch.png" //テクスチャのパス
 #define SCRATCH_COLOR D3DXCOLOR(1.0f,1.0f,0.3f,1.0f)       // アニメーション速度
+#define SCRATCH_COLOR_BOSS D3DXCOLOR(1.0f,0.3f,0.3f,1.0f)       // アニメーション速度
 #define SCRATCH_ANIM_SPEED 2                               // アニメーション速度
 #define SCRATCH_MAX_ANIMATION_X 5                          // アニメーション数 横
 #define SCRATCH_MAX_ANIMATION_Y 2                          // アニメーション数 縦
@@ -97,8 +99,8 @@ HRESULT CScratch::Load(void)
 	// テクスチャの生成
 	D3DXCreateTextureFromFile(pDevice, SCRATCH_TEXTURE_PATH_PLAYER, &m_apTexture[SCRATCHUSER_PLAYER]);
 	D3DXCreateTextureFromFile(pDevice, SCRATCH_TEXTURE_PATH_ENEMY, &m_apTexture[SCRATCHUSER_ENEMY]);
-
-	return S_OK;
+	D3DXCreateTextureFromFile(pDevice, SCRATCH_TEXTURE_PATH_BOSS, &m_apTexture[SCRATCHUSER_BOSS]);
+	return S_OK; 
 }
 
 //******************************
@@ -129,16 +131,34 @@ HRESULT CScratch::Init(void)
 
 	// テクスチャ割り当て
 	BindTexture(m_apTexture[m_user]);
-	if (m_user == SCRATCHUSER_PLAYER)
+
+	switch (m_user)
 	{
+	case SCRATCHUSER_PLAYER:
+
 		// サイズの設定
 		SetSize(D3DXVECTOR3(-SCRATCH_SIZE_PLAYER, 0.0f, -SCRATCH_SIZE_PLAYER));
-	}
-	else
-	{
+
+		// カラーの設定
+		SetColor(SCRATCH_COLOR);
+		break;
+	case SCRATCHUSER_ENEMY:
 		// サイズの設定
 		SetSize(D3DXVECTOR3(-SCRATCH_SIZE_ENEMY, 0.0f, -SCRATCH_SIZE_ENEMY));
+
+		break;
+
+	case SCRATCHUSER_BOSS:
+		// サイズの設定
+		SetSize(D3DXVECTOR3(-SCRATCH_SIZE_PLAYER, 0.0f, -SCRATCH_SIZE_PLAYER));
+
+		// カラーの設定
+		SetColor(SCRATCH_COLOR_BOSS);
+		break;
+	default:
+		break;
 	}
+
 
 	// UV座標の設定
 	D3DXVECTOR2 uv[NUM_VERTEX];
@@ -153,8 +173,6 @@ HRESULT CScratch::Init(void)
 	// UV座標セット
 	SetTextureUV(uv);
 
-	// カラーの設定
-	SetColor(SCRATCH_COLOR);
 	return S_OK;
 }
 
@@ -184,21 +202,26 @@ void CScratch::Update(void)
 	case SCRATCHUSER_ENEMY:
 	{
 		// プレイヤーの取得
-		CEnemy*pEnemy = CGame::GetEnemy();
-		if (pEnemy != NULL)
+		CEnemy*pEnemy = (CEnemy*)GetTop(OBJTYPE_ENEMY);
+		while (pEnemy != NULL)
 		{
-			// 座標の設定
-			D3DXVECTOR3 pos;
-			float fRotY = pEnemy->GetRot().y - D3DXToRadian(90);
-			pos.x = pEnemy->GetPos().x + cosf(fRotY) * -SCRATCH_SIZE_ENEMY;
-			pos.y = pEnemy->GetPos().y + SCRATCH_HEIGHT;
-			pos.z = pEnemy->GetPos().z + sinf(fRotY) * SCRATCH_SIZE_ENEMY;
-			SetPos(pos);
+			if (m_nPlayerNum == pEnemy->GetID())
+			{
+				// 座標の設定
+				D3DXVECTOR3 pos;
+				float fRotY = pEnemy->GetRot().y - D3DXToRadian(90);
+				pos.x = pEnemy->GetPos().x + cosf(fRotY) * -SCRATCH_SIZE_ENEMY;
+				pos.y = pEnemy->GetPos().y + SCRATCH_HEIGHT;
+				pos.z = pEnemy->GetPos().z + sinf(fRotY) * SCRATCH_SIZE_ENEMY;
+				SetPos(pos);
 
-			// 角度
-			SetRot(D3DXVECTOR3(0.0f, fRotY + D3DXToRadian(90), 0.0f));
-			m_pCollision->SetPos(D3DXVECTOR3(pos.x, pos.y - SCRATCH_HEIGHT, pos.z));
+				// 角度
+				SetRot(D3DXVECTOR3(0.0f, fRotY + D3DXToRadian(90), 0.0f));
+				m_pCollision->SetPos(D3DXVECTOR3(pos.x, pos.y - SCRATCH_HEIGHT, pos.z));
+			}
+			pEnemy = (CEnemy*)pEnemy->GetNext();
 		}
+		
 	}
 		break;
 	case SCRATCHUSER_PLAYER:
@@ -220,6 +243,28 @@ void CScratch::Update(void)
 			m_pCollision->SetPos(D3DXVECTOR3(pos.x, pos.y - SCRATCH_HEIGHT, pos.z));
 		}
 	}
+	break;
+	case SCRATCHUSER_BOSS:
+	{
+		// プレイヤーの取得
+		CBoss*pBoss = (CBoss*)GetTop(OBJTYPE_BOSS);
+		while (pBoss != NULL)
+		{
+			// 座標の設定
+			D3DXVECTOR3 pos;
+			float fRotY = pBoss->GetRot().y - D3DXToRadian(90);
+			pos.x = pBoss->GetPos().x + cosf(fRotY) * -SCRATCH_SIZE_PLAYER;
+			pos.y = pBoss->GetPos().y + SCRATCH_HEIGHT;
+			pos.z = pBoss->GetPos().z + sinf(fRotY) * SCRATCH_SIZE_PLAYER;
+			SetPos(pos);
+
+			// 角度
+			SetRot(D3DXVECTOR3(0.0f, fRotY, 0.0f));
+			m_pCollision->SetPos(D3DXVECTOR3(pos.x, pos.y - SCRATCH_HEIGHT, pos.z));
+			pBoss = (CBoss*)pBoss->GetNext();
+		}
+	}
+	break;
 	default:
 		break;
 	}

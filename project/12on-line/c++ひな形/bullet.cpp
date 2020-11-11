@@ -26,6 +26,7 @@
 #define BULLET_TEXTURE_PATH_PLAYER "./data/Textures/Catvoice_Barrett.png" //テクスチャのパス
 #define BULLET_TEXTURE_PATH_ENEMY  "./data/Textures/MouseBoss_Voice.png" //テクスチャのパス
 #define PLAYER_BULLET_DAMAGE 100				//プレイヤーの攻撃力
+#define ENEMY_BULLET_DAMAGE 1
 #define BULLET_SIZE_PLAYER 100                  // サイズ
 #define BULLET_SIZE_ENEMY 70                    // サイズ
 //******************************
@@ -198,7 +199,22 @@ void CBullet::CollisionBullet(BULLETUSER user)
 	switch (user)
 	{
 	case BULLETUSER_ENEMY:
+	{
+		CPlayer*pPlayer = (CPlayer*)CScene::GetTop(OBJTYPE_PLAYER);
 
+		while (pPlayer != NULL)
+		{
+
+			if (CCollision::CollisionSphere(m_pCollision, pPlayer->GetCollision()))
+			{
+				pPlayer->Hit(ENEMY_BULLET_DAMAGE);
+				Uninit();
+				break;
+			}
+
+			pPlayer = (CPlayer*)pPlayer->GetNext();
+		}
+	}
 		break;
 	case BULLETUSER_PLAYER:
 	{
@@ -230,7 +246,6 @@ void CBullet::CollisionBullet(BULLETUSER user)
 			pBoss = (CBoss*)pBoss->GetNext();
 		}
 	}
-		break;
 	default:
 		break;
 	}

@@ -22,7 +22,24 @@ public:
 
 	typedef enum
 	{
-		SOUND_LABEL,
+		SOUND_BGM_TITLE = 0,			//タイトルBGM
+		SOUND_BGM_GAME,					//ゲームBGM
+		SOUND_BGM_BOSS_GAME,			//ボスバトル中BGM
+		SOUND_BGM_RESULT,				//リザルト兼ランキングBGM
+		SOUND_SE_SELECT,				//選択SE
+		SOUND_SE_DECISION,				//決定SE
+		SOUND_SE_PL_ATTACK_BREATH,		//プレイヤー鳴き声攻撃SE
+		SOUND_SE_PL_ATTACK_NAIL,		//プレイヤー引っ掻く攻撃SE
+		SOUND_SE_PL_DASH,				//ダッシュ時SE
+		SOUND_SE_PL_DAMAGE,				//プレイヤーダメージ時SE
+		SOUND_SE_EN_ATTACK_NAIL,		//敵噛みつきSE
+		SOUND_SE_EN_DAMAGE,				//敵ダメージ時SE
+		SOUND_SE_BOSS_ATTACK_BREATH,	//ボスブレス攻撃SE
+		SOUND_SE_BOSS_ATTACK_TAIL,		//ボス尻尾攻撃SE
+		SOUND_SE_BOSS_ATTACK_,			//ボス突進攻撃SE
+		SOUND_SE_ITEM_CANDY,			//キャンディ獲得時SE
+		SOUND_SE_ITEM_KOBAN,			//小判獲得時SE
+		SOUND_SE_ITEM_LIFE,				//回復アイテム獲得時SE
 		SOUND_LABEL_MAX,
 	}LABEL;
 

@@ -15,6 +15,7 @@
 #include "player.h"
 #include "enemy.h"
 #include "bullet.h"
+#include "boss.h"
 
 //*****************************
 // マクロ定義
@@ -133,6 +134,12 @@ HRESULT CWall::Init(void)
 //==================================
 void CWall::Uninit(void)
 {
+	if (m_pCollision != NULL)
+	{
+		m_pCollision->Uninit();
+		m_pCollision = NULL;
+	}
+
 	CScene3d::Uninit();
 }
 
@@ -144,6 +151,7 @@ void CWall::Update(void)
 	// 当たり判定
 	CollisionPlayer(); // プレイヤー
 	CollisionEnemy();  // エネミー
+	CollisionBoss();   // ボス
 	CollisionBullet(); // 弾
 }
 
@@ -228,6 +236,43 @@ void CWall::CollisionEnemy(void)
 			pEnemy->GetCollision()->SetPos(playerPos);
 		}
 		pEnemy = (CEnemy*)pEnemy->GetNext();
+	}
+
+}
+
+//==================================
+// ボスと壁の当たり判定
+//==================================
+void CWall::CollisionBoss(void)
+{
+
+	CBoss*pBoss = (CBoss*)CScene::GetTop(OBJTYPE_BOSS);
+	while (pBoss != NULL)
+	{
+		if (CCollision::CollisionSphereToBox(pBoss->GetCollision(), m_pCollision))
+		{
+			// プレイヤー座標の取得
+			D3DXVECTOR3 playerPos = pBoss->GetPos();
+			// 当たり判定のサイズの取得
+			D3DXVECTOR3 collsionSize = m_pCollision->GetCollisionSize();
+
+			// ボックス内の最短地点の検索
+			D3DXVECTOR3 shortrectPos;
+			shortrectPos.x = CCollision::OnRange(playerPos.x, GetPos().x - collsionSize.x / 2, GetPos().x + collsionSize.x / 2);
+			shortrectPos.y = CCollision::OnRange(playerPos.y, GetPos().y - collsionSize.y / 2, GetPos().y + collsionSize.y / 2);
+			shortrectPos.z = CCollision::OnRange(playerPos.z, GetPos().z - collsionSize.z / 2, GetPos().z + collsionSize.z / 2);
+			// ボックスからプレイヤーの方向ベクトル
+			playerPos = playerPos - shortrectPos;
+			// 正規化
+			D3DXVec3Normalize(&playerPos, &playerPos);
+			// 最短地点から当たり判定の半径分離す
+			playerPos = shortrectPos + playerPos * pBoss->GetCollision()->GetCollisionRadius();
+			// プレイヤー座標のセット
+			pBoss->SetPos(playerPos);
+			// プレイヤーのコリジョンの座標のセット
+			pBoss->GetCollision()->SetPos(playerPos);
+		}
+		pBoss = (CBoss*)pBoss->GetNext();
 	}
 
 }

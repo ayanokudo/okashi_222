@@ -19,6 +19,7 @@
 // 前方宣言
 //=============================
 class CPolygon;
+class CRanking;
 
 //*****************************
 //クラス定義
@@ -37,11 +38,12 @@ public:
 	void Uninit(void);
 	void Update(void);
 	void Draw(void);
-
+	static CRanking *GetRanking(void) { return m_pRanking; }
 private:
 	// メンバ変数
 	static LPDIRECT3DTEXTURE9 m_pTexture;        // テクスチャへのポインタ
 	CPolygon *m_pPolygon;
+	static CRanking *m_pRanking;
 
 };
 

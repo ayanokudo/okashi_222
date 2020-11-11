@@ -17,15 +17,16 @@
 //*****************************
 // マクロ定義
 //*****************************
+
 #define COLLECT_MAX_NUM 20                 // 最大回収数
-#define COLLECT_POS_LEFT 100               // 回収数の座標の左端
-#define COLLECT_POS_Y  SCREEN_HEIGHT / 2   // 回収数の座標の高さ
+#define COLLECT_POS_LEFT SCREEN_WIDTH/2-((COLLECT_NUM_SIZE.x*5/2)+COLLECT_NUM_SIZE.x)              // 回収数の座標の左端
+#define COLLECT_POS_Y  170                 // 回収数の座標の高さ
 
-#define PERCENT_POS_LEFT 100                   // パーセントの座標の左端
-#define PERCENT_POS_Y  SCREEN_HEIGHT / 2-120   // パーセントの座標の高さ
+#define PERCENT_POS_LEFT SCREEN_WIDTH/2-((PERCENT_NUM_SIZE.x*4/2)+PERCENT_NUM_SIZE.x)              // 回収数の座標の左端
+#define PERCENT_POS_Y  100                   // パーセントの座標の高さ
 
-#define COLLECT_NUM_SIZE D3DXVECTOR3(50.0f,50.0f,0.0f) // 回収数ナンバーのサイズ
-#define PERCENT_NUM_SIZE D3DXVECTOR3(70.0f,70.0f,0.0f) // パーセントナンバーのサイズ
+#define COLLECT_NUM_SIZE D3DXVECTOR3(25.0f,25.0f,0.0f) // 回収数ナンバーのサイズ
+#define PERCENT_NUM_SIZE D3DXVECTOR3(40.0f,40.0f,0.0f) // パーセントナンバーのサイズ
 
 // テクスチャのパス
 #define SLASH_TEX_PATH   "./data/Textures/slash.png" 
@@ -260,8 +261,18 @@ void CCollect::Draw(void)
 	}
 	for (int nCnt = 0; nCnt < COLLET_PAR_DIGIT; nCnt++)
 	{
-		// ナンバーの描画
-		m_pNumPer[nCnt]->Draw();
+		// 描画
+		if (nCnt == 0)
+		{// 百の位は100％の時のみ描画
+			if (m_nPerCollect >= 100)
+			{
+				m_pNumPer[nCnt]->Draw();
+			}
+		}
+		else
+		{
+			m_pNumPer[nCnt]->Draw();
+		}
 	}
 
 }

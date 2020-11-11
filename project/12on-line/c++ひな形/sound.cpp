@@ -12,6 +12,14 @@
 
 CSound::SOUNDPARAM CSound::m_aParam[SOUND_LABEL_MAX]
 {
+	{ "data/SE/bgm.wav", -1 },					// BGM0
+	{ "music/enemyBGM.wav", -1 },				// BGM1
+	{ "music/titleBGM.wav", -1 },				// BGM3
+	{ "music/clearBGM.wav", -1 },				// BGM4
+	{ "music/n114.wav", -1 },					// BGM4
+	{ "music/poka02.wav", 0 },					// 弾発射音
+	{ "music/small_car_engine1.wav", 0 },		//playerのダメージ音
+	{ "music/botan.wav", 0 },					//playerのダメージ音
 };
 
 //=============================================================================

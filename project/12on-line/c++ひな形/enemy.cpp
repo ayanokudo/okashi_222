@@ -22,6 +22,8 @@
 #include "particle.h"
 #include "item.h"
 #include "score.h"
+#include "scene.h"
+
 #include "particle.h"
 //*****************************
 // マクロ定義
@@ -64,6 +66,7 @@ CEnemy::CEnemy() :CModelHierarchy(OBJTYPE_ENEMY)
 	m_nCount = 0;
 	m_nCountMotion = 0;
 	m_bRd = false;
+	m_bCarrier = false;
 	m_nLife = 0;
 	memset(&m_pMotion, 0, sizeof(m_pMotion));
 }
@@ -272,12 +275,6 @@ void CEnemy::Update(void)
 	// 座標
 	D3DXVECTOR3 pos = GetPos();
 
-	// 向き
-	D3DXVECTOR3 rot = GetRot();
-
-	// 向きの設定
-	SetRot(rot);
-
 	// 向きの管理
 	Direction();
 
@@ -388,29 +385,9 @@ void CEnemy::RangeDecisionCarrier(void)
 				//プレイヤーと敵の範囲の当たり判定
 				if (CCollision::CollisionSphere(m_pRadiusColision, pPlayer->GetCollision()))
 				{
-					// 距離を比べる
-					if (sqrtf(powf(enemyPos.x - playerPos.x, 2) + powf(enemyPos.y - playerPos.y, 2) + powf(enemyPos.z - playerPos.z, 2)) <= fDistance)
-					{// 距離が近かった時
-						fDistance = sqrtf(powf(enemyPos.x - playerPos.x, 2) + powf(enemyPos.y - playerPos.y, 2) + powf(enemyPos.z - playerPos.z, 2));
-
-						//エネミーの移動をしなくする
-						m_bRd = true;
-						//向きの設定
-						m_fRotYDist = atan2((playerPos.x - enemyPos.x), (playerPos.z - enemyPos.z));
-
-						// 移動量
-						D3DXVECTOR3 Move;
-						Move.x = sinf(m_fRotYDist)*10.0f;
-						Move.y = 0.0f;
-						Move.z = cosf(m_fRotYDist)*10.0f;
-
-						m_moveDest -= Move;
-					}
-					//break;
-				}
-				else
-				{
-					m_bRd = false;
+					//エネミーの移動をしなくする
+					m_bRd = true;
+					m_bCarrier = true;
 				}
 			}
 		}
@@ -438,7 +415,6 @@ void CEnemy::RangeDecisionEscort(void)
 				//エネミーの位置情報を取得
 				D3DXVECTOR3 enemyPos = GetPos();
 
-
 				//プレイヤーと敵の範囲の当たり判定
 				if (CCollision::CollisionSphere(m_pRadiusColision, pPlayer->GetCollision()))
 				{
@@ -463,7 +439,7 @@ void CEnemy::RangeDecisionEscort(void)
 						if (m_nCount == 50)
 						{
 							// 攻撃の生成
-							CScratch::Create(enemyPos, m_fRotYDist + D3DXToRadian(90), CScratch::SCRATCHUSER_ENEMY, -1);
+							CScratch::Create(enemyPos, m_fRotYDist + D3DXToRadian(90), CScratch::SCRATCHUSER_ENEMY,GetID());
 							m_nCount = 0;
 						}
 						//弾の向きの設定
@@ -486,11 +462,43 @@ void CEnemy::RangeDecisionEscort(void)
 //******************************
 void CEnemy::MotionCarrier(void)
 {
+	// プレイヤーとの距離*初期値は適当に大きい値を入れとく
+	float fDistance = 99999.0f;
 	//falseの時
 	if (!m_bRd)
 	{
 		//移動処理
 		Move();
+	}
+	if (m_bCarrier)
+	{
+		for (int nCount = 0; nCount < MAX_PLAYER; nCount++)
+		{
+			CPlayer*pPlayer = CGame::GetPlayer(nCount);
+			if (pPlayer != NULL)
+			{
+				//プレイヤーの位置情報を取得
+				D3DXVECTOR3 playerPos = pPlayer->GetPos();
+				//エネミーの位置情報を取得
+				D3DXVECTOR3 enemyPos = GetPos();
+				// 距離を比べる
+				if (sqrtf(powf(enemyPos.x - playerPos.x, 2) + powf(enemyPos.y - playerPos.y, 2) + powf(enemyPos.z - playerPos.z, 2)) <= fDistance)
+				{// 距離が近かった時
+					fDistance = sqrtf(powf(enemyPos.x - playerPos.x, 2) + powf(enemyPos.y - playerPos.y, 2) + powf(enemyPos.z - playerPos.z, 2));
+
+
+					//向きの設定
+					m_fRotYDist = atan2((playerPos.x - enemyPos.x), (playerPos.z - enemyPos.z));
+					// 移動量
+					D3DXVECTOR3 Move;
+					Move.x = sinf(m_fRotYDist)*10.0f;
+					Move.y = 0.0f;
+					Move.z = cosf(m_fRotYDist)*10.0f;
+
+					m_moveDest -= Move;
+				}
+			}
+		}
 	}
 }
 

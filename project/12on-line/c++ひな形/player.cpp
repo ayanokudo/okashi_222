@@ -21,6 +21,7 @@
 #include "model_hierarchy.h"
 #include "motion.h"
 #include "life.h"
+#include "fade.h"
 
 //*****************************
 // マクロ定義
@@ -293,7 +294,7 @@ void CPlayer::Uninit(void)
         m_pCollision->Uninit();
     
 	}
-	/*for (int nCount = 0; nCount <= PLAYER_LIFE; nCount++)
+	for (int nCount = 0; nCount < PLAYER_LIFE; nCount++)
 	{
 		if (m_pLife[nCount] != NULL)
 		{
@@ -301,7 +302,7 @@ void CPlayer::Uninit(void)
 			delete m_pLife[nCount];
 			m_pLife[nCount] = NULL;
 		}
-	}*/
+	}
 
     CModelHierarchy::Uninit();
 }
@@ -353,6 +354,25 @@ void CPlayer::Update(void)
 
     // 当たり判定の位置更新
     m_pCollision->SetPos(GetPos());
+
+#ifdef _DEBUG
+	// デバッグ用死亡コマンド
+	if (CManager::GetKeyboard()->GetKeyTrigger(DIK_NUMPAD1))
+	{
+		if (m_nPlayerNum == 0)
+		{
+			Hit(999);
+		}
+	}
+	if (CManager::GetKeyboard()->GetKeyTrigger(DIK_NUMPAD2))
+	{
+		if (m_nPlayerNum == 1)
+		{
+			Hit(999);
+		}
+	}
+#endif // _DEBUG
+
 }
 
 //******************************
@@ -654,6 +674,10 @@ void CPlayer::Hit(int nDamage)
 	{
 		m_bDeath[m_nPlayerNum] = true;
 		Uninit();
+		if (m_bDeath[0] == true && m_bDeath[1] == true)
+		{
+			CManager::GetFade()->SetFade(CManager::MODE_RESULT);
+		}
 		return;
 	}
 }

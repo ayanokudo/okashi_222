@@ -41,6 +41,15 @@ public:
 		MOTION_MAX
 	}MOTION;
 
+	// 攻撃列挙
+	typedef enum
+	{
+		ATTACK_BREARH = 0,     // ブレス
+		ATTACK_SCRATCH,        // ひっかき
+		ATTACK_TAIL,           // しっぽ
+		ATTACK_MAX
+	}ATTACK;
+
 	//ボスの攻撃方法とスタンのタイプ分け
 	typedef enum
 	{
@@ -67,10 +76,12 @@ public:
 private:
 	//各敵キャラの動きの処理
 	void Move(void);
+	void ChangeTarget(int nNum = 0);
 	void Direction(void);
     void Attack(void);
 
 	void Brearh(void);
+	void Scratch(void);
 	void Tail(void);
 
 	void MotionManager(void);
@@ -98,7 +109,10 @@ private:
 	int m_nCount;
 	int m_nCountMotion;
 	int m_nCountRand;
+	int m_nCntMove;                 // 移動時のカウント
 	int m_nCntBullet;               // 弾を撃つときのカウント
+	int m_nTargetNum;               // どのプレイヤーをターゲットしているか
+	bool m_bHitTail[MAX_PLAYER];    // しっぽが多段ヒットしないように
 
 	CMotion*m_pMotion[MOTION_MAX];  // アニメーションポインタ
 	MOTION m_motionState;           // モーションステート

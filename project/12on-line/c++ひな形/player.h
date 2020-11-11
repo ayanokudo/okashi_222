@@ -72,7 +72,7 @@ public:
 	CCollision*GetCollision(void) { return m_pCollision; }
 	D3DXVECTOR3 GetMove(void) { return m_move; }
 	void GetMove(D3DXVECTOR3 move) { m_move = move; }
-	
+	int GetPlayerNum(void) { return m_nPlayerNum; }
 private:
 	void MoveKeyboard(void);
 	void MoveController(void);

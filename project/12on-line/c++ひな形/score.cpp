@@ -42,8 +42,11 @@ CScore * CScore::Create(void)
 	// メモリの確保
 	CScore *pScore = new CScore;
 
-	// 初期化処理
-	pScore->Init();
+	if (pScore != NULL)
+	{
+		// 初期化処理
+		pScore->Init();
+	}
 
 	// オブジェクトタイプの設定
 	pScore->SetObjType(OBJTYPE_UI);

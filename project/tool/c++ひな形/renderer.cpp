@@ -15,10 +15,14 @@
 #include "game.h"
 #include "fade.h"
 #include "pause.h"
-
+#include "ui.h"
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_dx9.h"
 #include "imgui/imgui_impl_win32.h"
+
+#ifdef IMGUI_ON
+CUI *CRenderer::m_pUI = NULL;         // UIポインタ
+#endif // IMGUI_ON
 
 //==================================
 //    コンストラクタ
@@ -134,6 +138,10 @@ HRESULT CRenderer::Init(HWND hWnd, bool bWindow)
 		OUT_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH, "Terminal", &m_pFont);
 #endif
 
+#ifdef IMGUI_ON
+    // UI生成
+    m_pUI = CUI::Create(hWnd);
+#endif // IMGUI_ON
 	return S_OK;
 }
 
@@ -147,6 +155,14 @@ void CRenderer::Uninit(void)
 		m_pFont = NULL;
 	}
 #endif
+
+#ifdef IMGUI_ON
+    // UIの終了
+    if (m_pUI != NULL)
+    {
+        m_pUI->Uninit();
+    }
+#endif // IMGUI_ON
 
 	// デバイスの破棄
 	if (m_pD3DDevice != NULL)
@@ -166,6 +182,11 @@ void CRenderer::Uninit(void)
 void CRenderer::Update(void)
 {
 	CScene::UpdateAll();
+
+#ifdef IMGUI_ON
+    m_pUI->Update();
+#endif // IMGUI_ON
+
 }
 
 void CRenderer::Draw(void)
@@ -180,9 +201,9 @@ void CRenderer::Draw(void)
 		CScene::DrawAll();
 
 #ifdef IMGUI_ON
-        ImGui::Render();
-        ImGui_ImplDX9_RenderDrawData(ImGui::GetDrawData());
-#endif
+        // UIの描画処理
+        m_pUI->Draw();
+#endif // IMGUI_ON
 
 		if (CManager::GetMode() == CManager::MODE_GAME&&CManager::GetActivePause())
 		{// ポーズ状態の時

@@ -31,6 +31,7 @@ class CObject : public CScene
         MODEL_WALL,         // 壁
         MODEL_FLOOR,        // 床
         MODEL_FURNITURE,    // 家具
+        MODEL_CUBE,         // キューブ
         MODEL_MAX
     }MODEL;      // モデルのファイル名
 

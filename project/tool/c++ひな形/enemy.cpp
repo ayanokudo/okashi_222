@@ -46,7 +46,6 @@ CEnemy * CEnemy::Create(D3DXVECTOR3 pos)
     if (!pObject)
     {
         pObject = new CEnemy;
-        pObject->Init();
         // ‰Šú‰»
         pObject->Init();
         pObject->SetPos(pos);

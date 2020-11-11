@@ -28,7 +28,7 @@ class CResult;
 class CFade;
 class CTutorial;
 class CPause;
-
+class CUI;
 //=============================
 // クラス定義
 //=============================
@@ -80,7 +80,7 @@ private:
 	static CResult*m_pResult;                // タイトルクラスのポインタ
 	static CFade*m_pFade;                    // フェードポインタ
 	static CTutorial*m_pTutorial;            // チュートリアル
-	static CPause*m_pPause;                    // ポーズポインタ
+	static CPause*m_pPause;                  // ポーズポインタ
 	static bool m_bPause;                    // ポーズフラグ
 };
 

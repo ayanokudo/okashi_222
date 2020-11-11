@@ -110,27 +110,6 @@ void CFile::Writing(void)
 
         fprintf(pFile, "SCRIPT          // スクリプト開始 \n\n");       // スクリプト開始
 
-        CScene* pScene = CScene::GetTop(CScene::OBJTYPE_PLAYER);
-        // オブジェクトの数分データを書きだす
-        while (pScene != NULL)
-        {
-            if (pScene != CObject::GetPlayer())
-            {// カーソルに使われていないオブジェクトを書き込み
-                if (pScene)
-                {// オブジェクトがあった場合
-                    D3DXVECTOR3 pos = ((CModel*)pScene)->GetPos();
-                    D3DXVECTOR3 rot = ((CModel*)pScene)->GetRot();
-
-                    fprintf(pFile, "\tOBJ_SET\n");
-                    fprintf(pFile, "\t\t POS %.1f %.1f %.1f \n", pos.x, pos.y, pos.z);
-                    fprintf(pFile, "\t\t ROT %.1f %.1f %.1f \n", rot.x, rot.y, rot.z);
-                    fprintf(pFile, "\t\t TYPE %d \n", pScene->GetType());
-                    fprintf(pFile, "\tEND_OBJ_SET\n");
-                    fprintf(pFile, "\n");
-                }
-            }
-            pScene = pScene->GetNext();
-        }
         // 敵オブジェクト書き込み
         ObjctWriting(pFile, CScene::OBJTYPE_ENEMY);
 
@@ -142,6 +121,9 @@ void CFile::Writing(void)
 
         // 家具オブジェクト書き込み
         ObjctWriting(pFile, CScene::OBJTYPE_FURNITURE);
+
+        // 当たり判定オブジェクト書き込み
+        ObjctWriting(pFile, CScene::OBJTYPE_COLLISION);
 
         fprintf(pFile, "\n");
         fprintf(pFile, "END_SCRIPT      // スクリプト終了");   // スクリプト終了

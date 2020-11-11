@@ -46,7 +46,6 @@ CEnemy * CEnemy::Create(D3DXVECTOR3 pos)
     if (!pObject)
     {
         pObject = new CEnemy;
-        pObject->Init();
         // 初期化
         pObject->Init();
         pObject->SetPos(pos);
@@ -126,6 +125,13 @@ void CEnemy::Uninit(void)
 void CEnemy::Update(void)
 {
     CModel::Update();
+}
+
+//=============================================================================
+// [Draw] 描画処理
+//=============================================================================
+void CEnemy::Draw(void)
+{
 
     D3DXMATERIAL*pMat;  	//マテリアルデータへのポインタ
 
@@ -147,15 +153,14 @@ void CEnemy::Update(void)
 
         }
     }
-
-}
-
-//=============================================================================
-// [Draw] 描画処理
-//=============================================================================
-void CEnemy::Draw(void)
-{
     CModel::Draw();
+
+    // マテリアル情報を元に戻す
+    for (int nCntMat = 0; nCntMat < (int)m_nNumMatModel; nCntMat++)
+    {
+        pMat[nCntMat].MatD3D.Diffuse = { 255,255,255,255 };
+    }
+
 }
 
 

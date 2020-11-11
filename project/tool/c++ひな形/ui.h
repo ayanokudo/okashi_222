@@ -8,7 +8,7 @@
 #define _UI_H_
 
 #define IMGUI_ON    // imguiオン
-//#undef  IMGUI_ON    // imguiオフ
+#undef  IMGUI_ON    // imguiオフ
 
 #ifdef IMGUI_ON
 #include "main.h"

@@ -166,19 +166,19 @@ void CBullet::Update(void)
 	// 座標のセット
 	SetPos(pos);
 
-	// 寿命を減らす
-	m_nLife--;
-	if (m_nLife <= 0)
-	{// 寿命が0以下になったとき
-		// 消す
-		Uninit();
-		return;
-	}
-
 	// 当たり判定の位置更新
 	m_pCollision->SetPos(GetPos());
 	// 当たり判定
 	CollisionBullet(m_user);
+
+	// 寿命を減らす
+	m_nLife--;
+	if (m_nLife <= 0)
+	{// 寿命が0以下になったとき
+	 // 消す
+		Uninit();
+		return;
+	}
 	
 }
 

@@ -446,12 +446,14 @@ void CEnemy::RangeDecisionEscort(void)
 						m_fRotYDist = atan2(-(playerPos.x - enemyPos.x), -(playerPos.z - enemyPos.z));
 					}
 					//break;
-				}
-				else
-				{
-					//エネミーを再度動かす
-					m_bRd = false;
-				}
+				}	
+			}
+
+			if (!CPlayer::GetDeath(0) && !CCollision::CollisionSphere(m_pRadiusColision, CGame::GetPlayer(0)->GetCollision()) &&
+				!CPlayer::GetDeath(1) && !CCollision::CollisionSphere(m_pRadiusColision, CGame::GetPlayer(1)->GetCollision()))
+			{// どっちのプレイヤーにも当たってないとき
+			 //エネミーを再度動かす
+				m_bRd = false;
 			}
 		}
 	}

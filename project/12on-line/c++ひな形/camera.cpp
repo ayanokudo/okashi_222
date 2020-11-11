@@ -111,7 +111,7 @@ void CCamera::Uninit(void)
 //******************************
 void CCamera::Update(void)
 {
-#ifdef _DEBUG
+#ifdef _DEB/UG
 
 	m_fPhi -= CManager::GetMouse()->GetMouseMove().y / 100.0f;
 	m_fTheta -= CManager::GetMouse()->GetMouseMove().x / 100.0f;

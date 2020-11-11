@@ -18,6 +18,8 @@ CRanking::CRanking()
 {
 	//ナンバーのクリア
 	memset(m_apNumber, 0, sizeof(m_apNumber));
+	memset(m_anRankingDate, 0, sizeof(m_anRankingDate));
+	m_nRank = 0;
 }
 
 //=============================================================================
@@ -50,15 +52,25 @@ CRanking * CRanking::Create(void)
 //=============================================================================
 HRESULT CRanking::Init(void)
 {
+	CScore *pScore = CGame::GetScore();
+	m_nRank = pScore->SaveScore();
+
 	// 最大桁数分ループ
-	for (int nCntDigit = 0; nCntDigit < MAX_RANKING_DIGIT; nCntDigit++)
+	for (int  nCntNumber = 0; nCntNumber < MAX_NUMBER_DIGIT; nCntNumber++)
 	{
-		for (int nCntNumber = 0; nCntNumber < MAX_NUMBER_DIGIT; nCntNumber++)
+		m_anRankingDate[nCntNumber] = CScore::GetScore(nCntNumber);
+
+		for (int nCntDigit = 0; nCntDigit < MAX_RANKING_DIGIT; nCntDigit++)
 		{
-			m_apNumber[nCntDigit][nCntNumber] = CNumber::Create(0,
-				D3DXVECTOR3((640 + nCntDigit * 30 * 2), (350.0f + nCntNumber * 30 * 2), 0.0f),
+			int nValue = (int)powf(10.0f, (float)MAX_NUMBER_DIGIT - (float)nCntNumber);
+			int nScore2 = (int)powf(10.0f, (float)MAX_NUMBER_DIGIT - (float)nCntNumber - 1.0f);
+			int nAnswer = (m_anRankingDate[nCntDigit] % nValue) / nScore2;
+
+			m_apNumber[nCntNumber][nCntDigit] = CNumber::Create(0,
+				D3DXVECTOR3(460 + nCntNumber * 37 * 2, 355.0f + nCntDigit * 40 * 2, 0.0f),
 				D3DXVECTOR3(40, 40, 0),
 				D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+			m_apNumber[nCntNumber][nCntDigit]->SetNumber(nAnswer);
 		}
 	}
 	return S_OK;
@@ -70,13 +82,13 @@ HRESULT CRanking::Init(void)
 void CRanking::Uninit(void)
 {
 	//ランキング数回す
-	for (int nCntDigit = 0; nCntDigit < MAX_RANKING_DIGIT; nCntDigit++)
+	for (int nCntNumber = 0; nCntNumber < MAX_NUMBER_DIGIT; nCntNumber++)
 	{
-		for (int nCntNumber = 0; nCntNumber < MAX_NUMBER_DIGIT; nCntNumber++)
+		for (int nCntDigit = 0; nCntDigit < MAX_RANKING_DIGIT; nCntDigit++)
 		{
-			m_apNumber[nCntDigit][nCntNumber]->Uninit();
-			delete m_apNumber[nCntDigit][nCntNumber];
-			m_apNumber[nCntDigit][nCntNumber] = NULL;
+			m_apNumber[nCntNumber][nCntDigit]->Uninit();
+			delete m_apNumber[nCntNumber][nCntDigit];
+			m_apNumber[nCntNumber][nCntDigit] = NULL;
 		}
 	}
 
@@ -89,15 +101,11 @@ void CRanking::Uninit(void)
 //=============================================================================
 void CRanking::Update(void)
 {
-	for (int nCntDigit = 0; nCntDigit < MAX_RANKING_DIGIT; nCntDigit++)
+	for (int nCntNumber = 0; nCntNumber < MAX_NUMBER_DIGIT; nCntNumber++)
 	{
-		for (int nCntNumber = 0; nCntNumber < MAX_NUMBER_DIGIT; nCntNumber++)
+		for (int nCntDigit = 0; nCntDigit < MAX_RANKING_DIGIT; nCntDigit++)
 		{
-			m_apNumber[nCntDigit][nCntNumber]->Update();
-
-			//m_apNumber[nCntDigit][nCntNumber]->SetNumber
-			//((m_nScore % (int)(powf(10.0f, (MAX_SCORE_DIGIT - nCntDigit)))) / 
-			//	(float)(powf(10.0, (MAX_SCORE_DIGIT - nCntDigit - 1))));
+			m_apNumber[nCntNumber][nCntDigit]->Update();
 		}
 	}
 }
@@ -110,11 +118,11 @@ void CRanking::Draw(void)
 	//デバイスの取得
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
 	pDevice->SetRenderState(D3DRS_ALPHAREF, 200);
-	for (int nCntDigit = 0; nCntDigit < MAX_RANKING_DIGIT; nCntDigit++)
+	for (int nCntNumber = 0; nCntNumber < MAX_NUMBER_DIGIT; nCntNumber++)
 	{
-		for (int nCntNumber = 0; nCntNumber < MAX_NUMBER_DIGIT; nCntNumber++)
+		for (int nCntDigit = 0; nCntDigit < MAX_RANKING_DIGIT; nCntDigit++)
 		{
-			m_apNumber[nCntDigit][nCntNumber]->Draw();
+			m_apNumber[nCntNumber][nCntDigit]->Draw();
 		}
 	}
 	pDevice->SetRenderState(D3DRS_ALPHAREF, 50);

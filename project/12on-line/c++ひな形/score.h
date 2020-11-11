@@ -24,6 +24,7 @@ class CNumber;
 //マクロ定義
 //*****************************
 #define MAX_SCORE_DIGIT 6  // スコアの最大桁数
+#define MAX_RANKING 5
 
 //*****************************
 //クラス定義
@@ -41,12 +42,16 @@ public:
 	void Uninit(void);
 	void Update(void);
 	void Draw(void);
-
+	void ReadFile(void);
+	void WriteFile(void);
+	int SaveScore(void);
 	static void AddScore(int nPoint) { m_nScore += nPoint; }
-	static int GetScore(void) { return m_nScore; }
+	static int GetScore(int nCount) { return m_nRankingScore[nCount]; }
+
 private:
 	// メンバ変数
 	CNumber* m_apNumber[MAX_SCORE_DIGIT];
+	static int m_nRankingScore[MAX_RANKING];
 	static int m_nScore;
 
 };

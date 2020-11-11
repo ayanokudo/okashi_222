@@ -12,11 +12,16 @@
 #include "number.h"
 #include "renderer.h"
 #include "manager.h"
+//==============================
+//静的メンバ変数宣言
+//==============================
+#define SCORE_DATA_PATH "./data/Texts/RankingData.txt"
 
 //==============================
 //静的メンバ変数宣言
 //==============================
 int CScore::m_nScore = 0;
+int CScore::m_nRankingScore[MAX_RANKING] = {};
 
 //==================================
 // コンストラクタ
@@ -118,4 +123,71 @@ void CScore::Draw(void)
 		m_apNumber[nCntDigit]->Draw();
 	}
 	pDevice->SetRenderState(D3DRS_ALPHAREF,50);
+}
+
+//==================================
+// ファイル読み込み
+//==================================
+void CScore::ReadFile(void)
+{
+	// ファイルオープン
+	FILE*pFile = NULL;
+
+	pFile = fopen(SCORE_DATA_PATH, "r");
+	if (pFile != NULL)
+	{
+		for (int nCount = 0; nCount < MAX_RANKING; nCount++)
+		{
+			fscanf(pFile, "%d", &m_nRankingScore[nCount]);
+		}
+		fclose(pFile);
+	}
+}
+
+//==================================
+// ファイル書き込み
+//==================================
+void CScore::WriteFile(void)
+{
+	// ファイルオープン
+	FILE*pFile = NULL;
+
+	pFile = fopen(SCORE_DATA_PATH, "w");
+	if (pFile != NULL)
+	{
+		for (int nCount = 0; nCount < MAX_RANKING; nCount++)
+		{
+			fprintf(pFile, "%d\n", m_nRankingScore[nCount]);
+		}
+		fclose(pFile);
+	}
+}
+
+//==================================
+// 描画処理
+//==================================
+int CScore::SaveScore(void)
+{
+	int nCount;
+
+	ReadFile();
+
+ 	for (nCount = 0; nCount < MAX_RANKING; nCount++)
+	{
+		//ランキングを更新する場所の判定
+		if (m_nScore > m_nRankingScore[nCount])
+		{
+			//以降のランキングデータを後ろに移動
+			for (int nCntMove = MAX_RANKING - 1; nCntMove > nCount; nCntMove--)
+			{
+				m_nRankingScore[nCntMove] = m_nRankingScore[nCntMove - 1];
+			}
+			m_nRankingScore[nCount] = m_nScore;
+
+			break;
+		}
+	}
+	WriteFile();
+
+	return nCount;
 }

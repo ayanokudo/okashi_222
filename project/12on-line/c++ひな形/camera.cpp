@@ -26,6 +26,7 @@
 #define PLAYER_DEATH_COUNT 40  // プレイヤーが死んでから生きてるプレイヤーの方に少しずつ注視点を変える用
 
 #define FOV_Y D3DXToRadian(45.0f)
+#define FOV_X D3DXToRadian(80.0f)
 
 //******************************
 // 静的メンバ変数宣言
@@ -114,7 +115,7 @@ void CCamera::Uninit(void)
 //******************************
 void CCamera::Update(void)
 {
-#ifdef _DEBUG
+#ifdef _DEB/UG
 
 	m_fPhi -= CManager::GetMouse()->GetMouseMove().y / 100.0f;
 	m_fTheta -= CManager::GetMouse()->GetMouseMove().x / 100.0f;
@@ -219,9 +220,9 @@ void CCamera::Update(void)
 
 			playerPos.z;
 
-			float fDistance = sqrtf(powf(playerPos.x - m_posR.x, 2) + powf(playerPos.y - m_posR.y, 2) + powf(playerPos.z - m_posR.z, 2))+100.0f;
-				//;
-			if (fDistance > (m_posV.y *tanf(FOV_Y/2)))
+			float fDistance = (playerPos.z + m_posR.z)-100.0f;
+
+			if (fDistance < (m_posV.y *tanf(-FOV_Y/2)))
 			{
 				int n = 0;
 			}

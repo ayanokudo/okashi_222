@@ -346,7 +346,7 @@ void CEnemy::Hit(int nDamage)
 
 		for (int nCntPart = 0; nCntPart < 5; nCntPart++)
 		{
-			int nRandSize = rand() % 10 + 20;
+			int nRandSize = rand() % 10 + 40;
 			int nRandSpeed = rand() % 2 + 2;
 			float fRandAngle = D3DXToRadian(rand() % 360);
 			D3DXVECTOR3 partMove;

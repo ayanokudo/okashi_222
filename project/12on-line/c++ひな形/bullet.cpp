@@ -199,6 +199,7 @@ void CBullet::CollisionBullet(BULLETUSER user)
 	switch (user)
 	{
 	case BULLETUSER_ENEMY:
+	{
 		CPlayer*pPlayer = (CPlayer*)CScene::GetTop(OBJTYPE_PLAYER);
 
 		while (pPlayer != NULL)
@@ -211,6 +212,7 @@ void CBullet::CollisionBullet(BULLETUSER user)
 			}
 			pPlayer = (CPlayer*)pPlayer->GetNext();
 		}
+	}
 		break;
 	case BULLETUSER_PLAYER:
 	{
@@ -242,7 +244,6 @@ void CBullet::CollisionBullet(BULLETUSER user)
 			pBoss = (CBoss*)pBoss->GetNext();
 		}
 	}
-		break;
 	default:
 		break;
 	}

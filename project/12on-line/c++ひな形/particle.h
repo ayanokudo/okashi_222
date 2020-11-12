@@ -26,6 +26,7 @@ public:
 	typedef enum
 	{
 		PARTICLE_PAD = 0,
+		PARTICLE_SMOKE,
 		PARTICLE_MAX,
 	}PARTICLE_TYPE;
 

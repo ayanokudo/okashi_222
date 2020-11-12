@@ -1,15 +1,13 @@
 ////////////////////////////////////////////////////
 //
-//    tutorialの処理[tutorial.cpp]
-//    Author:増澤 未来
+//    LOSEクラスの処理[lose.cpp]
+//    Author:筒井　俊稀
 //
 ////////////////////////////////////////////////////
-
-
 //=============================
 // インクルード
 //=============================
-#include "tutorial.h"
+#include "lose.h"
 #include "manager.h"
 #include "renderer.h"
 #include "polygon.h"
@@ -21,83 +19,75 @@
 //**********************************
 // 静的メンバ変数宣言
 //**********************************
-LPDIRECT3DTEXTURE9 CTutorial::m_pTexture[TUTORIAL_NUM] = {};
-
+LPDIRECT3DTEXTURE9 CLose::m_pTexture = NULL;
 //**********************************
 // マクロ定義
 //**********************************
-#define  TITLE_TEXTURE_1_PATH "./data/Textures/Tutorial1.png" // テクスチャ
-#define  TITLE_TEXTURE_2_PATH "./data/Textures/Tutorial2.png" // テクスチャ
-#define  TITLE_TEXTURE_3_PATH "./data/Textures/Tutorial3.png" // テクスチャ
-#define  TITLE_TEXTURE_4_PATH "./data/Textures/Tutorial4.png" // テクスチャ
+#define  WIN_TEXTURE_PATH "./data/Textures/Ranking.png" // テクスチャ
 
 //=============================
 // コンストラクタ
 //=============================
-CTutorial::CTutorial()
+CLose::CLose()
 {
 	m_pPolygon = NULL;
-	m_nNumTutorial = 0;
 }
 
 //=============================
 // デストラクタ
 //=============================
-CTutorial::~CTutorial()
+CLose::~CLose()
 {
 }
 
 //=============================
 // クリエイト
 //=============================
-CTutorial * CTutorial::Create(void)
+CLose * CLose::Create(void)
 {
 	// メモリの確保
-	CTutorial *pTutorial = new CTutorial;
-	if (pTutorial != NULL)
+	CLose *pLose = new CLose;
+
+	if (pLose != NULL)
 	{
 		// 初期化
-		pTutorial->Init();
+		pLose->Init();
 	}
-
-	return pTutorial;
+	return pLose;
 }
 
 //=============================
 // 初期化処理
 //=============================
-HRESULT CTutorial::Init(void)
+HRESULT CLose::Init(void)
 {
 	// デバイスの取得
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
 	// テクスチャの生成
-	D3DXCreateTextureFromFile(pDevice, TITLE_TEXTURE_1_PATH, &m_pTexture[0]);
-	D3DXCreateTextureFromFile(pDevice, TITLE_TEXTURE_2_PATH, &m_pTexture[1]);
-	D3DXCreateTextureFromFile(pDevice, TITLE_TEXTURE_3_PATH, &m_pTexture[2]);
-	D3DXCreateTextureFromFile(pDevice, TITLE_TEXTURE_4_PATH, &m_pTexture[3]);
+	D3DXCreateTextureFromFile(pDevice, WIN_TEXTURE_PATH, &m_pTexture);
+
 
 	m_pPolygon = CPolygon::Create(D3DXVECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0.0f),
 		D3DXVECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0.0f),
 		D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 
-	m_pPolygon->SetTexture(m_pTexture[0]);
+	m_pPolygon->SetTexture(m_pTexture);
+
 	return S_OK;
 }
 
 //=============================
 // 終了処理
 //=============================
-void CTutorial::Uninit(void)
+void CLose::Uninit(void)
 {
-	for (int nCntTex = 0; nCntTex < TUTORIAL_NUM; nCntTex++)
+	// テクスチャの解放
+	if (m_pTexture != NULL)
 	{
-		// テクスチャの解放
-		if (m_pTexture[nCntTex] != NULL)
-		{
-			m_pTexture[nCntTex]->Release();
-			m_pTexture[nCntTex] = NULL;
-		}
+		m_pTexture->Release();
+		m_pTexture = NULL;
 	}
+
 	if (m_pPolygon != NULL)
 	{
 		// ポリゴンの終了処理
@@ -112,11 +102,10 @@ void CTutorial::Uninit(void)
 	Release();
 }
 
-
 //=============================
 // 更新処理
 //=============================
-void CTutorial::Update(void)
+void CLose::Update(void)
 {
 	// ポリゴンの更新処理
 	m_pPolygon->Update();
@@ -125,34 +114,14 @@ void CTutorial::Update(void)
 		CManager::GetMouse()->GetMouseTrigger(0) ||
 		CManager::GetJoypad()->GetJoystickTrigger(3, 0))
 	{
-		m_nNumTutorial++;
-		if (m_nNumTutorial >= TUTORIAL_NUM)
-		{
-			CManager::GetFade()->SetFade(CManager::MODE_TITLE);
-		}
-		else
-		{
-			m_pPolygon->SetTexture(m_pTexture[m_nNumTutorial]);
-		}
-	}
-	if (CManager::GetKeyboard()->GetKeyTrigger(DIK_BACKSPACE) ||
-		CManager::GetJoypad()->GetJoystickTrigger(2, 0))
-	{
-		m_nNumTutorial--;
-		if (m_nNumTutorial < 0)
-		{
-			m_nNumTutorial = 0;
-		}
-
-		m_pPolygon->SetTexture(m_pTexture[m_nNumTutorial]);
+		CManager::GetFade()->SetFade(CManager::MODE_RESULT);
 	}
 }
-
 
 //=============================
 // 描画処理
 //=============================
-void CTutorial::Draw(void)
+void CLose::Draw(void)
 {
 	// ポリゴンの描画処理
 	m_pPolygon->Draw();

@@ -16,7 +16,7 @@
 // マクロ定義
 //*****************************
 #define PARTICLE_PAD_TEXTURE_PATH    "./data/Textures/pad.png"    //テクスチャのパス
-
+#define PARTICLE_SMOKE_TEXTURE_PATH    "./data/Textures/pad.png"    //テクスチャのパス
 
 //******************************
 // 静的メンバ変数宣言
@@ -60,10 +60,10 @@ CParticle * CParticle::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 move, con
 	pParticle->m_move = move;                // 移動量
 	pParticle->SetSize(size);                // サイズ
 	pParticle->m_nLife = nLife;              // 寿命
-	pParticle->SetColor(col);                // カラー
+ 	pParticle->SetColor(col);                // カラー
 	pParticle->SetObjType(OBJTYPE_PARTICLE); // オブジェクトタイプ
 	pParticle->SetAngle(rand() % 360);       // 回転角度をランダム
-	pParticle->SetAddMode(true);             // 加算合成
+	//pParticle->SetAddMode(true);             // 加算合成
 	return pParticle;
 }
 
@@ -77,6 +77,7 @@ HRESULT CParticle::Load(void)
 
 	// テクスチャの生成
 	D3DXCreateTextureFromFile(pDevice, PARTICLE_PAD_TEXTURE_PATH, &m_apTexture[PARTICLE_PAD]);
+	D3DXCreateTextureFromFile(pDevice, PARTICLE_SMOKE_TEXTURE_PATH, &m_apTexture[PARTICLE_SMOKE]);
 	return S_OK;
 }
 
@@ -146,5 +147,9 @@ void CParticle::Draw(void)
 	// デバイスの取得
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
 
+	pDevice->SetRenderState(D3DRS_LIGHTING, false);
+	
 	CBillboard::Draw();
+
+	pDevice->SetRenderState(D3DRS_LIGHTING, true);
 }

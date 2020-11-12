@@ -23,8 +23,10 @@
 #include "item.h"
 #include "score.h"
 #include "scene.h"
-
 #include "particle.h"
+#include "lostpoint.h"
+#include "wall.h"
+
 //*****************************
 // マクロ定義
 //*****************************
@@ -33,7 +35,7 @@
 
 #define WALK_ANIM_PATH  "data/Texts/nezumi_walk.txt"      // 歩きアニメーションのパス
 
-#define ENEMY_SPEED 5
+#define ENEMY_SPEED 10
 #define ENEMY_RAND rand() % 8 + 1
 #define ENEMY_MOVE_RATE 0.05f
 #define ENEMY_RADIUS  50
@@ -73,6 +75,7 @@ CEnemy::CEnemy() :CModelHierarchy(OBJTYPE_ENEMY)
 	m_bCarrier = false;
 	m_nLife = 0;
 	memset(&m_pMotion, 0, sizeof(m_pMotion));
+	m_bRoute = false;
 }
 
 //******************************
@@ -460,12 +463,14 @@ void CEnemy::RangeDecisionEscort(void)
 						m_fRotYDist = atan2(-(playerPos.x - enemyPos.x), -(playerPos.z - enemyPos.z));
 					}
 					//break;
-				}
-				else
-				{
-					//エネミーを再度動かす
-					m_bRd = false;
-				}
+				}	
+			}
+
+			if (!CPlayer::GetDeath(0) && !CCollision::CollisionSphere(m_pRadiusColision, CGame::GetPlayer(0)->GetCollision()) &&
+				!CPlayer::GetDeath(1) && !CCollision::CollisionSphere(m_pRadiusColision, CGame::GetPlayer(1)->GetCollision()))
+			{// どっちのプレイヤーにも当たってないとき
+			 //エネミーを再度動かす
+				m_bRd = false;
 			}
 		}
 	}
@@ -491,28 +496,72 @@ void CEnemy::MotionCarrier(void)
 			CPlayer*pPlayer = CGame::GetPlayer(nCount);
 			if (pPlayer != NULL)
 			{
-				//プレイヤーの位置情報を取得
-				D3DXVECTOR3 playerPos = pPlayer->GetPos();
-				//エネミーの位置情報を取得
-				D3DXVECTOR3 enemyPos = GetPos();
-				// 距離を比べる
-				if (sqrtf(powf(enemyPos.x - playerPos.x, 2) + powf(enemyPos.y - playerPos.y, 2) + powf(enemyPos.z - playerPos.z, 2)) <= fDistance)
-				{// 距離が近かった時
-					fDistance = sqrtf(powf(enemyPos.x - playerPos.x, 2) + powf(enemyPos.y - playerPos.y, 2) + powf(enemyPos.z - playerPos.z, 2));
-
-
-					//向きの設定
-					m_fRotYDist = atan2((playerPos.x - enemyPos.x), (playerPos.z - enemyPos.z));
-					// 移動量
-					D3DXVECTOR3 Move;
-					Move.x = sinf(m_fRotYDist)*10.0f;
-					Move.y = 0.0f;
-					Move.z = cosf(m_fRotYDist)*10.0f;
-
-					m_moveDest -= Move;
-				}
 			}
 		}
+		// 座用の取得
+		D3DXVECTOR3 pos = GetPos();
+		CGame::GetLostPoint()->sort(pos);
+
+		//if (!m_bRoute)
+		//{
+
+		//	CWall*pWall = (CWall*)GetTop(OBJTYPE_WALL);
+
+		//	while (pWall != NULL)
+		//	{
+		//		if (CCollision::CollisionSphereToBox(m_pCollision, pWall->GetCollision()))
+		//		{
+		//			m_bRoute = true;
+		//		}
+
+		//		pWall = (CWall*)pWall->GetNext();
+		//	}
+		//	// 目標座標の取得
+		//	int nNumPoint = 0;
+		//	D3DXVECTOR3 distPos = CGame::GetLostPoint()->GetLostPos(nNumPoint);
+
+		//	// 目標に向かって移動量の設定
+		//	m_moveDest = distPos - pos;
+		//	D3DXVec3Normalize(&m_moveDest, &m_moveDest);
+		//	m_moveDest *= ENEMY_SPEED;
+		//	if (CCollision::CollisionSphere(m_pCollision, CGame::GetLostPoint()->GetLostCollision(0)))
+		//	{
+		//		for (int nCntPart = 0; nCntPart < 5; nCntPart++)
+		//		{
+		//			int nRandSize = rand() % 10 + 40;
+		//			int nRandSpeed = rand() % 2 + 2;
+		//			float fRandAngle = D3DXToRadian(rand() % 360);
+		//			D3DXVECTOR3 partMove;
+		//			partMove.x = cosf(fRandAngle)*nRandSpeed;
+		//			partMove.y = 0.0f;
+		//			partMove.z = sinf(fRandAngle)*nRandSpeed;
+		//			CParticle::Create(D3DXVECTOR3(GetPos().x, GetPos().y + 20, GetPos().z),
+		//				partMove, 
+		//				D3DXVECTOR3(nRandSize, nRandSize, 0.0f), 
+		//				50,
+		//				D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
+		//				CParticle::PARTICLE_SMOKE);
+		//		}
+
+		//		Uninit();
+		//	}
+		//}
+		//else
+		//{
+		//	// 目標座標の取得
+		//	int nNumPoint = 0;
+		//	D3DXVECTOR3 distPos = CGame::GetLostPoint()->GetRoutePos(nNumPoint);
+
+		//	// 目標に向かって移動量の設定
+		//	m_moveDest = distPos - pos;
+		//	D3DXVec3Normalize(&m_moveDest, &m_moveDest);
+		//	m_moveDest *= ENEMY_SPEED;
+
+		//	if (CCollision::CollisionSphere(m_pCollision, CGame::GetLostPoint()->GetRouteCollision(0)))
+		//	{
+		//		m_bRoute = false;
+		//	}
+		//}
 	}
 }
 

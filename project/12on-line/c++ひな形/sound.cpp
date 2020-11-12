@@ -12,14 +12,12 @@
 
 CSound::SOUNDPARAM CSound::m_aParam[SOUND_LABEL_MAX]
 {
-	{ "data/SE/bgm.wav", -1 },					// BGM0
-	{ "music/enemyBGM.wav", -1 },				// BGM1
-	{ "music/titleBGM.wav", -1 },				// BGM3
-	{ "music/clearBGM.wav", -1 },				// BGM4
-	{ "music/n114.wav", -1 },					// BGM4
-	{ "music/poka02.wav", 0 },					// 弾発射音
-	{ "music/small_car_engine1.wav", 0 },		//playerのダメージ音
-	{ "music/botan.wav", 0 },					//playerのダメージ音
+	{ "data/ME/TitleBgm.wav", -1 },						// タイトルBGM
+	{ "data/ME/PlayBgm.wav", -1 },						// ゲーム中BGM
+	{ "data/ME/PlayBossBgm.wav", -1 },					// ボス戦中BGM
+	{ "data/ME/Result_lose.wav", -1 },					// リザルトBGM
+	{ "data/ME/Result_win.wav", -1 },					// リザルトBGM
+	{ "data/ME/Tutorial.wav", -1 },						// チュートリアルBGM
 };
 
 //=============================================================================

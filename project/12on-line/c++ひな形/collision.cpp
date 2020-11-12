@@ -37,6 +37,8 @@ CCollision::CCollision():CModel(OBJTYPE_COLLISION)
 	m_pMeshModel = NULL;   	//メッシュ情報へのポインタ
 	m_pBuffMatModel = NULL;	//マテリアル情報へのポインタ
 	m_nNumMatModel = 0;	    //マテリアル情報の数
+	m_fRadius = 0.0f;
+	m_size = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 }
 
 //******************************
@@ -178,11 +180,14 @@ HRESULT CCollision::Init(void)
 	{
 		return E_FAIL;
 	}
+
+#ifdef _DEBUG
 	// メッシュの生成
 	CreateMesh();
 	// テクスチャ割り当て
 	BindModel(m_pMeshModel, m_pBuffMatModel, 1);
 
+#endif
 	return S_OK;
 }
 
@@ -220,6 +225,7 @@ void CCollision::Update(void)
 //******************************
 void CCollision::Draw(void)
 {
+#ifdef _DEBUG
 	// 色の設定
 	D3DXMATERIAL* mat = (D3DXMATERIAL*)m_pBuffMatModel->GetBufferPointer();
 	mat->MatD3D.Ambient = D3DXCOLOR(0.0f, 0.0f, 1.0f, 1.0f);
@@ -231,6 +237,7 @@ void CCollision::Draw(void)
 	// ワイヤーフレームで描画
 	pDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
 	static bool bView = false;
+
 	if (CManager::GetKeyboard()->GetKeyTrigger(DIK_F1))
 	{
 		bView = true;
@@ -239,14 +246,16 @@ void CCollision::Draw(void)
 	{
 		bView = false;
 	}
+
 	if (bView)
 	{
 		//　描画
 		CModel::Draw();
 	}
-
 	// ワイヤーフレームをもどす
 	pDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
+#endif // _DEBUG
+	
 }
 
 //******************************

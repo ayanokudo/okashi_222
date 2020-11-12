@@ -4,8 +4,6 @@
 //    Author:増澤 未来
 //
 ////////////////////////////////////////////////////
-
-
 //=============================
 // インクルード
 //=============================
@@ -54,8 +52,12 @@ CResult * CResult::Create(void)
 {
 	// メモリの確保
 	CResult *pResult = new CResult;
-	// 初期化
-	pResult->Init();
+
+	if (pResult != NULL)
+	{
+		// 初期化
+		pResult->Init();
+	}
 	return pResult;
 }
 

@@ -85,11 +85,10 @@ void CScene::ReleaseAll(void)
 		{
 			// ネクストの保存
 			CScene*pSave = pScene->m_pNext;
-			if (nCntPriority != OBJTYPE_COLLISION)
-			{
-				// 終了処理
-				pScene->Uninit();
-			}
+
+			// 終了処理
+			pScene->Uninit();
+
 			// リストをつなげなおす
 			pScene->ReConnection();
 			// オブジェクトの削除

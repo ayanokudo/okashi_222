@@ -30,6 +30,7 @@
 #include "boss.h"
 #include "ui.h"
 #include "file.h"
+#include "lostpoint.h"
 
 //=============================
 // 静的メンバ変数宣言
@@ -42,7 +43,7 @@ CItem   *CGame::m_pItem	  = NULL;	// アイテムクラスのポインタ変数
 CScore  *CGame::m_pScore  = NULL;	// スコアクラスのポインタ変数
 CTime   *CGame::m_pTime   = NULL;	// タイムクラスのポインタ変数
 CLight  *CGame::m_pLight  = NULL;	// ライトクラスのポインタ変数
-
+CLostPoint *CGame::m_pLostPoint = NULL;// ロストポイントのポインタ変数
 //=============================
 // コンストラクタ
 //=============================
@@ -96,8 +97,8 @@ HRESULT CGame::Init(void)
 	}
 	
 	// エネミーの生成
-	m_pEnemy = CEnemy::Create(D3DXVECTOR3(0.0f, 0.0f, -800.0f), CEnemy::ENEMY_ESCORT);
-	CEnemy::Create(D3DXVECTOR3(0.0f, 0.0f, -850.0f), CEnemy::ENEMY_ESCORT);
+	m_pEnemy = CEnemy::Create(D3DXVECTOR3(0.0f, 0.0f, -8000.0f), CEnemy::ENEMY_CARRIER);
+	CEnemy::Create(D3DXVECTOR3(0.0f, 0.0f, -8000.0f), CEnemy::ENEMY_CARRIER);
     // ボスの生成
     m_pBoss = CBoss::Create(D3DXVECTOR3(-15000.0f, 0.0f, -18000.0f));
 	// アイテムの生成
@@ -117,6 +118,9 @@ HRESULT CGame::Init(void)
 
 	// ポーズの初期化
 	CManager::SetActivePause(false);
+
+	// ロストポイントの生成
+	m_pLostPoint = CLostPoint::Create();
 	//CCollect::Create();
 	return S_OK;
 }

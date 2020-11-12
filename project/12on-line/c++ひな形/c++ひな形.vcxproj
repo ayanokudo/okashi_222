@@ -150,6 +150,7 @@
     <ClCompile Include="collect.cpp" />
     <ClCompile Include="life.cpp" />
     <ClCompile Include="file.cpp" />
+    <ClCompile Include="lose.cpp" />
     <ClCompile Include="motion.cpp" />
     <ClCompile Include="bg.cpp" />
     <ClCompile Include="billboard.cpp" />
@@ -191,11 +192,13 @@
     <ClCompile Include="tutorial.cpp" />
     <ClCompile Include="ui.cpp" />
     <ClCompile Include="wall.cpp" />
+    <ClCompile Include="win.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="file.h" />
     <ClInclude Include="collect.h" />
     <ClInclude Include="life.h" />
+    <ClInclude Include="lose.h" />
     <ClInclude Include="motion.h" />
     <ClInclude Include="bg.h" />
     <ClInclude Include="billboard.h" />
@@ -237,6 +240,7 @@
     <ClInclude Include="tutorial.h" />
     <ClInclude Include="ui.h" />
     <ClInclude Include="wall.h" />
+    <ClInclude Include="win.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

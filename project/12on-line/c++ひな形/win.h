@@ -1,13 +1,13 @@
 //=============================================================================
 //
-// tutorialヘッダ [tutorial.h]
-// Author : 増澤 未来
+// winヘッダ [win.h]
+// Author : 筒井　俊稀
 //
 //=============================================================================
 
 //二重インクルード防止
-#ifndef _TUTORIAL_H_
-#define _TUTORIAL_H_
+#ifndef _WIN_H_
+#define _WIN_H_
 
 //*****************************
 //インクルード
@@ -15,28 +15,23 @@
 #include "main.h"
 #include "scene.h"
 
-//*****************************
+//=============================
 // 前方宣言
-//*****************************
+//=============================
 class CPolygon;
-
-//*****************************
-// マクロ定義
-//*****************************
-#define TUTORIAL_NUM 4
 
 //*****************************
 //クラス定義
 //*****************************
 
 //2dポリゴンクラス
-class CTutorial : public CScene
+class CWin : public CScene
 {
 public:
 	// メンバ関数
-	CTutorial();
-	~CTutorial();
-	static CTutorial *Create(void);
+	CWin();
+	~CWin();
+	static CWin *Create(void);
 
 	HRESULT Init(void);
 	void Uninit(void);
@@ -45,9 +40,8 @@ public:
 
 private:
 	// メンバ変数
-	static LPDIRECT3DTEXTURE9 m_pTexture[TUTORIAL_NUM];        // テクスチャへのポインタ
+	static LPDIRECT3DTEXTURE9 m_pTexture;        // テクスチャへのポインタ
 	CPolygon *m_pPolygon;
-	int m_nNumTutorial;
 
 };
 

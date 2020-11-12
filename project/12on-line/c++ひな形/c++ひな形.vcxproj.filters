@@ -133,6 +133,9 @@
     <ClCompile Include="ranking.cpp">
       <Filter>ソースファイル</Filter>
     </ClCompile>
+    <ClCompile Include="lostpoint.cpp">
+      <Filter>ソースファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bg.h">
@@ -267,6 +270,7 @@
     <ClInclude Include="ranking.h">
       <Filter>ヘッダーファイル</Filter>
     </ClInclude>
+    <ClInclude Include="lostpoint.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ヘッダーファイル">

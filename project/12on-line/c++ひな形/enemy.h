@@ -87,6 +87,7 @@ private:
 	int m_nCntAttack;
 	int m_nCountMotion;
 	int m_nCountRand;
+	bool m_bRoute;             // 逃げるとき壁ののほうに永遠といかないようにする
 	CMotion*m_pMotion[MOTION_MAX];  // アニメーションポインタ
 };
 

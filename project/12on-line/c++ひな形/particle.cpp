@@ -15,8 +15,8 @@
 //*****************************
 // マクロ定義
 //*****************************
-#define PARTICLE_PAD_TEXTURE_PATH    "./data/Textures/kwmuri.png"    //テクスチャのパス
-
+#define PARTICLE_PAD_TEXTURE_PATH    "./data/Textures/pad.png"    //テクスチャのパス
+#define PARTICLE_SMOKE_TEXTURE_PATH    "./data/Textures/pad.png"    //テクスチャのパス
 
 //******************************
 // 静的メンバ変数宣言
@@ -77,6 +77,7 @@ HRESULT CParticle::Load(void)
 
 	// テクスチャの生成
 	D3DXCreateTextureFromFile(pDevice, PARTICLE_PAD_TEXTURE_PATH, &m_apTexture[PARTICLE_PAD]);
+	D3DXCreateTextureFromFile(pDevice, PARTICLE_SMOKE_TEXTURE_PATH, &m_apTexture[PARTICLE_SMOKE]);
 	return S_OK;
 }
 

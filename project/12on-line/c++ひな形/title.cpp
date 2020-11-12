@@ -98,7 +98,7 @@ HRESULT CTitle::Load(void)
 //=============================
 // テクスチャ破棄
 //=============================
-void CTitle::UnLoad(void)
+void CTitle::Unload(void)
 {
 	for (int nCntTex = 0; nCntTex < MENU_MAX; nCntTex++)
 	{

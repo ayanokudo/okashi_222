@@ -178,7 +178,7 @@ void CManager::Uninit(void)
 	CBoss::Unload();     // ボス
 	CCollect::Unload();  // コレクト
 	CLife::Unload();
-	CTitle::UnLoad();
+	CTitle::Unload();
 
 	if (m_pSound != NULL)
 	{

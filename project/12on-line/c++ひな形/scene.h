@@ -62,7 +62,7 @@ public:
 	void SetObjType(const OBJTYPE objType) { m_type = objType; }
 	OBJTYPE GetType(void) { return m_type; }
 	int GetID(void) { return m_nNumID; } // ”z—ñ”Ô†‚Ìæ“¾
-	
+
 	static CScene*GetTop(int nIndex) { return m_pTop[nIndex]; }
 	static CScene*GetCur(int nIndex) { return m_pCur[nIndex]; }
 	CScene*GetNext(void) { return m_pNext; }
@@ -73,6 +73,9 @@ public:
 	virtual void Uninit(void) = 0;
 	virtual void Update(void) = 0;
 	virtual void Draw(void) = 0;
+
+	// “ñ“_ŠÔ‚Ì‹——£‚ğ•Ô‚·ŠÖ”
+	static float GetDistance(D3DXVECTOR3 pos, D3DXVECTOR3 targerPos) { return sqrtf(powf(pos.x - targerPos.x, 2) + powf(pos.y - targerPos.y, 2) + powf(pos.z - targerPos.z, 2)); }
 
 protected:
 	void Release(void);

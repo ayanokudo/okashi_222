@@ -136,80 +136,80 @@ void CCamera::Update(void)
 	}
 
 #else
-	//if (!CPlayer::GetDeath(0) && !CPlayer::GetDeath(1))
-	//{
-	//	CPlayer*pPlayer[MAX_PLAYER] = {};       // プレイヤー情報
-	//	D3DXVECTOR3 playerPos[MAX_PLAYER] = {}; // プレイヤー座標
-	//	// プレイヤー数分ループ
-	//	for (int nCntPlayer = 0; nCntPlayer < MAX_PLAYER; nCntPlayer++)
-	//	{
-	//		// プレイヤー情報の取得
-	//		pPlayer[nCntPlayer] = CGame::GetPlayer(nCntPlayer);
-	//		if (pPlayer[nCntPlayer] != NULL)
-	//		{
-	//			// プレイヤー座標の取得
-	//			playerPos[nCntPlayer] = pPlayer[nCntPlayer]->GetPos();
-	//		}
-	//	}
+	if (!CPlayer::GetDeath(0) && !CPlayer::GetDeath(1))
+	{
+		CPlayer*pPlayer[MAX_PLAYER] = {};       // プレイヤー情報
+		D3DXVECTOR3 playerPos[MAX_PLAYER] = {}; // プレイヤー座標
+		// プレイヤー数分ループ
+		for (int nCntPlayer = 0; nCntPlayer < MAX_PLAYER; nCntPlayer++)
+		{
+			// プレイヤー情報の取得
+			pPlayer[nCntPlayer] = CGame::GetPlayer(nCntPlayer);
+			if (pPlayer[nCntPlayer] != NULL)
+			{
+				// プレイヤー座標の取得
+				playerPos[nCntPlayer] = pPlayer[nCntPlayer]->GetPos();
+			}
+		}
 
-	//	// プレイヤー同士の距離
-	//	float fDistance = sqrtf(powf(playerPos[0].x - playerPos[1].x, 2) + powf(playerPos[0].z - playerPos[1].z, 2));
-	//	// プレイヤー同士の位置の角度
-	//	float fAngle = atan2f(playerPos[1].z - playerPos[0].z, playerPos[1].x - playerPos[0].x);
+		// プレイヤー同士の距離
+		float fDistance = sqrtf(powf(playerPos[0].x - playerPos[1].x, 2) + powf(playerPos[0].z - playerPos[1].z, 2));
+		// プレイヤー同士の位置の角度
+		float fAngle = atan2f(playerPos[1].z - playerPos[0].z, playerPos[1].x - playerPos[0].x);
 
-	//	// 中心点をプレイヤー間の中心に設定
-	//	m_posR.x = playerPos[0].x + cosf(fAngle)*(fDistance / 2);
-	//	m_posR.z = playerPos[0].z + sinf(fAngle)*(fDistance / 2);
+		// 中心点をプレイヤー間の中心に設定
+		m_posR.x = playerPos[0].x + cosf(fAngle)*(fDistance / 2);
+		m_posR.z = playerPos[0].z + sinf(fAngle)*(fDistance / 2);
 
-	//	if (fDistance >= 500)
-	//	{
-	//		// 距離でカメラを引く
-	//		m_fViewExtent = fDistance-500;
-	//	}
+		if (fDistance >= 500)
+		{
+			// 距離でカメラを引く
+			m_fViewExtent = fDistance-500;
+		}
 
-	//	// カメラ位置の設定
-	//	m_posV = m_posR + CAMERA_LOCAL_POS;
-	//	m_posV.y = CAMERA_LOCAL_POS.y + m_fViewExtent;
-	//}
-	//else if(!CPlayer::GetDeath(0))
-	//{
-	//	
-	//	if (m_nCntPlayerDeath < PLAYER_DEATH_COUNT)
-	//	{
-	//		// カウントを進める
-	//		m_nCntPlayerDeath++;
-	//		// だんだんと注視点を変える
-	//		m_posR += (CGame::GetPlayer(0)->GetPos() - m_posR)*CAMERA_LOOK_RATE;
-	//	}
-	//	else
-	//	{
-	//		// 一瞬で注視点を変える
-	//		m_posR = CGame::GetPlayer(0)->GetPos();
-	//	}
+		// カメラ位置の設定
+		m_posV = m_posR + CAMERA_LOCAL_POS;
+		m_posV.y = CAMERA_LOCAL_POS.y + m_fViewExtent;
+	}
+	else if(!CPlayer::GetDeath(0))
+	{
+		
+		if (m_nCntPlayerDeath < PLAYER_DEATH_COUNT)
+		{
+			// カウントを進める
+			m_nCntPlayerDeath++;
+			// だんだんと注視点を変える
+			m_posR += (CGame::GetPlayer(0)->GetPos() - m_posR)*CAMERA_LOOK_RATE;
+		}
+		else
+		{
+			// 一瞬で注視点を変える
+			m_posR = CGame::GetPlayer(0)->GetPos();
+		}
 
-	//	// カメラ位置の設定
-	//	m_posV = m_posR + CAMERA_LOCAL_POS;
-	//	m_posV.y = CAMERA_LOCAL_POS.y + 300;
-	//}
-	//else if (!CPlayer::GetDeath(1))
-	//{
-	//	if (m_nCntPlayerDeath < PLAYER_DEATH_COUNT)
-	//	{
-	//		// カウントを進める
-	//		m_nCntPlayerDeath++;
-	//		// だんだんと注視点を変える
-	//		m_posR += (CGame::GetPlayer(1)->GetPos() - m_posR)*CAMERA_LOOK_RATE;
-	//	}
-	//	else
-	//	{
-	//		// 一瞬で注視点を変える
-	//		m_posR = CGame::GetPlayer(1)->GetPos();
-	//	}
+		// カメラ位置の設定
+		m_posV = m_posR + CAMERA_LOCAL_POS;
+		m_posV.y = CAMERA_LOCAL_POS.y + 300;
+	}
+	else if (!CPlayer::GetDeath(1))
+	{
+		if (m_nCntPlayerDeath < PLAYER_DEATH_COUNT)
+		{
+			// カウントを進める
+			m_nCntPlayerDeath++;
+			// だんだんと注視点を変える
+			m_posR += (CGame::GetPlayer(1)->GetPos() - m_posR)*CAMERA_LOOK_RATE;
+		}
+		else
+		{
+			// 一瞬で注視点を変える
+			m_posR = CGame::GetPlayer(1)->GetPos();
+		}
 
-	//	// カメラ位置の設定
-	//	m_posV = m_posR + CAMERA_LOCAL_POS;
-	//	m_posV.y = CAMERA_LOCAL_POS.y+300;
-	//}
+		// カメラ位置の設定
+		m_posV = m_posR + CAMERA_LOCAL_POS;
+		m_posV.y = CAMERA_LOCAL_POS.y+300;
+	}
 
 	// カメラに写っているか判定する
 	for (int nCntPlayer = 0; nCntPlayer < MAX_PLAYER; nCntPlayer++)
@@ -220,11 +220,9 @@ void CCamera::Update(void)
 
 			playerPos.z;
 
-			float fDistance = (playerPos.z + m_posR.z)-100.0f;
-
-			if (fDistance < (m_posV.y *tanf(-FOV_Y/2)))
+			if ((playerPos.z + m_posR.z) - 100.0f < (m_posV.y *tanf(-FOV_Y/2)))
 			{
-				int n = 0;
+				
 			}
 
 		}

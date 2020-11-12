@@ -20,7 +20,7 @@
 //*****************************
 // マクロ定義
 //*****************************
-#define WALL_1_TEXTURE_PATH		"./data/Textures/wall000.png"		 // フローリングのテクスチャのパス
+#define WALL_1_TEXTURE_PATH		"./data/Textures/w.png"		 // フローリングのテクスチャのパス
 #define WALL_2_TEXTURE_PATH		"./data/Textures/particle001.png"	 // まっとのテクスチャのパス
 #define WALL_3_TEXTURE_PATH		"./data/Textures/particle001.png"    // キッチンの床のテクスチャのパス
 
@@ -113,7 +113,7 @@ HRESULT CWall::Init(void)
 	CScene3d::BindTexture(m_apTexture[m_type]);
 	// 壁よりちょっと大きめに当たり判定をとる
 	D3DXVECTOR3 collisionSize = m_size + D3DXVECTOR3(5.0f, 5.0f, 5.0f);
-	if (m_rot.y == 0)
+	if (m_rot.y == 0|| m_rot.y ==D3DXToRadian(180))
 	{
 		// 当たり判定の生成
 		m_pCollision = CCollision::CreateBox(m_pos, collisionSize * 2);

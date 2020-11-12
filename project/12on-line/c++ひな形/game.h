@@ -32,7 +32,7 @@ class CItem;
 class CScore;
 class CTime;
 class CUi;
-
+class CLostPoint;
 //*****************************
 // マクロ定義
 //*****************************
@@ -58,13 +58,14 @@ public:
 	void Draw(void);
 
 
-	static CCamera *GetCamera(void) { return m_pCamera; }  // カメラの取得処理
-	static CPlayer *GetPlayer(int nIndex = 0) { return m_pPlayer[nIndex]; }  // プレイヤーの取得処理
-	static CEnemy  *GetEnemy(void)  { return m_pEnemy; }   // エネミーの取得処理
-    static CBoss   *GetBoss(void) { return m_pBoss; }
-	static CItem   *GetItem(void)	{ return m_pItem; }	   // アイテムの取得処理
-	static CScore  *GetScore(void)  { return m_pScore; }   // スコアの取得処理
-	static CTime   *GetTime(void)   { return m_pTime; }	   // タイムの取得処理
+	static CCamera    *GetCamera(void) { return m_pCamera; }  // カメラの取得処理
+	static CPlayer    *GetPlayer(int nIndex = 0) { return m_pPlayer[nIndex]; }  // プレイヤーの取得処理
+	static CEnemy     *GetEnemy(void)  { return m_pEnemy; }   // エネミーの取得処理
+    static CBoss      *GetBoss(void)   { return m_pBoss; }
+	static CItem      *GetItem(void)   { return m_pItem; }	   // アイテムの取得処理
+	static CScore     *GetScore(void)  { return m_pScore; }   // スコアの取得処理
+	static CTime      *GetTime(void)   { return m_pTime; }	   // タイムの取得処理
+	static CLostPoint *GetLostPoint(void) { return m_pLostPoint; }	   // タイムの取得処理
 private:
 	void Ui(void);
 
@@ -77,6 +78,7 @@ private:
 	static CScore*m_pScore;		// スコア
 	static CTime*m_pTime;		// アイテム
 	static CLight *m_pLight;	// ライト
+	static CLostPoint*m_pLostPoint;// 敵が消えるポイント
 	CUi* m_pUi[UI_PLAYER];
 }; 
 

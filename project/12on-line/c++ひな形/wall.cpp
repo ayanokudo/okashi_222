@@ -20,9 +20,9 @@
 //*****************************
 // マクロ定義
 //*****************************
-#define WALL_1_TEXTURE_PATH		"./data/Textures/wall000.png"		 // フローリングのテクスチャのパス
-#define WALL_2_TEXTURE_PATH		"./data/Textures/particle001.png"	 // まっとのテクスチャのパス
-#define WALL_3_TEXTURE_PATH		"./data/Textures/particle001.png"    // キッチンの床のテクスチャのパス
+#define WALL_1_TEXTURE_PATH		"./data/Textures/w.png"		 // フローリングのテクスチャのパス
+#define WALL_2_TEXTURE_PATH		"./data/Textures/w2.png"	 // まっとのテクスチャのパス
+#define WALL_3_TEXTURE_PATH		"./data/Textures/w3.png"    // キッチンの床のテクスチャのパス
 
 //==================================
 // コンストラクタ
@@ -34,7 +34,7 @@ LPDIRECT3DTEXTURE9 CWall::m_apTexture[WALL_MAX] = {};
 //==================================
 CWall::CWall():CScene3d(OBJTYPE_WALL)
 {
-	m_type   =   WALL_1;			// 床の種類の初期化
+	m_type   =   WALL_NORMAL;			// 床の種類の初期化
 	m_pos    =	{ 0.0f,0.0f,0.0f };	// posの初期化
 	m_posold =	{ 0.0f,0.0f,0.0f };	// 前の位置の初期化
 	m_size   =	{ 0.0f,0.0f,0.0f };	// sizeの初期化
@@ -81,9 +81,9 @@ HRESULT CWall::Load(void)
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
 
 	// テクスチャの生成
-	D3DXCreateTextureFromFile(pDevice, WALL_1_TEXTURE_PATH, &m_apTexture[WALL_1]);
-	D3DXCreateTextureFromFile(pDevice, WALL_2_TEXTURE_PATH, &m_apTexture[WALL_2]);
-	D3DXCreateTextureFromFile(pDevice, WALL_3_TEXTURE_PATH, &m_apTexture[WALL_3]);
+	D3DXCreateTextureFromFile(pDevice, WALL_1_TEXTURE_PATH, &m_apTexture[WALL_NORMAL]);
+	D3DXCreateTextureFromFile(pDevice, WALL_2_TEXTURE_PATH, &m_apTexture[WALL_RIGHT]);
+	D3DXCreateTextureFromFile(pDevice, WALL_3_TEXTURE_PATH, &m_apTexture[WALL_LEFT]);
 
 	return S_OK;
 }

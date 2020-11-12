@@ -117,7 +117,7 @@ void CFile::SetObject(D3DXVECTOR3 pos, D3DXVECTOR3 rot, CModel::OBJTYPE type, in
         break;
 
     case CModel::OBJTYPE_WALL:
-         CWall::Create(pos,rot, WALL_SIZE, CWall::WALL_1);
+         CWall::Create(pos,rot, WALL_SIZE, (CWall::WALL)ntype);
         break;
         
     case CModel::OBJTYPE_FLOOR:

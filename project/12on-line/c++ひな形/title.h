@@ -44,7 +44,7 @@ public:
 	~CTitle();
 	static CTitle *Create(void);
 	static HRESULT Load(void);
-	static void CTitle::UnLoad(void);
+	static void Unload(void);
 	HRESULT Init(void);
 	void Uninit(void);
 	void Update(void);

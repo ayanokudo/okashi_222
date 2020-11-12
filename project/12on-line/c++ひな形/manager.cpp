@@ -182,8 +182,8 @@ void CManager::Uninit(void)
 	CUi::Unload();		 // ui
 	CBoss::Unload();     // ボス
 	CCollect::Unload();  // コレクト
-	CLife::Unload();	 //
-	CTitle::UnLoad();	 //
+	CLife::Unload();
+	CTitle::Unload();
 
 	if (m_pSound != NULL)
 	{

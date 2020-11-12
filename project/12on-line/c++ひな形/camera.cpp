@@ -24,6 +24,10 @@
 #define CAMERA_LOCAL_POS D3DXVECTOR3(0.0f, 2300.0f, 200.0f) // 注視点からのローカル座標
 #define CAMERA_LOOK_RATE 0.5f  // 注視点を少しずつ変えるときの係数
 #define PLAYER_DEATH_COUNT 40  // プレイヤーが死んでから生きてるプレイヤーの方に少しずつ注視点を変える用
+
+#define FOV_Y D3DXToRadian(45.0f)
+#define FOV_X D3DXToRadian(80.0f)
+
 //******************************
 // 静的メンバ変数宣言
 //******************************
@@ -207,8 +211,27 @@ void CCamera::Update(void)
 		m_posV.y = CAMERA_LOCAL_POS.y+300;
 	}
 
+	// カメラに写っているか判定する
+	for (int nCntPlayer = 0; nCntPlayer < MAX_PLAYER; nCntPlayer++)
+	{
+		if (!CPlayer::GetDeath(nCntPlayer))
+		{
+			D3DXVECTOR3 playerPos = CGame::GetPlayer(nCntPlayer)->GetPos();
+
+			playerPos.z;
+
+			if ((playerPos.z + m_posR.z) - 100.0f < (m_posV.y *tanf(-FOV_Y/2)))
+			{
+				
+			}
+
+		}
+	}
 
 #endif
+
+
+
 }
 
 //******************************
@@ -231,7 +254,7 @@ void CCamera::SetCamera(void)
 	D3DXMatrixIdentity(&m_pCamera->m_mtxProjection);
 
 	D3DXMatrixPerspectiveFovLH(&m_pCamera->m_mtxProjection,
-		D3DXToRadian(45.0f),
+		FOV_Y,
 		(float)SCREEN_WIDTH / (float)SCREEN_HEIGHT,10.0f, 40000.0f);
 	//プロジェクションマトリックスの設定
 	pDevice->SetTransform(D3DTS_PROJECTION, &m_pCamera->m_mtxProjection);

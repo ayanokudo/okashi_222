@@ -7,6 +7,7 @@
 #include "wall.h"
 #include "manager.h"
 #include "renderer.h"
+#include "keyboard.h"
 
 //*****************************************************************************
 // マクロ定義
@@ -16,15 +17,16 @@
 //*****************************************************************************
 // 静的メンバ変数宣言
 //*****************************************************************************
-LPD3DXMESH   CWall::m_pMeshModel = NULL;   	//メッシュ情報へのポインタ
+LPD3DXMESH   CWall::m_pMeshModel    = NULL;   	//メッシュ情報へのポインタ
 LPD3DXBUFFER CWall::m_pBuffMatModel = NULL;	//マテリアル情報へのポインタ
-DWORD        CWall::m_nNumMatModel = 0;	    //マテリアル情報の数
+DWORD        CWall::m_nNumMatModel  = 0;	    //マテリアル情報の数
+
 //=============================================================================
 // [CWall] コンストラクタ
 //=============================================================================
 CWall::CWall() : CModel(OBJTYPE_WALL)
 {
-
+    m_type = TYPE_NORMAL;
 }
 
 //=============================================================================
@@ -131,4 +133,34 @@ void CWall::Update(void)
 void CWall::Draw(void)
 {
     CModel::Draw();
+}
+
+//=============================================================================
+// [ChangeType] 種類の変更
+//=============================================================================
+void CWall::ChangeType(void)
+{
+    int nType = m_type;
+
+    if (CManager::GetKeyboard()->GetKeyTrigger(DIK_3))
+    {
+        nType -= 1;
+    }
+    if (CManager::GetKeyboard()->GetKeyTrigger(DIK_4))
+    {
+        nType += 1;
+    }
+
+    // 最大値以上/最小値以下になったらループ
+    if (nType >= TYPE_MAX)
+    {
+        nType = TYPE_NORMAL;
+    }
+    if (nType < TYPE_NORMAL)
+    {
+        nType = TYPE_MAX - 1;
+    }
+
+    // 種類を反映
+    SetType((TYPE)nType);
 }

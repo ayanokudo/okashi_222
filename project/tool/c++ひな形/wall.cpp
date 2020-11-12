@@ -40,7 +40,7 @@ CWall::~CWall()
 //=============================================================================
 // [Create] オブジェクトの生成
 //=============================================================================
-CWall * CWall::Create(D3DXVECTOR3 pos)
+CWall * CWall::Create(D3DXVECTOR3 pos, TYPE ntype)
 {
     CWall *pObject = NULL;
     if (!pObject)
@@ -49,7 +49,7 @@ CWall * CWall::Create(D3DXVECTOR3 pos)
         // 初期化
         pObject->Init();
         pObject->SetPos(pos);
-
+        pObject->m_type = ntype;
         // 各値の代入・セット
         pObject->SetObjType(OBJTYPE_WALL); // オブジェクトタイプ
     }
@@ -132,7 +132,38 @@ void CWall::Update(void)
 //=============================================================================
 void CWall::Draw(void)
 {
+    D3DXMATERIAL*pMat;  	//マテリアルデータへのポインタ
+
+                            //マテリアルデータへのポインタを取得
+    pMat = (D3DXMATERIAL*)m_pBuffMatModel->GetBufferPointer();
+
+    for (int nCntMat = 0; nCntMat < (int)m_nNumMatModel; nCntMat++)
+    {
+        switch (m_type)
+        {
+        case TYPE_NORMAL:// ノーマル : 青
+            //マテリアルのアンビエントにディフューズカラーを設定
+            pMat[nCntMat].MatD3D.Diffuse = { 0,0,255,128 };
+            break;
+
+        case TYPE_RIGHT:// 右 : 赤
+            //マテリアルのアンビエントにディフューズカラーを設定
+            pMat[nCntMat].MatD3D.Diffuse = { 255,0,0,128 };
+            break;
+
+        case TYPE_LEFT:// 左 : 緑
+            //マテリアルのアンビエントにディフューズカラーを設定
+            pMat[nCntMat].MatD3D.Diffuse = { 0,255,0,128 };
+            break;
+        }
+    }
     CModel::Draw();
+
+    // マテリアル情報を元に戻す
+    for (int nCntMat = 0; nCntMat < (int)m_nNumMatModel; nCntMat++)
+    {
+        pMat[nCntMat].MatD3D.Diffuse = { 255,255,255,255 };
+    }
 }
 
 //=============================================================================

@@ -322,6 +322,11 @@ void CObject::ChangeType(void)
                     case OBJTYPE_FLOOR:
                         ((CFloor*)pScene)->CFloor::ChangeType();
                         break;
+
+                    case OBJTYPE_WALL:
+                        ((CWall*)pScene)->CWall::ChangeType();
+                        break;
+                        
                     }
                     return;
                 }
@@ -389,7 +394,7 @@ void CObject::SetObject(D3DXVECTOR3 pos, D3DXVECTOR3 rot, CModel::OBJTYPE type ,
         break;
 
     case CModel::OBJTYPE_WALL:
-        m_pModel = CWall::Create(pos);
+        m_pModel = CWall::Create(pos,(CWall::TYPE)ntype);
         break;
 
     case CModel::OBJTYPE_FLOOR:
@@ -416,7 +421,6 @@ void CObject::SetObject(D3DXVECTOR3 pos, D3DXVECTOR3 rot, CModel::OBJTYPE type ,
 //=============================================================================
 void CObject::Move(void)
 {
-
     //移動量の目標値
     D3DXVECTOR3 moveDest = { 0.0f,0.0f,0.0f };
     // ジョイスティックの取得

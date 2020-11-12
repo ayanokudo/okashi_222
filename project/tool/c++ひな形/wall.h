@@ -29,7 +29,7 @@ public:
     CWall();
     ~CWall();
 
-    static CWall *Create(D3DXVECTOR3 pos);
+    static CWall *Create(D3DXVECTOR3 pos,TYPE ntype);
     static HRESULT Load(void);
     static void Unload(void);
 

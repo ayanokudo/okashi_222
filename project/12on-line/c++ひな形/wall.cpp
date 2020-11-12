@@ -21,8 +21,8 @@
 // マクロ定義
 //*****************************
 #define WALL_1_TEXTURE_PATH		"./data/Textures/w.png"		 // フローリングのテクスチャのパス
-#define WALL_2_TEXTURE_PATH		"./data/Textures/w2.png"	 // まっとのテクスチャのパス
-#define WALL_3_TEXTURE_PATH		"./data/Textures/w3.png"    // キッチンの床のテクスチャのパス
+#define WALL_2_TEXTURE_PATH		"./data/Textures/wall_right.png"	 // まっとのテクスチャのパス
+#define WALL_3_TEXTURE_PATH		"./data/Textures/wall_left.png"    // キッチンの床のテクスチャのパス
 
 //==================================
 // コンストラクタ
@@ -61,8 +61,8 @@ CWall * CWall::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 rot, const D3DXVE
 		pWall->m_pos = pos;
         pWall->m_rot = rot;
 		pWall->m_size = size;
-		pWall->Init();
 		pWall->m_type = type;
+		pWall->Init();
 		pWall->SetPos(pos);
         pWall->SetRot(rot);
 		pWall->SetSize(size);
@@ -109,6 +109,10 @@ void CWall::Unload(void)
 //==================================
 HRESULT CWall::Init(void)
 {
+    if (m_type == 2)
+    {
+        int a = 0;
+    }
 	CScene3d::Init();
 	CScene3d::BindTexture(m_apTexture[m_type]);
 	// 壁よりちょっと大きめに当たり判定をとる

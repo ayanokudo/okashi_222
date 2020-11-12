@@ -17,6 +17,7 @@
 #define FILE_NAME "data/Texts/StageData/stage.txt"      // 使用するファイルの名前
 #define READ_BUFFER (128)                               // 読み込み用バッファ
 #define WALL_SIZE {60.0f,500.0f,0.0f}                   // 壁の大きさ
+#define WALL_SIZE_Y (500.0f)                            // 壁の大きさ(y軸)
 #define FLOOR_SIZE {120.0f,0.0f,120.0f}                 // 床の大きさ
 #define COLLISION_SIZE {1200.0f,500.0f,100.0f}            // 当たり判定の大きさ
 
@@ -116,7 +117,11 @@ void CFile::SetObject(D3DXVECTOR3 pos, D3DXVECTOR3 rot, CModel::OBJTYPE type, in
         break;
 
     case CModel::OBJTYPE_WALL:
-         CWall::Create(pos,rot, WALL_SIZE, (CWall::WALL)ntype);
+        if (ntype==2)
+        {
+            int a = 0;
+        }
+        CWall::Create({ pos.x,pos.y+ (WALL_SIZE_Y/2),pos.z }, rot, WALL_SIZE, (CWall::WALL)ntype);
         break;
         
     case CModel::OBJTYPE_FLOOR:

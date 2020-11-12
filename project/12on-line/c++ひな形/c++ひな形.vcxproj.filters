@@ -144,9 +144,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="bg.h">
-      <Filter>ヘッダーファイル</Filter>
-    </ClInclude>
     <ClInclude Include="billboard.h">
       <Filter>ヘッダーファイル</Filter>
     </ClInclude>
@@ -276,7 +273,6 @@
     <ClInclude Include="ranking.h">
       <Filter>ヘッダーファイル</Filter>
     </ClInclude>
-    <ClInclude Include="lostpoint.h" />
     <ClInclude Include="win.h">
       <Filter>ヘッダーファイル</Filter>
     </ClInclude>

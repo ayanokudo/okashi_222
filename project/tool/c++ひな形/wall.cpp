@@ -7,6 +7,7 @@
 #include "wall.h"
 #include "manager.h"
 #include "renderer.h"
+#include "keyboard.h"
 
 //*****************************************************************************
 // マクロ定義
@@ -16,15 +17,16 @@
 //*****************************************************************************
 // 静的メンバ変数宣言
 //*****************************************************************************
-LPD3DXMESH   CWall::m_pMeshModel = NULL;   	//メッシュ情報へのポインタ
+LPD3DXMESH   CWall::m_pMeshModel    = NULL;   	//メッシュ情報へのポインタ
 LPD3DXBUFFER CWall::m_pBuffMatModel = NULL;	//マテリアル情報へのポインタ
-DWORD        CWall::m_nNumMatModel = 0;	    //マテリアル情報の数
+DWORD        CWall::m_nNumMatModel  = 0;	    //マテリアル情報の数
+
 //=============================================================================
 // [CWall] コンストラクタ
 //=============================================================================
 CWall::CWall() : CModel(OBJTYPE_WALL)
 {
-
+    m_type = TYPE_NORMAL;
 }
 
 //=============================================================================
@@ -38,7 +40,7 @@ CWall::~CWall()
 //=============================================================================
 // [Create] オブジェクトの生成
 //=============================================================================
-CWall * CWall::Create(D3DXVECTOR3 pos)
+CWall * CWall::Create(D3DXVECTOR3 pos, TYPE ntype)
 {
     CWall *pObject = NULL;
     if (!pObject)
@@ -47,7 +49,7 @@ CWall * CWall::Create(D3DXVECTOR3 pos)
         // 初期化
         pObject->Init();
         pObject->SetPos(pos);
-
+        pObject->m_type = ntype;
         // 各値の代入・セット
         pObject->SetObjType(OBJTYPE_WALL); // オブジェクトタイプ
     }
@@ -130,5 +132,66 @@ void CWall::Update(void)
 //=============================================================================
 void CWall::Draw(void)
 {
+    D3DXMATERIAL*pMat;  	//マテリアルデータへのポインタ
+
+                            //マテリアルデータへのポインタを取得
+    pMat = (D3DXMATERIAL*)m_pBuffMatModel->GetBufferPointer();
+
+    for (int nCntMat = 0; nCntMat < (int)m_nNumMatModel; nCntMat++)
+    {
+        switch (m_type)
+        {
+        case TYPE_NORMAL:// ノーマル : 青
+            //マテリアルのアンビエントにディフューズカラーを設定
+            pMat[nCntMat].MatD3D.Diffuse = { 0,0,255,128 };
+            break;
+
+        case TYPE_RIGHT:// 右 : 赤
+            //マテリアルのアンビエントにディフューズカラーを設定
+            pMat[nCntMat].MatD3D.Diffuse = { 255,0,0,128 };
+            break;
+
+        case TYPE_LEFT:// 左 : 緑
+            //マテリアルのアンビエントにディフューズカラーを設定
+            pMat[nCntMat].MatD3D.Diffuse = { 0,255,0,128 };
+            break;
+        }
+    }
     CModel::Draw();
+
+    // マテリアル情報を元に戻す
+    for (int nCntMat = 0; nCntMat < (int)m_nNumMatModel; nCntMat++)
+    {
+        pMat[nCntMat].MatD3D.Diffuse = { 255,255,255,255 };
+    }
+}
+
+//=============================================================================
+// [ChangeType] 種類の変更
+//=============================================================================
+void CWall::ChangeType(void)
+{
+    int nType = m_type;
+
+    if (CManager::GetKeyboard()->GetKeyTrigger(DIK_3))
+    {
+        nType -= 1;
+    }
+    if (CManager::GetKeyboard()->GetKeyTrigger(DIK_4))
+    {
+        nType += 1;
+    }
+
+    // 最大値以上/最小値以下になったらループ
+    if (nType >= TYPE_MAX)
+    {
+        nType = TYPE_NORMAL;
+    }
+    if (nType < TYPE_NORMAL)
+    {
+        nType = TYPE_MAX - 1;
+    }
+
+    // 種類を反映
+    SetType((TYPE)nType);
 }

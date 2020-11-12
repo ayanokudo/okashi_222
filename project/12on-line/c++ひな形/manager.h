@@ -28,6 +28,8 @@ class CResult;
 class CFade;
 class CTutorial;
 class CPause;
+class CWin;
+class CLose;
 
 //=============================
 // クラス定義
@@ -43,6 +45,8 @@ public:
 		MODE_TUTORIAL,
 		MODE_GAME,
 		MODE_RESULT,
+		MODE_WIN,
+		MODE_LOSE,
 		MODE_MAX,
 	}MODE;
 
@@ -64,6 +68,8 @@ public:
 	static CGame *GetGame(void) { return m_pGame; }                        // ゲームの取得処理
 	static CFade * GetFade(void) { return m_pFade; }                       // フェードの取得処理
 	static CPause * GetPause(void) { return m_pPause; }                       // ポーズの取得処理
+	static CWin * GetWin(void) { return m_pWin; }                       // フェードの取得処理
+	static CLose * GetLose(void) { return m_pLose; }                       // ポーズの取得処理
 	static void SetActivePause(bool bPause) { m_bPause = bPause; }               // ポーズのセット
 	static bool GetActivePause(void) { return m_bPause; }                        // フェードの取得処理
 
@@ -80,6 +86,8 @@ private:
 	static CResult*m_pResult;                // タイトルクラスのポインタ
 	static CFade*m_pFade;                    // フェードポインタ
 	static CTutorial*m_pTutorial;            // チュートリアル
+	static CWin*m_pWin;                    // フェードポインタ
+	static CLose*m_pLose;            // チュートリアル
 	static CPause*m_pPause;                    // ポーズポインタ
 	static bool m_bPause;                    // ポーズフラグ
 };

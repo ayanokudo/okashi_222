@@ -26,9 +26,10 @@ LPDIRECT3DTEXTURE9 CTutorial::m_pTexture[TUTORIAL_NUM] = {};
 //**********************************
 // マクロ定義
 //**********************************
-#define  TITLE_TEXTURE_1_PATH "./data/Textures/tutorial000.png" // テクスチャ
-#define  TITLE_TEXTURE_2_PATH "./data/Textures/tutorial001.png" // テクスチャ
-#define  TITLE_TEXTURE_3_PATH "./data/Textures/tutorial002.png" // テクスチャ
+#define  TITLE_TEXTURE_1_PATH "./data/Textures/Tutorial1.png" // テクスチャ
+#define  TITLE_TEXTURE_2_PATH "./data/Textures/Tutorial2.png" // テクスチャ
+#define  TITLE_TEXTURE_3_PATH "./data/Textures/Tutorial3.png" // テクスチャ
+#define  TITLE_TEXTURE_4_PATH "./data/Textures/Tutorial4.png" // テクスチャ
 
 //=============================
 // コンストラクタ
@@ -52,10 +53,14 @@ CTutorial::~CTutorial()
 CTutorial * CTutorial::Create(void)
 {
 	// メモリの確保
-	CTutorial *pTitle = new CTutorial;
-	// 初期化
-	pTitle->Init();
-	return pTitle;
+	CTutorial *pTutorial = new CTutorial;
+	if (pTutorial != NULL)
+	{
+		// 初期化
+		pTutorial->Init();
+	}
+
+	return pTutorial;
 }
 
 //=============================
@@ -69,6 +74,7 @@ HRESULT CTutorial::Init(void)
 	D3DXCreateTextureFromFile(pDevice, TITLE_TEXTURE_1_PATH, &m_pTexture[0]);
 	D3DXCreateTextureFromFile(pDevice, TITLE_TEXTURE_2_PATH, &m_pTexture[1]);
 	D3DXCreateTextureFromFile(pDevice, TITLE_TEXTURE_3_PATH, &m_pTexture[2]);
+	D3DXCreateTextureFromFile(pDevice, TITLE_TEXTURE_4_PATH, &m_pTexture[3]);
 
 	m_pPolygon = CPolygon::Create(D3DXVECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0.0f),
 		D3DXVECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0.0f),

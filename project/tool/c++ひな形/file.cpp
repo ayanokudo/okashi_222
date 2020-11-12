@@ -169,7 +169,10 @@ int CFile::GetObjectType(CScene* pScene)
     case CScene::OBJTYPE_ENEMY:
         nType =((CEnemy*)pScene)->CEnemy::GetType();
         break;
+
+    case CScene::OBJTYPE_WALL:
+        nType = ((CWall*)pScene)->CWall::GetType();
+        break;
     }
     return nType;
 }
-

@@ -43,6 +43,8 @@
 #include "boss.h"
 #include "collect.h"
 #include "life.h"
+#include "win.h"
+#include "lose.h"
 
 //=============================
 // 静的メンバ変数宣言
@@ -58,6 +60,8 @@ CTitle          *CManager::m_pTitle = NULL;          // タイトル
 CResult         *CManager::m_pResult = NULL;         // リザルト
 CFade           *CManager::m_pFade = NULL;           // フェード
 CTutorial       *CManager::m_pTutorial = NULL;       // チュートリアル
+CWin            *CManager::m_pWin = NULL;            // フェード
+CLose           *CManager::m_pLose = NULL;			 // チュートリアル
 CPause          *CManager::m_pPause = NULL;          // ポーズポインタ
 bool             CManager::m_bPause = false;         // ポーズフラグ
 
@@ -116,13 +120,13 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, bool bWindow)
 		return E_FAIL;
 	}
 
-	//// サウンド
-	//m_pSound = new CSound;
-	//// サウンドクラスの初期化
-	//if (FAILED(m_pSound->Init(hWnd)))
-	//{
-	//	return E_FAIL;
-	//}
+	// サウンド
+	m_pSound = new CSound;
+	// サウンドクラスの初期化
+	if (FAILED(m_pSound->Init(hWnd)))
+	{
+		return E_FAIL;
+	}
 	
 	// デバッグログ
 	CDebugLog::Init();
@@ -147,8 +151,9 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, bool bWindow)
 	CUi::Load();		// ui
 	CBoss::Load();      // ボス
 	CCollect::Load();   // コレクト
-	CLife::Load();
-	CTitle::Load();
+	CLife::Load();		//
+	CTitle::Load();		//
+
 	// ポーズ状態の時
 	return S_OK;
 }
@@ -329,31 +334,43 @@ void CManager::Draw(void)
 //=============================
 void CManager::SetMode(MODE mode)
 {
-
 	switch (m_mode)
 	{
 	case MODE_TITLE:
 		// NULLクリア
 		m_pTitle = NULL;
+		// タイトルBGM停止
+		m_pSound->Stop(CSound::SOUND_BGM_TITLE);
 		break;
 	case MODE_TUTORIAL:
 		// NULLクリア
 		m_pTutorial = NULL;
 		// タイトルBGM停止
-		//m_pSound->Stop(CSound::LABEL_BGM_TITLE);
+		m_pSound->Stop(CSound::SOUND_BGM_TUTORIAL);
 		break;
 	case MODE_GAME:
 		// NULLクリア
 		m_pGame = NULL;
 		// ゲームBGM停止
-		//m_pSound->Stop(CSound::LABEL_BGM_GAME);
+		m_pSound->Stop(CSound::SOUND_BGM_GAME);
 		break;
-
+	case MODE_WIN:
+		// NULLクリア
+		m_pWin = NULL;
+		// ゲームBGM停止
+		m_pSound->Stop(CSound::SOUND_BGM_RESULT_WIN);
+		break;
+	case MODE_LOSE:
+		// NULLクリア
+		m_pLose = NULL;
+		// ゲームBGM停止
+		m_pSound->Stop(CSound::SOUND_BGM_RESULT_LOSE);
+		break;
 	case MODE_RESULT:
 		// NULLクリア
 		m_pResult = NULL;
 		// リザルトBGM停止
-		//m_pSound->Stop(CSound::LABEL_BGM_RESULT);
+		m_pSound->Stop(CSound::SOUND_BGM_RESULT_LOSE);
 		break;
 
 	default:
@@ -370,24 +387,37 @@ void CManager::SetMode(MODE mode)
 		// タイトル生成
 		m_pTitle = CTitle::Create();
 		// タイトルBGM再生
-		//m_pSound->Play(CSound::LABEL_BGM_TITLE);
+		m_pSound->Play(CSound::SOUND_BGM_TITLE);
 		break;
 	case MODE_TUTORIAL:
 		// チュートリアル生成
 		m_pTutorial = CTutorial::Create();
+		// タイトルBGM再生
+		m_pSound->Play(CSound::SOUND_BGM_TUTORIAL);
 		break;
 	case MODE_GAME:
 		// ゲーム生成
 		m_pGame = CGame::Create();
 		// ゲームBGM再生
-		//m_pSound->Play(CSound::LABEL_BGM_GAME);
+		m_pSound->Play(CSound::SOUND_BGM_GAME);
 		break;
-
+	case MODE_WIN:
+		// ゲーム生成
+		m_pWin = CWin::Create();
+		// ゲームBGM再生
+		m_pSound->Play(CSound::SOUND_BGM_RESULT_WIN);
+		break;
+	case MODE_LOSE:
+		// ゲーム生成
+		m_pLose = CLose::Create();
+		// ゲームBGM再生
+		m_pSound->Play(CSound::SOUND_BGM_RESULT_LOSE);
+		break;
 	case MODE_RESULT:
 		// リザルト生成
 		m_pResult = CResult::Create();
 		// リザルトBGM再生
-		//m_pSound->Play(CSound::LABEL_BGM_RESULT);
+		m_pSound->Play(CSound::SOUND_BGM_RESULT_LOSE);
 		break;
 
 	default:

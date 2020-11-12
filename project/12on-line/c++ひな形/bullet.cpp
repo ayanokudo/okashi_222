@@ -25,7 +25,7 @@
 //*****************************
 #define BULLET_TEXTURE_PATH_PLAYER "./data/Textures/Catvoice_Barrett.png" //テクスチャのパス
 #define BULLET_TEXTURE_PATH_ENEMY  "./data/Textures/MouseBoss_Voice.png" //テクスチャのパス
-#define PLAYER_BULLET_DAMAGE 100				//プレイヤーの攻撃力
+#define PLAYER_BULLET_DAMAGE 50				//プレイヤーの攻撃力
 #define ENEMY_BULLET_DAMAGE 1
 #define BULLET_SIZE_PLAYER 100                  // サイズ
 #define BULLET_SIZE_ENEMY 70                    // サイズ

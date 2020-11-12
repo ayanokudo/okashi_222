@@ -676,7 +676,7 @@ void CPlayer::Hit(int nDamage)
 		Uninit();
 		if (m_bDeath[0] == true && m_bDeath[1] == true)
 		{
-			CManager::GetFade()->SetFade(CManager::MODE_RESULT);
+			CManager::GetFade()->SetFade(CManager::MODE_LOSE);
 		}
 		return;
 	}

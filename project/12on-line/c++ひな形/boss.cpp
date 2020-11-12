@@ -22,6 +22,7 @@
 #include "debug_log.h"
 #include "scratch.h"
 #include "player.h"
+#include "fade.h"
 
 //*****************************
 // マクロ定義
@@ -33,7 +34,7 @@
 #define SCRATH_PATH  "data/Texts/BossMotion/Boss_Attack_hikkaki.txt"    // ひっかきモーションのパス
 #define TAIL_PATH    "data/Texts/BossMotion/Boss_Attack_kaiten.txt"     // しっぽモーションのパス
 
-#define BOSS_SPEED 5
+#define BOSS_SPEED 8
 #define ENEMY_MOVE_RATE 0.05f
 #define ENEMY_RADIUS  130
 #define ENEMY_RANGE_RADIUS 600
@@ -42,7 +43,7 @@
 
 #define ATTACK_PATTARN 3            // 攻撃パターン
 #define ATTACK_BASE 200             // 攻撃するタイミングのベース値
-#define BOSS_LIFE 1500              // ボスのライフ
+#define BOSS_LIFE 2000              // ボスのライフ
 #define BULLET_INTERVAL 15          // 弾のインターバル
 
 #define MOVE_COUNT 100             // 移動時のカウント
@@ -303,6 +304,7 @@ void CBoss::Hit(int nDamage)
 	{
 		CScore::AddScore(15000);
 		Uninit();
+		CManager::GetFade()->SetFade(CManager::MODE_WIN);
 		return;
 	}
 }

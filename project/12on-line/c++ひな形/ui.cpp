@@ -23,8 +23,8 @@
 #define UI_ATTACK_NAIL_TEXTURE_PATH	"./data/Textures/Attack.png"		// アタックのパス
 #define UI_ATTACK_CRY_TEXTURE_PATH	"./data/Textures/Voice.png"			// 鳴き声のパス
 #define UI_DASH_TEXTURE_PATH		"./data/Textures/Dash.png"			// ダッシュのパス
-#define UI_CHOCO_TEXTURE_PATH		"./data/Textures/chocolate_HP.png"	// チョコのパス
-#define UI_MILK_TEXTURE_PATH		"./data/Textures/Milk_HP.png"		// ミルクのパス
+#define UI_CHOCO_TEXTURE_PATH		"./data/Textures/chocolate_HPicon.png"	// チョコのパス
+#define UI_MILK_TEXTURE_PATH		"./data/Textures/Milk_HPicon.png"		// ミルクのパス
 
 #define UI_SIZE 100
 //**********************************

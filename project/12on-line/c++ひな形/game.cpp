@@ -100,11 +100,12 @@ HRESULT CGame::Init(void)
 	CEnemy::Create(D3DXVECTOR3(0.0f, 0.0f, -850.0f), CEnemy::ENEMY_ESCORT);
     // ボスの生成
     m_pBoss = CBoss::Create(D3DXVECTOR3(-15000.0f, 0.0f, -18000.0f));
-
 	// アイテムの生成
 	m_pItem = CItem::Create(D3DXVECTOR3(200.0f, 0.0f, -800.0f),CItem::LIFE);
+	//スコアの初期化
+	m_pScore->ResetScore();
 	// スコアの生成
-	m_pScore = CScore::Create();
+	m_pScore = CScore::Create(D3DXVECTOR3(950.0f, 40.0f, 0.0f), D3DXVECTOR3(30.0f, 30.0f, 0.0f));
 	// タイムの生成
 	m_pTime = CTime::Create();
 
@@ -155,10 +156,6 @@ void CGame::Uninit(void)
 //=============================
 void CGame::Update(void)
 {
-	//if (CManager::GetKeyboard()->GetKeyTrigger(DIK_RETURN))
-	//{
-	//	CManager::GetFade()->SetFade(CManager::MODE_RESULT);
-	//}
 	if (m_pCamera != NULL)
 	{
 		m_pCamera->Update();
@@ -217,14 +214,14 @@ void CGame::Ui(void)
 		CUi::UI_DASH);
 
 	// アタックのUIの生成
-	m_pUi[3] = CUi::Create(D3DXVECTOR3(80.0f, 630.0f, 0.0f),
-		D3DXVECTOR3(60, 60, 0),
+	m_pUi[3] = CUi::Create(D3DXVECTOR3(120.0f, 630.0f, 0.0f),
+		D3DXVECTOR3(110, 60, 0),
 		D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
 		CUi::UI_CHOCO);
 
 	// ダッシュのUIの生成
-	m_pUi[4] = CUi::Create(D3DXVECTOR3(1200.0f, 630.0f, 0.0f),
-		D3DXVECTOR3(60, 60, 0),
+	m_pUi[4] = CUi::Create(D3DXVECTOR3(1160.0f, 630.0f, 0.0f),
+		D3DXVECTOR3(110, 60, 0),
 		D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
 		CUi::UI_MILK);
 }

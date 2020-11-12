@@ -12,6 +12,7 @@
 #include "number.h"
 #include "renderer.h"
 #include "manager.h"
+#include "game.h"
 //==============================
 //静的メンバ変数宣言
 //==============================
@@ -30,6 +31,8 @@ CScore::CScore()
 {
 	// ナンバーのクリア
 	memset(m_apNumber, 0, sizeof(m_apNumber));
+	m_pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	m_size = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 }
 
 //==================================
@@ -42,13 +45,15 @@ CScore::~CScore()
 //==================================
 // クリエイト
 //==================================
-CScore * CScore::Create(void)
+CScore * CScore::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size)
 {
 	// メモリの確保
 	CScore *pScore = new CScore;
 
 	if (pScore != NULL)
 	{
+		pScore->m_pos = pos;
+		pScore->m_size = size;
 		// 初期化処理
 		pScore->Init();
 	}
@@ -64,16 +69,15 @@ CScore * CScore::Create(void)
 //==================================
 HRESULT CScore::Init(void)
 {
+	
 	// 最大桁数分ループ
 	for (int nCntDigit = 0; nCntDigit < MAX_SCORE_DIGIT; nCntDigit++)
 	{
 		m_apNumber[nCntDigit] = CNumber::Create(0,
-			D3DXVECTOR3(950 + nCntDigit * 30 * 2, 40.0f, 0.0f),
-			D3DXVECTOR3(30, 30, 0),
+			D3DXVECTOR3(m_pos.x + nCntDigit * 30 * 2, m_pos.y, m_pos.y),
+			D3DXVECTOR3(m_size),
 			D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 	}
-	// スコアの初期化
-	m_nScore = 0;
 
 	return S_OK;
 }

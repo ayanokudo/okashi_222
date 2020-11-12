@@ -20,8 +20,8 @@
 //------------------------------------------
 class CNumber;
 
-#define MAX_RANKING_DIGIT 5		// スコアの最大桁数
-#define MAX_NUMBER_DIGIT 6		// 
+#define MAX_RANKING_DIGIT 5		// ランキングの数
+#define MAX_NUMBER_DIGIT 6		// スコアの数
 //------------------------------------------
 //	ランキングクラス
 //------------------------------------------

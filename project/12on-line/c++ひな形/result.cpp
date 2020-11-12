@@ -26,6 +26,7 @@
 //**********************************
 LPDIRECT3DTEXTURE9 CResult::m_pTexture = NULL;
 CRanking *CResult::m_pRanking = NULL;
+CScore *CResult::m_pScore = NULL;
 //**********************************
 // ƒ}ƒNƒ’è‹`
 //**********************************
@@ -74,6 +75,8 @@ HRESULT CResult::Init(void)
 		D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 
 	m_pRanking = CRanking::Create();
+
+	m_pScore = CScore::Create(D3DXVECTOR3(870.0f, 520.0f, 0.0f), D3DXVECTOR3(35.0f, 35.0f, 0.0f));
 
 	m_pPolygon->SetTexture(m_pTexture);
 	

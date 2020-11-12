@@ -54,8 +54,11 @@ CBg * CBg::Create(void)
 {
 	// ƒƒ‚ƒŠ‚ÌŠm•Û
 	CBg *pBg = new CBg;
-	// ‰Šú‰»ˆ—
-	pBg->Init();
+	if (pBg != NULL)
+	{
+		// ‰Šú‰»ˆ—
+		pBg->Init();
+	}
 
 	return pBg;
 }

@@ -42,6 +42,10 @@
 #define ENEMY_DIRECTION_RATE 0.1f              // 向きを変えるときの係数
 #define ENEMY_ESCORT_LIFE 100
 #define ENEMY_CARRIER_LIFE 200
+#define ENEMY_UP_SCORE 1000
+
+#define ITEM_DROP_RANDOM_KOBAN rand() % 10 + 1 == 5
+#define ITEM_DROP_RANDOM_LIFE rand() % 6 + 1 == 4
 
 //*****************************
 // 静的メンバ変数宣言
@@ -328,17 +332,27 @@ void CEnemy::Hit(int nDamage)
 		switch (m_type)
 		{
 		case ENEMY_CARRIER:
-			CScore::AddScore(1000);
-			if (rand() % 10 + 1 == 5)
+			//スコアUP
+			CScore::AddScore(ENEMY_UP_SCORE);
+			if (ITEM_DROP_RANDOM_KOBAN)
 			{
 				CItem::Create(pos, CItem::KOBAN);
 			}
+			else if (ITEM_DROP_RANDOM_LIFE)
+			{
+				CItem::Create(pos, CItem::LIFE);
+			}
 			break;
 		case ENEMY_ESCORT:
-			CScore::AddScore(1000);
-			if (rand() % 10 + 1 == 5)
+			//スコアUP
+			CScore::AddScore(ENEMY_UP_SCORE);
+			if (ITEM_DROP_RANDOM_KOBAN)
 			{
 				CItem::Create(pos, CItem::KOBAN);
+			}
+			else if (ITEM_DROP_RANDOM_LIFE)
+			{
+				CItem::Create(pos, CItem::LIFE);
 			}
 		default:
 			break;

@@ -32,7 +32,7 @@
 #define SCRATCH_MAX_ANIMATION_X 5                          // アニメーション数 横
 #define SCRATCH_MAX_ANIMATION_Y 2                          // アニメーション数 縦
 #define SCRATCH_ANIM_PATTERN 10                            // アニメーションのパターン数
-#define SCRATCH_ATTACK_PLAYER 50							//プレイヤー攻撃力
+#define SCRATCH_ATTACK_PLAYER 100							//プレイヤー攻撃力
 #define SCRATCH_ATTACK_ENEMY 1								//エネミー攻撃力
 
 //******************************

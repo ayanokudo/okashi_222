@@ -37,7 +37,7 @@ public:
 	// ƒƒ“ƒoŠÖ”
 	CScore();
 	~CScore();
-	static CScore *Create(void);
+	static CScore *Create(const D3DXVECTOR3 pos,const D3DXVECTOR3 size);
 	HRESULT Init(void);
 	void Uninit(void);
 	void Update(void);
@@ -47,13 +47,14 @@ public:
 	int SaveScore(void);
 	static void AddScore(int nPoint) { m_nScore += nPoint; }
 	static int GetScore(int nCount) { return m_nRankingScore[nCount]; }
-
+	static void ResetScore(void) { m_nScore = 0; }
 private:
 	// ƒƒ“ƒo•Ï”
 	CNumber* m_apNumber[MAX_SCORE_DIGIT];
 	static int m_nRankingScore[MAX_RANKING];
 	static int m_nScore;
-
+	D3DXVECTOR3 m_pos;
+	D3DXVECTOR3 m_size;
 };
 
 #endif

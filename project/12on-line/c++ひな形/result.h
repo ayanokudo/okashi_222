@@ -20,6 +20,7 @@
 //=============================
 class CPolygon;
 class CRanking;
+class CScore;
 
 //*****************************
 //クラス定義
@@ -39,11 +40,13 @@ public:
 	void Update(void);
 	void Draw(void);
 	static CRanking *GetRanking(void) { return m_pRanking; }
+	static CScore *GetScore(void) { return m_pScore; }
 private:
 	// メンバ変数
 	static LPDIRECT3DTEXTURE9 m_pTexture;        // テクスチャへのポインタ
 	CPolygon *m_pPolygon;
 	static CRanking *m_pRanking;
+	static CScore *m_pScore;
 
 };
 

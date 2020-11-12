@@ -9,6 +9,7 @@
 #include "enemy.h"
 #include "wall.h"
 #include "floor.h"
+#include "furniture.h"
 #include "collision.h"
 
 //*****************************************************************************
@@ -127,6 +128,10 @@ void CFile::SetObject(D3DXVECTOR3 pos, D3DXVECTOR3 rot, CModel::OBJTYPE type, in
     case CModel::OBJTYPE_FLOOR:
         CFloor::Create(pos,rot, FLOOR_SIZE, (CFloor::FLOOR)ntype);
         break;
+
+	case CModel::OBJTYPE_FURNITURE:
+		CFurniture::Create(pos, rot, FLOOR_SIZE, (CFurniture::FURNITURE)ntype);
+		break;
 
     case CModel::OBJTYPE_COLLISION:
         CCollision::CreateBox(pos, COLLISION_SIZE);

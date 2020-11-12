@@ -38,7 +38,7 @@
 #define ENEMY_SPEED 10
 #define ENEMY_RAND rand() % 8 + 1
 #define ENEMY_MOVE_RATE 0.05f
-#define ENEMY_RADIUS  50
+#define ENEMY_RADIUS  80
 #define ENEMY_RANGE_RADIUS 600
 #define ENEMY_MOVE_RATE 0.05f 
 #define ENEMY_DIRECTION_RATE 0.1f              // 向きを変えるときの係数
@@ -467,7 +467,9 @@ void CEnemy::RangeDecisionEscort(void)
 			}
 
 			if (!CPlayer::GetDeath(0) && !CCollision::CollisionSphere(m_pRadiusColision, CGame::GetPlayer(0)->GetCollision()) &&
-				!CPlayer::GetDeath(1) && !CCollision::CollisionSphere(m_pRadiusColision, CGame::GetPlayer(1)->GetCollision()))
+				!CPlayer::GetDeath(1) && !CCollision::CollisionSphere(m_pRadiusColision, CGame::GetPlayer(1)->GetCollision()) ||
+				!CPlayer::GetDeath(0) && !CCollision::CollisionSphere(m_pRadiusColision, CGame::GetPlayer(0)->GetCollision()) && CPlayer::GetDeath(1) ||
+				!CPlayer::GetDeath(1) && !CCollision::CollisionSphere(m_pRadiusColision, CGame::GetPlayer(1)->GetCollision()) && CPlayer::GetDeath(0))
 			{// どっちのプレイヤーにも当たってないとき
 			 //エネミーを再度動かす
 				m_bRd = false;
@@ -502,66 +504,75 @@ void CEnemy::MotionCarrier(void)
 		D3DXVECTOR3 pos = GetPos();
 		CGame::GetLostPoint()->sort(pos);
 
-		//if (!m_bRoute)
-		//{
+		if (!m_bRoute)
+		{
 
-		//	CWall*pWall = (CWall*)GetTop(OBJTYPE_WALL);
+			CWall*pWall = (CWall*)GetTop(OBJTYPE_WALL);
 
-		//	while (pWall != NULL)
-		//	{
-		//		if (CCollision::CollisionSphereToBox(m_pCollision, pWall->GetCollision()))
-		//		{
-		//			m_bRoute = true;
-		//		}
+			while (pWall != NULL)
+			{
+				if (CCollision::CollisionSphereToBox(m_pCollision, pWall->GetCollision()))
+				{
+					m_bRoute = true;
+				}
 
-		//		pWall = (CWall*)pWall->GetNext();
-		//	}
-		//	// 目標座標の取得
-		//	int nNumPoint = 0;
-		//	D3DXVECTOR3 distPos = CGame::GetLostPoint()->GetLostPos(nNumPoint);
+				pWall = (CWall*)pWall->GetNext();
+			}
 
-		//	// 目標に向かって移動量の設定
-		//	m_moveDest = distPos - pos;
-		//	D3DXVec3Normalize(&m_moveDest, &m_moveDest);
-		//	m_moveDest *= ENEMY_SPEED;
-		//	if (CCollision::CollisionSphere(m_pCollision, CGame::GetLostPoint()->GetLostCollision(0)))
-		//	{
-		//		for (int nCntPart = 0; nCntPart < 5; nCntPart++)
-		//		{
-		//			int nRandSize = rand() % 10 + 40;
-		//			int nRandSpeed = rand() % 2 + 2;
-		//			float fRandAngle = D3DXToRadian(rand() % 360);
-		//			D3DXVECTOR3 partMove;
-		//			partMove.x = cosf(fRandAngle)*nRandSpeed;
-		//			partMove.y = 0.0f;
-		//			partMove.z = sinf(fRandAngle)*nRandSpeed;
-		//			CParticle::Create(D3DXVECTOR3(GetPos().x, GetPos().y + 20, GetPos().z),
-		//				partMove, 
-		//				D3DXVECTOR3(nRandSize, nRandSize, 0.0f), 
-		//				50,
-		//				D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
-		//				CParticle::PARTICLE_SMOKE);
-		//		}
+			// 目標座標の取得
+			int nNumPoint = 0;
+			D3DXVECTOR3 distPos = CGame::GetLostPoint()->GetLostPos(nNumPoint);
 
-		//		Uninit();
-		//	}
-		//}
-		//else
-		//{
-		//	// 目標座標の取得
-		//	int nNumPoint = 0;
-		//	D3DXVECTOR3 distPos = CGame::GetLostPoint()->GetRoutePos(nNumPoint);
+			// 目標に向かって移動量の設定
+			m_moveDest = distPos - pos;
+			D3DXVec3Normalize(&m_moveDest, &m_moveDest);
+			m_moveDest *= ENEMY_SPEED;
+			
+		}
+		else
+		{
+			// 目標座標の取得
+			D3DXVECTOR3 distPos = CGame::GetLostPoint()->GetRoutePos(0);
 
-		//	// 目標に向かって移動量の設定
-		//	m_moveDest = distPos - pos;
-		//	D3DXVec3Normalize(&m_moveDest, &m_moveDest);
-		//	m_moveDest *= ENEMY_SPEED;
+			// 目標に向かって移動量の設定
+			m_moveDest = distPos - pos;
+			D3DXVec3Normalize(&m_moveDest, &m_moveDest);
+			m_moveDest *= ENEMY_SPEED;
 
-		//	if (CCollision::CollisionSphere(m_pCollision, CGame::GetLostPoint()->GetRouteCollision(0)))
-		//	{
-		//		m_bRoute = false;
-		//	}
-		//}
+			// 当たり判定をの二分の一にする
+			m_pCollision->SetCollisionRadius(m_pCollision->GetCollisionRadius() / 2);
+
+			if (CCollision::CollisionSphere(m_pCollision, CGame::GetLostPoint()->GetRouteCollision(0)))
+			{
+				m_bRoute = false;
+			}
+
+			// 当たり判定を戻す
+			m_pCollision->SetCollisionRadius(m_pCollision->GetCollisionRadius() * 2);
+		}
+
+		if (CCollision::CollisionSphere(m_pCollision, CGame::GetLostPoint()->GetLostCollision(0)))
+		{
+			// パーティクル生成
+			for (int nCntPart= 0; nCntPart < 5; nCntPart++)
+			{
+				int nRandSize = rand() % 10 + 40;
+				int nRandSpeed = rand() % 2 + 2;
+				float fRandAngle = D3DXToRadian(rand() % 360);
+				D3DXVECTOR3 partMove;
+				partMove.x = cosf(fRandAngle)*nRandSpeed;
+				partMove.y = 0.0f;
+				partMove.z = sinf(fRandAngle)*nRandSpeed;
+				CParticle::Create(D3DXVECTOR3(GetPos().x, GetPos().y + 20, GetPos().z),
+					partMove,
+					D3DXVECTOR3(nRandSize, nRandSize, 0.0f),
+					50,
+					D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
+					CParticle::PARTICLE_SMOKE);
+			}
+
+			Uninit();
+		}
 	}
 }
 

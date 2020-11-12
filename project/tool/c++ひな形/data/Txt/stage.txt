@@ -4,7 +4,7 @@ SCRIPT          // スクリプト開始
 		 POS -14640.0 0.0 -13800.0 
 		 ROT 0.0 0.0 0.0 
 		 TYPE 8 
-		 OBJ_TYPE 0 
+		 OBJ_TYPE 1 
 	END_OBJ_SET
 
 	OBJ_SET
@@ -25,42 +25,42 @@ SCRIPT          // スクリプト開始
 		 POS -15120.0 0.0 -13560.0 
 		 ROT 0.0 0.0 0.0 
 		 TYPE 8 
-		 OBJ_TYPE 0 
+		 OBJ_TYPE 1 
 	END_OBJ_SET
 
 	OBJ_SET
 		 POS -15120.0 0.0 -12840.0 
 		 ROT 0.0 0.0 0.0 
 		 TYPE 8 
-		 OBJ_TYPE 0 
+		 OBJ_TYPE 1 
 	END_OBJ_SET
 
 	OBJ_SET
 		 POS -15360.0 0.0 -14520.0 
 		 ROT 0.0 0.0 0.0 
 		 TYPE 8 
-		 OBJ_TYPE 0 
+		 OBJ_TYPE 1 
 	END_OBJ_SET
 
 	OBJ_SET
 		 POS -14640.0 0.0 -14520.0 
 		 ROT 0.0 0.0 0.0 
 		 TYPE 8 
-		 OBJ_TYPE 0 
+		 OBJ_TYPE 1 
 	END_OBJ_SET
 
 	OBJ_SET
 		 POS -15000.0 0.0 -15480.0 
 		 ROT 0.0 0.0 0.0 
 		 TYPE 8 
-		 OBJ_TYPE 0 
+		 OBJ_TYPE 1 
 	END_OBJ_SET
 
 	OBJ_SET
 		 POS 0.0 0.0 -3960.0 
 		 ROT 0.0 0.0 0.0 
 		 TYPE 8 
-		 OBJ_TYPE 0 
+		 OBJ_TYPE 1 
 	END_OBJ_SET
 
 	OBJ_SET
@@ -74,7 +74,7 @@ SCRIPT          // スクリプト開始
 		 POS 0.0 0.0 -3480.0 
 		 ROT 0.0 0.0 0.0 
 		 TYPE 8 
-		 OBJ_TYPE 0 
+		 OBJ_TYPE 1 
 	END_OBJ_SET
 
 	OBJ_SET
@@ -88,21 +88,21 @@ SCRIPT          // スクリプト開始
 		 POS 240.0 0.0 -4680.0 
 		 ROT 0.0 0.0 0.0 
 		 TYPE 8 
-		 OBJ_TYPE 0 
+		 OBJ_TYPE 1 
 	END_OBJ_SET
 
 	OBJ_SET
 		 POS 720.0 0.0 -7320.0 
 		 ROT 0.0 0.0 0.0 
 		 TYPE 8 
-		 OBJ_TYPE 0 
+		 OBJ_TYPE 1 
 	END_OBJ_SET
 
 	OBJ_SET
 		 POS 0.0 0.0 -8040.0 
 		 ROT 0.0 0.0 0.0 
 		 TYPE 8 
-		 OBJ_TYPE 0 
+		 OBJ_TYPE 1 
 	END_OBJ_SET
 
 	OBJ_SET
@@ -123,7 +123,7 @@ SCRIPT          // スクリプト開始
 		 POS 960.0 0.0 -8040.0 
 		 ROT 0.0 0.0 0.0 
 		 TYPE 8 
-		 OBJ_TYPE 0 
+		 OBJ_TYPE 1 
 	END_OBJ_SET
 
 	OBJ_SET
@@ -144,14 +144,14 @@ SCRIPT          // スクリプト開始
 		 POS -480.0 0.0 -7080.0 
 		 ROT 0.0 0.0 0.0 
 		 TYPE 8 
-		 OBJ_TYPE 0 
+		 OBJ_TYPE 1 
 	END_OBJ_SET
 
 	OBJ_SET
 		 POS -720.0 0.0 -7560.0 
 		 ROT 0.0 0.0 0.0 
 		 TYPE 8 
-		 OBJ_TYPE 0 
+		 OBJ_TYPE 1 
 	END_OBJ_SET
 
 	OBJ_SET
@@ -165,7 +165,7 @@ SCRIPT          // スクリプト開始
 		 POS -6960.0 0.0 -7560.0 
 		 ROT 0.0 0.0 0.0 
 		 TYPE 8 
-		 OBJ_TYPE 0 
+		 OBJ_TYPE 1 
 	END_OBJ_SET
 
 	OBJ_SET
@@ -186,21 +186,21 @@ SCRIPT          // スクリプト開始
 		 POS -6720.0 0.0 -7320.0 
 		 ROT 0.0 0.0 0.0 
 		 TYPE 8 
-		 OBJ_TYPE 0 
+		 OBJ_TYPE 1 
 	END_OBJ_SET
 
 	OBJ_SET
 		 POS -8400.0 0.0 -6840.0 
 		 ROT 0.0 0.0 0.0 
 		 TYPE 8 
-		 OBJ_TYPE 0 
+		 OBJ_TYPE 1 
 	END_OBJ_SET
 
 	OBJ_SET
 		 POS -8640.0 0.0 -7560.0 
 		 ROT 0.0 0.0 0.0 
 		 TYPE 8 
-		 OBJ_TYPE 0 
+		 OBJ_TYPE 1 
 	END_OBJ_SET
 
 	OBJ_SET
@@ -218,13 +218,6 @@ SCRIPT          // スクリプト開始
 	END_OBJ_SET
 
 	OBJ_SET
-		 POS -13800.0 0.0 -7440.0 
-		 ROT 0.0 0.0 0.0 
-		 TYPE 8 
-		 OBJ_TYPE 0 
-	END_OBJ_SET
-
-	OBJ_SET
 		 POS -13800.0 0.0 -7320.0 
 		 ROT 0.0 0.0 0.0 
 		 TYPE 8 
@@ -235,49 +228,49 @@ SCRIPT          // スクリプト開始
 		 POS -13680.0 0.0 -7080.0 
 		 ROT 0.0 0.0 0.0 
 		 TYPE 8 
-		 OBJ_TYPE 0 
+		 OBJ_TYPE 1 
 	END_OBJ_SET
 
 	OBJ_SET
 		 POS -13680.0 0.0 -7680.0 
 		 ROT 0.0 0.0 0.0 
 		 TYPE 8 
-		 OBJ_TYPE 0 
+		 OBJ_TYPE 1 
 	END_OBJ_SET
 
 	OBJ_SET
 		 POS -13440.0 0.0 -7140.0 
 		 ROT 0.0 0.0 0.0 
 		 TYPE 8 
-		 OBJ_TYPE 0 
+		 OBJ_TYPE 1 
 	END_OBJ_SET
 
 	OBJ_SET
 		 POS -13440.0 0.0 -7380.0 
 		 ROT 0.0 0.0 0.0 
 		 TYPE 8 
-		 OBJ_TYPE 0 
+		 OBJ_TYPE 1 
 	END_OBJ_SET
 
 	OBJ_SET
 		 POS -13440.0 0.0 -7620.0 
 		 ROT 0.0 0.0 0.0 
 		 TYPE 8 
-		 OBJ_TYPE 0 
+		 OBJ_TYPE 1 
 	END_OBJ_SET
 
 	OBJ_SET
 		 POS -13200.0 0.0 -7380.0 
 		 ROT 0.0 0.0 0.0 
 		 TYPE 8 
-		 OBJ_TYPE 0 
+		 OBJ_TYPE 1 
 	END_OBJ_SET
 
 	OBJ_SET
 		 POS -14160.0 0.0 -7380.0 
 		 ROT 0.0 0.0 0.0 
 		 TYPE 8 
-		 OBJ_TYPE 0 
+		 OBJ_TYPE 1 
 	END_OBJ_SET
 
 	OBJ_SET
@@ -291,21 +284,21 @@ SCRIPT          // スクリプト開始
 		 POS -15120.0 0.0 -6840.0 
 		 ROT 0.0 0.0 0.0 
 		 TYPE 8 
-		 OBJ_TYPE 0 
+		 OBJ_TYPE 1 
 	END_OBJ_SET
 
 	OBJ_SET
 		 POS -15840.0 0.0 -7440.0 
 		 ROT 0.0 0.0 0.0 
 		 TYPE 8 
-		 OBJ_TYPE 0 
+		 OBJ_TYPE 1 
 	END_OBJ_SET
 
 	OBJ_SET
 		 POS -15120.0 0.0 -8040.0 
 		 ROT 0.0 0.0 0.0 
 		 TYPE 8 
-		 OBJ_TYPE 0 
+		 OBJ_TYPE 1 
 	END_OBJ_SET
 
 	OBJ_SET
@@ -317,6 +310,13 @@ SCRIPT          // スクリプト開始
 
 	OBJ_SET
 		 POS -14640.0 0.0 -15720.0 
+		 ROT 0.0 0.0 0.0 
+		 TYPE 8 
+		 OBJ_TYPE 1 
+	END_OBJ_SET
+
+	OBJ_SET
+		 POS -13800.0 0.0 -7440.0 
 		 ROT 0.0 0.0 0.0 
 		 TYPE 8 
 		 OBJ_TYPE 0 
@@ -2704,13 +2704,6 @@ SCRIPT          // スクリプト開始
 
 	OBJ_SET
 		 POS -13800.0 0.0 -7680.0 
-		 ROT 0.0 0.0 0.0 
-		 TYPE 9 
-		 OBJ_TYPE 0 
-	END_OBJ_SET
-
-	OBJ_SET
-		 POS -13800.0 0.0 -7440.0 
 		 ROT 0.0 0.0 0.0 
 		 TYPE 9 
 		 OBJ_TYPE 0 
@@ -9928,6 +9921,13 @@ SCRIPT          // スクリプト開始
 
 	OBJ_SET
 		 POS -16440.0 0.0 -6720.0 
+		 ROT 0.0 0.0 0.0 
+		 TYPE 9 
+		 OBJ_TYPE 0 
+	END_OBJ_SET
+
+	OBJ_SET
+		 POS -13800.0 0.0 -7440.0 
 		 ROT 0.0 0.0 0.0 
 		 TYPE 9 
 		 OBJ_TYPE 0 

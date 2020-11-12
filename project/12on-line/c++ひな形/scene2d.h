@@ -45,7 +45,6 @@ public:
 	// カラーのセット、取得
 	void SetColor(const D3DXCOLOR col);                  
 	D3DXCOLOR GetColor(void) { return m_col; }
-
 	void SetTextureUV(const D3DXVECTOR2 uv[NUM_VERTEX]); // テクスチャのUV座標のセット
 	
 private:
@@ -56,6 +55,7 @@ private:
 	float m_fAngle;                      // ポリゴンの回転角度
     D3DXVECTOR3 m_size;                  // ポリゴンのサイズ
 	D3DXCOLOR m_col;
+
 };
 
 #endif

@@ -36,6 +36,7 @@ public:
 		UI_DASH,		//ダッシュ
 		UI_CHOCO,		//チョコ
 		UI_MILK,		//ミルク
+		UI_CHARACTER,	//キャラクター
 		UI_MAX
 	}UI;
 

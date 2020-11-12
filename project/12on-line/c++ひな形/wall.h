@@ -30,9 +30,9 @@ public:
 	//床のテクスチャの種類
 	typedef enum
 	{
-		WALL_1 = 0,	//フローリング
-		WALL_2,			//マット
-		WALL_3,		//キッチン
+		WALL_NORMAL = 0,	//フローリング
+		WALL_RIGHT,			//マット
+		WALL_LEFT,		//キッチン
 		WALL_MAX,
 	}WALL;
 

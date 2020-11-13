@@ -20,8 +20,8 @@
 //*****************************
 // マクロ定義
 //*****************************
-#define FURNITURE_CHAIR_PATH	"./data/Models/furniture/isu.x"		 // フローリングのテクスチャのパス
-#define FURNITURE_CHEST_PATH	"./data/Models/furniture/tance.x"    // キッチンの床のテクスチャのパス
+#define FURNITURE_CHAIR_PATH	"./data/Models/furniture/ueki.x"		 // フローリングのテクスチャのパス
+#define FURNITURE_CHEST_PATH	"./data/Models/furniture/ueki.x"    // キッチンの床のテクスチャのパス
 
 //==================================
 // コンストラクタ
@@ -63,9 +63,9 @@ CFurniture * CFurniture::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 rot, co
 		pWall->m_size = size;
 		pWall->Init();
 		pWall->m_type = type;
-		pWall->SetPos(pos);
+		pWall->SetPos(D3DXVECTOR3(pos.x, pos.y, pos.z));
 		pWall->SetRot(rot);
-		pWall->SetSize(size);
+		//pWall->SetSize(size);
 		pWall->SetObjType(OBJTYPE_FURNITURE);
 	}
 	//ポインタを返す

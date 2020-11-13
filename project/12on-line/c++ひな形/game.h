@@ -48,6 +48,13 @@ class CFurniture;
 class CGame : public CScene
 {
 public:
+	typedef enum
+	{
+		GAME_NORMAL=0,
+		GAME_BOSS,
+		GAME_MAX
+	}GAME_MODE;
+
 	// メンバ関数
 	CGame();
 	~CGame();
@@ -68,6 +75,7 @@ public:
 	static CTime      *GetTime(void)   { return m_pTime; }	   // タイムの取得処理
 	static CLostPoint *GetLostPoint(void) { return m_pLostPoint; }	   // タイムの取得処理
 	static CFurniture *GetFurniture(void) { return m_pFurniture; }
+	static GAME_MODE   GetGameMode(void) { return m_gameMode; }
 private:
 	void Ui(void);
 
@@ -83,6 +91,7 @@ private:
 	static CLostPoint*m_pLostPoint;// 敵が消えるポイント
 	static CFurniture*m_pFurniture;
 	CUi* m_pUi[UI_PLAYER];
+	static GAME_MODE m_gameMode;
 }; 
 
 #endif

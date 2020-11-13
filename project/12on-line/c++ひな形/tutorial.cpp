@@ -17,6 +17,7 @@
 #include "mouse.h"
 #include "joypad.h"
 #include "fade.h"
+#include "sound.h"
 
 //**********************************
 // 静的メンバ変数宣言
@@ -118,6 +119,7 @@ void CTutorial::Uninit(void)
 //=============================
 void CTutorial::Update(void)
 {
+	CSound*pSound = CManager::GetSound();
 	// ポリゴンの更新処理
 	m_pPolygon->Update();
 
@@ -125,6 +127,7 @@ void CTutorial::Update(void)
 		CManager::GetMouse()->GetMouseTrigger(0) ||
 		CManager::GetJoypad()->GetJoystickTrigger(3, 0))
 	{
+		pSound->Play(CSound::SOUND_SE_DECISION);
 		m_nNumTutorial++;
 		if (m_nNumTutorial >= TUTORIAL_NUM)
 		{

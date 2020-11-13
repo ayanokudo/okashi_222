@@ -18,6 +18,20 @@ CSound::SOUNDPARAM CSound::m_aParam[SOUND_LABEL_MAX]
 	{ "data/ME/Result_lose.wav", -1 },					// リザルトBGM
 	{ "data/ME/Result_win.wav", -1 },					// リザルトBGM
 	{ "data/ME/Tutorial.wav", -1 },						// チュートリアルBGM
+	{ "data/SE/player/SelectSe.wav", 0 },				// 選択SE
+	{ "data/SE/player/OkSe.wav", 0 },					// 決定SE
+	{ "data/SE/player/cat_Otouto.wav", 0 },				// プレイヤー鳴き声攻撃SE
+	{ "data/SE/player/cat_Ani.wav", 0 },				// プレイヤー引っ掻く攻撃SE
+	{ "data/SE/player/DASH.wav", 0 },					// ダッシュ時SE
+	{ "data/SE/player/Damage.wav", 0 },					// プレイヤーダメージ時SE
+	{ "data/SE/player/SelectSe.wav", 0 },				// 敵噛みつきSE
+	{ "data/SE/player/Damage.wav", 0 },					// 敵ダメージ時SE
+	{ "data/SE/player/cat_Otouto.wav", 0 },				// ボスブレス攻撃SE
+	{ "data/SE/player/Boss_kaiten.wav", 0 },			// ボス尻尾攻撃SE
+	{ "data/SE/player/DASH.wav", 0 },					// ボス引っ掻き攻撃SE
+	{ "data/SE/player/KaisyuSe.wav", 0 },				// キャンディ獲得時SE
+	{ "data/SE/player/Koban.wav", 0 },					// 小判獲得時SE
+	{ "data/SE/player/HeartSe.wav", 0 },				// 回復アイテム獲得時SE
 };
 
 //=============================================================================

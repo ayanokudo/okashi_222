@@ -23,6 +23,7 @@
 #include "scratch.h"
 #include "player.h"
 #include "fade.h"
+#include "sound.h"
 
 //*****************************
 // マクロ定義
@@ -446,6 +447,8 @@ void CBoss::Direction(void)
 //=============================================================================
 void CBoss::Attack(void)
 {
+	//サウンドのポインタ変数宣言
+	CSound*pSound = CManager::GetSound();
     // ランダムなタイミングで攻撃する
 	int nRandAttack = rand() % ATTACK_PATTARN;
 

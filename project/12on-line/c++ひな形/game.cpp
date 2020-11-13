@@ -99,7 +99,7 @@ HRESULT CGame::Init(void)
     // ボスの生成
     m_pBoss = CBoss::Create(D3DXVECTOR3(-15000.0f, 0.0f, -18000.0f));
 	// アイテムの生成
-	m_pItem = CItem::Create(D3DXVECTOR3(200.0f, 0.0f, -800.0f),CItem::LIFE);
+	m_pItem = CItem::Create(D3DXVECTOR3(200.0f, 0.0f, -800.0f),CItem::CANDY);
 	//スコアの初期化
 	m_pScore->ResetScore();
 	// スコアの生成

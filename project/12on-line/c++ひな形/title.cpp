@@ -21,6 +21,7 @@
 #include "ui.h"
 #include "player.h"
 #include "scene2d.h"
+#include "sound.h"
 
 //**********************************
 // 静的メンバ変数宣言
@@ -225,7 +226,8 @@ void CTitle::Uninit(void)
 //=============================
 void CTitle::Update(void)
 {
-
+	//サウンドのポインタ変数宣言
+	CSound*pSound = CManager::GetSound();
 	// アニメーションカウントを進める
 	m_nCntAnim++;
 
@@ -290,6 +292,7 @@ void CTitle::Update(void)
 		CManager::GetKeyboard()->GetKeyTrigger(DIK_LEFT) ||
 		js[0].lX <= -100 || js[1].lX <= -100)
 	{// ←
+		pSound->Play(CSound::SOUND_SE_SELECT);
 		if (!m_bStick)
 		{
 			m_nMenu--;
@@ -300,6 +303,7 @@ void CTitle::Update(void)
 		CManager::GetKeyboard()->GetKeyTrigger(DIK_RIGHT) ||
 		js[0].lX >= 100 || js[1].lX >= 100)
 	{// →
+		pSound->Play(CSound::SOUND_SE_SELECT);
 		if (!m_bStick)
 		{
 			m_nMenu++;
@@ -325,6 +329,7 @@ void CTitle::Update(void)
 		CManager::GetJoypad()->GetJoystickTrigger(3, 0)|| 
 		CManager::GetJoypad()->GetJoystickTrigger(3, 1))
 	{
+		pSound->Play(CSound::SOUND_SE_DECISION);
 		switch (m_nMenu)
 		{
 		case EXIT:

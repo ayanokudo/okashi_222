@@ -22,6 +22,7 @@
 #include "motion.h"
 #include "life.h"
 #include "fade.h"
+#include "sound.h"
 
 //*****************************
 // マクロ定義
@@ -593,12 +594,16 @@ void CPlayer::Direction(void)
 //******************************
 void CPlayer::Attack(void)
 {
+	//サウンドのポインタ変数宣言
+	CSound*pSound = CManager::GetSound();
+
 	if (!m_bMotion)
 	{// 攻撃中じゃないとき
 
 		if (m_nPlayerNum == 1&& CManager::GetKeyboard()->GetKeyTrigger(DIK_SPACE) || CManager::GetJoypad()->GetJoystickTrigger(2, m_nPlayerNum))
 		{// 弾を撃つ
 			
+			pSound->Play(CSound::SOUND_SE_PL_ATTACK_BREATH);
 		    // モーションステートの設定
 			SetMotion(VOICE);
 
@@ -620,6 +625,7 @@ void CPlayer::Attack(void)
 			// ひっかきの生成
 			CScratch::Create(pos, fRotY, CScratch::SCRATCHUSER_PLAYER, m_nPlayerNum);
 
+			pSound->Play(CSound::SOUND_SE_PL_ATTACK_NAIL);
 			// モーションステートの設定
 			SetMotion(PUNCH);
 
@@ -671,10 +677,13 @@ void CPlayer::Life(int nLife)
 //******************************
 void CPlayer::Hit(int nDamage)
 {
+	//サウンドのポインタ変数宣言
+	CSound*pSound = CManager::GetSound();
 	m_nLife -= nDamage;
 
 	if (m_nLife <= 0)
 	{
+		pSound->Play(CSound::SOUND_SE_PL_DAMAGE);
 		m_bDeath[m_nPlayerNum] = true;
 		Uninit();
 		if (m_bDeath[0] == true && m_bDeath[1] == true)
@@ -733,10 +742,14 @@ void CPlayer::SetMotion(MOTION motionState)
 //******************************
 void CPlayer::Dash(void)
 {
+	//サウンドのポインタ変数宣言
+	CSound*pSound = CManager::GetSound();
+
 	if (m_motionState != DASH)
 	{// モーションがダッシュ状態じゃないとき
 		if (m_nPlayerNum == 1 && CManager::GetKeyboard()->GetKeyTrigger(DIK_LSHIFT) || CManager::GetJoypad()->GetJoystickTrigger(5, m_nPlayerNum))
 		{// ダッシュ
+			pSound->Play(CSound::SOUND_SE_PL_DASH);
 			// モーションフラグをtrue
 			m_bMotion = true;
 			// モーションセット

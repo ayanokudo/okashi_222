@@ -21,6 +21,9 @@ public:
 
     static void Read(void);
 
+    //// ボス部屋の当たり判定セッタ/ゲッタ
+    //BossRoomCollision(void)
+
 private:
     static void SetObject(D3DXVECTOR3 pos, D3DXVECTOR3 rot, CModel::OBJTYPE type, int ntype);
 };

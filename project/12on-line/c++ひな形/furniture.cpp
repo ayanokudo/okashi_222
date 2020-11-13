@@ -92,25 +92,6 @@ HRESULT CFurniture::Load(void)
 		&m_model[nCount].nNumMat,
 		&m_model[nCount].pMesh);
     }
-
-	////マテリアルデータへのポインタを取得
-	//D3DXMATERIAL*pMat = (D3DXMATERIAL*)m_model[FURNITURE_CHAIR].pBuffMat->GetBufferPointer();
-
-	//for(int nCnt = 0; nCnt < m_model[FURNITURE_CHAIR].nNumMat; nCnt++)
-	//{
-	//	char *cPath = NULL;
-	//	sprintf(cPath, "./data/Textures/", pMat[nCnt].pTextureFilename);
-	//	// テクスチャの生成
-	//	D3DXCreateTextureFromFile(pDevice, cPath, &m_model[FURNITURE_CHAIR].apTexture[nCnt]);
-	//}
-
-	//for (int nCnt = 0; nCnt < m_model[FURNITURE_CHEST].nNumMat; nCnt++)
-	//{
-	//	char *cPath = NULL;
-	//	sprintf(cPath, "./data/Textures/", pMat[nCnt].pTextureFilename);
-	//	// テクスチャの生成
-	//	D3DXCreateTextureFromFile(pDevice, cPath, &m_model[FURNITURE_CHEST].apTexture[nCnt]);
-	//}
 	
 	return S_OK;
 }

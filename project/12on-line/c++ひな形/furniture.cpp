@@ -20,8 +20,8 @@
 //*****************************
 // マクロ定義
 //*****************************
-#define FURNITURE_CHAIR_PATH	"./data/Models/furniture/isu.x"		 // フローリングのテクスチャのパス
-#define FURNITURE_CHEST_PATH	"./data/Models/furniture/tance.x"    // キッチンの床のテクスチャのパス
+#define FURNITURE_CHAIR_PATH	"./data/Models/furniture/ueki.x"		 // フローリングのテクスチャのパス
+#define FURNITURE_CHEST_PATH	"./data/Models/furniture/ueki.x"    // キッチンの床のテクスチャのパス
 
 //==================================
 // コンストラクタ

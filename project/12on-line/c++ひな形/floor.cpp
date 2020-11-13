@@ -15,7 +15,7 @@
 // マクロ定義
 //*****************************
 #define FLOOR_FLOORING_TEXTURE_PATH "./data/Textures/floor000.png"    //フローリングのテクスチャのパス
-#define FLOOR_MAT_TEXTURE_PATH		"./data/Textures/particle001.png"	 //まっとのテクスチャのパス
+#define FLOOR_MAT_TEXTURE_PATH		"./data/Textures/tatami.png"	 //まっとのテクスチャのパス
 #define FLOOR_KITCHEN_TEXTURE_PATH  "./data/Textures/particle001.png"    //キッチンの床のテクスチャのパス
 
 //==================================
@@ -51,8 +51,8 @@ CFloor * CFloor::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 rot, const D3DX
 	if (pFloor != NULL)
 	{
 		//それぞれの初期化処理
-		pFloor->Init();
 		pFloor->m_type = type;
+		pFloor->Init();
 		pFloor->SetPos(pos);
         pFloor->SetRot(rot);
 		pFloor->SetSize(size);

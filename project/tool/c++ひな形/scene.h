@@ -46,8 +46,8 @@ public:
         OBJTYPE_ANIMATION,  // アニメーション
         OBJTYPE_BOMB,       // ボム
         OBJTYPE_UI,         // UI
-        OBJTYPE_COLLISION,  // コリジョン
         OBJTYPE_FURNITURE,	// 家具
+        OBJTYPE_COLLISION,  // コリジョン*一番下においてーーーーーーーーーーーーーーーー！！！
         OBJTYPE_MAX,        // タイプの最大数
     }OBJTYPE;
 

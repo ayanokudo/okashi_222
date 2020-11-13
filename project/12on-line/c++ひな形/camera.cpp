@@ -21,7 +21,7 @@
 // マクロ定義
 //******************************
 #define CAMERA_DISTANCE 250    // カメラの距離
-#define CAMERA_LOCAL_POS D3DXVECTOR3(0.0f, 23000.0f, 200.0f) // 注視点からのローカル座標
+#define CAMERA_LOCAL_POS D3DXVECTOR3(0.0f, 2300.0f, 200.0f) // 注視点からのローカル座標
 #define CAMERA_LOOK_RATE 0.5f  // 注視点を少しずつ変えるときの係数
 #define PLAYER_DEATH_COUNT 40  // プレイヤーが死んでから生きてるプレイヤーの方に少しずつ注視点を変える用
 
@@ -136,122 +136,122 @@ void CCamera::Update(void)
 	}
 
 #else
-	//if (!CPlayer::GetDeath(0) && !CPlayer::GetDeath(1))
-	//{
-	//	CPlayer*pPlayer[MAX_PLAYER] = {};       // プレイヤー情報
-	//	D3DXVECTOR3 playerPos[MAX_PLAYER] = {}; // プレイヤー座標
-	//	// プレイヤー数分ループ
-	//	for (int nCntPlayer = 0; nCntPlayer < MAX_PLAYER; nCntPlayer++)
-	//	{
-	//		// プレイヤー情報の取得
-	//		pPlayer[nCntPlayer] = CGame::GetPlayer(nCntPlayer);
-	//		if (pPlayer[nCntPlayer] != NULL)
-	//		{
-	//			// プレイヤー座標の取得
-	//			playerPos[nCntPlayer] = pPlayer[nCntPlayer]->GetPos();
-	//		}
-	//	}
+	if (!CPlayer::GetDeath(0) && !CPlayer::GetDeath(1))
+	{
+		CPlayer*pPlayer[MAX_PLAYER] = {};       // プレイヤー情報
+		D3DXVECTOR3 playerPos[MAX_PLAYER] = {}; // プレイヤー座標
+		// プレイヤー数分ループ
+		for (int nCntPlayer = 0; nCntPlayer < MAX_PLAYER; nCntPlayer++)
+		{
+			// プレイヤー情報の取得
+			pPlayer[nCntPlayer] = CGame::GetPlayer(nCntPlayer);
+			if (pPlayer[nCntPlayer] != NULL)
+			{
+				// プレイヤー座標の取得
+				playerPos[nCntPlayer] = pPlayer[nCntPlayer]->GetPos();
+			}
+		}
 
-	//	// プレイヤー同士の距離
-	//	float fDistance = sqrtf(powf(playerPos[0].x - playerPos[1].x, 2) + powf(playerPos[0].z - playerPos[1].z, 2));
-	//	// プレイヤー同士の位置の角度
-	//	float fAngle = atan2f(playerPos[1].z - playerPos[0].z, playerPos[1].x - playerPos[0].x);
+		// プレイヤー同士の距離
+		float fDistance = sqrtf(powf(playerPos[0].x - playerPos[1].x, 2) + powf(playerPos[0].z - playerPos[1].z, 2));
+		// プレイヤー同士の位置の角度
+		float fAngle = atan2f(playerPos[1].z - playerPos[0].z, playerPos[1].x - playerPos[0].x);
 
-	//	// 中心点をプレイヤー間の中心に設定
-	//	m_posR.x = playerPos[0].x + cosf(fAngle)*(fDistance / 2);
-	//	m_posR.z = playerPos[0].z + sinf(fAngle)*(fDistance / 2);
+		// 中心点をプレイヤー間の中心に設定
+		m_posR.x = playerPos[0].x + cosf(fAngle)*(fDistance / 2);
+		m_posR.z = playerPos[0].z + sinf(fAngle)*(fDistance / 2);
 
-	//	if (fDistance >= 500 && fDistance <= 2000)
-	//	{
-	//		// 距離でカメラを引く
-	//		m_fViewExtent = fDistance-500;
-	//	}
+		if (fDistance >= 500 && fDistance <= 2000)
+		{
+			// 距離でカメラを引く
+			m_fViewExtent = fDistance-500;
+		}
 
-	//	// カメラ位置の設定
-	//	m_posV = m_posR + CAMERA_LOCAL_POS;
-	//	m_posV.y = CAMERA_LOCAL_POS.y + m_fViewExtent;
-	//}
-	//else if(!CPlayer::GetDeath(0))
-	//{
-	//	
-	//	if (m_nCntPlayerDeath < PLAYER_DEATH_COUNT)
-	//	{
-	//		// カウントを進める
-	//		m_nCntPlayerDeath++;
-	//		// だんだんと注視点を変える
-	//		m_posR += (CGame::GetPlayer(0)->GetPos() - m_posR)*CAMERA_LOOK_RATE;
-	//	}
-	//	else
-	//	{
-	//		// 一瞬で注視点を変える
-	//		m_posR = CGame::GetPlayer(0)->GetPos();
-	//	}
+		// カメラ位置の設定
+		m_posV = m_posR + CAMERA_LOCAL_POS;
+		m_posV.y = CAMERA_LOCAL_POS.y + m_fViewExtent;
+	}
+	else if(!CPlayer::GetDeath(0))
+	{
+		
+		if (m_nCntPlayerDeath < PLAYER_DEATH_COUNT)
+		{
+			// カウントを進める
+			m_nCntPlayerDeath++;
+			// だんだんと注視点を変える
+			m_posR += (CGame::GetPlayer(0)->GetPos() - m_posR)*CAMERA_LOOK_RATE;
+		}
+		else
+		{
+			// 一瞬で注視点を変える
+			m_posR = CGame::GetPlayer(0)->GetPos();
+		}
 
-	//	// カメラ位置の設定
-	//	m_posV = m_posR + CAMERA_LOCAL_POS;
-	//	m_posV.y = CAMERA_LOCAL_POS.y + 300;
-	//}
-	//else if (!CPlayer::GetDeath(1))
-	//{
-	//	if (m_nCntPlayerDeath < PLAYER_DEATH_COUNT)
-	//	{
-	//		// カウントを進める
-	//		m_nCntPlayerDeath++;
-	//		// だんだんと注視点を変える
-	//		m_posR += (CGame::GetPlayer(1)->GetPos() - m_posR)*CAMERA_LOOK_RATE;
-	//	}
-	//	else
-	//	{
-	//		// 一瞬で注視点を変える
-	//		m_posR = CGame::GetPlayer(1)->GetPos();
-	//	}
+		// カメラ位置の設定
+		m_posV = m_posR + CAMERA_LOCAL_POS;
+		m_posV.y = CAMERA_LOCAL_POS.y + 300;
+	}
+	else if (!CPlayer::GetDeath(1))
+	{
+		if (m_nCntPlayerDeath < PLAYER_DEATH_COUNT)
+		{
+			// カウントを進める
+			m_nCntPlayerDeath++;
+			// だんだんと注視点を変える
+			m_posR += (CGame::GetPlayer(1)->GetPos() - m_posR)*CAMERA_LOOK_RATE;
+		}
+		else
+		{
+			// 一瞬で注視点を変える
+			m_posR = CGame::GetPlayer(1)->GetPos();
+		}
 
-	//	// カメラ位置の設定
-	//	m_posV = m_posR + CAMERA_LOCAL_POS;
-	//	m_posV.y = CAMERA_LOCAL_POS.y+300;
-	//}
+		// カメラ位置の設定
+		m_posV = m_posR + CAMERA_LOCAL_POS;
+		m_posV.y = CAMERA_LOCAL_POS.y+300;
+	}
 
-	//
-	//// カメラに写っているか判定する
-	//for (int nCntPlayer = 0; nCntPlayer < MAX_PLAYER; nCntPlayer++)
-	//{
-	//	if (!CPlayer::GetDeath(nCntPlayer))
-	//	{
-	//		const float c_fAdjust_X = 600.0f;
-	//		const float c_fAdjust_Y = 300.0f;
+	
+	// カメラに写っているか判定する
+	for (int nCntPlayer = 0; nCntPlayer < MAX_PLAYER; nCntPlayer++)
+	{
+		if (!CPlayer::GetDeath(nCntPlayer))
+		{
+			const float c_fAdjust_X = 600.0f;
+			const float c_fAdjust_Y = 300.0f;
 
-	//		// プレイヤーの位置の取得
-	//		D3DXVECTOR3 playerPos = CGame::GetPlayer(nCntPlayer)->GetPos();
+			// プレイヤーの位置の取得
+			D3DXVECTOR3 playerPos = CGame::GetPlayer(nCntPlayer)->GetPos();
 
-	//		// カメラの外に出ていたら動きを止める
+			// カメラの外に出ていたら動きを止める
 
-	//		// X軸
-	//		if ((playerPos.x) + c_fAdjust_X > m_posR.x+(m_posV.y *tanf(FOV_X / 2)))
-	//		{
-	//			playerPos.x = m_posR.x + m_posV.y *tanf(FOV_X / 2) - c_fAdjust_X;
-	//			CGame::GetPlayer(nCntPlayer)->SetPos(playerPos);
-	//		}
+			// X軸
+			if ((playerPos.x) + c_fAdjust_X > m_posR.x+(m_posV.y *tanf(FOV_X / 2)))
+			{
+				playerPos.x = m_posR.x + m_posV.y *tanf(FOV_X / 2) - c_fAdjust_X;
+				CGame::GetPlayer(nCntPlayer)->SetPos(playerPos);
+			}
 
-	//		if ((playerPos.x) - c_fAdjust_X < m_posR.x+(m_posV.y *tanf(-FOV_X / 2)))
-	//		{
-	//			playerPos.x = m_posR.x + m_posV.y *tanf(-FOV_X / 2) + c_fAdjust_X;
-	//			CGame::GetPlayer(nCntPlayer)->SetPos(playerPos);
-	//		}
+			if ((playerPos.x) - c_fAdjust_X < m_posR.x+(m_posV.y *tanf(-FOV_X / 2)))
+			{
+				playerPos.x = m_posR.x + m_posV.y *tanf(-FOV_X / 2) + c_fAdjust_X;
+				CGame::GetPlayer(nCntPlayer)->SetPos(playerPos);
+			}
 
-	//		// Z軸
-	//		if ((playerPos.z) + c_fAdjust_Y > m_posR.z + (m_posV.y *tanf(FOV_Y / 2)))
-	//		{
-	//			playerPos.z = m_posR.z + m_posV.y *tanf(FOV_Y / 2) - c_fAdjust_Y;
-	//			CGame::GetPlayer(nCntPlayer)->SetPos(playerPos);
-	//		}
+			// Z軸
+			if ((playerPos.z) + c_fAdjust_Y > m_posR.z + (m_posV.y *tanf(FOV_Y / 2)))
+			{
+				playerPos.z = m_posR.z + m_posV.y *tanf(FOV_Y / 2) - c_fAdjust_Y;
+				CGame::GetPlayer(nCntPlayer)->SetPos(playerPos);
+			}
 
-	//		if ((playerPos.z) - c_fAdjust_Y < m_posR.z + (m_posV.y *tanf(-FOV_Y / 2)))
-	//		{
-	//			playerPos.z = m_posR.z + m_posV.y *tanf(-FOV_Y / 2) + c_fAdjust_Y;
-	//			CGame::GetPlayer(nCntPlayer)->SetPos(playerPos);
-	//		}
-	//	}
-	//}
+			if ((playerPos.z) - c_fAdjust_Y < m_posR.z + (m_posV.y *tanf(-FOV_Y / 2)))
+			{
+				playerPos.z = m_posR.z + m_posV.y *tanf(-FOV_Y / 2) + c_fAdjust_Y;
+				CGame::GetPlayer(nCntPlayer)->SetPos(playerPos);
+			}
+		}
+	}
 
 #endif
 

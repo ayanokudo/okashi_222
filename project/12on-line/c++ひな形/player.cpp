@@ -360,8 +360,39 @@ void CPlayer::Update(void)
     // 当たり判定の位置更新
     m_pCollision->SetPos(GetPos());
 
-	// ボス戦前の当たり判定
-	//if(CFile)
+	
+		// ボス戦前の当たり判定
+	
+	if (CCollision::CollisionSphereToBox(m_pCollision, CFile::BossRoomCollision()))
+	{
+		// プレイヤー座標の取得
+		D3DXVECTOR3 playerPos = GetPos();
+		// 当たり判定のサイズの取得
+		D3DXVECTOR3 collsionSize = CFile::BossRoomCollision()->GetCollisionSize();
+
+		// ボックス内の最短地点の検索
+		D3DXVECTOR3 shortrectPos;
+		shortrectPos.x = CCollision::OnRange(playerPos.x, CFile::BossRoomCollision()->GetPos().x - collsionSize.x / 2, CFile::BossRoomCollision()->GetPos().x + collsionSize.x / 2);
+		shortrectPos.y = CCollision::OnRange(playerPos.y, CFile::BossRoomCollision()->GetPos().y - collsionSize.y / 2, CFile::BossRoomCollision()->GetPos().y + collsionSize.y / 2);
+		shortrectPos.z = CCollision::OnRange(playerPos.z, CFile::BossRoomCollision()->GetPos().z - collsionSize.z / 2, CFile::BossRoomCollision()->GetPos().z + collsionSize.z / 2);
+		// ボックスからプレイヤーの方向ベクトル
+		playerPos = playerPos - shortrectPos;
+		// 正規化
+		D3DXVec3Normalize(&playerPos, &playerPos);
+		// 最短地点から当たり判定の半径分離す
+		playerPos = shortrectPos + playerPos * m_pCollision->GetCollisionRadius();
+		// プレイヤー座標のセット
+		SetPos(playerPos);
+		// プレイヤーのコリジョンの座標のセット
+		GetCollision()->SetPos(playerPos);
+
+		if (CGame::GetGameMode() == CGame::GAME_NORMAL)
+		{
+			CGame::SetGameMode(CGame::GAME_BOSS);
+
+		}
+
+	}
 
 #ifdef _DEBUG
 	// デバッグ用死亡コマンド

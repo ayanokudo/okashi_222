@@ -34,7 +34,8 @@ public:
 	// モーション列挙
 	typedef enum
 	{
-		WALK = 0,   // 歩き
+		SPAWN = 0,  // 湧くとき
+		WALK,       // 歩き
 		BREARH,     // ブレス
 		SCRATCH,    // ひっかき
 		TAIL,       // しっぽ
@@ -72,6 +73,7 @@ public:
 	void Draw(void);
 	void Hit(int nDamage);
 	CCollision *GetCollision(void) { return m_pCollision; }
+	MOTION      GetMotion(void) { return m_motionState; }
 
 private:
 	//各敵キャラの動きの処理

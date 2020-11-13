@@ -54,11 +54,12 @@ public:
 	void Draw(void);
 	static void InitVariable(void);
 	static void Collect(void) { m_nNumCollect++; }
-
+	static void AddObj(void) { m_nNuObj++; }
 private:
 	// メンバ変数
 	static LPDIRECT3DTEXTURE9 m_apTexture[MAX_PARTS]; // テクスチャへのポインタ
 	static int m_nNumCollect;             // 回収した数
+	static int m_nNuObj;                  // 回収対象
 	int m_nPerCollect;                    // 回収率
 	CPolygon*m_pPolygon[MAX_PARTS];       // ナンバー以外の画像
 	CNumber*m_pNumObj[COLLET_DIGIT];      // 回収対象の数のナンバーポリゴン

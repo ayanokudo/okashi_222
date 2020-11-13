@@ -283,7 +283,7 @@ void CManager::Update(void)
 		if (m_mode == MODE_GAME)
 		{// モードゲームのときポーズ画面の処理
 
-			if (m_pInputKeyboard->GetKeyTrigger(DIK_TAB) || m_pJoypad->GetJoystickTrigger(11, 0))
+			if (m_pInputKeyboard->GetKeyTrigger(DIK_TAB) || m_pJoypad->GetJoystickTrigger(11, 0)|| m_pJoypad->GetJoystickTrigger(11, 1))
 			{// TAB
 
 				if (m_pPause == NULL)

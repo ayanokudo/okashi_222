@@ -76,6 +76,7 @@ public:
 	static CLostPoint *GetLostPoint(void) { return m_pLostPoint; }	   // ƒ^ƒCƒ€‚Ìæ“¾ˆ—
 	static CFurniture *GetFurniture(void) { return m_pFurniture; }
 	static GAME_MODE   GetGameMode(void) { return m_gameMode; }
+	static void        SetGameMode(GAME_MODE mode);
 private:
 	void Ui(void);
 

@@ -27,6 +27,8 @@
 #include "lostpoint.h"
 #include "wall.h"
 #include "sound.h"
+#include "file.h"
+#include "collect.h"
 
 //*****************************
 // マクロ定義
@@ -233,6 +235,7 @@ HRESULT CEnemy::Init(void)
 		//運びネズミ
 	case ENEMY_CARRIER:
 		m_nLife = ENEMY_CARRIER_LIFE;
+		CCollect::AddObj();
 		break;
 		//守りネズミ
 	case ENEMY_ESCORT:
@@ -312,6 +315,30 @@ void CEnemy::Update(void)
 
 	// 座標のセット
 	SetPos(pos);
+
+	if (CCollision::CollisionSphereToBox(m_pCollision, CFile::BossRoomCollision()))
+	{
+		// プレイヤー座標の取得
+		D3DXVECTOR3 pos = GetPos();
+		// 当たり判定のサイズの取得
+		D3DXVECTOR3 collsionSize = CFile::BossRoomCollision()->GetCollisionSize();
+
+		// ボックス内の最短地点の検索
+		D3DXVECTOR3 shortrectPos;
+		shortrectPos.x = CCollision::OnRange(pos.x, CFile::BossRoomCollision()->GetPos().x - collsionSize.x / 2, CFile::BossRoomCollision()->GetPos().x + collsionSize.x / 2);
+		shortrectPos.y = CCollision::OnRange(pos.y, CFile::BossRoomCollision()->GetPos().y - collsionSize.y / 2, CFile::BossRoomCollision()->GetPos().y + collsionSize.y / 2);
+		shortrectPos.z = CCollision::OnRange(pos.z, CFile::BossRoomCollision()->GetPos().z - collsionSize.z / 2, CFile::BossRoomCollision()->GetPos().z + collsionSize.z / 2);
+		// ボックスからプレイヤーの方向ベクトル
+		pos = pos - shortrectPos;
+		// 正規化
+		D3DXVec3Normalize(&pos, &pos);
+		// 最短地点から当たり判定の半径分離す
+		pos = shortrectPos + pos * m_pCollision->GetCollisionRadius();
+		// プレイヤー座標のセット
+		SetPos(pos);
+		// プレイヤーのコリジョンの座標のセット
+		GetCollision()->SetPos(pos);
+	}
 }
 
 //******************************

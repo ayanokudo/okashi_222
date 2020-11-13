@@ -211,7 +211,7 @@ BOOL CInputJoypad::EnumJoysticksCallback(const DIDEVICEINSTANCE * pdidInstance, 
 //******************************
 BOOL CInputJoypad::EnumAxesCallback(const DIDEVICEOBJECTINSTANCE * pdidoi, VOID * pContext)
 {
-	HRESULT     hr;
+	HRESULT hr = NULL;
 	DIPROPRANGE diprg;
 
 	diprg.diph.dwSize = sizeof(DIPROPRANGE);

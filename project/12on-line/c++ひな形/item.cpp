@@ -25,7 +25,7 @@
 // マクロ定義
 //*****************************
 #define CANDY_MODEL_PATH "./data/Models/item/Candy.x"    //モデルのパス
-#define KOBAN_MODEL_PATH "./data/Models/item/koban.x"    //モデルのパス
+#define KOBAN_MODEL_PATH "./data/Models/item/Coin.x"    //モデルのパス
 #define LIFE_MODEL_PATH	 "./data/Models/item/Heart.x"    //モデルのパス
 
 #define CANDY_MAX 20

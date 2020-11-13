@@ -44,6 +44,7 @@ private:
 	static LPDIRECT3DTEXTURE9 m_apTexture[PARTS_MAX];
 	CPolygon* m_pPolygon[PARTS_MAX];
 	int m_nMenu;
+	bool m_bMove;                                     // ˆÚ“®ƒtƒ‰ƒO
 };
 
 #endif // !_TITEL_H_

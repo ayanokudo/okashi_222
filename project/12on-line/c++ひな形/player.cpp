@@ -676,10 +676,13 @@ void CPlayer::Life(int nLife)
 //******************************
 void CPlayer::Hit(int nDamage)
 {
+	//サウンドのポインタ変数宣言
+	CSound*pSound = CManager::GetSound();
 	m_nLife -= nDamage;
 
 	if (m_nLife <= 0)
 	{
+		pSound->Play(CSound::SOUND_SE_PL_DAMAGE);
 		m_bDeath[m_nPlayerNum] = true;
 		Uninit();
 		if (m_bDeath[0] == true && m_bDeath[1] == true)

@@ -19,6 +19,7 @@
 #include "player.h"
 #include "score.h"
 #include "collect.h"
+#include "sound.h"
 
 //*****************************
 // マクロ定義
@@ -225,6 +226,7 @@ void CItem::Direction(void)
 //******************************
 void CItem::CollisionItem(void)
 {
+	CSound*pSound = CManager::GetSound();
 	switch (m_type)
 	{
 		//キャンディ
@@ -244,10 +246,9 @@ void CItem::CollisionItem(void)
 					if (CCollision::CollisionSphere(m_pCollision, pPlayer->GetCollision()))
 					{
 						m_nCandy--;
-						
 						// 回収率を増やす
 						CCollect::Collect();
-
+						pSound->Play(CSound::SOUND_SE_ITEM_CANDY);
 						Uninit();
 						break;
 					}
@@ -273,6 +274,7 @@ void CItem::CollisionItem(void)
 					{
 						//小判処理
 						CScore::AddScore(1000);
+						pSound->Play(CSound::SOUND_SE_ITEM_KOBAN);
 						Uninit();
 						break;
 					}
@@ -300,6 +302,7 @@ void CItem::CollisionItem(void)
 						if (CCollision::CollisionSphere(m_pCollision, pPlayer->GetCollision()))
 						{
 							pPlayer->Life(LIFE_NUM);
+							pSound->Play(CSound::SOUND_SE_ITEM_LIFE);
 							Uninit();
 							break;
 						}

@@ -101,6 +101,11 @@ CCollision * CCollision::CreateBox(D3DXVECTOR3 pos, D3DXVECTOR3 size)
 //******************************
 bool CCollision::CollisionSphere(CCollision * pCollision1, CCollision * pCollision2)
 {
+	if (pCollision1 == NULL || pCollision2 == NULL)
+	{
+		return false;
+	}
+
 	if (pow(pCollision1->GetPos().x - pCollision2->GetPos().x, 2) + 
 		pow(pCollision1->GetPos().y - pCollision2->GetPos().y, 2) +
 		pow(pCollision1->GetPos().z - pCollision2->GetPos().z, 2) <= pow(pCollision1->m_fRadius + pCollision2->m_fRadius, 2))
@@ -127,6 +132,11 @@ bool CCollision::CollisionBox(CCollision * pCollision1, CCollision * pCollision2
 //******************************
 bool CCollision::CollisionSphereToBox(CCollision *pCollSphere, CCollision * pCollBox)
 {
+	if (pCollSphere == NULL || pCollBox == NULL)
+	{
+		return false;
+	}
+
 	// ãÖÇÃç¿ïW
 	D3DXVECTOR3 spherePos = pCollSphere->GetPos();
 	// BOXÇÃç¿ïW
@@ -275,7 +285,7 @@ void CCollision::CreateMesh(void)
 		break;
 	case COLLISIONTYPE_SPHERE:
 		// ãÖëÃÇÃê∂ê¨
-		D3DXCreateSphere(pDevice, m_fRadius, 10, 10, &m_pMeshModel, &m_pBuffMatModel);
+		D3DXCreateSphere(pDevice, m_fRadius, 5, 5, &m_pMeshModel, &m_pBuffMatModel);
 		break;
 	default:
 		break;

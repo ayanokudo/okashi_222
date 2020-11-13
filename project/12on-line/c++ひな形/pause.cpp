@@ -194,8 +194,8 @@ void CPause::Update(void)
 			CManager::GetFade()->SetFade(CManager::MODE_GAME);
 			break;
 		case EXIT:
-			// 終了処理
-			DestroyWindow(FindWindow(WINDOW_CLASS_NAME, NULL));
+			// タイトルに戻る
+			CManager::GetFade()->SetFade(CManager::MODE_TITLE);
 			break;
 		default:
 			break;

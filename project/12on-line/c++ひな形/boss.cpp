@@ -242,14 +242,17 @@ void CBoss::Uninit(void)
 	if (m_pCollision != NULL)
 	{
 		m_pCollision->Uninit();
+		m_pCollision = NULL;
 	}
 	if (m_pRadiusColision != NULL)
 	{
 		m_pRadiusColision->Uninit();
+		m_pRadiusColision = NULL;
 	}
 	if (m_pCollisionTail != NULL)
 	{
 		m_pCollisionTail->Uninit();
+		m_pCollisionTail = NULL;
 	}
 
 	CModelHierarchy::Uninit();

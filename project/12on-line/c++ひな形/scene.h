@@ -69,6 +69,7 @@ public:
 	CScene*GetNext(void) { return m_pNext; }
 	CScene*GetPrev(void) { return m_pPrev; }
 
+	bool GetReleaseFlag(void) { return m_bReleasFlag; }
 	// ƒˆ‰¼‘zŠÖ”
 	virtual HRESULT Init(void) = 0;
 	virtual void Uninit(void) = 0;

@@ -23,7 +23,7 @@ LPDIRECT3DTEXTURE9 CWin::m_pTexture = NULL;
 //**********************************
 // マクロ定義
 //**********************************
-#define  WIN_TEXTURE_PATH "./data/Textures/Ranking.png" // テクスチャ
+#define  WIN_TEXTURE_PATH "./data/Textures/Clear.png" // テクスチャ
 
 //=============================
 // コンストラクタ

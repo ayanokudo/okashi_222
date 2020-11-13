@@ -208,19 +208,19 @@ void CGame::Ui(void)
 	// アタックのUIの生成
 	m_pUi[0] = CUi::Create(D3DXVECTOR3(550.0f, 660.0f, 0.0f),
 		D3DXVECTOR3(45, 45, 0),
-		D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
+		D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.8f),
 		CUi::UI_ATTACK_NAIL);
 
 	// ダッシュのUIの生成
 	m_pUi[1] = CUi::Create(D3DXVECTOR3(640.0f, 660.0f, 0.0f),
 		D3DXVECTOR3(45, 45, 0),
-		D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
+		D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.8f),
 		CUi::UI_ATTACK_CRY);
 
 	// ダッシュのUIの生成
 	m_pUi[2] = CUi::Create(D3DXVECTOR3(730.0f, 660.0f, 0.0f),
 		D3DXVECTOR3(45, 45, 0),
-		D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
+		D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.8f),
 		CUi::UI_DASH);
 
 	// アタックのUIの生成

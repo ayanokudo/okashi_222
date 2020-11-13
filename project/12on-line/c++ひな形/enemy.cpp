@@ -338,14 +338,7 @@ void CEnemy::Hit(int nDamage)
 		case ENEMY_CARRIER:
 			//スコアUP
 			CScore::AddScore(ENEMY_UP_SCORE);
-			if (ITEM_DROP_RANDOM_KOBAN)
-			{
-				CItem::Create(pos, CItem::KOBAN);
-			}
-			else if (ITEM_DROP_RANDOM_LIFE)
-			{
-				CItem::Create(pos, CItem::LIFE);
-			}
+			CItem::Create(pos, CItem::CANDY);
 			break;
 		case ENEMY_ESCORT:
 			//スコアUP

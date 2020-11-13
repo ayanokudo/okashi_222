@@ -112,7 +112,7 @@ void CRanking::Update(void)
 
 			if (m_nRank < MAX_RANKING)
 			{
-				m_apNumber[nCntNumber][m_nRank]->Flashing();
+				m_apNumber[m_nRank][nCntNumber]->Flashing();
 			}
 		}
 	}

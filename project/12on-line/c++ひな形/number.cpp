@@ -16,7 +16,7 @@
 // マクロ定義
 //**********************************
 #define NUMBER_TEXTURE_PATH "./data/Textures/NumberTexture.png" // テクスチャのパス
-#define FLASH_RATE 0.009f
+#define FLASH_RATE 0.0008f
 
 //**********************************
 // 静的メンバ変数宣言
@@ -30,9 +30,9 @@ CNumber::CNumber()
 {
 	m_pVtxBuff = NULL;
 	m_nNumber = 0;
-	m_col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+	m_col = D3DXCOLOR(0.1f, 0.1f, 0.1f, 0.8f);
 	m_bFlash = true;
-	m_FlashState = FLASH_STATE_IN;
+	m_FlashState = FLASH_STATE_OUT;
 }
 
 //==================================
@@ -196,22 +196,22 @@ void CNumber::Flashing(void)
 {
 	VERTEX_2D *pVtx; //頂点情報へのポインタ
 
-	if (m_FlashState == FLASH_STATE_IN)
-	{
-		m_col.a -= FLASH_RATE;
-		if (m_col.a <= 0.0f)
-		{
-			m_col.a = 0.0f;
-			m_FlashState = FLASH_STATE_OUT;
-		}
-	}
-	else if (m_FlashState == FLASH_STATE_OUT)
+	if (m_FlashState == FLASH_STATE_OUT)
 	{
 		m_col.a += FLASH_RATE;
 		if (m_col.a >= 1.0f)
 		{
 			m_col.a = 1.0f;
 			m_FlashState = FLASH_STATE_IN;
+		}
+	}
+	else if (m_FlashState == FLASH_STATE_IN)
+	{
+		m_col.a -= FLASH_RATE;
+		if (m_col.a <= 0.8f)
+		{
+			m_col.a = 0.8f;
+			m_FlashState = FLASH_STATE_OUT;
 		}
 	}
 	//頂点データの範囲をロックし、頂点バッファへのポインタを取得

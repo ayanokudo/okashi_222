@@ -63,9 +63,9 @@ CFurniture * CFurniture::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 rot, co
 		pWall->m_size = size;
 		pWall->Init();
 		pWall->m_type = type;
-		pWall->SetPos(pos);
+		pWall->SetPos(D3DXVECTOR3(pos.x, pos.y, pos.z));
 		pWall->SetRot(rot);
-		pWall->SetSize(size);
+		//pWall->SetSize(size);
 		pWall->SetObjType(OBJTYPE_FURNITURE);
 	}
 	//ƒ|ƒCƒ“ƒ^‚ð•Ô‚·

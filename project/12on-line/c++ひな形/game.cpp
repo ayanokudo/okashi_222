@@ -45,6 +45,8 @@ CTime   *CGame::m_pTime   = NULL;	// タイムクラスのポインタ変数
 CLight  *CGame::m_pLight  = NULL;	// ライトクラスのポインタ変数
 CLostPoint *CGame::m_pLostPoint = NULL;// ロストポイントのポインタ変数
 CFurniture *CGame::m_pFurniture = NULL;// ロストポイントのポインタ変数
+CGame::GAME_MODE CGame::m_gameMode = GAME_NORMAL;
+
 //=============================
 // コンストラクタ
 //=============================
@@ -77,6 +79,9 @@ CGame * CGame::Create(void)
 //=============================
 HRESULT CGame::Init(void)
 {	
+	// ゲームモードの初期化
+	m_gameMode = GAME_NORMAL;
+
 	//ライトクラスの生成
 	m_pLight = new CLight;
 	// 初期化
@@ -103,7 +108,6 @@ HRESULT CGame::Init(void)
 	m_pItem = CItem::Create(D3DXVECTOR3(200.0f, 0.0f, -800.0f),CItem::LIFE);
 	m_pItem = CItem::Create(D3DXVECTOR3(200.0f, 0.0f, -900.0f), CItem::CANDY);
 	m_pItem = CItem::Create(D3DXVECTOR3(200.0f, 0.0f, -1000.0f), CItem::KOBAN);
-
 
 	//スコアの初期化
 	m_pScore->ResetScore();

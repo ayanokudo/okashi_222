@@ -34,9 +34,11 @@
 CCollision::CCollision():CModel(OBJTYPE_COLLISION)
 {
 	// 変数のクリア
+#ifdef _DEBUG
 	m_pMeshModel = NULL;   	//メッシュ情報へのポインタ
 	m_pBuffMatModel = NULL;	//マテリアル情報へのポインタ
 	m_nNumMatModel = 0;	    //マテリアル情報の数
+#endif
 	m_fRadius = 0.0f;
 	m_size = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 }
@@ -196,6 +198,7 @@ HRESULT CCollision::Init(void)
 //******************************
 void CCollision::Uninit(void)
 {
+#ifdef _DEBUG
 	//メッシュの破棄
 	if (m_pMeshModel != NULL)
 	{
@@ -208,7 +211,7 @@ void CCollision::Uninit(void)
 		m_pBuffMatModel->Release();
 		m_pBuffMatModel = NULL;
 	}
-
+#endif
 	CModel::Uninit();
 }
 
@@ -257,7 +260,7 @@ void CCollision::Draw(void)
 #endif // _DEBUG
 	
 }
-
+#ifdef _DEBUG
 //******************************
 // メッシュ生成
 //******************************
@@ -278,3 +281,4 @@ void CCollision::CreateMesh(void)
 		break;
 	}
 }
+#endif

@@ -49,11 +49,12 @@ public:
 	float GetCollisionRadius(void) { return m_fRadius; }
 private:
 	void CreateMesh(void);
-
+#ifdef _DEBUG
 	// メンバ変数
 	LPD3DXMESH m_pMeshModel;	//メッシュ情報へのポインタ
 	LPD3DXBUFFER m_pBuffMatModel;	//マテリアル情報へのポインタ
 	DWORD m_nNumMatModel;	//マテリアル情報の数
+#endif
 	COLLISIONTYPE m_type;  // コリジョンのタイプ
 	float m_fRadius;
 	D3DXVECTOR3 m_size;

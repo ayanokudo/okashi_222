@@ -102,6 +102,12 @@ void CLostPoint::Uninit(void)
 		m_pointPos = NULL;
 	}
 
+	if (m_routePos != NULL)
+	{
+		delete[] m_routePos;
+		m_routePos = NULL;
+	}
+
 	// ŠJ•úˆ—
 	Release();
 }
@@ -119,7 +125,7 @@ void CLostPoint::Update(void)
 	// À•W‚Ì•Û‘¶
 	if (CManager::GetKeyboard()->GetKeyTrigger(DIK_RETURN))
 	{
-		m_pointPos[m_nPointNum] = CGame::GetPlayer(0)->GetPos();
+		m_pointPos[m_nPointNum] = CGame::GetPlayer(1)->GetPos();
 		m_pCollisionLost[m_nPointNum] = CCollision::CreateSphere(m_pointPos[m_nPointNum], COLLISION_RADIUS);
 		m_nPointNum++;
 	}
@@ -133,7 +139,7 @@ void CLostPoint::Update(void)
 	// À•W‚Ì•Û‘¶
 	if (CManager::GetKeyboard()->GetKeyTrigger(DIK_RSHIFT))
 	{
-		m_routePos[m_nRouteNum] = CGame::GetPlayer(0)->GetPos();
+		m_routePos[m_nRouteNum] = CGame::GetPlayer(1)->GetPos();
 		m_pCollisionRoute[m_nPointNum] = CCollision::CreateSphere(m_routePos[m_nRouteNum], COLLISION_RADIUS);
 		m_nRouteNum++;
 	}

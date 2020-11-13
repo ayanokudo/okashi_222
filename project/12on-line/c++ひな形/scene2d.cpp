@@ -44,6 +44,16 @@ CScene2d::~CScene2d()
 //===================================
 // クリエイト関数
 //===================================
+CScene2d * CScene2d::Create(int nPriority)
+{
+	CScene2d *pScene2d;
+	pScene2d = new CScene2d(nPriority);
+	// 初期化
+	pScene2d->Init();
+
+	return pScene2d;
+}
+
 CScene2d * CScene2d::Create(void)
 {
 	// メモリの確保

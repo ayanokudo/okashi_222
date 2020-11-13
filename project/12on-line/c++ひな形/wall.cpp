@@ -113,7 +113,7 @@ HRESULT CWall::Init(void)
 	CScene3d::BindTexture(m_apTexture[m_type]);
 	// •Ç‚æ‚è‚¿‚å‚Á‚Æ‘å‚«‚ß‚É“–‚½‚è”»’è‚ğ‚Æ‚é
 	D3DXVECTOR3 collisionSize = m_size + D3DXVECTOR3(5.0f, 5.0f, 5.0f);
-	if (m_rot.y == 0)
+	if (m_rot.y == 0|| m_rot.y == D3DXToRadian(180))
 	{
 		// “–‚½‚è”»’è‚Ì¶¬
 		m_pCollision = CCollision::CreateBox(m_pos, collisionSize * 2);

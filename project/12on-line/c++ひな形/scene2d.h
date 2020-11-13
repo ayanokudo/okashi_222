@@ -26,7 +26,8 @@ public:
 	// ƒƒ“ƒoŠÖ”
 	CScene2d(int nPliority = OBJTYPE_NONE);
 	~CScene2d();
-	static CScene2d *Create(void);
+	static CScene2d *Create(int nPriority);
+	static CScene2d *Create();
 	HRESULT Init(void);
 	void Uninit(void);
 	void Update(void);

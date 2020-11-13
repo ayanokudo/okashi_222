@@ -506,22 +506,48 @@ void CEnemy::MotionCarrier(void)
 
 		if (!m_bRoute)
 		{
+			// 何番目に近い目標地点に行くか
+			int nNumPoint = 0;
+			// 目標座標の取得
+			D3DXVECTOR3 distPos = CGame::GetLostPoint()->GetLostPos(nNumPoint);
 
-			CWall*pWall = (CWall*)GetTop(OBJTYPE_WALL);
-
-			while (pWall != NULL)
+			// プレイヤー最大数分ループ
+			for (int nCnt = 0; nCnt < MAX_PLAYER; )
 			{
-				if (CCollision::CollisionSphereToBox(m_pCollision, pWall->GetCollision()))
-				{
-					m_bRoute = true;
-				}
+				if (GetDistance(pos, distPos) > GetDistance(CGame::GetPlayer(nCnt)->GetPos(), distPos))
+				{//自身よりプレイヤーのほうが近かった場合
 
-				pWall = (CWall*)pWall->GetNext();
+					// カウントの初期化
+					nCnt = 0;
+					// 近い順を一つ増やす
+					nNumPoint++;
+					
+					// 目標地点の更新
+					distPos = CGame::GetLostPoint()->GetLostPos(nNumPoint);
+				}
+				else
+				{
+					// カウントを進める
+					nCnt++;
+				}
 			}
 
-			// 目標座標の取得
-			int nNumPoint = 0;
-			D3DXVECTOR3 distPos = CGame::GetLostPoint()->GetLostPos(nNumPoint);
+			if (GetDistance(pos, distPos) >= 1000)
+			{// 目標と一定距離以上の時
+				// 壁との当たり判定
+				CWall*pWall = (CWall*)GetTop(OBJTYPE_WALL);
+				while (pWall != NULL)
+				{
+					if (CCollision::CollisionSphereToBox(m_pCollision, pWall->GetCollision()))
+					{// 当たってた時
+					 
+						// 一回道の真ん中を経由して目標地点に行く
+						m_bRoute = true;
+					}
+
+					pWall = (CWall*)pWall->GetNext();
+				}
+			}
 
 			// 目標に向かって移動量の設定
 			m_moveDest = distPos - pos;
@@ -530,7 +556,7 @@ void CEnemy::MotionCarrier(void)
 			
 		}
 		else
-		{
+		{// 一回道の真ん中を経由して目標地点に行く
 			// 目標座標の取得
 			D3DXVECTOR3 distPos = CGame::GetLostPoint()->GetRoutePos(0);
 
@@ -551,8 +577,12 @@ void CEnemy::MotionCarrier(void)
 			m_pCollision->SetCollisionRadius(m_pCollision->GetCollisionRadius() * 2);
 		}
 
+		// 向きの目標値
+		m_fRotYDist = atan2f(-m_moveDest.z, m_moveDest.x) - D3DXToRadian(90);
+
 		if (CCollision::CollisionSphere(m_pCollision, CGame::GetLostPoint()->GetLostCollision(0)))
-		{
+		{// ロストポイントに触れたときに消す
+
 			// パーティクル生成
 			for (int nCntPart= 0; nCntPart < 5; nCntPart++)
 			{
@@ -570,7 +600,7 @@ void CEnemy::MotionCarrier(void)
 					D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
 					CParticle::PARTICLE_SMOKE);
 			}
-
+			// 消す
 			Uninit();
 		}
 	}

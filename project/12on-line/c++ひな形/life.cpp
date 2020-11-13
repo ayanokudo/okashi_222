@@ -109,7 +109,7 @@ void CLife::Draw(void)
 	// デバイスの取得
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
 	// アルファテストのしきい値の変更
-	pDevice->SetRenderState(D3DRS_ALPHAREF, 100);
+	pDevice->SetRenderState(D3DRS_ALPHAREF, 50);
 
 	// 描画
 	CPolygon::Draw();

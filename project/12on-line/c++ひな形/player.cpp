@@ -75,6 +75,7 @@ CPlayer::CPlayer() :CModelHierarchy(OBJTYPE_PLAYER)
 	memset(&m_pLife, 0, sizeof(m_pLife));
 	m_nLife = 0;
 	m_bKeyboardMove = false;
+	m_posOld = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 }
 
 //******************************
@@ -291,8 +292,8 @@ void CPlayer::Uninit(void)
     if (m_pCollision != NULL)
     {
         m_pCollision->Uninit();
-    
 	}
+	// ライフの終了処理・メモリの解放
 	for (int nCount = 0; nCount < PLAYER_LIFE; nCount++)
 	{
 		if (m_pLife[nCount] != NULL)
@@ -311,6 +312,9 @@ void CPlayer::Uninit(void)
 //******************************
 void CPlayer::Update(void)
 {
+	// 位置の保管
+	m_posOld = GetPos();
+
 	// 目標値の初期化
 	m_moveDest = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 
@@ -324,7 +328,6 @@ void CPlayer::Update(void)
 			// 移動（キーボード）
 			MoveKeyboard();
 		}
-		
 
 		// 慣性
 		m_move += (m_moveDest - m_move) * PLAYER_MOVE_RATE;

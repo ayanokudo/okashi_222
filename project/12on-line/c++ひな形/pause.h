@@ -22,7 +22,8 @@ class CPause
 public:
 	typedef enum
 	{
-		BACK = 0,
+		GAME_MASK=0,
+		BACK,
 		RESUME,
 		RESTART,
 		EXIT,

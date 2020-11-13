@@ -45,7 +45,7 @@
 #include "life.h"
 #include "win.h"
 #include "lose.h"
-
+#include "time.h"
 //=============================
 // 静的メンバ変数宣言
 //=============================
@@ -238,6 +238,13 @@ void CManager::Uninit(void)
 		delete m_pFade;
 		m_pFade = NULL;
 	}
+	
+	if (m_pPause != NULL)
+	{
+		m_pPause->Uninit();
+		delete m_pPause;
+		m_pPause = NULL;
+	}
 }
 
 
@@ -281,6 +288,12 @@ void CManager::Update(void)
 				}
 				// ポーズの切り替え
 				m_bPause ^= true;
+
+				// ポーズに入った時間の保存
+				if (m_bPause)
+				{
+					CTime::SetPauseTime();
+				}
 			}
 			if (!m_bPause)
 			{// ポーズじゃないとき

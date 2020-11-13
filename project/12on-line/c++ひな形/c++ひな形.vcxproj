@@ -241,7 +241,6 @@
     <ClInclude Include="scene.h" />
     <ClInclude Include="scene2d.h" />
     <ClInclude Include="scene3d.h" />
-    <ClInclude Include="scene_x.h" />
     <ClInclude Include="score.h" />
     <ClInclude Include="scratch.h" />
     <ClInclude Include="sound.h" />

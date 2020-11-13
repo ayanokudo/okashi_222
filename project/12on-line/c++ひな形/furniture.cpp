@@ -110,8 +110,6 @@ HRESULT CFurniture::Load(void)
 		&m_model[FURNITURE_CHEST].nNumMat,
 		&m_model[FURNITURE_CHEST].pMesh);
 
-	//マテリアルデータへのポインタを取得
-	D3DXMATERIAL*pMat = (D3DXMATERIAL*)m_model[FURNITURE_CHEST].pBuffMat->GetBufferPointer();
 
 	for (int nCnt = 0; nCnt < m_model[FURNITURE_CHEST].nNumMat; nCnt++)
 	{

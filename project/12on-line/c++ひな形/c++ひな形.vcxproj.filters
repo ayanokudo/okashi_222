@@ -258,9 +258,6 @@
     <ClInclude Include="scene.h">
       <Filter>ヘッダーファイル</Filter>
     </ClInclude>
-    <ClInclude Include="scene_x.h">
-      <Filter>ヘッダーファイル</Filter>
-    </ClInclude>
     <ClInclude Include="scene2d.h">
       <Filter>ヘッダーファイル</Filter>
     </ClInclude>
@@ -289,9 +286,6 @@
       <Filter>ヘッダーファイル</Filter>
     </ClInclude>
     <ClInclude Include="wall.h">
-      <Filter>ヘッダーファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="furniture.h">
       <Filter>ヘッダーファイル</Filter>
     </ClInclude>
   </ItemGroup>

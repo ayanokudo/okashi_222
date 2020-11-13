@@ -50,6 +50,8 @@ public:
 	CCollision* GetLostCollision(int nNum) { return m_pCollisionLost[nNum]; }
 	CCollision* GetRouteCollision(int nNum) { return m_pCollisionRoute[nNum]; }
 
+	int GetNumLostPoint(void) { return m_nPointNum; }
+	int GetNumRoutePoint(void) { return m_nRouteNum; }
 private:
 	void SaveText(int nMode);
 	void LoadText(void);

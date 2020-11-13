@@ -217,8 +217,9 @@ void CCamera::Update(void)
 	{
 		if (!CPlayer::GetDeath(nCntPlayer))
 		{
-			const float c_fAdjust_X = 600.0f;
-			const float c_fAdjust_Y = 300.0f;
+			// カメラの外側からどれくらい外判定か
+			const float c_fAdjust_X = 800.0f;
+			const float c_fAdjust_Y = 400.0f;
 
 			// プレイヤーの位置の取得
 			D3DXVECTOR3 playerPos = CGame::GetPlayer(nCntPlayer)->GetPos();

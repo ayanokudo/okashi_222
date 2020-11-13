@@ -293,6 +293,7 @@ void CPlayer::Uninit(void)
     if (m_pCollision != NULL)
     {
         m_pCollision->Uninit();
+		m_pCollision = NULL;
 	}
 	// ライフの終了処理・メモリの解放
 	for (int nCount = 0; nCount < PLAYER_LIFE; nCount++)

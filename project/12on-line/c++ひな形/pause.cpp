@@ -20,16 +20,16 @@
 //=======================================================================================
 // マクロ定義
 //=======================================================================================
-#define BACK_SIZE D3DXVECTOR3(200.0f,180.0f,0.0f)                  // 背面サイズ
+#define BACK_SIZE D3DXVECTOR3(260.0f,240.0f,0.0f)                  // 背面サイズ
 #define BACK_POS D3DXVECTOR3(SCREEN_WIDTH/2,SCREEN_HEIGHT/2,0.0f) // 背面座標
 
-#define STRING_SIZE D3DXVECTOR3(150.0f,50.0f,0.0f)                                  // 文字列
-#define RESUME_POS  D3DXVECTOR3(SCREEN_WIDTH/2, 35 + BACK_POS.y - (STRING_SIZE.y + 25),0.0f) // 続ける
+#define STRING_SIZE D3DXVECTOR3(175.0f,50.0f,0.0f)                                          // 文字列
+#define RESUME_POS  D3DXVECTOR3(SCREEN_WIDTH/2, 35 + BACK_POS.y - (STRING_SIZE.y + 60),0.0f) // 続ける
 #define RESTART_POS D3DXVECTOR3(SCREEN_WIDTH/2, 35 + BACK_POS.y,0.0f)                        // リスタート
-#define EXIT_POS   	D3DXVECTOR3(SCREEN_WIDTH/2, 35 + BACK_POS.y + (STRING_SIZE.y + 25),0.0f) // 終了
+#define EXIT_POS   	D3DXVECTOR3(SCREEN_WIDTH/2, 35 + BACK_POS.y + (STRING_SIZE.y + 60),0.0f) // 終了
 
-#define MENU_ENTER_COL D3DXCOLOR(0.0f, 1.0f, 1.0f, 1.0f)     // 選んでるメニューの色
-#define MENU_NOT_ENTER_COL D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f) // 選んでないメニューの色
+#define MENU_ENTER_COL D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f)     // 選んでるメニューの色
+#define MENU_NOT_ENTER_COL D3DXCOLOR(0.5f, 0.5f, 0.5f, 1.0f) // 選んでないメニューの色
 
 //=======================================================================================
 // 前方宣言
@@ -77,10 +77,10 @@ HRESULT CPause::Load(void)
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
 
 	//テクスチャの読み込み
-	D3DXCreateTextureFromFile(pDevice, "data/Textures/pause_back.png"   , &m_apTexture[BACK]);
-	D3DXCreateTextureFromFile(pDevice, "data/Textures/pause_resume.png" , &m_apTexture[RESUME]);
-	D3DXCreateTextureFromFile(pDevice, "data/Textures/pause_restart.png", &m_apTexture[RESTART]);
-	D3DXCreateTextureFromFile(pDevice, "data/Textures/pause_exit.png" , &m_apTexture[EXIT]);
+	D3DXCreateTextureFromFile(pDevice, "data/Textures/pose_bg.png"   , &m_apTexture[BACK]);
+	D3DXCreateTextureFromFile(pDevice, "data/Textures/pose_button_Continue.png" , &m_apTexture[RESUME]);
+	D3DXCreateTextureFromFile(pDevice, "data/Textures/pose_button_Restart.png", &m_apTexture[RESTART]);
+	D3DXCreateTextureFromFile(pDevice, "data/Textures/pose_button_BackMenu.png" , &m_apTexture[EXIT]);
 
 	return S_OK;
 }
@@ -106,7 +106,8 @@ void CPause::UnLoad(void)
 HRESULT CPause::Init(void)
 {
 	// ポリゴン生成
-
+	m_pPolygon[GAME_MASK] = CPolygon::Create(BACK_POS, D3DXVECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0.0f));
+	m_pPolygon[GAME_MASK]->SetColor(D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.5f));
 	// 後ろのやつ
 	m_pPolygon[BACK] = CPolygon::Create(BACK_POS, BACK_SIZE);
 	m_pPolygon[BACK]->SetTexture(m_apTexture[BACK]);
@@ -194,8 +195,8 @@ void CPause::Update(void)
 			CManager::GetFade()->SetFade(CManager::MODE_GAME);
 			break;
 		case EXIT:
-			// 終了処理
-			DestroyWindow(FindWindow(WINDOW_CLASS_NAME, NULL));
+			// タイトルに戻る
+			CManager::GetFade()->SetFade(CManager::MODE_TITLE);
 			break;
 		default:
 			break;

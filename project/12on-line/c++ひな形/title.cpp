@@ -28,6 +28,7 @@
 //**********************************
 LPDIRECT3DTEXTURE9 CTitle::m_apTexture[MENU_MAX] = {};
 LPDIRECT3DTEXTURE9 CTitle::m_apCatTex[CAT_MAX];        // テクスチャへのポインタ
+
 //**********************************
 // マクロ定義
 //**********************************

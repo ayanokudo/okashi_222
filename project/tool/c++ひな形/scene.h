@@ -40,7 +40,6 @@ public:
         OBJTYPE_ENEMY,      // エネミー
         OBJTYPE_FLOOR,      // 床
         OBJTYPE_WALL,       // 壁
-        OBJTYPE_FURNITURE,  // 家具
         OBJTYPE_BOSS,       // エネミー
         OBJTYPE_ATTACK,     // 攻撃
         OBJTYPE_BULLET,     // 攻撃
@@ -48,6 +47,7 @@ public:
         OBJTYPE_BOMB,       // ボム
         OBJTYPE_UI,         // UI
         OBJTYPE_COLLISION,  // コリジョン
+        OBJTYPE_FURNITURE,	// 家具
         OBJTYPE_MAX,        // タイプの最大数
     }OBJTYPE;
 

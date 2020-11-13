@@ -45,6 +45,7 @@
 #include "life.h"
 #include "win.h"
 #include "lose.h"
+#include "time.h"
 #include "furniture.h"
 
 
@@ -155,6 +156,7 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, bool bWindow)
 	CCollect::Load();   // コレクト
 	CLife::Load();		//
 	CTitle::Load();		//
+    CFurniture::Load();
 
 	// ポーズ状態の時
 	return S_OK;
@@ -186,7 +188,8 @@ void CManager::Uninit(void)
 	CCollect::Unload();  // コレクト
 	CLife::Unload();
 	CTitle::Unload();
-	
+    CFurniture::Unload();
+
 	if (m_pSound != NULL)
 	{
 		// 終了処理
@@ -240,6 +243,13 @@ void CManager::Uninit(void)
 		delete m_pFade;
 		m_pFade = NULL;
 	}
+	
+	if (m_pPause != NULL)
+	{
+		m_pPause->Uninit();
+		delete m_pPause;
+		m_pPause = NULL;
+	}
 }
 
 
@@ -283,6 +293,12 @@ void CManager::Update(void)
 				}
 				// ポーズの切り替え
 				m_bPause ^= true;
+
+				// ポーズに入った時間の保存
+				if (m_bPause)
+				{
+					CTime::SetPauseTime();
+				}
 			}
 			if (!m_bPause)
 			{// ポーズじゃないとき

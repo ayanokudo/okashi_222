@@ -27,7 +27,7 @@
 // 静的メンバ変数宣言
 //**********************************
 int CTime::m_nTime = 0;
-
+int CTime::m_nPauseCurrentTime = 0;
 //=============================
 // コンストラクタ
 //=============================
@@ -121,11 +121,21 @@ void CTime::Uninit(void)
 //=============================
 void CTime::Update(void)
 {
-	int nTime = 0;
-
 	//現在時間を取得
 	m_end = timeGetTime();
+
+	// ポーズ画面中のタイムのプラス
+	if (!CManager::GetActivePause() && m_nPauseCurrentTime != 0)
+	{
+		// ポーズ中のタイムの加算
+		m_start += (m_end - m_nPauseCurrentTime);
+		// ポーズタイムの初期化
+		m_nPauseCurrentTime = 0;
+	}
+
+	int nTime = 0;
 	nTime = (m_end - m_start) / 1000;
+	
 	//代入
 	m_nAllTime = m_nTime - nTime;
 	//trueの時
@@ -139,6 +149,7 @@ void CTime::Update(void)
 
 		m_pUi->Update();
 	}
+
 	//０になったら
 	if (m_nAllTime == 0)
 	{

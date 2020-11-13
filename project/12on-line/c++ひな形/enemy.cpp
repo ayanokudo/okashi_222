@@ -514,10 +514,14 @@ void CEnemy::MotionCarrier(void)
 			int nNumPoint = 0;
 			// 目標座標の取得
 			D3DXVECTOR3 distPos = CGame::GetLostPoint()->GetLostPos(nNumPoint);
-
+			
+			// 何回ループしたか
+			int nLoop = 0;
+			
 			// プレイヤー最大数分ループ
 			for (int nCnt = 0; nCnt < MAX_PLAYER; )
 			{
+				
 				if (GetDistance(pos, distPos) > GetDistance(CGame::GetPlayer(nCnt)->GetPos(), distPos))
 				{//自身よりプレイヤーのほうが近かった場合
 
@@ -526,8 +530,24 @@ void CEnemy::MotionCarrier(void)
 					// 近い順を一つ増やす
 					nNumPoint++;
 					
+					if (nNumPoint >= CGame::GetLostPoint()->GetNumLostPoint())
+					{
+						nNumPoint = 0;
+					}
+
+					// ループ数のカウント
+					nLoop++;
+					if (nLoop >= CGame::GetLostPoint()->GetNumLostPoint())
+					{// 全部のポイントがプレイヤーより遠い
+						nNumPoint = 0;
+						// 目標地点の更新
+						distPos = CGame::GetLostPoint()->GetLostPos(nNumPoint);
+						break;
+					}
+
 					// 目標地点の更新
 					distPos = CGame::GetLostPoint()->GetLostPos(nNumPoint);
+					
 				}
 				else
 				{

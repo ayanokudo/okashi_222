@@ -44,6 +44,7 @@ public:
 	void Draw(void);
 
 	static int GetTime(void) { return m_nTime; }
+	static void SetPauseTime(void) { m_nPauseCurrentTime = timeGetTime(); }
 private:
 	// メンバ変数
 	CNumber* m_apNumber[MAX_TIME_DIGIT];
@@ -53,6 +54,7 @@ private:
 	DWORD m_end;
 	bool m_bTime;
 	int m_nAllTime;
+	static int m_nPauseCurrentTime;           // ポーズに入った時間
 };
 
 #endif

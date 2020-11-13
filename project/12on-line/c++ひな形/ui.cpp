@@ -26,7 +26,6 @@
 #define UI_DASH_TEXTURE_PATH		"./data/Textures/Dash.png"			// ダッシュのパス
 #define UI_CHOCO_TEXTURE_PATH		"./data/Textures/chocolate_HPicon.png"	// チョコのパス
 #define UI_MILK_TEXTURE_PATH		"./data/Textures/Milk_HPicon.png"		// ミルクのパス
-#define UI_CHARACTER_TEXTURE_PATH	"./data/Textures/TIME.png"		// ミルクのパス
 
 #define UI_SIZE 100
 //**********************************
@@ -88,7 +87,6 @@ HRESULT CUi::Load(void)
 	D3DXCreateTextureFromFile(pDevice, UI_DASH_TEXTURE_PATH, &m_apTexture[UI_DASH]);
 	D3DXCreateTextureFromFile(pDevice, UI_CHOCO_TEXTURE_PATH, &m_apTexture[UI_CHOCO]);
 	D3DXCreateTextureFromFile(pDevice, UI_MILK_TEXTURE_PATH, &m_apTexture[UI_MILK]);
-	D3DXCreateTextureFromFile(pDevice, UI_CHARACTER_TEXTURE_PATH, &m_apTexture[UI_CHARACTER]);
 
 	return S_OK;
 }

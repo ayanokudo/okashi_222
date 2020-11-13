@@ -26,6 +26,7 @@
 #include "particle.h"
 #include "lostpoint.h"
 #include "wall.h"
+#include "sound.h"
 
 //*****************************
 // マクロ定義
@@ -416,6 +417,8 @@ void CEnemy::RangeDecisionCarrier(void)
 //******************************
 void CEnemy::RangeDecisionEscort(void)
 {
+	//サウンドのポインタ変数宣言
+	CSound*pSound = CManager::GetSound();
 	// プレイヤーとの距離*初期値は適当に大きい値を入れとく
 	float fDistance = 99999.0f;
 	//プレイヤーの情報を取得
@@ -455,6 +458,7 @@ void CEnemy::RangeDecisionEscort(void)
 						//等間隔で打つ
 						if (m_nCount == 50)
 						{
+							pSound->Play(CSound::SOUND_SE_EN_ATTACK_NAIL);
 							// 攻撃の生成
 							CScratch::Create(enemyPos, m_fRotYDist + D3DXToRadian(90), CScratch::SCRATCHUSER_ENEMY,GetID());
 							m_nCount = 0;

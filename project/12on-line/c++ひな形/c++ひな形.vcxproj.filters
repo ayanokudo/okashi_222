@@ -142,6 +142,9 @@
     <ClCompile Include="lose.cpp">
       <Filter>ソースファイル</Filter>
     </ClCompile>
+    <ClCompile Include="furniture.cpp">
+      <Filter>ソースファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="file.h">
@@ -253,9 +256,6 @@
       <Filter>ヘッダーファイル</Filter>
     </ClInclude>
     <ClInclude Include="scene.h">
-      <Filter>ヘッダーファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="scene_x.h">
       <Filter>ヘッダーファイル</Filter>
     </ClInclude>
     <ClInclude Include="scene2d.h">

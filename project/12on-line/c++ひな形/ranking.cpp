@@ -106,9 +106,14 @@ void CRanking::Update(void)
 {
 	for (int nCntRank = 0; nCntRank < MAX_RANKING_DIGIT ; nCntRank++)
 	{
-		for (int nCntDigit = 0; nCntDigit <MAX_NUMBER_DIGIT; nCntDigit++)
+		for (int nCntNumber = 0; nCntNumber <MAX_NUMBER_DIGIT; nCntNumber++)
 		{
-			m_apNumber[nCntRank][nCntDigit]->Update();
+			m_apNumber[nCntRank][nCntNumber]->Update();
+
+			if (m_nRank < MAX_RANKING)
+			{
+				m_apNumber[nCntNumber][m_nRank]->Flashing();
+			}
 		}
 	}
 }

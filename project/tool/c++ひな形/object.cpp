@@ -390,7 +390,7 @@ void CObject::SetObject(D3DXVECTOR3 pos, D3DXVECTOR3 rot, CModel::OBJTYPE type ,
         break;
 
     case CModel::OBJTYPE_ENEMY:
-        m_pModel = CEnemy::Create(pos);
+        m_pModel = CEnemy::Create(pos,((CEnemy::ENEMY)ntype));
         break;
 
     case CModel::OBJTYPE_WALL:

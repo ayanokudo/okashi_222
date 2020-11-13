@@ -40,15 +40,16 @@ CEnemy::~CEnemy()
 //=============================================================================
 // [Create] オブジェクトの生成
 //=============================================================================
-CEnemy * CEnemy::Create(D3DXVECTOR3 pos)
+CEnemy * CEnemy::Create(D3DXVECTOR3 pos,ENEMY type)
 {
     CEnemy *pObject = NULL;
     if (!pObject)
     {
         pObject = new CEnemy;
         // 初期化
-        pObject->Init();
         pObject->SetPos(pos);
+        pObject->m_type = type;
+        pObject->Init();
 
         // 各値の代入・セット
         pObject->SetObjType(OBJTYPE_ENEMY); // オブジェクトタイプ

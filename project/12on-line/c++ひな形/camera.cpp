@@ -161,7 +161,7 @@ void CCamera::Update(void)
 		m_posR.x = playerPos[0].x + cosf(fAngle)*(fDistance / 2);
 		m_posR.z = playerPos[0].z + sinf(fAngle)*(fDistance / 2);
 
-		if (fDistance >= 500)
+		if (fDistance >= 500 && fDistance <= 2000)
 		{
 			// 距離でカメラを引く
 			m_fViewExtent = fDistance-500;
@@ -211,20 +211,45 @@ void CCamera::Update(void)
 		m_posV.y = CAMERA_LOCAL_POS.y+300;
 	}
 
+	
 	// カメラに写っているか判定する
 	for (int nCntPlayer = 0; nCntPlayer < MAX_PLAYER; nCntPlayer++)
 	{
 		if (!CPlayer::GetDeath(nCntPlayer))
 		{
+			const float c_fAdjust_X = 600.0f;
+			const float c_fAdjust_Y = 300.0f;
+
+			// プレイヤーの位置の取得
 			D3DXVECTOR3 playerPos = CGame::GetPlayer(nCntPlayer)->GetPos();
 
-			playerPos.z;
+			// カメラの外に出ていたら動きを止める
 
-			if ((playerPos.z + m_posR.z) - 100.0f < (m_posV.y *tanf(-FOV_Y/2)))
+			// X軸
+			if ((playerPos.x) + c_fAdjust_X > m_posR.x+(m_posV.y *tanf(FOV_X / 2)))
 			{
-				
+				playerPos.x = m_posR.x + m_posV.y *tanf(FOV_X / 2) - c_fAdjust_X;
+				CGame::GetPlayer(nCntPlayer)->SetPos(playerPos);
 			}
 
+			if ((playerPos.x) - c_fAdjust_X < m_posR.x+(m_posV.y *tanf(-FOV_X / 2)))
+			{
+				playerPos.x = m_posR.x + m_posV.y *tanf(-FOV_X / 2) + c_fAdjust_X;
+				CGame::GetPlayer(nCntPlayer)->SetPos(playerPos);
+			}
+
+			// Z軸
+			if ((playerPos.z) + c_fAdjust_Y > m_posR.z + (m_posV.y *tanf(FOV_Y / 2)))
+			{
+				playerPos.z = m_posR.z + m_posV.y *tanf(FOV_Y / 2) - c_fAdjust_Y;
+				CGame::GetPlayer(nCntPlayer)->SetPos(playerPos);
+			}
+
+			if ((playerPos.z) - c_fAdjust_Y < m_posR.z + (m_posV.y *tanf(-FOV_Y / 2)))
+			{
+				playerPos.z = m_posR.z + m_posV.y *tanf(-FOV_Y / 2) + c_fAdjust_Y;
+				CGame::GetPlayer(nCntPlayer)->SetPos(playerPos);
+			}
 		}
 	}
 

@@ -69,11 +69,11 @@ HRESULT CRanking::Init(void)
 			int nAnswer = (m_anRankingDate[nCntRanking] % nValue) / nScore2;
 
 			//数字をセット
-			m_apNumber[nCntNumber][nCntRanking] = CNumber::Create(0,
+			m_apNumber[nCntRanking][nCntNumber] = CNumber::Create(0,
 				D3DXVECTOR3(150 + nCntNumber * 37 * 2, 310.0f + nCntRanking * 40 * 2, 0.0f),
 				D3DXVECTOR3(40, 40, 0),
 				D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
-			m_apNumber[nCntNumber][nCntRanking]->SetNumber(nAnswer);
+			m_apNumber[nCntRanking][nCntNumber]->SetNumber(nAnswer);
 		}
 	}
 	return S_OK;
@@ -85,13 +85,13 @@ HRESULT CRanking::Init(void)
 void CRanking::Uninit(void)
 {
 	//ランキング数回す
-	for (int nCntNumber = 0; nCntNumber < MAX_NUMBER_DIGIT; nCntNumber++)
+	for (int nCntRank = 0; nCntRank < MAX_RANKING_DIGIT; nCntRank++)
 	{
-		for (int nCntDigit = 0; nCntDigit < MAX_RANKING_DIGIT; nCntDigit++)
+		for (int nCntDigit = 0; nCntDigit < MAX_NUMBER_DIGIT; nCntDigit++)
 		{
-			m_apNumber[nCntNumber][nCntDigit]->Uninit();
-			delete m_apNumber[nCntNumber][nCntDigit];
-			m_apNumber[nCntNumber][nCntDigit] = NULL;
+			m_apNumber[nCntRank][nCntDigit]->Uninit();
+			delete m_apNumber[nCntRank][nCntDigit];
+			m_apNumber[nCntRank][nCntDigit] = NULL;
 		}
 	}
 
@@ -104,11 +104,16 @@ void CRanking::Uninit(void)
 //=============================================================================
 void CRanking::Update(void)
 {
-	for (int nCntNumber = 0; nCntNumber < MAX_NUMBER_DIGIT; nCntNumber++)
+	for (int nCntRank = 0; nCntRank < MAX_RANKING_DIGIT ; nCntRank++)
 	{
-		for (int nCntDigit = 0; nCntDigit < MAX_RANKING_DIGIT; nCntDigit++)
+		for (int nCntNumber = 0; nCntNumber <MAX_NUMBER_DIGIT; nCntNumber++)
 		{
-			m_apNumber[nCntNumber][nCntDigit]->Update();
+			m_apNumber[nCntRank][nCntNumber]->Update();
+
+			if (m_nRank < MAX_RANKING)
+			{
+				m_apNumber[m_nRank][nCntNumber]->Flashing();
+			}
 		}
 	}
 }
@@ -121,11 +126,11 @@ void CRanking::Draw(void)
 	//デバイスの取得
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
 	pDevice->SetRenderState(D3DRS_ALPHAREF, 200);
-	for (int nCntNumber = 0; nCntNumber < MAX_NUMBER_DIGIT; nCntNumber++)
+	for (int nCntRank = 0; nCntRank < MAX_RANKING_DIGIT; nCntRank++)
 	{
-		for (int nCntDigit = 0; nCntDigit < MAX_RANKING_DIGIT; nCntDigit++)
+		for (int nCntDigit = 0; nCntDigit < MAX_NUMBER_DIGIT; nCntDigit++)
 		{
-			m_apNumber[nCntNumber][nCntDigit]->Draw();
+			m_apNumber[nCntRank][nCntDigit]->Draw();
 		}
 	}
 	pDevice->SetRenderState(D3DRS_ALPHAREF, 50);

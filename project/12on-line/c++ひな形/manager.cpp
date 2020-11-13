@@ -184,7 +184,7 @@ void CManager::Uninit(void)
 	CCollect::Unload();  // コレクト
 	CLife::Unload();
 	CTitle::Unload();
-
+	
 	if (m_pSound != NULL)
 	{
 		// 終了処理

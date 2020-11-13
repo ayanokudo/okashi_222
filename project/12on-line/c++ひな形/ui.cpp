@@ -12,6 +12,7 @@
 #include "manager.h"
 #include "renderer.h"
 #include "scene.h"
+#include "Scene2d.h"
 
 //**********************************
 // ƒ}ƒNƒ’è‹`

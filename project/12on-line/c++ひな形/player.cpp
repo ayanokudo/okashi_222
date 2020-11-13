@@ -22,6 +22,7 @@
 #include "motion.h"
 #include "life.h"
 #include "fade.h"
+#include "sound.h"
 
 //*****************************
 // マクロ定義
@@ -38,8 +39,7 @@
 #define PLAYER_SPEED 20                          // 移動スピード
 #define PLAYER_MOVE_RATE 0.2f                   // 移動の慣性の係数
 #define PLAYER_DIRECTION_RATE 0.1f              // 向きを変えるときの係数
-#define PLAYER_RADIUS 10                       // プレイヤーの半径
-#define PLAYER_LIFE 9                           // プレイヤー１のライフ
+#define PLAYER_RADIUS 100                       // プレイヤーの半径
 #define PLAYER_SPEED_MAX 5
 #define PLAYER_DASH_SPEED PLAYER_SPEED * 1.5f                 // ダッシュ時のスピード
 
@@ -76,6 +76,7 @@ CPlayer::CPlayer() :CModelHierarchy(OBJTYPE_PLAYER)
 	memset(&m_pLife, 0, sizeof(m_pLife));
 	m_nLife = 0;
 	m_bKeyboardMove = false;
+	m_posOld = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 }
 
 //******************************
@@ -292,8 +293,8 @@ void CPlayer::Uninit(void)
     if (m_pCollision != NULL)
     {
         m_pCollision->Uninit();
-    
 	}
+	// ライフの終了処理・メモリの解放
 	for (int nCount = 0; nCount < PLAYER_LIFE; nCount++)
 	{
 		if (m_pLife[nCount] != NULL)
@@ -312,6 +313,9 @@ void CPlayer::Uninit(void)
 //******************************
 void CPlayer::Update(void)
 {
+	// 位置の保管
+	m_posOld = GetPos();
+
 	// 目標値の初期化
 	m_moveDest = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 
@@ -325,7 +329,6 @@ void CPlayer::Update(void)
 			// 移動（キーボード）
 			MoveKeyboard();
 		}
-		
 
 		// 慣性
 		m_move += (m_moveDest - m_move) * PLAYER_MOVE_RATE;
@@ -590,12 +593,16 @@ void CPlayer::Direction(void)
 //******************************
 void CPlayer::Attack(void)
 {
+	//サウンドのポインタ変数宣言
+	CSound*pSound = CManager::GetSound();
+
 	if (!m_bMotion)
 	{// 攻撃中じゃないとき
 
 		if (m_nPlayerNum == 1&& CManager::GetKeyboard()->GetKeyTrigger(DIK_SPACE) || CManager::GetJoypad()->GetJoystickTrigger(2, m_nPlayerNum))
 		{// 弾を撃つ
 			
+			pSound->Play(CSound::SOUND_SE_PL_ATTACK_BREATH);
 		    // モーションステートの設定
 			SetMotion(VOICE);
 
@@ -617,6 +624,7 @@ void CPlayer::Attack(void)
 			// ひっかきの生成
 			CScratch::Create(pos, fRotY, CScratch::SCRATCHUSER_PLAYER, m_nPlayerNum);
 
+			pSound->Play(CSound::SOUND_SE_PL_ATTACK_NAIL);
 			// モーションステートの設定
 			SetMotion(PUNCH);
 
@@ -730,10 +738,14 @@ void CPlayer::SetMotion(MOTION motionState)
 //******************************
 void CPlayer::Dash(void)
 {
+	//サウンドのポインタ変数宣言
+	CSound*pSound = CManager::GetSound();
+
 	if (m_motionState != DASH)
 	{// モーションがダッシュ状態じゃないとき
 		if (m_nPlayerNum == 1 && CManager::GetKeyboard()->GetKeyTrigger(DIK_LSHIFT) || CManager::GetJoypad()->GetJoystickTrigger(5, m_nPlayerNum))
 		{// ダッシュ
+			pSound->Play(CSound::SOUND_SE_PL_DASH);
 			// モーションフラグをtrue
 			m_bMotion = true;
 			// モーションセット

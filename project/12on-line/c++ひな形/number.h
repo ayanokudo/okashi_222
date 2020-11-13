@@ -22,6 +22,13 @@
 class CNumber
 {
 public:
+	typedef enum
+	{
+		FLASH_STATE_NONE = 0,
+		FLASH_STATE_IN,
+		FLASH_STATE_OUT,
+		FLASH_STATE_MAX
+	}FLASH_STATE_NUMBER;
 	// メンバ関数
 	CNumber();
 	~CNumber();
@@ -34,7 +41,7 @@ public:
 	void Update(void);
 	void Draw(void);
 	void SetNumber(const int nNumber);
-
+	void Flashing(void);
 	// カラーのセット、取得
 	void SetColor(const D3DXCOLOR col);
 	D3DXCOLOR GetColor(void) { return m_col; }
@@ -44,6 +51,8 @@ private:
 	LPDIRECT3DVERTEXBUFFER9   m_pVtxBuff;	 // 頂点バッファへのポイン
 	int m_nNumber; // ナンバー
 	D3DXCOLOR m_col;
+	bool m_bFlash;
+	FLASH_STATE_NUMBER m_FlashState;
 };
 
 #endif

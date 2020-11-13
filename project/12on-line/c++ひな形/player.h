@@ -26,7 +26,7 @@ class CLife;
 //*****************************
 // マクロ定義
 //*****************************
-#define PLAYER_LIFE 9		// プレイヤー１のライフ
+#define PLAYER_LIFE 10		// プレイヤー１のライフ
 
 //*****************************
 // クラス定義
@@ -71,6 +71,7 @@ public:
 	static bool GetDeath(int nPlayer) { return m_bDeath[nPlayer]; }
 	CCollision*GetCollision(void) { return m_pCollision; }
 	D3DXVECTOR3 GetMove(void) { return m_move; }
+	D3DXVECTOR3 GetPosOld(void) { return m_posOld; }
 	void GetMove(D3DXVECTOR3 move) { m_move = move; }
 	int GetPlayerNum(void) { return m_nPlayerNum; }
 private:
@@ -89,6 +90,7 @@ private:
 	static char m_achAnimPath[MOTION_MAX][64];   // アニメーションテキストのパス格納用
 	static bool m_bDeath[MAX_PLAYER];
 
+	D3DXVECTOR3 m_posOld;           // 移動前の座標
 	D3DXVECTOR3 m_move;             // 移動量
 	D3DXVECTOR3 m_moveDest;         // 移動量の目標値
 	float m_fRotYDist;              // プレイヤーの向いている向きの目標値

@@ -23,6 +23,7 @@
 #include "scratch.h"
 #include "player.h"
 #include "fade.h"
+#include "sound.h"
 
 //*****************************
 // マクロ定義
@@ -45,6 +46,7 @@
 #define ATTACK_BASE 200             // 攻撃するタイミングのベース値
 #define BOSS_LIFE 2000              // ボスのライフ
 #define BULLET_INTERVAL 15          // 弾のインターバル
+#define BOSS_SCORE_UP 15000
 
 #define MOVE_COUNT 100             // 移動時のカウント
 
@@ -302,7 +304,7 @@ void CBoss::Hit(int nDamage)
 
 	if (m_nLife <= 0)
 	{
-		CScore::AddScore(15000);
+		CScore::AddScore(BOSS_SCORE_UP);
 		Uninit();
 		CManager::GetFade()->SetFade(CManager::MODE_WIN);
 		return;
@@ -442,6 +444,8 @@ void CBoss::Direction(void)
 //=============================================================================
 void CBoss::Attack(void)
 {
+	//サウンドのポインタ変数宣言
+	CSound*pSound = CManager::GetSound();
     // ランダムなタイミングで攻撃する
 	int nRandAttack = rand() % ATTACK_PATTARN;
 

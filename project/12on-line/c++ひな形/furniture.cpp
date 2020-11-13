@@ -7,7 +7,7 @@
 //**********************************
 //インクルード
 //**********************************
-#include "wall.h"
+#include "furniture.h"
 #include "manager.h"
 #include "renderer.h"
 #include "collision.h"
@@ -20,53 +20,53 @@
 //*****************************
 // マクロ定義
 //*****************************
-#define WALL_1_TEXTURE_PATH		"./data/Textures/w.png"		 // フローリングのテクスチャのパス
-#define WALL_2_TEXTURE_PATH		"./data/Textures/wall_right.png"	 // まっとのテクスチャのパス
-#define WALL_3_TEXTURE_PATH		"./data/Textures/wall_left.png"    // キッチンの床のテクスチャのパス
+#define FURNITURE_CHAIR_PATH	"./data/Models/furniture/wall000.png"		 // フローリングのテクスチャのパス
+#define FURNITURE_CHEST_PATH	"./data/Models/furniture/particle001.png"    // キッチンの床のテクスチャのパス
 
 //==================================
 // コンストラクタ
 //==================================
-LPDIRECT3DTEXTURE9 CWall::m_apTexture[WALL_MAX] = {};
+LPDIRECT3DTEXTURE9 CFurniture::m_apTexture[FURNITURE_MAX] = {};
+CModel::Model CFurniture::m_model[FURNITURE_MAX] = {};
 
 //==================================
 // コンストラクタ
 //==================================
-CWall::CWall():CScene3d(OBJTYPE_WALL)
+CFurniture::CFurniture() :CModel(OBJTYPE_FURNITURE)
 {
-	m_type   =   WALL_NORMAL;			// 床の種類の初期化
-	m_pos    =	{ 0.0f,0.0f,0.0f };	// posの初期化
-	m_posold =	{ 0.0f,0.0f,0.0f };	// 前の位置の初期化
-	m_size   =	{ 0.0f,0.0f,0.0f };	// sizeの初期化
+	m_type = FURNITURE_CHAIR;		// 床の種類の初期化
+	m_pos = { 0.0f,0.0f,0.0f };		// posの初期化
+	m_posold = { 0.0f,0.0f,0.0f };	// 前の位置の初期化
+	m_size = { 0.0f,0.0f,0.0f };	// sizeの初期化
 }
 
 //==================================
 // デストラクタ
 //==================================
-CWall::~CWall()
+CFurniture::~CFurniture()
 {
 }
 
 //==================================
 // 生成処理
 //==================================
-CWall * CWall::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 rot, const D3DXVECTOR3 size, WALL type)
+CFurniture * CFurniture::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 rot, const D3DXVECTOR3 size, FURNITURE type)
 {
 	//インスタンスを生成
-	CWall *pWall = new CWall;
+	CFurniture *pWall = new CFurniture;
 	//NULLチェック
 	if (pWall != NULL)
 	{
 		//それぞれの初期化処理
 		pWall->m_pos = pos;
-        pWall->m_rot = rot;
+		pWall->m_rot = rot;
 		pWall->m_size = size;
-		pWall->m_type = type;
 		pWall->Init();
+		pWall->m_type = type;
 		pWall->SetPos(pos);
-        pWall->SetRot(rot);
+		pWall->SetRot(rot);
 		pWall->SetSize(size);
-		pWall->SetObjType(OBJTYPE_WALL);
+		pWall->SetObjType(OBJTYPE_FURNITURE);
 	}
 	//ポインタを返す
 	return pWall;
@@ -75,25 +75,59 @@ CWall * CWall::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 rot, const D3DXVE
 //==================================
 // テクスチャロード処理
 //==================================
-HRESULT CWall::Load(void)
+HRESULT CFurniture::Load(void)
 {
 	// デバイスの取得
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
 
-	// テクスチャの生成
-	D3DXCreateTextureFromFile(pDevice, WALL_1_TEXTURE_PATH, &m_apTexture[WALL_NORMAL]);
-	D3DXCreateTextureFromFile(pDevice, WALL_2_TEXTURE_PATH, &m_apTexture[WALL_RIGHT]);
-	D3DXCreateTextureFromFile(pDevice, WALL_3_TEXTURE_PATH, &m_apTexture[WALL_LEFT]);
+	// Xファイルの読み込み
+	D3DXLoadMeshFromX(FURNITURE_CHAIR_PATH,
+		D3DXMESH_SYSTEMMEM,
+		pDevice,
+		NULL,
+		&m_model[FURNITURE_CHAIR].pBuffMat,
+		NULL,
+		&m_model[FURNITURE_CHAIR].nNumMat,
+		&m_model[FURNITURE_CHAIR].pMesh);
 
+	//マテリアルデータへのポインタを取得
+	D3DXMATERIAL*pMat = (D3DXMATERIAL*)m_model[FURNITURE_CHAIR].pBuffMat->GetBufferPointer();
+
+	for(int nCnt = 0; nCnt < m_model[FURNITURE_CHAIR].nNumMat; nCnt++)
+	{
+		char *cPath = NULL;
+		sprintf(cPath, "./data/Textures/", pMat[nCnt].pTextureFilename);
+		// テクスチャの生成
+		D3DXCreateTextureFromFile(pDevice, cPath, &m_model[FURNITURE_CHAIR].apTexture[nCnt]);
+	}
+	// Xファイルの読み込み
+	D3DXLoadMeshFromX(FURNITURE_CHEST_PATH,
+		D3DXMESH_SYSTEMMEM,
+		pDevice,
+		NULL,
+		&m_model[FURNITURE_CHEST].pBuffMat,
+		NULL,
+		&m_model[FURNITURE_CHEST].nNumMat,
+		&m_model[FURNITURE_CHEST].pMesh);
+
+
+	for (int nCnt = 0; nCnt < m_model[FURNITURE_CHEST].nNumMat; nCnt++)
+	{
+		char *cPath = NULL;
+		sprintf(cPath, "./data/Textures/", pMat[nCnt].pTextureFilename);
+		// テクスチャの生成
+		D3DXCreateTextureFromFile(pDevice, cPath, &m_model[FURNITURE_CHEST].apTexture[nCnt]);
+	}
+	
 	return S_OK;
 }
 
 //==================================
 // テクスチャ破棄
 //==================================
-void CWall::Unload(void)
+void CFurniture::Unload(void)
 {
-	for (int nCntWall = 0; nCntWall < WALL_MAX; nCntWall++)
+	for (int nCntWall = 0; nCntWall < FURNITURE_MAX; nCntWall++)
 	{
 		// テクスチャの解放処理
 		if (m_apTexture[nCntWall] != NULL)
@@ -107,17 +141,13 @@ void CWall::Unload(void)
 //==================================
 // 初期化処理
 //==================================
-HRESULT CWall::Init(void)
+HRESULT CFurniture::Init(void)
 {
-    if (m_type == 2)
-    {
-        int a = 0;
-    }
-	CScene3d::Init();
-	CScene3d::BindTexture(m_apTexture[m_type]);
+	CModel::Init();
+	CModel::BindModel(m_model[m_type].pMesh,m_model[m_type].pBuffMat,m_model[m_type].nNumMat);
 	// 壁よりちょっと大きめに当たり判定をとる
 	D3DXVECTOR3 collisionSize = m_size + D3DXVECTOR3(5.0f, 5.0f, 5.0f);
-	if (m_rot.y == 0|| m_rot.y == D3DXToRadian(180))
+	if (m_rot.y == 0)
 	{
 		// 当たり判定の生成
 		m_pCollision = CCollision::CreateBox(m_pos, collisionSize * 2);
@@ -136,7 +166,7 @@ HRESULT CWall::Init(void)
 //==================================
 // 終了処理
 //==================================
-void CWall::Uninit(void)
+void CFurniture::Uninit(void)
 {
 	if (m_pCollision != NULL)
 	{
@@ -144,13 +174,13 @@ void CWall::Uninit(void)
 		m_pCollision = NULL;
 	}
 
-	CScene3d::Uninit();
+	CModel::Uninit();
 }
 
 //==================================
 // 更新処理
 //==================================
-void CWall::Update(void)
+void CFurniture::Update(void)
 {
 	// 当たり判定
 	CollisionPlayer(); // プレイヤー
@@ -162,15 +192,15 @@ void CWall::Update(void)
 //==================================
 // 描画処理
 //==================================
-void CWall::Draw(void)
+void CFurniture::Draw(void)
 {
-	CScene3d::Draw();
+	CModel::Draw();
 }
 
 //==================================
 // プレイヤーと壁の当たり判定
 //==================================
-void CWall::CollisionPlayer(void)
+void CFurniture::CollisionPlayer(void)
 {
 	for (int nCntPlayer = 0; nCntPlayer < MAX_PLAYER; nCntPlayer++)
 	{
@@ -210,7 +240,7 @@ void CWall::CollisionPlayer(void)
 //==================================
 // エネミーと壁の当たり判定
 //==================================
-void CWall::CollisionEnemy(void)
+void CFurniture::CollisionEnemy(void)
 {
 
 	CEnemy*pEnemy = (CEnemy*)CScene::GetTop(OBJTYPE_ENEMY);
@@ -247,7 +277,7 @@ void CWall::CollisionEnemy(void)
 //==================================
 // ボスと壁の当たり判定
 //==================================
-void CWall::CollisionBoss(void)
+void CFurniture::CollisionBoss(void)
 {
 
 	CBoss*pBoss = (CBoss*)CScene::GetTop(OBJTYPE_BOSS);
@@ -284,7 +314,7 @@ void CWall::CollisionBoss(void)
 //==================================
 // 弾と壁の当たり判定
 //==================================
-void CWall::CollisionBullet(void)
+void CFurniture::CollisionBullet(void)
 {
 	CBullet*pBullet = (CBullet*)CScene::GetTop(OBJTYPE_BULLET);
 	while (pBullet != NULL)

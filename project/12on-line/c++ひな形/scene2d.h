@@ -26,7 +26,8 @@ public:
 	// メンバ関数
 	CScene2d(int nPliority = OBJTYPE_NONE);
 	~CScene2d();
-	static CScene2d *Create(void);
+	static CScene2d *Create(int nPriority);
+	static CScene2d *Create();
 	HRESULT Init(void);
 	void Uninit(void);
 	void Update(void);
@@ -45,7 +46,6 @@ public:
 	// カラーのセット、取得
 	void SetColor(const D3DXCOLOR col);                  
 	D3DXCOLOR GetColor(void) { return m_col; }
-
 	void SetTextureUV(const D3DXVECTOR2 uv[NUM_VERTEX]); // テクスチャのUV座標のセット
 	
 private:
@@ -56,6 +56,7 @@ private:
 	float m_fAngle;                      // ポリゴンの回転角度
     D3DXVECTOR3 m_size;                  // ポリゴンのサイズ
 	D3DXCOLOR m_col;
+
 };
 
 #endif

@@ -26,6 +26,7 @@
 #include "particle.h"
 #include "lostpoint.h"
 #include "wall.h"
+#include "sound.h"
 
 //*****************************
 // マクロ定義
@@ -38,7 +39,7 @@
 #define ENEMY_SPEED 10
 #define ENEMY_RAND rand() % 8 + 1
 #define ENEMY_MOVE_RATE 0.05f
-#define ENEMY_RADIUS  50
+#define ENEMY_RADIUS  80
 #define ENEMY_RANGE_RADIUS 600
 #define ENEMY_MOVE_RATE 0.05f 
 #define ENEMY_DIRECTION_RATE 0.1f              // 向きを変えるときの係数
@@ -416,6 +417,8 @@ void CEnemy::RangeDecisionCarrier(void)
 //******************************
 void CEnemy::RangeDecisionEscort(void)
 {
+	//サウンドのポインタ変数宣言
+	CSound*pSound = CManager::GetSound();
 	// プレイヤーとの距離*初期値は適当に大きい値を入れとく
 	float fDistance = 99999.0f;
 	//プレイヤーの情報を取得
@@ -455,6 +458,7 @@ void CEnemy::RangeDecisionEscort(void)
 						//等間隔で打つ
 						if (m_nCount == 50)
 						{
+							pSound->Play(CSound::SOUND_SE_EN_ATTACK_NAIL);
 							// 攻撃の生成
 							CScratch::Create(enemyPos, m_fRotYDist + D3DXToRadian(90), CScratch::SCRATCHUSER_ENEMY,GetID());
 							m_nCount = 0;
@@ -467,7 +471,9 @@ void CEnemy::RangeDecisionEscort(void)
 			}
 
 			if (!CPlayer::GetDeath(0) && !CCollision::CollisionSphere(m_pRadiusColision, CGame::GetPlayer(0)->GetCollision()) &&
-				!CPlayer::GetDeath(1) && !CCollision::CollisionSphere(m_pRadiusColision, CGame::GetPlayer(1)->GetCollision()))
+				!CPlayer::GetDeath(1) && !CCollision::CollisionSphere(m_pRadiusColision, CGame::GetPlayer(1)->GetCollision()) ||
+				!CPlayer::GetDeath(0) && !CCollision::CollisionSphere(m_pRadiusColision, CGame::GetPlayer(0)->GetCollision()) && CPlayer::GetDeath(1) ||
+				!CPlayer::GetDeath(1) && !CCollision::CollisionSphere(m_pRadiusColision, CGame::GetPlayer(1)->GetCollision()) && CPlayer::GetDeath(0))
 			{// どっちのプレイヤーにも当たってないとき
 			 //エネミーを再度動かす
 				m_bRd = false;
@@ -502,66 +508,105 @@ void CEnemy::MotionCarrier(void)
 		D3DXVECTOR3 pos = GetPos();
 		CGame::GetLostPoint()->sort(pos);
 
-		//if (!m_bRoute)
-		//{
+		if (!m_bRoute)
+		{
+			// 何番目に近い目標地点に行くか
+			int nNumPoint = 0;
+			// 目標座標の取得
+			D3DXVECTOR3 distPos = CGame::GetLostPoint()->GetLostPos(nNumPoint);
 
-		//	CWall*pWall = (CWall*)GetTop(OBJTYPE_WALL);
+			// プレイヤー最大数分ループ
+			for (int nCnt = 0; nCnt < MAX_PLAYER; )
+			{
+				if (GetDistance(pos, distPos) > GetDistance(CGame::GetPlayer(nCnt)->GetPos(), distPos))
+				{//自身よりプレイヤーのほうが近かった場合
 
-		//	while (pWall != NULL)
-		//	{
-		//		if (CCollision::CollisionSphereToBox(m_pCollision, pWall->GetCollision()))
-		//		{
-		//			m_bRoute = true;
-		//		}
+					// カウントの初期化
+					nCnt = 0;
+					// 近い順を一つ増やす
+					nNumPoint++;
+					
+					// 目標地点の更新
+					distPos = CGame::GetLostPoint()->GetLostPos(nNumPoint);
+				}
+				else
+				{
+					// カウントを進める
+					nCnt++;
+				}
+			}
 
-		//		pWall = (CWall*)pWall->GetNext();
-		//	}
-		//	// 目標座標の取得
-		//	int nNumPoint = 0;
-		//	D3DXVECTOR3 distPos = CGame::GetLostPoint()->GetLostPos(nNumPoint);
+			if (GetDistance(pos, distPos) >= 1000)
+			{// 目標と一定距離以上の時
+				// 壁との当たり判定
+				CWall*pWall = (CWall*)GetTop(OBJTYPE_WALL);
+				while (pWall != NULL)
+				{
+					if (CCollision::CollisionSphereToBox(m_pCollision, pWall->GetCollision()))
+					{// 当たってた時
+					 
+						// 一回道の真ん中を経由して目標地点に行く
+						m_bRoute = true;
+					}
 
-		//	// 目標に向かって移動量の設定
-		//	m_moveDest = distPos - pos;
-		//	D3DXVec3Normalize(&m_moveDest, &m_moveDest);
-		//	m_moveDest *= ENEMY_SPEED;
-		//	if (CCollision::CollisionSphere(m_pCollision, CGame::GetLostPoint()->GetLostCollision(0)))
-		//	{
-		//		for (int nCntPart = 0; nCntPart < 5; nCntPart++)
-		//		{
-		//			int nRandSize = rand() % 10 + 40;
-		//			int nRandSpeed = rand() % 2 + 2;
-		//			float fRandAngle = D3DXToRadian(rand() % 360);
-		//			D3DXVECTOR3 partMove;
-		//			partMove.x = cosf(fRandAngle)*nRandSpeed;
-		//			partMove.y = 0.0f;
-		//			partMove.z = sinf(fRandAngle)*nRandSpeed;
-		//			CParticle::Create(D3DXVECTOR3(GetPos().x, GetPos().y + 20, GetPos().z),
-		//				partMove, 
-		//				D3DXVECTOR3(nRandSize, nRandSize, 0.0f), 
-		//				50,
-		//				D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
-		//				CParticle::PARTICLE_SMOKE);
-		//		}
+					pWall = (CWall*)pWall->GetNext();
+				}
+			}
 
-		//		Uninit();
-		//	}
-		//}
-		//else
-		//{
-		//	// 目標座標の取得
-		//	int nNumPoint = 0;
-		//	D3DXVECTOR3 distPos = CGame::GetLostPoint()->GetRoutePos(nNumPoint);
+			// 目標に向かって移動量の設定
+			m_moveDest = distPos - pos;
+			D3DXVec3Normalize(&m_moveDest, &m_moveDest);
+			m_moveDest *= ENEMY_SPEED;
+			
+		}
+		else
+		{// 一回道の真ん中を経由して目標地点に行く
+			// 目標座標の取得
+			D3DXVECTOR3 distPos = CGame::GetLostPoint()->GetRoutePos(0);
 
-		//	// 目標に向かって移動量の設定
-		//	m_moveDest = distPos - pos;
-		//	D3DXVec3Normalize(&m_moveDest, &m_moveDest);
-		//	m_moveDest *= ENEMY_SPEED;
+			// 目標に向かって移動量の設定
+			m_moveDest = distPos - pos;
+			D3DXVec3Normalize(&m_moveDest, &m_moveDest);
+			m_moveDest *= ENEMY_SPEED;
 
-		//	if (CCollision::CollisionSphere(m_pCollision, CGame::GetLostPoint()->GetRouteCollision(0)))
-		//	{
-		//		m_bRoute = false;
-		//	}
-		//}
+			// 当たり判定をの二分の一にする
+			m_pCollision->SetCollisionRadius(m_pCollision->GetCollisionRadius() / 2);
+
+			if (CCollision::CollisionSphere(m_pCollision, CGame::GetLostPoint()->GetRouteCollision(0)))
+			{
+				m_bRoute = false;
+			}
+
+			// 当たり判定を戻す
+			m_pCollision->SetCollisionRadius(m_pCollision->GetCollisionRadius() * 2);
+		}
+
+		// 向きの目標値
+		m_fRotYDist = atan2f(-m_moveDest.z, m_moveDest.x) - D3DXToRadian(90);
+
+		if (CCollision::CollisionSphere(m_pCollision, CGame::GetLostPoint()->GetLostCollision(0)))
+		{// ロストポイントに触れたときに消す
+
+			// パーティクル生成
+			for (int nCntPart= 0; nCntPart < 5; nCntPart++)
+			{
+				int nRandSize = rand() % 10 + 40;
+				int nRandSpeed = rand() % 2 + 2;
+				float fRandAngle = D3DXToRadian(rand() % 360);
+				D3DXVECTOR3 partMove;
+				partMove.x = cosf(fRandAngle)*nRandSpeed;
+				partMove.y = 0.0f;
+				partMove.z = sinf(fRandAngle)*nRandSpeed;
+				CParticle::Create(D3DXVECTOR3(GetPos().x, GetPos().y + 20, GetPos().z),
+					partMove,
+					D3DXVECTOR3(nRandSize, nRandSize, 0.0f),
+					50,
+					D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
+					CParticle::PARTICLE_SMOKE);
+			}
+			// 消す
+			Uninit();
+		}
 	}
 }
 

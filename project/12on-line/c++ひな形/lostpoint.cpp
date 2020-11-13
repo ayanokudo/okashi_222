@@ -25,8 +25,8 @@
 //**********************************
 #define POINT_TEXT "data/Texts/LostPoint.txt" // ポイント記憶用テキストファイル
 #define POINT_TEXT_ROUTE "data/Texts/RoutePoint.txt" // ポイント記憶用テキストファイル
-#define COLLISION_RADIUS 50                  // 当たり判定の半径
-#define MODE_EDIT true                        // エディットモードか
+#define COLLISION_RADIUS 120                  // 当たり判定の半径
+#define MODE_EDIT false                        // エディットモードか
 
 
 //=============================
@@ -102,6 +102,12 @@ void CLostPoint::Uninit(void)
 		m_pointPos = NULL;
 	}
 
+	if (m_routePos != NULL)
+	{
+		delete[] m_routePos;
+		m_routePos = NULL;
+	}
+
 	// 開放処理
 	Release();
 }
@@ -119,7 +125,7 @@ void CLostPoint::Update(void)
 	// 座標の保存
 	if (CManager::GetKeyboard()->GetKeyTrigger(DIK_RETURN))
 	{
-		m_pointPos[m_nPointNum] = CGame::GetPlayer(0)->GetPos();
+		m_pointPos[m_nPointNum] = CGame::GetPlayer(1)->GetPos();
 		m_pCollisionLost[m_nPointNum] = CCollision::CreateSphere(m_pointPos[m_nPointNum], COLLISION_RADIUS);
 		m_nPointNum++;
 	}
@@ -133,7 +139,7 @@ void CLostPoint::Update(void)
 	// 座標の保存
 	if (CManager::GetKeyboard()->GetKeyTrigger(DIK_RSHIFT))
 	{
-		m_routePos[m_nRouteNum] = CGame::GetPlayer(0)->GetPos();
+		m_routePos[m_nRouteNum] = CGame::GetPlayer(1)->GetPos();
 		m_pCollisionRoute[m_nPointNum] = CCollision::CreateSphere(m_routePos[m_nRouteNum], COLLISION_RADIUS);
 		m_nRouteNum++;
 	}
@@ -183,6 +189,9 @@ void CLostPoint::sort(D3DXVECTOR3 pos)
 				// 並び替え
 				m_pointPos[nCntSort] = m_pointPos[nCnt];
 				m_pointPos[nCnt] = save;
+
+				m_pCollisionLost[nCntSort]->SetPos(m_pointPos[nCntSort]);
+				m_pCollisionLost[nCnt]->SetPos(m_pointPos[nCnt]);
 			}
 
 		}
@@ -205,6 +214,9 @@ void CLostPoint::sort(D3DXVECTOR3 pos)
 				// 並び替え
 				m_routePos[nCntSort] = m_routePos[nCnt];
 				m_routePos[nCnt] = save;
+
+				m_pCollisionRoute[nCntSort]->SetPos(m_routePos[nCntSort]);
+				m_pCollisionRoute[nCnt]->SetPos(m_routePos[nCnt]);
 			}
 
 		}

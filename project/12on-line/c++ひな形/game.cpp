@@ -96,9 +96,6 @@ HRESULT CGame::Init(void)
 		m_pPlayer[nCntPlayer] = CPlayer::Create(D3DXVECTOR3(0.0f,0.0f, 0.0f), nCntPlayer);
 	}
 	
-	// エネミーの生成
-	m_pEnemy = CEnemy::Create(D3DXVECTOR3(0.0f, 0.0f, -8000.0f), CEnemy::ENEMY_CARRIER);
-	CEnemy::Create(D3DXVECTOR3(0.0f, 0.0f, -8000.0f), CEnemy::ENEMY_CARRIER);
     // ボスの生成
     m_pBoss = CBoss::Create(D3DXVECTOR3(-15000.0f, 0.0f, -18000.0f));
 	// アイテムの生成

@@ -20,11 +20,13 @@
 #include "sound.h"
 #include "ui.h"
 #include "player.h"
+#include "scene2d.h"
+
 //**********************************
 // 静的メンバ変数宣言
 //**********************************
 LPDIRECT3DTEXTURE9 CTitle::m_apTexture[MENU_MAX] = {};
-
+LPDIRECT3DTEXTURE9 CTitle::m_apCatTex[CAT_MAX];        // テクスチャへのポインタ
 //**********************************
 // マクロ定義
 //**********************************
@@ -32,6 +34,18 @@ LPDIRECT3DTEXTURE9 CTitle::m_apTexture[MENU_MAX] = {};
 #define  EXIT_TEXTURE_PATH "./data/Textures/Out_button.png"			// テクスチャ
 #define  START_TEXTURE_PATH "./data/Textures/Play_button.png"		// テクスチャ
 #define  TUTORIAL_TEXTURE_PATH "./data/Textures/Tutorial_button.png" // テクスチャ
+
+#define  MILK_TEXTURE_PATH  "./data/Textures/WhiteCatAnimation.png"		 // テクスチャ
+#define  CHOCO_TEXTURE_PATH "./data/Textures/ChocolateCatAnimation.png"	 // テクスチャ
+
+
+#define CAT_SIZE D3DXVECTOR3(750.0f,311.0f,0.0f)/3
+#define CAT_POS D3DXVECTOR3(SCREEN_WIDTH/2,SCREEN_HEIGHT/2,0.0f)
+
+#define ANIM_SPEED 7          // アニメーション速度
+#define MAX_ANIMATION_X 3      // アニメーション数 横
+#define MAX_ANIMATION_Y 2      // アニメーション数 縦
+
 
 #define BACK_SIZE D3DXVECTOR3(200.0f,180.0f,0.0f)					// 背面サイズ
 #define BACK_POS D3DXVECTOR3(SCREEN_WIDTH/2,SCREEN_HEIGHT/2,0.0f)	// 背面座標
@@ -53,6 +67,9 @@ CTitle::CTitle()
 	m_pUi = NULL;
 	m_nMenu = START;
 	m_bStick = false;
+	m_nCntAnim = 0;
+	m_nAnimX = 0;
+	m_nAnimY = 0;
 }
 
 //=============================
@@ -91,7 +108,9 @@ HRESULT CTitle::Load(void)
 	D3DXCreateTextureFromFile(pDevice, EXIT_TEXTURE_PATH, &m_apTexture[EXIT]);
 	D3DXCreateTextureFromFile(pDevice, START_TEXTURE_PATH, &m_apTexture[START]);
 	D3DXCreateTextureFromFile(pDevice, TUTORIAL_TEXTURE_PATH, &m_apTexture[TUTORIAL]);
-
+	
+	D3DXCreateTextureFromFile(pDevice, MILK_TEXTURE_PATH, &m_apCatTex[MILK]);
+	D3DXCreateTextureFromFile(pDevice, CHOCO_TEXTURE_PATH, &m_apCatTex[CHOCO]);
 	return S_OK;
 }
 
@@ -137,6 +156,33 @@ HRESULT CTitle::Init(void)
 	m_apPolygon[TUTORIAL] = CPolygon::Create(TUTORIAL_POS, STRING_SIZE);
 	m_apPolygon[TUTORIAL]->SetTexture(m_apTexture[TUTORIAL]);
 	
+	// 猫の生成
+	for (int nCnt = 0; nCnt < CAT_MAX; nCnt++)
+	{
+		m_pScene2d[nCnt] = CScene2d::Create(OBJTYPE_UI);
+		m_pScene2d[nCnt]->SetSize(CAT_SIZE);
+		m_pScene2d[nCnt]->SetPos(CAT_POS);
+
+		// テクスチャUV座標の初期化
+		m_nAnimX = 2;
+		m_nAnimY = 0;
+
+		// UV座標の設定
+		D3DXVECTOR2 uv[NUM_VERTEX];
+		float fu = 1.0f / MAX_ANIMATION_X;
+		float fv = 1.0f / MAX_ANIMATION_Y;
+
+		uv[0] = D3DXVECTOR2(fu*m_nAnimX, fv*m_nAnimY);
+		uv[1] = D3DXVECTOR2(fu*m_nAnimX + fu, fv*m_nAnimY);
+		uv[2] = D3DXVECTOR2(fu*m_nAnimX, fv*m_nAnimY + fv);
+		uv[3] = D3DXVECTOR2(fu*m_nAnimX + fu, fv*m_nAnimY + fv);
+
+		// UV座標セット
+		m_pScene2d[nCnt]->SetTextureUV(uv);
+	}
+	m_pScene2d[MILK]->BindTexture(m_apCatTex[CHOCO]);
+	m_pScene2d[CHOCO]->BindTexture(m_apCatTex[CHOCO]);
+
 	return S_OK;
 }
 
@@ -178,7 +224,50 @@ void CTitle::Uninit(void)
 //=============================
 void CTitle::Update(void)
 {
-	
+
+	// アニメーションカウントを進める
+	m_nCntAnim++;
+
+	if (m_nCntAnim % ANIM_SPEED == 0)
+	{
+		// アニメーションX軸の加算
+		m_nAnimX++;
+
+		if (m_nAnimX >= MAX_ANIMATION_X)
+		{
+			// アニメーションX軸の初期化
+			m_nAnimX = 0;
+
+			m_nAnimY++;
+			if (m_nAnimY >= MAX_ANIMATION_X)
+			{
+				m_nAnimY = 0;
+			}
+		}
+		else
+		{
+			// UV座標の設定
+			D3DXVECTOR2 uv[NUM_VERTEX];
+
+			float fu = 1.0f / MAX_ANIMATION_X;
+			float fv = 1.0f / MAX_ANIMATION_Y;
+
+			uv[0] = D3DXVECTOR2(fu*m_nAnimX, fv*m_nAnimY - fv);
+			uv[1] = D3DXVECTOR2(fu*m_nAnimX + fu, fv*m_nAnimY - fv);
+			uv[2] = D3DXVECTOR2(fu*m_nAnimX, fv*m_nAnimY);
+			uv[3] = D3DXVECTOR2(fu*m_nAnimX + fu, fv*m_nAnimY);
+			// 猫のアニメーション
+			for (int nCnt = 0; nCnt < CAT_MAX; nCnt++)
+			{
+				if (m_pScene2d[nCnt] != NULL)
+				{
+					// UV座標セット
+					m_pScene2d[nCnt]->SetTextureUV(uv);
+				}
+			}
+		}
+	}
+
 	m_pUi->Update();
 	// 選んでるメニューで色分け
 	for (int nCntMenu = EXIT; nCntMenu < MENU_MAX; nCntMenu++)

@@ -16,7 +16,7 @@
 // マクロ定義
 //*****************************
 #define PARTICLE_PAD_TEXTURE_PATH    "./data/Textures/pad.png"    //テクスチャのパス
-#define PARTICLE_SMOKE_TEXTURE_PATH    "./data/Textures/pad.png"    //テクスチャのパス
+#define PARTICLE_SMOKE_TEXTURE_PATH    "./data/Textures/kwmuri.png"    //テクスチャのパス
 
 //******************************
 // 静的メンバ変数宣言
@@ -119,7 +119,6 @@ HRESULT CParticle::Init(void)
 //******************************
 void CParticle::Uninit(void)
 {
-
 	CBillboard::Uninit();
 }
 

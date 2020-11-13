@@ -12,11 +12,13 @@
 #include "main.h"
 #include "manager.h"
 #include <time.h>
+#include <crtdbg.h>
 
 //*****************************************************************************
 // マクロ定義
 //*****************************************************************************
 #define WINDOW_NAME "okashi222"	// ウインドウのキャプション名
+
 
 //*****************************************************************************
 // プロトタイプ宣言
@@ -36,6 +38,11 @@ int					g_nCountFPS;			// FPSカウンタ
 //=============================================================================
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
+
+#ifdef _DEBUG
+	::_CrtSetDbgFlag(_CRTDBG_LEAK_CHECK_DF | _CRTDBG_ALLOC_MEM_DF);
+#endif
+
 	// 乱数の初期化
 	srand((unsigned)time(NULL));
 

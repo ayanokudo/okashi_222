@@ -104,10 +104,6 @@ HRESULT CGame::Init(void)
 	m_pItem = CItem::Create(D3DXVECTOR3(200.0f, 0.0f, -900.0f), CItem::CANDY);
 	m_pItem = CItem::Create(D3DXVECTOR3(200.0f, 0.0f, -1000.0f), CItem::KOBAN);
 
-	m_pFurniture = CFurniture::Create(D3DXVECTOR3(300.0f, 0.0f, -800.0f),
-		D3DXVECTOR3(0.0f, 0.0f, 0.0f),
-		D3DXVECTOR3(1.0f, 1.0f, 1.0f),
-		CFurniture::FURNITURE_CHEST);
 
 	//ƒXƒRƒA‚Ì‰Šú‰»
 	m_pScore->ResetScore();

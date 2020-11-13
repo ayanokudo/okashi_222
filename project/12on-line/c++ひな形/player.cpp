@@ -23,6 +23,7 @@
 #include "life.h"
 #include "fade.h"
 #include "sound.h"
+#include "file.h"
 
 //*****************************
 // マクロ定義
@@ -358,6 +359,9 @@ void CPlayer::Update(void)
 
     // 当たり判定の位置更新
     m_pCollision->SetPos(GetPos());
+
+	// ボス戦前の当たり判定
+	//if(CFile)
 
 #ifdef _DEBUG
 	// デバッグ用死亡コマンド

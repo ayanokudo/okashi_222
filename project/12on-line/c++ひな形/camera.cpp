@@ -24,7 +24,8 @@
 #define CAMERA_LOCAL_POS D3DXVECTOR3(0.0f, 2300.0f, 200.0f) // 注視点からのローカル座標
 #define CAMERA_LOOK_RATE 0.5f  // 注視点を少しずつ変えるときの係数
 #define PLAYER_DEATH_COUNT 40  // プレイヤーが死んでから生きてるプレイヤーの方に少しずつ注視点を変える用
-
+#define BOSS_MODE_POS_R D3DXVECTOR3(-15000.0f, 0.0f, -17700.0f)
+#define BOSS_MODE_POS_V D3DXVECTOR3(-15000.0f, 4600.0f, -17700.0f+200)
 #define FOV_Y D3DXToRadian(45.0f)
 #define FOV_X D3DXToRadian(80.0f)
 
@@ -258,7 +259,8 @@ void CCamera::Update(void)
 	}
 	else
 	{// ボスモードの時
-		
+		m_posR = BOSS_MODE_POS_R;
+		m_posV = BOSS_MODE_POS_V;
 	}
 
 #endif

@@ -28,7 +28,7 @@ public:
     CEnemy();
     ~CEnemy();
 
-    static CEnemy *Create(D3DXVECTOR3 pos);
+    static CEnemy *Create(D3DXVECTOR3 pos,ENEMY type);
     static HRESULT Load(void);
     static void Unload(void);
     HRESULT Init(void);

@@ -24,10 +24,9 @@
 //*****************************
 // マクロ定義
 //*****************************
-#define MODEL_PATH "./data/Models/cat_sakamoto.x"    //モデルのパス
-#define MODEL_PATH "./data/Models/cat_sakamoto.x"    //モデルのパス
-#define MODEL_PATH "./data/Models/cat_sakamoto.x"    //モデルのパス
-#define MODEL_PATH "./data/Models/cat_sakamoto.x"    //モデルのパス
+#define CANDY_MODEL_PATH "./data/Models/item/Candy.x"    //モデルのパス
+#define KOBAN_MODEL_PATH "./data/Models/item/koban.x"    //モデルのパス
+#define LIFE_MODEL_PATH	 "./data/Models/item/Heart.x"    //モデルのパス
 
 #define CANDY_MAX 20
 #define LIFE_NUM 5
@@ -65,13 +64,15 @@ CItem * CItem::Create(D3DXVECTOR3 pos, ITEM type)
 	// メモリの確保
 	CItem *pItem;
 	pItem = new CItem;
+	
+	pItem->m_type = type;
 
 	// 初期化
 	pItem->Init();
 
 	// 各値の代入・セット
 	pItem->SetPos(pos);
-	pItem->m_type = type;
+	
 	// 各値の代入・セット
 	pItem->SetObjType(OBJTYPE_ITEM); // オブジェクトタイプ
 	return pItem;
@@ -86,7 +87,7 @@ HRESULT CItem::Load(void)
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
 
 	//Xファイルの読み込み
-	D3DXLoadMeshFromX(MODEL_PATH,
+	D3DXLoadMeshFromX(CANDY_MODEL_PATH,
 		D3DXMESH_SYSTEMMEM,
 		pDevice,
 		NULL,
@@ -95,7 +96,7 @@ HRESULT CItem::Load(void)
 		&m_nNumMatModel[CANDY],
 		&m_pMeshModel[CANDY]);
 
-	D3DXLoadMeshFromX(MODEL_PATH,
+	D3DXLoadMeshFromX(KOBAN_MODEL_PATH,
 		D3DXMESH_SYSTEMMEM,
 		pDevice,
 		NULL,
@@ -104,7 +105,7 @@ HRESULT CItem::Load(void)
 		&m_nNumMatModel[KOBAN],
 		&m_pMeshModel[KOBAN]);
 
-	D3DXLoadMeshFromX(MODEL_PATH,
+	D3DXLoadMeshFromX(LIFE_MODEL_PATH,
 		D3DXMESH_SYSTEMMEM,
 		pDevice,
 		NULL,
@@ -144,16 +145,16 @@ void CItem::Unload(void)
 //******************************
 HRESULT CItem::Init(void)
 {
+
 	if (FAILED(CModel::Init()))
 	{
 		return E_FAIL;
 	}
 
 	// テクスチャ割り当て
-	for (int nCount = 0; nCount < ITEM_MAX; nCount++)
-	{
-		BindModel(m_pMeshModel[nCount], m_pBuffMatModel[nCount], m_nNumMatModel[nCount]);
-	}
+
+	BindModel(m_pMeshModel[m_type], m_pBuffMatModel[m_type], m_nNumMatModel[m_type]);
+
 
 	m_nCandy = CANDY_MAX;
 	// 当たり判定の生成

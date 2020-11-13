@@ -31,7 +31,7 @@
 #include "ui.h"
 #include "file.h"
 #include "lostpoint.h"
-
+#include "furniture.h"
 //=============================
 // 静的メンバ変数宣言
 //=============================
@@ -44,6 +44,7 @@ CScore  *CGame::m_pScore  = NULL;	// スコアクラスのポインタ変数
 CTime   *CGame::m_pTime   = NULL;	// タイムクラスのポインタ変数
 CLight  *CGame::m_pLight  = NULL;	// ライトクラスのポインタ変数
 CLostPoint *CGame::m_pLostPoint = NULL;// ロストポイントのポインタ変数
+CFurniture *CGame::m_pFurniture = NULL;// ロストポイントのポインタ変数
 //=============================
 // コンストラクタ
 //=============================
@@ -99,7 +100,15 @@ HRESULT CGame::Init(void)
     // ボスの生成
     m_pBoss = CBoss::Create(D3DXVECTOR3(-15000.0f, 0.0f, -18000.0f));
 	// アイテムの生成
-	m_pItem = CItem::Create(D3DXVECTOR3(200.0f, 0.0f, -800.0f),CItem::CANDY);
+	m_pItem = CItem::Create(D3DXVECTOR3(200.0f, 0.0f, -800.0f),CItem::LIFE);
+	m_pItem = CItem::Create(D3DXVECTOR3(200.0f, 0.0f, -900.0f), CItem::CANDY);
+	m_pItem = CItem::Create(D3DXVECTOR3(200.0f, 0.0f, -1000.0f), CItem::KOBAN);
+
+	m_pFurniture = CFurniture::Create(D3DXVECTOR3(300.0f, 0.0f, -800.0f),
+		D3DXVECTOR3(0.0f, 0.0f, 0.0f),
+		D3DXVECTOR3(1.0f, 1.0f, 1.0f),
+		CFurniture::FURNITURE_CHEST);
+
 	//スコアの初期化
 	m_pScore->ResetScore();
 	// スコアの生成

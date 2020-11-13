@@ -45,6 +45,8 @@
 #include "life.h"
 #include "win.h"
 #include "lose.h"
+#include "furniture.h"
+
 
 //=============================
 // Ã“Iƒƒ“ƒo•Ï”éŒ¾

@@ -458,7 +458,7 @@ void CEnemy::RangeDecisionEscort(void)
 						//ìôä‘äuÇ≈ë≈Ç¬
 						if (m_nCount == 50)
 						{
-							pSound->Play(CSound::SOUND_SE_EN_ATTACK_NAIL);
+							//pSound->Play(CSound::SOUND_SE_EN_ATTACK_NAIL);
 							// çUåÇÇÃê∂ê¨
 							CScratch::Create(enemyPos, m_fRotYDist + D3DXToRadian(90), CScratch::SCRATCHUSER_ENEMY,GetID());
 							m_nCount = 0;

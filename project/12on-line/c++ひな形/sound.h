@@ -38,7 +38,7 @@ public:
 		SOUND_SE_EN_DAMAGE,				//敵ダメージ時SE
 		SOUND_SE_BOSS_ATTACK_BREATH,	//ボスブレス攻撃SE
 		SOUND_SE_BOSS_ATTACK_TAIL,		//ボス尻尾攻撃SE
-		SOUND_SE_BOSS_ATTACK_NAIL,			//ボス引っ掻き攻撃SE
+		SOUND_SE_BOSS_ATTACK_NAIL,		//ボス引っ掻き攻撃SE
 		SOUND_SE_ITEM_CANDY,			//キャンディ獲得時SE
 		SOUND_SE_ITEM_KOBAN,			//小判獲得時SE
 		SOUND_SE_ITEM_LIFE,				//回復アイテム獲得時SE

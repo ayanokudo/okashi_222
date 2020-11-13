@@ -31,8 +31,8 @@ public:
 	typedef enum
 	{
 		FURNITURE_CHAIR = 0,	//フローリング
-		//FURNITURE_TABLE,		//マット
-		//FURNITURE_CHEST,		//キッチン
+		FURNITURE_TABLE,		//マット
+		FURNITURE_CHEST,		//キッチン
 		FURNITURE_MAX,
 	}FURNITURE;
 

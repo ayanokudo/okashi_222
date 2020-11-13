@@ -20,8 +20,8 @@
 //*****************************
 // マクロ定義
 //*****************************
-#define FURNITURE_CHAIR_PATH	"./data/Models/furniture/wall000.png"		 // フローリングのテクスチャのパス
-#define FURNITURE_CHEST_PATH	"./data/Models/furniture/particle001.png"    // キッチンの床のテクスチャのパス
+#define FURNITURE_CHAIR_PATH	"./data/Models/furniture/ueki.x"		 // フローリングのテクスチャのパス
+#define FURNITURE_CHEST_PATH	"./data/Models/furniture/isu.x"    // キッチンの床のテクスチャのパス
 
 //==================================
 // コンストラクタ
@@ -80,44 +80,37 @@ HRESULT CFurniture::Load(void)
 	// デバイスの取得
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
 
+    for (int nCount = 0; nCount < FURNITURE_MAX; nCount++)
+    {
 	// Xファイルの読み込み
 	D3DXLoadMeshFromX(FURNITURE_CHAIR_PATH,
 		D3DXMESH_SYSTEMMEM,
 		pDevice,
 		NULL,
-		&m_model[FURNITURE_CHAIR].pBuffMat,
+		&m_model[nCount].pBuffMat,
 		NULL,
-		&m_model[FURNITURE_CHAIR].nNumMat,
-		&m_model[FURNITURE_CHAIR].pMesh);
+		&m_model[nCount].nNumMat,
+		&m_model[nCount].pMesh);
+    }
 
-	//マテリアルデータへのポインタを取得
-	D3DXMATERIAL*pMat = (D3DXMATERIAL*)m_model[FURNITURE_CHAIR].pBuffMat->GetBufferPointer();
+	////マテリアルデータへのポインタを取得
+	//D3DXMATERIAL*pMat = (D3DXMATERIAL*)m_model[FURNITURE_CHAIR].pBuffMat->GetBufferPointer();
 
-	for(int nCnt = 0; nCnt < m_model[FURNITURE_CHAIR].nNumMat; nCnt++)
-	{
-		char *cPath = NULL;
-		sprintf(cPath, "./data/Textures/", pMat[nCnt].pTextureFilename);
-		// テクスチャの生成
-		D3DXCreateTextureFromFile(pDevice, cPath, &m_model[FURNITURE_CHAIR].apTexture[nCnt]);
-	}
-	// Xファイルの読み込み
-	D3DXLoadMeshFromX(FURNITURE_CHEST_PATH,
-		D3DXMESH_SYSTEMMEM,
-		pDevice,
-		NULL,
-		&m_model[FURNITURE_CHEST].pBuffMat,
-		NULL,
-		&m_model[FURNITURE_CHEST].nNumMat,
-		&m_model[FURNITURE_CHEST].pMesh);
+	//for(int nCnt = 0; nCnt < m_model[FURNITURE_CHAIR].nNumMat; nCnt++)
+	//{
+	//	char *cPath = NULL;
+	//	sprintf(cPath, "./data/Textures/", pMat[nCnt].pTextureFilename);
+	//	// テクスチャの生成
+	//	D3DXCreateTextureFromFile(pDevice, cPath, &m_model[FURNITURE_CHAIR].apTexture[nCnt]);
+	//}
 
-
-	for (int nCnt = 0; nCnt < m_model[FURNITURE_CHEST].nNumMat; nCnt++)
-	{
-		char *cPath = NULL;
-		sprintf(cPath, "./data/Textures/", pMat[nCnt].pTextureFilename);
-		// テクスチャの生成
-		D3DXCreateTextureFromFile(pDevice, cPath, &m_model[FURNITURE_CHEST].apTexture[nCnt]);
-	}
+	//for (int nCnt = 0; nCnt < m_model[FURNITURE_CHEST].nNumMat; nCnt++)
+	//{
+	//	char *cPath = NULL;
+	//	sprintf(cPath, "./data/Textures/", pMat[nCnt].pTextureFilename);
+	//	// テクスチャの生成
+	//	D3DXCreateTextureFromFile(pDevice, cPath, &m_model[FURNITURE_CHEST].apTexture[nCnt]);
+	//}
 	
 	return S_OK;
 }
@@ -127,15 +120,21 @@ HRESULT CFurniture::Load(void)
 //==================================
 void CFurniture::Unload(void)
 {
-	for (int nCntWall = 0; nCntWall < FURNITURE_MAX; nCntWall++)
-	{
-		// テクスチャの解放処理
-		if (m_apTexture[nCntWall] != NULL)
-		{
-			m_apTexture[nCntWall]->Release();
-			m_apTexture[nCntWall] = NULL;
-		}
-	}
+    for (int nCntType = 0; nCntType < FURNITURE_MAX; nCntType++)
+    {
+        //メッシュの破棄
+        if (m_model[nCntType].pMesh != NULL)
+        {
+            m_model[nCntType].pMesh->Release();
+            m_model[nCntType].pMesh = NULL;
+        }
+        //マテリアルの破棄
+        if (m_model[nCntType].pBuffMat != NULL)
+        {
+            m_model[nCntType].pBuffMat->Release();
+            m_model[nCntType].pBuffMat = NULL;
+        }
+    }
 }
 
 //==================================

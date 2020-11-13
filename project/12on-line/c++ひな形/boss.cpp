@@ -540,7 +540,7 @@ void CBoss::Brearh(void)
 				bulletMove.y = 0.0f;
 				bulletMove.z = sinf(fAngle) * BULLET_SPEED_ENEMY;
 
-				CBullet::Create(bulletPos, bulletMove, 200, CBullet::BULLETUSER_ENEMY);
+				CBullet::Create(bulletPos, bulletMove, 200, CBullet::BULLETUSER_ENEMY)->SetRot(GetRot());
 			}
 		}
 	}

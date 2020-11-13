@@ -24,6 +24,7 @@
 #include "fade.h"
 #include "sound.h"
 #include "file.h"
+#include"boss.h"
 
 //*****************************
 // マクロ定義
@@ -315,53 +316,56 @@ void CPlayer::Uninit(void)
 //******************************
 void CPlayer::Update(void)
 {
-	// 位置の保管
-	m_posOld = GetPos();
+	// ボス戦じゃないときか ボスの出現演出中じゃないとき
+	if (CGame::GetGameMode() == CGame::GAME_NORMAL || GetTop(OBJTYPE_BOSS) != NULL && ((CBoss*)GetTop(OBJTYPE_BOSS))->GetMotion() != CBoss::SPAWN)
+	{
+		// 位置の保管
+		m_posOld = GetPos();
 
-	// 目標値の初期化
-	m_moveDest = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+		// 目標値の初期化
+		m_moveDest = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 
-	if (!m_bMotion)
-	{// 攻撃中じゃないとき
+		if (!m_bMotion)
+		{// 攻撃中じゃないとき
 
-		 // 移動（コントローラー）
-		MoveController();
-		if (m_nPlayerNum == 1)
-		{
-			// 移動（キーボード）
-			MoveKeyboard();
+			 // 移動（コントローラー）
+			MoveController();
+			if (m_nPlayerNum == 1)
+			{
+				// 移動（キーボード）
+				MoveKeyboard();
+			}
+
+			// 慣性
+			m_move += (m_moveDest - m_move) * PLAYER_MOVE_RATE;
+
+			// 座標
+			D3DXVECTOR3 pos = GetPos();
+
+			// 移動量を足す
+			pos += m_move;
+
+			// 座標のセット
+			SetPos(pos);
 		}
 
-		// 慣性
-		m_move += (m_moveDest - m_move) * PLAYER_MOVE_RATE;
+		// ダッシュ処理
+		Dash();
 
-		// 座標
-		D3DXVECTOR3 pos = GetPos();
+		// 攻撃
+		Attack();
 
-		// 移動量を足す
-		pos += m_move;
+		// 向きの管理
+		Direction();
 
-		// 座標のセット
-		SetPos(pos);
+		// モーション管理
+		MotionManager();
+
+		// 当たり判定の位置更新
+		m_pCollision->SetPos(GetPos());
 	}
 
-	// ダッシュ処理
-	Dash();
-
-	// 攻撃
-	Attack();
-
-	// 向きの管理
-	Direction();
-
-	// モーション管理
-	MotionManager();
-
-    // 当たり判定の位置更新
-    m_pCollision->SetPos(GetPos());
-
-	
-		// ボス戦前の当たり判定
+	// ボス戦前の当たり判定
 	
 	if (CCollision::CollisionSphereToBox(m_pCollision, CFile::BossRoomCollision()))
 	{
@@ -632,24 +636,13 @@ void CPlayer::Attack(void)
 	//サウンドのポインタ変数宣言
 	CSound*pSound = CManager::GetSound();
 
-	if (!m_bMotion)
-	{// 攻撃中じゃないとき
 
-		if (m_nPlayerNum == 1&& CManager::GetKeyboard()->GetKeyTrigger(DIK_SPACE) || CManager::GetJoypad()->GetJoystickTrigger(2, m_nPlayerNum))
-		{// 弾を撃つ
-			
-			pSound->Play(CSound::SOUND_SE_PL_ATTACK_BREATH);
-		    // モーションステートの設定
-			SetMotion(VOICE);
-
-			// 攻撃フラグを立てる
-			m_bMotion = true;
-
-		}
+	if (!m_bMotion || m_motionState == DASH)
+	{// ダッシュからすぐパンチできるように
 
 		if (m_nPlayerNum == 1 && CManager::GetKeyboard()->GetKeyTrigger(DIK_B) || CManager::GetJoypad()->GetJoystickTrigger(0, m_nPlayerNum))
 		{// 弾を撃つ
-			// プレイヤーの向いている方向の取得
+		 // プレイヤーの向いている方向の取得
 			float fRotY = GetRot().y - D3DXToRadian(90);
 			// 弾を撃つ位置の調整
 			D3DXVECTOR3 pos = GetPos();
@@ -666,6 +659,21 @@ void CPlayer::Attack(void)
 
 			// 攻撃フラグを立てる
 			m_bMotion = true;
+		}
+	}
+	if (!m_bMotion)
+	{// 攻撃中じゃないとき
+
+		if (m_nPlayerNum == 1&& CManager::GetKeyboard()->GetKeyTrigger(DIK_SPACE) || CManager::GetJoypad()->GetJoystickTrigger(2, m_nPlayerNum))
+		{// 弾を撃つ
+			
+			pSound->Play(CSound::SOUND_SE_PL_ATTACK_BREATH);
+		    // モーションステートの設定
+			SetMotion(VOICE);
+
+			// 攻撃フラグを立てる
+			m_bMotion = true;
+
 		}
 	}
 	else
@@ -793,10 +801,25 @@ void CPlayer::Dash(void)
 	}
 	else
 	{// モーションがダッシュ状態の時
+
+		DIJOYSTATE js = CManager::GetJoypad()->GetStick(m_nPlayerNum);
+
 		D3DXVECTOR3 move;
-		move.x = cosf(GetRot().y + D3DXToRadian(-90))*-PLAYER_DASH_SPEED;
-		move.y = 0.0f;
-		move.z = sinf(GetRot().y + D3DXToRadian(-90))*PLAYER_DASH_SPEED;
+		if (js.lX > 10.0f || js.lX<-10.0f || js.lY>10.0f || js.lY < -10.0f)
+		{
+			move.x = cosf(atan2f(js.lY, js.lX))*-PLAYER_DASH_SPEED;
+			move.y = 0.0f;
+			move.z = sinf(atan2f(js.lY, js.lX))*PLAYER_DASH_SPEED;
+			// 向きの設定
+			m_fRotYDist = atan2f(js.lX, -js.lY);
+		}
+		else
+		{
+			
+			move.x = cosf(GetRot().y + D3DXToRadian(-90))*-PLAYER_DASH_SPEED;
+			move.y = 0.0f;
+			move.z = sinf(GetRot().y + D3DXToRadian(-90))*PLAYER_DASH_SPEED;
+		}
 
 		// 座標
 		D3DXVECTOR3 pos = GetPos();

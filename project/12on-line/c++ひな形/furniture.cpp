@@ -63,9 +63,9 @@ CFurniture * CFurniture::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 rot, co
 		pWall->m_size = size;
 		pWall->Init();
 		pWall->m_type = type;
-		pWall->SetPos(pos);
+		pWall->SetPos(D3DXVECTOR3(pos.x, pos.y, pos.z));
 		pWall->SetRot(rot);
-		pWall->SetSize(size);
+		//pWall->SetSize(size);
 		pWall->SetObjType(OBJTYPE_FURNITURE);
 	}
 	//ポインタを返す
@@ -80,18 +80,26 @@ HRESULT CFurniture::Load(void)
 	// デバイスの取得
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
 
-    for (int nCount = 0; nCount < FURNITURE_MAX; nCount++)
-    {
+
 	// Xファイルの読み込み
 	D3DXLoadMeshFromX(FURNITURE_CHAIR_PATH,
 		D3DXMESH_SYSTEMMEM,
 		pDevice,
 		NULL,
-		&m_model[nCount].pBuffMat,
+		&m_model[FURNITURE_CHAIR].pBuffMat,
 		NULL,
-		&m_model[nCount].nNumMat,
-		&m_model[nCount].pMesh);
-    }
+		&m_model[FURNITURE_CHAIR].nNumMat,
+		&m_model[FURNITURE_CHAIR].pMesh);
+    
+	// Xファイルの読み込み
+	D3DXLoadMeshFromX(FURNITURE_CHEST_PATH,
+		D3DXMESH_SYSTEMMEM,
+		pDevice,
+		NULL,
+		&m_model[FURNITURE_CHEST].pBuffMat,
+		NULL,
+		&m_model[FURNITURE_CHEST].nNumMat,
+		&m_model[FURNITURE_CHEST].pMesh);
 	
 	return S_OK;
 }

@@ -25,6 +25,8 @@
 #include "fade.h"
 #include "sound.h"
 #include "file.h"
+#include "ui.h"
+
 //*****************************
 // É}ÉNÉçíËã`
 //*****************************
@@ -90,6 +92,7 @@ CBoss::CBoss() :CModelHierarchy(OBJTYPE_BOSS)
 	memset(m_bHitTail, 0, sizeof(m_bHitTail));
 	m_nCntMove = 0;
 	m_nTargetNum = 0;
+	m_pUi = NULL;
 }
 
 //******************************

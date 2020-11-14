@@ -34,6 +34,7 @@ public:
 		UI_ATTACK_NAIL,	//攻撃爪
 		UI_ATTACK_CRY,	//攻撃鳴き声
 		UI_DASH,		//ダッシュ
+		UI_END,
 		UI_CHOCO,		//チョコ
 		UI_MILK,		//ミルク
 		UI_MAX
@@ -51,6 +52,9 @@ public:
 	void Update(void);
 	void Draw(void);
 
+	// 中心座標のセット、取得
+	void SetPos(const D3DXVECTOR3 pos);
+	D3DXVECTOR3 GetPos(void) { return m_pos; }
 	// カラーのセット、取得
 	void SetColor(const D3DXCOLOR col);
 	D3DXCOLOR GetColor(void) { return m_col; }
@@ -64,5 +68,6 @@ private:
 	UI m_type;
 	float m_fAngle;                      // ポリゴンの回転角度
 	D3DXVECTOR3 m_size;                  // ポリゴンのサイズ
+	int m_nCount;
 };
 #endif // !_UI_H_

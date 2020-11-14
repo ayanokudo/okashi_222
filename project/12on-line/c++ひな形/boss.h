@@ -21,6 +21,7 @@
 //*****************************
 class CCollision;
 class CMotion;
+class CUi;
 
 //*****************************
 // クラス定義
@@ -115,6 +116,7 @@ private:
 	int m_nCntBullet;               // 弾を撃つときのカウント
 	int m_nTargetNum;               // どのプレイヤーをターゲットしているか
 	bool m_bHitTail[MAX_PLAYER];    // しっぽが多段ヒットしないように
+	CUi* m_pUi;
 
 	CMotion*m_pMotion[MOTION_MAX];  // アニメーションポインタ
 	MOTION m_motionState;           // モーションステート

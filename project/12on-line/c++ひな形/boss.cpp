@@ -47,7 +47,7 @@
 
 #define ATTACK_PATTARN 3            // 攻撃パターン
 #define ATTACK_BASE 200             // 攻撃するタイミングのベース値
-#define BOSS_LIFE 2000              // ボスのライフ
+#define BOSS_LIFE 4000              // ボスのライフ
 #define BULLET_INTERVAL 15          // 弾のインターバル
 #define BOSS_SCORE_UP 15000
 

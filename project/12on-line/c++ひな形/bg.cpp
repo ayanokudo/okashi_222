@@ -106,7 +106,6 @@ HRESULT CBg::Init(void)
 			m_apScene3d[nCntBg] = CScene3d::Create(D3DXVECTOR3(-5900, -10, -8000), D3DXVECTOR3(800000, -10,800000));
 			// オブジェクトタイプの設定
 			m_apScene3d[nCntBg]->SetObjType(OBJTYPE_BG);
-
 			// テクスチャ割り当て
 			m_apScene3d[nCntBg]->BindTexture(m_apTexture[nCntBg]);
 

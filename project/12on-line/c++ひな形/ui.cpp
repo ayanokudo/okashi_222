@@ -24,6 +24,7 @@
 #define UI_ATTACK_NAIL_TEXTURE_PATH	"./data/Textures/Attack.png"		// アタックのパス
 #define UI_ATTACK_CRY_TEXTURE_PATH	"./data/Textures/Voice.png"			// 鳴き声のパス
 #define UI_DASH_TEXTURE_PATH		"./data/Textures/Dash.png"			// ダッシュのパス
+#define UI_END_TEXTURE_PATH			"./data/Textures/Dash.png"			// 終わりのパス
 #define UI_CHOCO_TEXTURE_PATH		"./data/Textures/chocolate_HPicon.png"	// チョコのパス
 #define UI_MILK_TEXTURE_PATH		"./data/Textures/Milk_HPicon.png"		// ミルクのパス
 
@@ -40,8 +41,8 @@ CUi::CUi()
 {
 	m_pVtxBuff = NULL;
 	m_col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
-	m_pos = D3DXVECTOR3();
-	m_move = D3DXVECTOR3();
+	m_pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	m_move = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	m_type = UI_TIME;
 }
 
@@ -85,6 +86,7 @@ HRESULT CUi::Load(void)
 	D3DXCreateTextureFromFile(pDevice, UI_ATTACK_CRY_TEXTURE_PATH, &m_apTexture[UI_ATTACK_NAIL]);
 	D3DXCreateTextureFromFile(pDevice, UI_ATTACK_NAIL_TEXTURE_PATH, &m_apTexture[UI_ATTACK_CRY]);
 	D3DXCreateTextureFromFile(pDevice, UI_DASH_TEXTURE_PATH, &m_apTexture[UI_DASH]);
+	D3DXCreateTextureFromFile(pDevice, UI_END_TEXTURE_PATH, &m_apTexture[UI_END]);
 	D3DXCreateTextureFromFile(pDevice, UI_CHOCO_TEXTURE_PATH, &m_apTexture[UI_CHOCO]);
 	D3DXCreateTextureFromFile(pDevice, UI_MILK_TEXTURE_PATH, &m_apTexture[UI_MILK]);
 
@@ -135,6 +137,8 @@ HRESULT CUi::Init(const D3DXVECTOR3 pos, const D3DXVECTOR3 size, const D3DXCOLOR
 
 	m_col = col;
 	m_type = type;
+	m_pos = pos;
+	m_size = size;
 	for (int nCnt = 0; nCnt < NUM_VERTEX; nCnt++)
 	{
 		pVtx[nCnt].col = m_col;
@@ -163,7 +167,43 @@ void CUi::Uninit(void)
 //==================================
 void CUi::Update(void)
 {
+	//ローカル変数に位置情報を代入
+	D3DXVECTOR3 pos = GetPos();
 
+	//移動量を乗算
+	pos += m_move;
+
+	//タイトルの場合
+	if (m_type == UI_TITLE)
+	{
+		m_move.y = 2.0f;
+		if (pos.y == 200.0f)
+		{
+			m_move.y = 0.0f;
+		}
+	}
+
+	if (m_type == UI_END)
+	{
+		m_nCount++;
+		m_move.x = 2.0f;
+		if (pos.x == 650.0f)
+		{
+			m_move.x = 0.0f;
+			//if (m_nCount >= 120)
+			//{
+			//	m_move.x = 2.0f;
+			//	if (pos.x == 1350.0f)
+			//	{
+			//		Uninit();
+			//		return;
+			//	}
+			//}
+		}
+	}
+
+	//位置情報をセット
+	SetPos(pos);
 }
 
 //==================================
@@ -197,6 +237,28 @@ void CUi::Draw(void)
 
 	// アルファテストのしきい値をもどす
 	pDevice->SetRenderState(D3DRS_ALPHAREF, 50);
+}
+
+//==================================
+// 描画処理
+//==================================
+void CUi::SetPos(const D3DXVECTOR3 pos)
+{
+	VERTEX_2D *pVtx; //頂点情報へのポインタ
+
+	m_pos = pos;
+
+	//頂点データの範囲をロックし、頂点バッファへのポインタを取得
+	m_pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);
+
+	// 頂点情報を設定
+	pVtx[0].pos = D3DXVECTOR3((m_pos.x - m_size.x), (m_pos.y - m_size.y), 0.0f);//左上
+	pVtx[1].pos = D3DXVECTOR3((m_pos.x + m_size.x), (m_pos.y - m_size.y), 0.0f);//右上
+	pVtx[2].pos = D3DXVECTOR3((m_pos.x - m_size.x), (m_pos.y + m_size.y), 0.0f);//左下
+	pVtx[3].pos = D3DXVECTOR3((m_pos.x + m_size.x), (m_pos.y + m_size.y), 0.0f);//右下
+
+	//頂点データをアンロックする
+	m_pVtxBuff->Unlock();
 }
 
 //==================================

@@ -46,10 +46,12 @@ CScene2d::~CScene2d()
 //===================================
 CScene2d * CScene2d::Create(int nPriority)
 {
-	CScene2d *pScene2d;
-	pScene2d = new CScene2d(nPriority);
-	// 初期化
-	pScene2d->Init();
+	CScene2d *pScene2d = new CScene2d(nPriority);
+
+	if (pScene2d != NULL)
+	{// 初期化
+		pScene2d->Init();
+	}
 
 	return pScene2d;
 }
@@ -57,10 +59,12 @@ CScene2d * CScene2d::Create(int nPriority)
 CScene2d * CScene2d::Create(void)
 {
 	// メモリの確保
-	CScene2d *pScene2d;
-	pScene2d = new CScene2d;
-	// 初期化
-	pScene2d->Init();
+	CScene2d *pScene2d = new CScene2d;
+
+	if (pScene2d != NULL)
+	{// 初期化
+		pScene2d->Init();
+	}
 
 	return pScene2d;
 }
@@ -211,6 +215,9 @@ void CScene2d::SetTextureUV(const D3DXVECTOR2 uv[NUM_VERTEX])
 	m_pVtxBuff->Unlock();
 }
 
+//===================================
+// アニメーション情報のセット
+//===================================
 void CScene2d::SetSize(const D3DXVECTOR3 size)
 {
 	m_size = size;
@@ -219,6 +226,9 @@ void CScene2d::SetSize(const D3DXVECTOR3 size)
 	SetPos(m_pos);
 }
 
+//===================================
+// アニメーション情報のセット
+//===================================
 void CScene2d::SetColor(const D3DXCOLOR col)
 {
 	VERTEX_2D *pVtx;// 頂点情報ポインタ

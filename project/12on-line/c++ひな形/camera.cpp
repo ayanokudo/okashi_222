@@ -179,7 +179,6 @@ void CCamera::Update(void)
 		}
 		else if (!CPlayer::GetDeath(0))
 		{
-
 			if (m_nCntPlayerDeath < PLAYER_DEATH_COUNT)
 			{
 				// カウントを進める
@@ -400,8 +399,6 @@ void CCamera::Update(void)
 #endif
 	}
 #endif
-
-
 
 }
 

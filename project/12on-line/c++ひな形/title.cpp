@@ -5,7 +5,6 @@
 //
 ////////////////////////////////////////////////////
 
-
 //=============================
 // インクルード
 //=============================
@@ -110,9 +109,9 @@ HRESULT CTitle::Load(void)
 	D3DXCreateTextureFromFile(pDevice, EXIT_TEXTURE_PATH, &m_apTexture[EXIT]);
 	D3DXCreateTextureFromFile(pDevice, START_TEXTURE_PATH, &m_apTexture[START]);
 	D3DXCreateTextureFromFile(pDevice, TUTORIAL_TEXTURE_PATH, &m_apTexture[TUTORIAL]);
-	
 	D3DXCreateTextureFromFile(pDevice, MILK_TEXTURE_PATH, &m_apCatTex[MILK]);
 	D3DXCreateTextureFromFile(pDevice, CHOCO_TEXTURE_PATH, &m_apCatTex[CHOCO]);
+
 	return S_OK;
 }
 
@@ -143,7 +142,7 @@ HRESULT CTitle::Init(void)
 	m_apPolygon[BG]->SetTexture(m_apTexture[BG]);
 
 	//タイムの文字表示
-	m_pUi = CUi::Create(D3DXVECTOR3(650.0f, 200.0f, 0.0f),
+	m_pUi = CUi::Create(D3DXVECTOR3(650.0f, -200.0f, 0.0f),
 		D3DXVECTOR3(300, 200, 0),
 		D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
 		CUi::UI_TITLE);

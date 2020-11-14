@@ -19,8 +19,9 @@ public:
     // 敵の種類
     typedef enum
     {
-        TYPE_CHAIR = 0,		// イス
-        TYPE_CHEST,			// タンス
+        TYPE_000 = 0,
+        TYPE_001,
+        TTPE_002,
         TYPE_MAX,
     }TYPE;
 

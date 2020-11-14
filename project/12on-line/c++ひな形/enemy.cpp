@@ -39,8 +39,8 @@
 
 #define WALK_ANIM_PATH  "data/Texts/nezumi_walk.txt"      // 歩きアニメーションのパス
 
-#define SWEAT_PATH "data/Textures/Sweat.png"              // 涙のテクスチャ
-#define SWEAT_SIZE D3DXVECTOR3(40.0f,80.0f,0.0f)          // 涙のサイズ
+#define SWEAT_PATH "data/Textures/Sweat.png"              // 汗のテクスチャ
+#define SWEAT_SIZE D3DXVECTOR3(40.0f,80.0f,0.0f)          // 汗のサイズ
 #define ANIM_SPEED 7          // アニメーション速度
 #define MAX_ANIMATION_X 5      // アニメーション数 横
 #define MAX_ANIMATION_Y 1     // アニメーション数 縦
@@ -400,8 +400,11 @@ void CEnemy::Update(void)
 			m_state = STATE_NORMAL;
 		}
 	}
-
+	// 汗の管理
 	Sweat();
+
+	// プイレイヤーとの当たり判定
+	CollisionPlayer();
 }
 
 //******************************
@@ -893,7 +896,7 @@ void CEnemy::Direction(void)
 }
 
 //******************************
-// 涙の管理
+// 汗の管理
 //******************************
 void CEnemy::Sweat(void)
 {
@@ -946,5 +949,44 @@ void CEnemy::Sweat(void)
 			m_pBilboard->SetTextureUV(uv);
 		}
 
+	}
+}
+
+
+//******************************
+// プレイヤーとの当たり判定
+//******************************
+void CEnemy::CollisionPlayer(void)
+{
+	// プレイヤー数分ループ
+	for (int nCnt = 0; nCnt < MAX_PLAYER; nCnt++)
+	{
+		// プレイヤーの死亡確認
+		if (!CPlayer::GetDeath(nCnt))
+		{// 生きてた時
+			
+			// プレイヤーの取得
+			CPlayer*pPlayer = CGame::GetPlayer(nCnt);
+			if(pPlayer!=NULL)
+			{
+				// 当たり判定
+				if (CCollision::CollisionSphere(m_pCollision, pPlayer->GetCollision()))
+				{// 当たってた時
+					
+					// プレイヤーの外に押し出す
+					D3DXVECTOR3 vec = (GetPos() - pPlayer->GetPos());
+					D3DXVec3Normalize(&vec, &vec);
+					vec *= (m_pCollision->GetCollisionRadius() + pPlayer->GetCollision()->GetCollisionRadius());
+
+					D3DXVECTOR3 pos = GetPos();
+					SetPos(pPlayer->GetPos() + vec);
+					pPlayer->SetPos(pos - vec);
+
+					// ダメージ判定
+					pPlayer->Hit(1);
+				}
+			}
+
+		}
 	}
 }

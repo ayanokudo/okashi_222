@@ -730,13 +730,30 @@ void CPlayer::Attack(void)
 		if (m_pMotion[VOICE]->GetKey() == 2&& m_pMotion[VOICE]->GetFrame()==0)
 		{// モーションのキーフレームが2の時
 
-			 // プレイヤーの向いている方向の取得
-			float fRotY = GetRot().y - D3DXToRadian(90);
-			// 移動量
-			D3DXVECTOR3 bulletMove;
-			bulletMove.x = cosf(fRotY)*-BULLET_SPEED_PLAYER;
-			bulletMove.y = 0.0f;
-			bulletMove.z = sinf(fRotY)*BULLET_SPEED_PLAYER;
+			D3DXVECTOR3 bulletMove = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+			// ジョイスティックの取得
+			DIJOYSTATE js = CManager::GetJoypad()->GetStick(m_nPlayerNum);
+			if (js.lX > 10 || js.lX < -10 || js.lX>10 || js.lX < -10)
+			{
+				// 移動量
+
+				bulletMove.x = cosf(atan2f(js.lY, js.lX))*-BULLET_SPEED_PLAYER;
+				bulletMove.y = 0.0f;
+				bulletMove.z = sinf(atan2f(js.lY, js.lX))*BULLET_SPEED_PLAYER;
+
+				m_fRotYDist = atan2f(js.lX, -js.lY);
+			}
+			else
+			{
+				// プレイヤーの向いている方向の取得
+				float fRotY = GetRot().y - D3DXToRadian(90);
+				// 移動量
+				
+				bulletMove.x = cosf(fRotY)*-BULLET_SPEED_PLAYER;
+				bulletMove.y = 0.0f;
+				bulletMove.z = sinf(fRotY)*BULLET_SPEED_PLAYER;
+			}
+
 			// 弾を撃つ位置の調整
 			D3DXVECTOR3 pos = GetPos();
 			pos.y += 10.0f;

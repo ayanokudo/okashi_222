@@ -455,9 +455,10 @@ void CBoss::ChangeTarget(int nNum)
 		// カウントを進める
 		m_nCntMove++;
 
-		if (m_nCntMove%MOVE_COUNT == 0)
+		if (m_nCntMove>MOVE_COUNT)
 		{// 一定カウントで
 
+			m_nCntMove = rand() % 15 - 30;
 			// 攻撃する
 			Attack();
 		}
@@ -470,10 +471,11 @@ void CBoss::ChangeTarget(int nNum)
 		// カウントを進める
 		m_nCntMove++;
 
-		if (m_nCntMove%MOVE_COUNT == 0)
+		if (m_nCntMove>MOVE_COUNT)
 		{// 一定カウントで
 
-		 // 攻撃する
+			m_nCntMove = rand() % 15 - 30;
+			// 攻撃する
 			Attack();
 		}
 	}
@@ -493,13 +495,14 @@ void CBoss::ChangeTarget(int nNum)
 
 			// カウントを進める
 			m_nCntMove++;
-		
-			if (m_nCntMove%MOVE_COUNT == 0)
+
+			if (m_nCntMove>MOVE_COUNT)
 			{// 一定カウントで
+
+				m_nCntMove = rand() % 15 - 30;
 
 				// ターゲットをランダムに変更
 				m_nTargetNum = rand() % MAX_PLAYER;
-
 				// 攻撃する
 				Attack();
 			}

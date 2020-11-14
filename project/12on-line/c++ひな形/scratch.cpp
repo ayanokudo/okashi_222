@@ -247,21 +247,24 @@ void CScratch::Update(void)
 		break;
 	case SCRATCHUSER_PLAYER:
 	{
-		// プレイヤーの取得
-		CPlayer*pPlayer = CGame::GetPlayer(m_nPlayerNum);
-		if (pPlayer != NULL)
+		if (!CPlayer::GetDeath(m_nPlayerNum))
 		{
-			// 座標の設定
-			D3DXVECTOR3 pos;
-			float fRotY = pPlayer->GetRot().y - D3DXToRadian(90);
-			pos.x = pPlayer->GetPos().x + cosf(fRotY) * -SCRATCH_SIZE_PLAYER;
-			pos.y = pPlayer->GetPos().y + SCRATCH_HEIGHT;
-			pos.z = pPlayer->GetPos().z + sinf(fRotY) * SCRATCH_SIZE_PLAYER;
-			SetPos(pos);
+			// プレイヤーの取得
+			CPlayer*pPlayer = CGame::GetPlayer(m_nPlayerNum);
+			if (pPlayer != NULL)
+			{
+				// 座標の設定
+				D3DXVECTOR3 pos;
+				float fRotY = pPlayer->GetRot().y - D3DXToRadian(90);
+				pos.x = pPlayer->GetPos().x + cosf(fRotY) * -SCRATCH_SIZE_PLAYER;
+				pos.y = pPlayer->GetPos().y + SCRATCH_HEIGHT;
+				pos.z = pPlayer->GetPos().z + sinf(fRotY) * SCRATCH_SIZE_PLAYER;
+				SetPos(pos);
 
-			// 角度
-			SetRot(D3DXVECTOR3(0.0f, fRotY, 0.0f));
-			m_pCollision->SetPos(D3DXVECTOR3(pos.x, pos.y - SCRATCH_HEIGHT, pos.z));
+				// 角度
+				SetRot(D3DXVECTOR3(0.0f, fRotY, 0.0f));
+				m_pCollision->SetPos(D3DXVECTOR3(pos.x, pos.y - SCRATCH_HEIGHT, pos.z));
+			}
 		}
 	}
 	break;

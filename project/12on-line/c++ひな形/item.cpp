@@ -255,7 +255,7 @@ void CItem::CollisionItem(void)
 						{
 							int nRandSize = rand() % 20 + 40;
 							// スピードのランダム
-							float fRandSpeed = (rand() % 200 + 200) / 100;
+							float fRandSpeed = (rand() % 200 + 300) / 100;
 							// 飛んでく角度のランダム
 							float fRandAngle = D3DXToRadian(rand() % 360);
 							D3DXVECTOR3 partMove;
@@ -269,7 +269,7 @@ void CItem::CollisionItem(void)
 								partMove,
 								D3DXVECTOR3(nRandSize, nRandSize, 0.0f),
 								40,
-								D3DXCOLOR(1.0f, fRandCol, fRandCol, 1.0f),
+								D3DXCOLOR(1.0f, 1.0f,fRandCol,  1.0f),
 								CParticle::PARTICLE_CANDY);
 						}
 

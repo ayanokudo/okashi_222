@@ -73,6 +73,7 @@ private:
 	void Move(void);
 	void Direction(void);
 	void Sweat(void);
+	void CollisionPlayer(void);
 
 	// メンバ変数
 	static CModel::Model m_model[ENEMY_MAX][MAX_PARTS_NUM]; // モデル情報
@@ -102,7 +103,7 @@ private:
 	CMotion*m_pMotion[MOTION_MAX];  // アニメーションポインタ
 	
 	CBillboard*m_pBilboard;
-	// 猫のアニメーション用
+	// アニメーション用
 	int m_nCntAnim;       // アニメーションカウント
 	int m_nAnimX;         // アニメーションX軸
 	int m_nAnimY;         // アニメーションY軸

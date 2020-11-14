@@ -215,7 +215,7 @@ void CUi::Draw(void)
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
 
 	// アルファテストのしきい値の変更
-	pDevice->SetRenderState(D3DRS_ALPHAREF, 200);
+	pDevice->SetRenderState(D3DRS_ALPHAREF, 50);
 
 
 	// 頂点バッファをデバイスのデータストリームにバインド

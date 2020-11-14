@@ -145,16 +145,13 @@ void CItem::Unload(void)
 //******************************
 HRESULT CItem::Init(void)
 {
-
 	if (FAILED(CModel::Init()))
 	{
 		return E_FAIL;
 	}
 
 	// テクスチャ割り当て
-
 	BindModel(m_pMeshModel[m_type], m_pBuffMatModel[m_type], m_nNumMatModel[m_type]);
-
 
 	m_nCandy = CANDY_MAX;
 	// 当たり判定の生成

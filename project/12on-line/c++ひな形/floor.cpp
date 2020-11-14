@@ -16,7 +16,7 @@
 //*****************************
 #define FLOOR_FLOORING_TEXTURE_PATH "./data/Textures/floor000.png"    //フローリングのテクスチャのパス
 #define FLOOR_MAT_TEXTURE_PATH		"./data/Textures/tatami.png"	 //まっとのテクスチャのパス
-#define FLOOR_KITCHEN_TEXTURE_PATH  "./data/Textures/particle001.png"    //キッチンの床のテクスチャのパス
+#define FLOOR_KITCHEN_TEXTURE_PATH  "./data/Textures/PUNCH-DARKRED.png"    //キッチンの床のテクスチャのパス
 
 //==================================
 // コンストラクタ

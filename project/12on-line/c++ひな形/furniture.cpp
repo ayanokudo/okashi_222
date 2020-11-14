@@ -25,8 +25,8 @@ CModel::Model CFurniture::m_model[FURNITURE_MAX] = {};
 char *CFurniture::m_apTextureName[FURNITURE_MAX] = 
 {
     "./data/Models/furniture/ueki.x",
-    "./data/Models/furniture/ueki.x",
-    "./data/Models/furniture/ueki.x"
+    "./data/Models/furniture/tance.x",
+    "./data/Models/furniture/isu.x"
 };
 
 //==================================
@@ -61,8 +61,8 @@ CFurniture * CFurniture::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 rot, co
 		pWall->m_pos = pos;
 		pWall->m_rot = rot;
 		pWall->m_size = size;
-		pWall->Init();
 		pWall->m_type = type;
+		pWall->Init();
 		pWall->SetPos(D3DXVECTOR3(pos.x, pos.y, pos.z));
 		pWall->SetRot(rot);
 		//pWall->SetSize(size);

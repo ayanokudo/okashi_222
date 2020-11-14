@@ -52,9 +52,10 @@ private:
 	//メンバ変数宣言
 	//=========================================================================
 	CModel::Model m_model[MAX_PARTS_NUM]; // モデル情報
-	D3DXVECTOR3 m_pos;  // 座標
-	D3DXVECTOR3 m_rot;  // 回転
-	D3DXVECTOR3 m_size; // サイズ
+	D3DXVECTOR3 m_pos;     // 座標
+	D3DXVECTOR3 m_rot;     // 回転
+	D3DXVECTOR3 m_size;    // サイズ
+	D3DXMATERIAL m_defMat[MAX_PARTS_NUM][128]; // マテリアル保管用
 	int m_nNumParts;    // パーツ数
 };
 #endif 

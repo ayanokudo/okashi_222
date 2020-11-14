@@ -2,6 +2,7 @@
 //
 // 家具クラス [furniture.cpp]
 // Author : AYANO KUDO
+
 //
 //=============================================================================
 #include "furniture.h"
@@ -26,7 +27,7 @@ DWORD        CFumiture::m_nNumMatModel = 0;	    //マテリアル情報の数
 //=============================================================================
 CFumiture::CFumiture() : CModel(OBJTYPE_FURNITURE)
 {
-    m_type = TYPE::TYPE_CHAIR;
+    m_type = TYPE::TYPE_000;
 }
 
 //=============================================================================
@@ -126,7 +127,13 @@ void CFumiture::Uninit(void)
 void CFumiture::Update(void)
 {
     CModel::Update();
+}
 
+//=============================================================================
+// [Draw] 描画処理
+//=============================================================================
+void CFumiture::Draw(void)
+{
     D3DXMATERIAL*pMat;  	//マテリアルデータへのポインタ
 
                             //マテリアルデータへのポインタを取得
@@ -136,26 +143,29 @@ void CFumiture::Update(void)
     {
         switch (m_type)
         {
-        case TYPE_CHAIR:
+        case TYPE_000:
             //マテリアルのアンビエントにディフューズカラーを設定
             pMat[nCntMat].MatD3D.Diffuse = { 0,0,255,255 };
             break;
-        case TYPE_CHEST:
+
+        case TYPE_001:
             //マテリアルのアンビエントにディフューズカラーを設定
             pMat[nCntMat].MatD3D.Diffuse = { 255,0,0,255 };
             break;
 
+        case TTPE_002:
+            //マテリアルのアンビエントにディフューズカラーを設定
+            pMat[nCntMat].MatD3D.Diffuse = { 255,0,0,255 };
+            break;
         }
     }
-
-}
-
-//=============================================================================
-// [Draw] 描画処理
-//=============================================================================
-void CFumiture::Draw(void)
-{
     CModel::Draw();
+
+    // マテリアル情報を元に戻す
+    for (int nCntMat = 0; nCntMat < (int)m_nNumMatModel; nCntMat++)
+    {
+        pMat[nCntMat].MatD3D.Diffuse = { 255,255,255,255 };
+    }
 }
 
 
@@ -178,9 +188,9 @@ void CFumiture::ChangeType(void)
     // 最大値以上/最小値以下になったらループ
     if (nType >= TYPE_MAX)
     {
-        nType = TYPE_CHAIR;
+        nType = TYPE_000;
     }
-    if (nType < TYPE_CHAIR)
+    if (nType < TYPE_000)
     {
         nType = TYPE_MAX - 1;
     }

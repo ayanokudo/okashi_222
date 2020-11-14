@@ -16,6 +16,7 @@
 #include "renderer.h"
 #include "fade.h"
 #include "joypad.h"
+#include "game.h"
 
 //=======================================================================================
 // マクロ定義
@@ -43,6 +44,7 @@ CPause::CPause()
 {
 	memset(&m_pPolygon, 0, sizeof(m_pPolygon));
 	m_nMenu = RESUME;
+	m_bMove = true;
 }
 
 //=======================================================================================
@@ -161,14 +163,23 @@ void CPause::Update(void)
 		}
 	}
 
+	DIJOYSTATE jy[MAX_PLAYER] = { CManager::GetJoypad()->GetStick(0) ,CManager::GetJoypad()->GetStick(1) };
 	// メニュー操作
-	if (CManager::GetKeyboard()->GetKeyTrigger(DIK_W) || CManager::GetKeyboard()->GetKeyTrigger(DIK_UP))
+	if (CManager::GetKeyboard()->GetKeyTrigger(DIK_W) || CManager::GetKeyboard()->GetKeyTrigger(DIK_UP) || m_bMove && jy[0].lY <= -600|| m_bMove && jy[1].lY <= -600)
 	{// ↑
 		m_nMenu--;
+		m_bMove = false;
 	}
-	else if (CManager::GetKeyboard()->GetKeyTrigger(DIK_S) || CManager::GetKeyboard()->GetKeyTrigger(DIK_DOWN))
+	else if (CManager::GetKeyboard()->GetKeyTrigger(DIK_S) || CManager::GetKeyboard()->GetKeyTrigger(DIK_DOWN) || m_bMove && jy[0].lY >= 600|| m_bMove && jy[1].lY >= 600)
 	{// ↓
 		m_nMenu++;
+		m_bMove = false;
+	}
+
+	// スティック用フラグの初期化
+	if (jy[0].lY <= 500 && jy[0].lY >= -500&& jy[1].lY <= 500 && jy[1].lY >= -500)
+	{
+		m_bMove = true;
 	}
 
 	// 範囲外に行かないように
@@ -182,7 +193,10 @@ void CPause::Update(void)
 	}
 
 	// メニューコマンド
-	if (CManager::GetKeyboard()->GetKeyTrigger(DIK_RETURN))
+	if (CManager::GetKeyboard()->GetKeyTrigger(DIK_RETURN) || 
+		CManager::GetJoypad()->GetJoystickTrigger(3, 0)||
+		CManager::GetJoypad()->GetJoystickTrigger(3,0) || 
+		CManager::GetJoypad()->GetJoystickTrigger(3, 1))
 	{
 		switch (m_nMenu)
 		{
@@ -195,7 +209,7 @@ void CPause::Update(void)
 			CManager::GetFade()->SetFade(CManager::MODE_GAME);
 			break;
 		case EXIT:
-			// タイトルに戻る
+			// EXIT
 			CManager::GetFade()->SetFade(CManager::MODE_TITLE);
 			break;
 		default:

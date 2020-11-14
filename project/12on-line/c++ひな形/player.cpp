@@ -23,6 +23,8 @@
 #include "life.h"
 #include "fade.h"
 #include "sound.h"
+#include "file.h"
+#include"boss.h"
 
 //*****************************
 // マクロ定義
@@ -42,6 +44,10 @@
 #define PLAYER_RADIUS 100                       // プレイヤーの半径
 #define PLAYER_SPEED_MAX 5
 #define PLAYER_DASH_SPEED PLAYER_SPEED * 1.5f                 // ダッシュ時のスピード
+
+#define STATE_COUNT_DAMAGE 20                               // ダメージ状態のカウント
+#define DAMAGE_STATE_COLOR D3DXCOLOR(0.7f,0.0f,0.0f,1.0f)   // ダメージ状態のカラー
+
 
 //*****************************
 // 静的メンバ変数宣言
@@ -77,6 +83,8 @@ CPlayer::CPlayer() :CModelHierarchy(OBJTYPE_PLAYER)
 	m_nLife = 0;
 	m_bKeyboardMove = false;
 	m_posOld = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	m_state = STATE_NORMAL;
+	m_nCntState = 0;
 }
 
 //******************************
@@ -280,6 +288,10 @@ HRESULT CPlayer::Init(void)
 
 	// 攻撃フラグの初期化
 	m_bMotion = false;
+	// 状態の初期化
+	m_state = STATE_NORMAL;
+	// カウントの初期化
+	m_nCntState = 0;
 
 	return S_OK;
 }
@@ -305,6 +317,15 @@ void CPlayer::Uninit(void)
 			m_pLife[nCount] = NULL;
 		}
 	}
+	// モーションの削除
+	for (int nCntAnim = 0; nCntAnim < MOTION_MAX; nCntAnim++)
+	{
+		if (m_pMotion[nCntAnim] != NULL)
+		{
+			m_pMotion[nCntAnim]->Uninit();
+			m_pMotion[nCntAnim] = NULL;
+		}
+	}
 
     CModelHierarchy::Uninit();
 }
@@ -314,50 +335,103 @@ void CPlayer::Uninit(void)
 //******************************
 void CPlayer::Update(void)
 {
-	// 位置の保管
-	m_posOld = GetPos();
+	// ボス戦じゃないときか ボスの出現演出中じゃないとき
+	if (CGame::GetGameMode() == CGame::GAME_NORMAL || GetTop(OBJTYPE_BOSS) != NULL && ((CBoss*)GetTop(OBJTYPE_BOSS))->GetMotion() != CBoss::SPAWN)
+	{
+		// 位置の保管
+		m_posOld = GetPos();
 
-	// 目標値の初期化
-	m_moveDest = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+		// 目標値の初期化
+		m_moveDest = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 
-	if (!m_bMotion)
-	{// 攻撃中じゃないとき
+		if (!m_bMotion)
+		{// 攻撃中じゃないとき
 
-		 // 移動（コントローラー）
-		MoveController();
-		if (m_nPlayerNum == 1)
-		{
-			// 移動（キーボード）
-			MoveKeyboard();
+			 // 移動（コントローラー）
+			MoveController();
+			if (m_nPlayerNum == 1)
+			{
+				// 移動（キーボード）
+				MoveKeyboard();
+			}
+
+			// 慣性
+			m_move += (m_moveDest - m_move) * PLAYER_MOVE_RATE;
+
+			// 座標
+			D3DXVECTOR3 pos = GetPos();
+
+			// 移動量を足す
+			pos += m_move;
+
+			// 座標のセット
+			SetPos(pos);
 		}
 
-		// 慣性
-		m_move += (m_moveDest - m_move) * PLAYER_MOVE_RATE;
+		// ダッシュ処理
+		Dash();
 
-		// 座標
-		D3DXVECTOR3 pos = GetPos();
+		// 攻撃
+		Attack();
 
-		// 移動量を足す
-		pos += m_move;
+		// 向きの管理
+		Direction();
 
-		// 座標のセット
-		SetPos(pos);
+		// モーション管理
+		MotionManager();
+
+		// 当たり判定の位置更新
+		m_pCollision->SetPos(GetPos());
 	}
 
-	// ダッシュ処理
-	Dash();
+	// ボス戦前の当たり判定
+	
+	if (CCollision::CollisionSphereToBox(m_pCollision, CFile::BossRoomCollision()))
+	{
+		// プレイヤー座標の取得
+		D3DXVECTOR3 playerPos = GetPos();
+		// 当たり判定のサイズの取得
+		D3DXVECTOR3 collsionSize = CFile::BossRoomCollision()->GetCollisionSize();
 
-	// 攻撃
-	Attack();
+		// ボックス内の最短地点の検索
+		D3DXVECTOR3 shortrectPos;
+		shortrectPos.x = CCollision::OnRange(playerPos.x, CFile::BossRoomCollision()->GetPos().x - collsionSize.x / 2, CFile::BossRoomCollision()->GetPos().x + collsionSize.x / 2);
+		shortrectPos.y = CCollision::OnRange(playerPos.y, CFile::BossRoomCollision()->GetPos().y - collsionSize.y / 2, CFile::BossRoomCollision()->GetPos().y + collsionSize.y / 2);
+		shortrectPos.z = CCollision::OnRange(playerPos.z, CFile::BossRoomCollision()->GetPos().z - collsionSize.z / 2, CFile::BossRoomCollision()->GetPos().z + collsionSize.z / 2);
+		// ボックスからプレイヤーの方向ベクトル
+		playerPos = playerPos - shortrectPos;
+		// 正規化
+		D3DXVec3Normalize(&playerPos, &playerPos);
+		// 最短地点から当たり判定の半径分離す
+		playerPos = shortrectPos + playerPos * m_pCollision->GetCollisionRadius();
+		// プレイヤー座標のセット
+		SetPos(playerPos);
+		// プレイヤーのコリジョンの座標のセット
+		GetCollision()->SetPos(playerPos);
 
-	// 向きの管理
-	Direction();
+		if (CGame::GetGameMode() == CGame::GAME_NORMAL)
+		{
+			CGame::SetGameMode(CGame::GAME_BOSS);
+		}
 
-	// モーション管理
-	MotionManager();
+	}
 
-    // 当たり判定の位置更新
-    m_pCollision->SetPos(GetPos());
+	// 状態の管理
+
+	if (m_state == STATE_DAMAGE)
+	{// ダメージ状態の時
+
+	 // カウントを進める
+		m_nCntState++;
+		if (m_nCntState > STATE_COUNT_DAMAGE)
+		{// カウントが規定値を超えたら
+
+		 // カウントの初期化
+			m_nCntState = 0;
+			// 状態をノーマルに戻す
+			m_state = STATE_NORMAL;
+		}
+	}
 
 #ifdef _DEBUG
 	// デバッグ用死亡コマンド
@@ -384,7 +458,22 @@ void CPlayer::Update(void)
 //******************************
 void CPlayer::Draw(void)
 {
+	if (m_state == STATE_DAMAGE)
+	{// ダメージ状態の時
+
+		// すべてのパーツを赤色にする
+		for (int nCnt = 0; nCnt < m_nNumModel; nCnt++)
+		{
+			D3DXMATERIAL*pMat = (D3DXMATERIAL*)GetModelData()[nCnt].pBuffMat->GetBufferPointer();
+			for (int nCntMat = 0; nCntMat < GetModelData()[nCnt].nNumMat; nCntMat++)
+			{
+				pMat[nCntMat].MatD3D.Diffuse = DAMAGE_STATE_COLOR;
+			}
+		}
+	}
+
     CModelHierarchy::Draw();
+
 	for (int nCount = 0; nCount < m_nLife; nCount++)
 	{
 		if (m_pLife[nCount] != NULL)
@@ -597,24 +686,13 @@ void CPlayer::Attack(void)
 	//サウンドのポインタ変数宣言
 	CSound*pSound = CManager::GetSound();
 
-	if (!m_bMotion)
-	{// 攻撃中じゃないとき
 
-		if (m_nPlayerNum == 1&& CManager::GetKeyboard()->GetKeyTrigger(DIK_SPACE) || CManager::GetJoypad()->GetJoystickTrigger(2, m_nPlayerNum))
-		{// 弾を撃つ
-			
-			pSound->Play(CSound::SOUND_SE_PL_ATTACK_BREATH);
-		    // モーションステートの設定
-			SetMotion(VOICE);
-
-			// 攻撃フラグを立てる
-			m_bMotion = true;
-
-		}
+	if (!m_bMotion || m_motionState == DASH)
+	{// ダッシュからすぐパンチできるように
 
 		if (m_nPlayerNum == 1 && CManager::GetKeyboard()->GetKeyTrigger(DIK_B) || CManager::GetJoypad()->GetJoystickTrigger(0, m_nPlayerNum))
 		{// 弾を撃つ
-			// プレイヤーの向いている方向の取得
+		 // プレイヤーの向いている方向の取得
 			float fRotY = GetRot().y - D3DXToRadian(90);
 			// 弾を撃つ位置の調整
 			D3DXVECTOR3 pos = GetPos();
@@ -628,6 +706,20 @@ void CPlayer::Attack(void)
 			pSound->Play(CSound::SOUND_SE_PL_ATTACK_NAIL);
 			// モーションステートの設定
 			SetMotion(PUNCH);
+
+			// 攻撃フラグを立てる
+			m_bMotion = true;
+		}
+	}
+	if (!m_bMotion)
+	{// 攻撃中じゃないとき
+
+		if (m_nPlayerNum == 1&& CManager::GetKeyboard()->GetKeyTrigger(DIK_SPACE) || CManager::GetJoypad()->GetJoystickTrigger(2, m_nPlayerNum))
+		{// 弾を撃つ
+			
+			pSound->Play(CSound::SOUND_SE_PL_ATTACK_BREATH);
+		    // モーションステートの設定
+			SetMotion(VOICE);
 
 			// 攻撃フラグを立てる
 			m_bMotion = true;
@@ -677,9 +769,15 @@ void CPlayer::Life(int nLife)
 //******************************
 void CPlayer::Hit(int nDamage)
 {
+
 	//サウンドのポインタ変数宣言
 	CSound*pSound = CManager::GetSound();
-	m_nLife -= nDamage;
+
+	if (m_state == STATE_NORMAL)
+	{
+		m_nLife -= nDamage;
+		m_state = STATE_DAMAGE;
+	}
 
 	if (m_nLife <= 0)
 	{
@@ -758,10 +856,25 @@ void CPlayer::Dash(void)
 	}
 	else
 	{// モーションがダッシュ状態の時
+
+		DIJOYSTATE js = CManager::GetJoypad()->GetStick(m_nPlayerNum);
+
 		D3DXVECTOR3 move;
-		move.x = cosf(GetRot().y + D3DXToRadian(-90))*-PLAYER_DASH_SPEED;
-		move.y = 0.0f;
-		move.z = sinf(GetRot().y + D3DXToRadian(-90))*PLAYER_DASH_SPEED;
+		if (js.lX > 10.0f || js.lX<-10.0f || js.lY>10.0f || js.lY < -10.0f)
+		{
+			move.x = cosf(atan2f(js.lY, js.lX))*-PLAYER_DASH_SPEED;
+			move.y = 0.0f;
+			move.z = sinf(atan2f(js.lY, js.lX))*PLAYER_DASH_SPEED;
+			// 向きの設定
+			m_fRotYDist = atan2f(js.lX, -js.lY);
+		}
+		else
+		{
+			
+			move.x = cosf(GetRot().y + D3DXToRadian(-90))*-PLAYER_DASH_SPEED;
+			move.y = 0.0f;
+			move.z = sinf(GetRot().y + D3DXToRadian(-90))*PLAYER_DASH_SPEED;
+		}
 
 		// 座標
 		D3DXVECTOR3 pos = GetPos();

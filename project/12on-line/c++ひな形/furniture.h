@@ -21,6 +21,7 @@
 //*****************************
 class CPlayer;
 class CCollision;
+
 //*****************************
 //クラス定義
 //*****************************
@@ -63,6 +64,7 @@ private:
 	D3DXVECTOR3 m_size;     // サイズ
 	CCollision *m_pCollision;
 	static Model m_model[FURNITURE_MAX];
+    static char *m_apTextureName[FURNITURE_MAX];
 };
 
 #endif 

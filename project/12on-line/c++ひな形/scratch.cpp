@@ -185,6 +185,7 @@ void CScratch::Uninit(void)
 	if (m_pCollision != NULL)
 	{
 		m_pCollision->Uninit();
+		m_pCollision = NULL;
 	}
 
 	CScene3d::Uninit();
@@ -197,6 +198,7 @@ void CScratch::Update(void)
 {
 	// “–‚½‚è”»’è
 	CollisionScratch(m_user);
+
 	switch (m_user)
 	{
 	case SCRATCHUSER_ENEMY:

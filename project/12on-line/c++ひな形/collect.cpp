@@ -18,7 +18,7 @@
 // マクロ定義
 //*****************************
 
-#define COLLECT_MAX_NUM 20                 // 最大回収数
+//#define COLLECT_MAX_NUM 20                 // 最大回収数
 #define COLLECT_POS_LEFT SCREEN_WIDTH/2-((COLLECT_NUM_SIZE.x*5/2)+COLLECT_NUM_SIZE.x)              // 回収数の座標の左端
 #define COLLECT_POS_Y  170                 // 回収数の座標の高さ
 
@@ -36,6 +36,7 @@
 //*****************************
 LPDIRECT3DTEXTURE9 CCollect::m_apTexture[CCollect::MAX_PARTS] = {};
 int CCollect::m_nNumCollect = 0;   // 回収した数
+int CCollect::m_nNuObj = 0;        // 回収対象数
 
 //******************************
 // コンストラクタ
@@ -212,7 +213,7 @@ void CCollect::Update(void)
 	// 回収率の計算
 	if (m_nNumCollect != 0)
 	{
-		m_nPerCollect = ((float)m_nNumCollect / (float)COLLECT_MAX_NUM) * 100;
+		m_nPerCollect = ((float)m_nNumCollect / (float)m_nNuObj) * 100;
 	}
 	else
 	{
@@ -227,7 +228,7 @@ void CCollect::Update(void)
 	// 回収対象数をナンバーにする
 	for (int nCnt = 0; nCnt < COLLET_DIGIT; nCnt++)
 	{
-		m_pNumObj[nCnt]->SetNumber((COLLECT_MAX_NUM % (int)(powf(10.0f, (COLLET_DIGIT - nCnt)))) / (float)(powf(10.0, (COLLET_DIGIT - nCnt - 1))));
+		m_pNumObj[nCnt]->SetNumber((m_nNuObj % (int)(powf(10.0f, (COLLET_DIGIT - nCnt)))) / (float)(powf(10.0, (COLLET_DIGIT - nCnt - 1))));
 	}
 
 	// 回収した割合をナンバーにする
@@ -283,4 +284,5 @@ void CCollect::Draw(void)
 void CCollect::InitVariable(void)
 {
 	m_nNumCollect = 0;   // 回収した数
+	m_nNuObj = 0;
 }

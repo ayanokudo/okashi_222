@@ -24,12 +24,13 @@
 #include "player.h"
 #include "fade.h"
 #include "sound.h"
-
+#include "file.h"
 //*****************************
 // マクロ定義
 //*****************************
 #define BOSS_PATH	"./data/Texts/BossData.txt"	//運びネズミのモデル情報
 
+#define SPAWN_PATH   "data/Texts/BossMotion/Boss_Enshutsu.txt"             // 歩きモーションのパス
 #define WALK_PATH    "data/Texts/BossMotion/Boss_taiki.txt"             // 歩きモーションのパス
 #define BREATH_PATH  "data/Texts/BossMotion/Boss_Attack_breath.txt"     // ブレスモーションのパス
 #define SCRATH_PATH  "data/Texts/BossMotion/Boss_Attack_hikkaki.txt"    // ひっかきモーションのパス
@@ -60,6 +61,7 @@ CModel::Model CBoss::m_model[MAX_PARTS_NUM] = {};
 int CBoss::m_nNumModel = 0;
 char CBoss::m_achAnimPath[MOTION_MAX][64]
 {
+	{ SPAWN_PATH },   // 湧くときのモーション
 	{ WALK_PATH },	  // 歩きモーション
 	{ BREATH_PATH },  // ブレスモーション
 	{ SCRATH_PATH },  // ひっかきモーション
@@ -224,13 +226,20 @@ HRESULT CBoss::Init(void)
 	{
 		m_pMotion[nCntAnim] = CMotion::Create(GetPartsNum(), m_achAnimPath[nCntAnim], GetModelData());
 	}
+	
 	// 初期モーションを歩きに
-	SetMotion(WALK);
+	SetMotion(SPAWN);
+	m_bMotion = true;
+
 	// ターゲットの初期化
 	ChangeTarget(1);
 
 	// しっぽのヒット確認の初期化
 	memset(m_bHitTail, 0, sizeof(m_bHitTail));
+
+	// 初期の向きの設定
+	SetRot(D3DXVECTOR3(0.0f, D3DXToRadian(180.0f), 0.0f));
+	m_fRotYDist = D3DXToRadian(180.0f);
 	return S_OK;
 }
 
@@ -254,6 +263,16 @@ void CBoss::Uninit(void)
 	{
 		m_pCollisionTail->Uninit();
 		m_pCollisionTail = NULL;
+	}
+
+	// モーションの削除
+	for (int nCntAnim = 0; nCntAnim < MOTION_MAX; nCntAnim++)
+	{
+		if (m_pMotion[nCntAnim] != NULL)
+		{
+			m_pMotion[nCntAnim]->Uninit();
+			m_pMotion[nCntAnim] = NULL;
+		}
 	}
 
 	CModelHierarchy::Uninit();
@@ -288,6 +307,31 @@ void CBoss::Update(void)
 	
 	// モーション管理
 	MotionManager();
+
+	if (CCollision::CollisionSphereToBox(m_pCollision, CFile::BossRoomCollision()))
+	{
+		// プレイヤー座標の取得
+		D3DXVECTOR3 pos = GetPos();
+		// 当たり判定のサイズの取得
+		D3DXVECTOR3 collsionSize = CFile::BossRoomCollision()->GetCollisionSize();
+
+		// ボックス内の最短地点の検索
+		D3DXVECTOR3 shortrectPos;
+		shortrectPos.x = CCollision::OnRange(pos.x, CFile::BossRoomCollision()->GetPos().x - collsionSize.x / 2, CFile::BossRoomCollision()->GetPos().x + collsionSize.x / 2);
+		shortrectPos.y = CCollision::OnRange(pos.y, CFile::BossRoomCollision()->GetPos().y - collsionSize.y / 2, CFile::BossRoomCollision()->GetPos().y + collsionSize.y / 2);
+		shortrectPos.z = CCollision::OnRange(pos.z, CFile::BossRoomCollision()->GetPos().z - collsionSize.z / 2, CFile::BossRoomCollision()->GetPos().z + collsionSize.z / 2);
+		// ボックスからプレイヤーの方向ベクトル
+		pos = pos - shortrectPos;
+		// 正規化
+		D3DXVec3Normalize(&pos, &pos);
+		// 最短地点から当たり判定の半径分離す
+		pos = shortrectPos + pos * m_pCollision->GetCollisionRadius();
+		// プレイヤー座標のセット
+		SetPos(pos);
+		// プレイヤーのコリジョンの座標のセット
+		GetCollision()->SetPos(pos);
+	}
+
 }
 
 //******************************
@@ -493,12 +537,20 @@ void CBoss::Brearh(void)
 
 				// 弾を出す方向
 				float fAngle = GetModelData()[0].rot.y + GetModelData()[1].rot.y + GetRot().y - D3DXToRadian(90);
+				
+				// 弾を出す位置
+				D3DXVECTOR3 bulletPos;
+				bulletPos.x = GetPos().x + cosf(GetModelData()[0].rot.y) * -50;
+				bulletPos.y = GetPos().y;
+				bulletPos.z = GetPos().z + sinf(GetModelData()[0].rot.y) * 50;
+
 				// 弾の移動量
 				D3DXVECTOR3 bulletMove;
 				bulletMove.x = cosf(fAngle) * -BULLET_SPEED_ENEMY;
 				bulletMove.y = 0.0f;
 				bulletMove.z = sinf(fAngle) * BULLET_SPEED_ENEMY;
-				CBullet::Create(GetPos(), bulletMove, 200, CBullet::BULLETUSER_ENEMY);
+
+				CBullet::Create(bulletPos, bulletMove, 200, CBullet::BULLETUSER_ENEMY)->SetRot(GetRot());
 			}
 		}
 	}
@@ -577,7 +629,7 @@ void CBoss::MotionManager(void)
 {
 	if (m_bMotion)
 	{// 攻撃フラグが立ってるとき
-		if (!m_pMotion[BREARH]->GetActiveAnimation() && !m_pMotion[SCRATCH]->GetActiveAnimation() && !m_pMotion[TAIL]->GetActiveAnimation())
+		if (!m_pMotion[SPAWN]->GetActiveAnimation() && !m_pMotion[BREARH]->GetActiveAnimation() && !m_pMotion[SCRATCH]->GetActiveAnimation() && !m_pMotion[TAIL]->GetActiveAnimation())
 		{// 攻撃モーションがfalseの時
 			SetMotion(WALK);
 			m_bMotion = false;

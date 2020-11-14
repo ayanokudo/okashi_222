@@ -326,7 +326,11 @@ void CObject::ChangeType(void)
                     case OBJTYPE_WALL:
                         ((CWall*)pScene)->CWall::ChangeType();
                         break;
-                        
+
+                    case OBJTYPE_FURNITURE:
+                        ((CFumiture*)pScene)->CFumiture::ChangeType();
+                        break;
+
                     }
                     return;
                 }

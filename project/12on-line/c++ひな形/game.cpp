@@ -102,8 +102,7 @@ HRESULT CGame::Init(void)
 		m_pPlayer[nCntPlayer] = CPlayer::Create(D3DXVECTOR3(0.0f,0.0f, 0.0f), nCntPlayer);
 	}
 	
-    // ボスの生成
-    m_pBoss = CBoss::Create(D3DXVECTOR3(-15000.0f, 0.0f, -18000.0f));
+   
 	// アイテムの生成
 	m_pItem = CItem::Create(D3DXVECTOR3(200.0f, 0.0f, -800.0f),CItem::LIFE);
 	m_pItem = CItem::Create(D3DXVECTOR3(200.0f, 0.0f, -900.0f), CItem::CANDY);
@@ -196,6 +195,25 @@ void CGame::Draw(void)
 		if (m_pUi != NULL)
 		{
 			m_pUi[nCount]->Draw();
+		}
+	}
+}
+
+void CGame::SetGameMode(GAME_MODE mode)
+{
+	m_gameMode = mode;
+	if (m_gameMode == GAME_BOSS)
+	{
+		// ボスの生成
+		m_pBoss = CBoss::Create(D3DXVECTOR3(-15000.0f, 0.0f, -18000.0f));
+
+		// プレイヤーの瞬間移動
+		for (int nCnt = 0; nCnt < MAX_PLAYER; nCnt++)
+		{
+			if (!CPlayer::GetDeath(nCnt))
+			{
+				m_pPlayer[nCnt]->SetPos(D3DXVECTOR3(-15000.0f - (400 - nCnt * 800), 0.0f, -16500.0f));
+			}
 		}
 	}
 }

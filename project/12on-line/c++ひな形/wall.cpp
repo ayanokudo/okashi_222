@@ -256,25 +256,25 @@ void CWall::CollisionBoss(void)
 		if (CCollision::CollisionSphereToBox(pBoss->GetCollision(), m_pCollision))
 		{
 			// プレイヤー座標の取得
-			D3DXVECTOR3 playerPos = pBoss->GetPos();
+			D3DXVECTOR3 bossPos = pBoss->GetPos();
 			// 当たり判定のサイズの取得
 			D3DXVECTOR3 collsionSize = m_pCollision->GetCollisionSize();
 
 			// ボックス内の最短地点の検索
 			D3DXVECTOR3 shortrectPos;
-			shortrectPos.x = CCollision::OnRange(playerPos.x, GetPos().x - collsionSize.x / 2, GetPos().x + collsionSize.x / 2);
-			shortrectPos.y = CCollision::OnRange(playerPos.y, GetPos().y - collsionSize.y / 2, GetPos().y + collsionSize.y / 2);
-			shortrectPos.z = CCollision::OnRange(playerPos.z, GetPos().z - collsionSize.z / 2, GetPos().z + collsionSize.z / 2);
+			shortrectPos.x = CCollision::OnRange(bossPos.x, GetPos().x - collsionSize.x / 2, GetPos().x + collsionSize.x / 2);
+			shortrectPos.y = CCollision::OnRange(bossPos.y, GetPos().y - collsionSize.y / 2, GetPos().y + collsionSize.y / 2);
+			shortrectPos.z = CCollision::OnRange(bossPos.z, GetPos().z - collsionSize.z / 2, GetPos().z + collsionSize.z / 2);
 			// ボックスからプレイヤーの方向ベクトル
-			playerPos = playerPos - shortrectPos;
+			bossPos = bossPos - shortrectPos;
 			// 正規化
-			D3DXVec3Normalize(&playerPos, &playerPos);
+			D3DXVec3Normalize(&bossPos, &bossPos);
 			// 最短地点から当たり判定の半径分離す
-			playerPos = shortrectPos + playerPos * pBoss->GetCollision()->GetCollisionRadius();
+			bossPos = shortrectPos + bossPos * pBoss->GetCollision()->GetCollisionRadius();
 			// プレイヤー座標のセット
-			pBoss->SetPos(playerPos);
+			pBoss->SetPos(bossPos);
 			// プレイヤーのコリジョンの座標のセット
-			pBoss->GetCollision()->SetPos(playerPos);
+			pBoss->GetCollision()->SetPos(bossPos);
 		}
 		pBoss = (CBoss*)pBoss->GetNext();
 	}

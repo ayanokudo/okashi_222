@@ -22,6 +22,11 @@
 #define FLOOR_SIZE {120.0f,0.0f,120.0f}                 // 床の大きさ
 #define COLLISION_SIZE {1200.0f,500.0f,100.0f}            // 当たり判定の大きさ
 
+//*****************************************************************************
+// 静的メンバ変数宣言
+//*****************************************************************************
+CCollision *CFile::m_Collision = NULL;
+
 //=============================================================================
 // [CFile] コンストラクタ
 //=============================================================================
@@ -44,9 +49,9 @@ CFile::~CFile()
 void CFile::Read(void)
 {
     // 変数宣言
-    char aRead[READ_BUFFER];    // 文字列読み込み用
-    char aHead[READ_BUFFER];    // 比較用
-    char aDie[READ_BUFFER];             // 不必要な文字を読み込む
+	char aRead[READ_BUFFER] = {};    // 文字列読み込み用
+	char aHead[READ_BUFFER] = {};    // 比較用
+	char aDie[READ_BUFFER] = {};             // 不必要な文字を読み込む
     FILE *pFile = fopen(FILE_NAME, "r");
     D3DXVECTOR3 pos;            // 読み込んだ位置
     D3DXVECTOR3 rot;            // 読み込んだ角度
@@ -134,7 +139,7 @@ void CFile::SetObject(D3DXVECTOR3 pos, D3DXVECTOR3 rot, CModel::OBJTYPE type, in
 		break;
 
     case CModel::OBJTYPE_COLLISION:
-        CCollision::CreateBox(pos, COLLISION_SIZE);
+		m_Collision = CCollision::CreateBox(pos, COLLISION_SIZE);
         break;
     }
 }

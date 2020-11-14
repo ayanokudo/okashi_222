@@ -17,17 +17,17 @@
 #include "bullet.h"
 #include "boss.h"
 
-//*****************************
-// マクロ定義
-//*****************************
-#define FURNITURE_CHAIR_PATH	"./data/Models/furniture/ueki.x"		 // フローリングのテクスチャのパス
-#define FURNITURE_CHEST_PATH	"./data/Models/furniture/ueki.x"    // キッチンの床のテクスチャのパス
-
 //==================================
 // コンストラクタ
 //==================================
 LPDIRECT3DTEXTURE9 CFurniture::m_apTexture[FURNITURE_MAX] = {};
 CModel::Model CFurniture::m_model[FURNITURE_MAX] = {};
+char *CFurniture::m_apTextureName[FURNITURE_MAX] = 
+{
+    "./data/Models/furniture/ueki.x",
+    "./data/Models/furniture/ueki.x",
+    "./data/Models/furniture/ueki.x"
+};
 
 //==================================
 // コンストラクタ
@@ -80,26 +80,19 @@ HRESULT CFurniture::Load(void)
 	// デバイスの取得
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
 
+    for (int nCount = 0; nCount < FURNITURE_MAX; nCount++)
+    {
+	// Xファイルの読み込み
+	D3DXLoadMeshFromX(m_apTextureName[nCount],
+		D3DXMESH_SYSTEMMEM,
+		pDevice,
+		NULL,
+		&m_model[nCount].pBuffMat,
+		NULL,
+		&m_model[nCount].nNumMat,
+		&m_model[nCount].pMesh);
+    }
 
-	// Xファイルの読み込み
-	D3DXLoadMeshFromX(FURNITURE_CHAIR_PATH,
-		D3DXMESH_SYSTEMMEM,
-		pDevice,
-		NULL,
-		&m_model[FURNITURE_CHAIR].pBuffMat,
-		NULL,
-		&m_model[FURNITURE_CHAIR].nNumMat,
-		&m_model[FURNITURE_CHAIR].pMesh);
-    
-	// Xファイルの読み込み
-	D3DXLoadMeshFromX(FURNITURE_CHEST_PATH,
-		D3DXMESH_SYSTEMMEM,
-		pDevice,
-		NULL,
-		&m_model[FURNITURE_CHEST].pBuffMat,
-		NULL,
-		&m_model[FURNITURE_CHEST].nNumMat,
-		&m_model[FURNITURE_CHEST].pMesh);
 	
 	return S_OK;
 }

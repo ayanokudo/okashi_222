@@ -28,7 +28,7 @@
 #define PLAYER_BULLET_DAMAGE 50				//プレイヤーの攻撃力
 #define ENEMY_BULLET_DAMAGE 1
 #define BULLET_SIZE_PLAYER 100                  // サイズ
-#define BULLET_SIZE_ENEMY 70                    // サイズ
+#define BULLET_SIZE_ENEMY 120                    // サイズ
 //******************************
 // 静的メンバ変数宣言
 //******************************

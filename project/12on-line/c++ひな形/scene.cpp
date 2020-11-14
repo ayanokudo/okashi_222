@@ -93,6 +93,7 @@ void CScene::ReleaseAll(void)
 			pScene->ReConnection();
 			// オブジェクトの削除
 			delete pScene;
+
 			// ネクストの情報を渡す
 			pScene = pSave;
 		}

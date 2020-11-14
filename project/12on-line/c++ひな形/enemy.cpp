@@ -49,6 +49,9 @@
 #define ENEMY_CARRIER_LIFE 200
 #define ENEMY_UP_SCORE 1000
 
+#define STATE_COUNT_DAMAGE 10                               // ダメージ状態のカウント
+#define DAMAGE_STATE_COLOR D3DXCOLOR(0.7f,0.0f,0.0f,1.0f)   // ダメージ状態のカラー
+
 #define ITEM_DROP_RANDOM_KOBAN rand() % 10 + 1 == 5
 #define ITEM_DROP_RANDOM_LIFE rand() % 6 + 1 == 4
 
@@ -79,6 +82,8 @@ CEnemy::CEnemy() :CModelHierarchy(OBJTYPE_ENEMY)
 	m_nLife = 0;
 	memset(&m_pMotion, 0, sizeof(m_pMotion));
 	m_bRoute = false;
+	m_state = STATE_NORMAL;
+	m_nCntState = 0;
 }
 
 //******************************
@@ -254,6 +259,10 @@ HRESULT CEnemy::Init(void)
 	}
 
 	m_pMotion[WALK]->SetActiveAnimation(true);
+	// 状態の初期化
+	m_state = STATE_NORMAL;
+	// カウントの初期化
+	m_nCntState = 0;
 	return S_OK;
 }
 
@@ -270,6 +279,15 @@ void CEnemy::Uninit(void)
 	if (m_pRadiusColision != NULL)
 	{
 		m_pRadiusColision->Uninit();
+	}
+	// モーションの削除
+	for (int nCntAnim = 0; nCntAnim < MOTION_MAX; nCntAnim++)
+	{
+		if (m_pMotion[nCntAnim] != NULL)
+		{
+			m_pMotion[nCntAnim]->Uninit();
+			m_pMotion[nCntAnim] = NULL;
+		}
 	}
 
 	CModelHierarchy::Uninit();
@@ -339,6 +357,23 @@ void CEnemy::Update(void)
 		// プレイヤーのコリジョンの座標のセット
 		GetCollision()->SetPos(pos);
 	}
+
+	// 状態の管理
+
+	if (m_state == STATE_DAMAGE)
+	{// ダメージ状態の時
+
+		// カウントを進める
+		m_nCntState++;
+		if (m_nCntState > STATE_COUNT_DAMAGE)
+		{// カウントが規定値を超えたら
+
+			// カウントの初期化
+			m_nCntState = 0;
+			// 状態をノーマルに戻す
+			m_state = STATE_NORMAL;
+		}
+	}
 }
 
 //******************************
@@ -346,6 +381,21 @@ void CEnemy::Update(void)
 //******************************
 void CEnemy::Draw(void)
 {
+	if (m_state == STATE_DAMAGE)
+	{// ダメージ状態の時
+
+	 // すべてのパーツを赤色にする
+		for (int nCnt = 0; nCnt < m_nNumModel; nCnt++)
+		{
+			D3DXMATERIAL*pMat = (D3DXMATERIAL*)GetModelData()[nCnt].pBuffMat->GetBufferPointer();
+			for (int nCntMat = 0; nCntMat < GetModelData()[nCnt].nNumMat; nCntMat++)
+			{
+				pMat[nCntMat].MatD3D.Diffuse = DAMAGE_STATE_COLOR;
+			}
+		}
+	
+	}
+
 	CModelHierarchy::Draw();
 }
 
@@ -356,7 +406,14 @@ void CEnemy::Hit(int nDamage)
 {
 	// 座標
 	D3DXVECTOR3 pos = GetPos();
+
 	m_nLife -= nDamage;
+
+	if (m_state == STATE_NORMAL)
+	{
+		m_state = STATE_DAMAGE;
+		m_nCntState = 0;
+	}
 
 	if (m_nLife <= 0)
 	{
@@ -393,6 +450,7 @@ void CEnemy::Hit(int nDamage)
 			partMove.z = sinf(fRandAngle)*nRandSpeed;
 			CParticle::Create(D3DXVECTOR3(GetPos().x, GetPos().y+20, GetPos().z), partMove, D3DXVECTOR3(nRandSize, nRandSize, 0.0f), 50, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 		}
+
 		Uninit();
 		return;
 	}
@@ -539,40 +597,43 @@ void CEnemy::MotionCarrier(void)
 			int nLoop = 0;
 			
 			// プレイヤー最大数分ループ
-			for (int nCnt = 0; nCnt < MAX_PLAYER; )
+			for (int nCnt = 0; nCnt < MAX_PLAYER; nCnt++)
 			{
-				
-				if (GetDistance(pos, distPos) > GetDistance(CGame::GetPlayer(nCnt)->GetPos(), distPos))
-				{//自身よりプレイヤーのほうが近かった場合
+				// 死亡確認
+				if (!CPlayer::GetDeath(nCnt))
+				{
+					if (GetDistance(pos, distPos) > GetDistance(CGame::GetPlayer(nCnt)->GetPos(), distPos))
+					{//自身よりプレイヤーのほうが近かった場合
 
-					// カウントの初期化
-					nCnt = 0;
-					// 近い順を一つ増やす
-					nNumPoint++;
-					
-					if (nNumPoint >= CGame::GetLostPoint()->GetNumLostPoint())
-					{
-						nNumPoint = 0;
-					}
+						// カウントの初期化
+						nCnt = 0;
+						// 近い順を一つ増やす
+						nNumPoint++;
 
-					// ループ数のカウント
-					nLoop++;
-					if (nLoop >= CGame::GetLostPoint()->GetNumLostPoint())
-					{// 全部のポイントがプレイヤーより遠い
-						nNumPoint = 0;
+						if (nNumPoint >= CGame::GetLostPoint()->GetNumLostPoint())
+						{
+							nNumPoint = 0;
+						}
+
+						// ループ数のカウント
+						nLoop++;
+						if (nLoop >= CGame::GetLostPoint()->GetNumLostPoint())
+						{// 全部のポイントがプレイヤーより遠い
+							nNumPoint = 0;
+							// 目標地点の更新
+							distPos = CGame::GetLostPoint()->GetLostPos(nNumPoint);
+							break;
+						}
+
 						// 目標地点の更新
 						distPos = CGame::GetLostPoint()->GetLostPos(nNumPoint);
-						break;
-					}
 
-					// 目標地点の更新
-					distPos = CGame::GetLostPoint()->GetLostPos(nNumPoint);
-					
-				}
-				else
-				{
-					// カウントを進める
-					nCnt++;
+					}
+					else
+					{
+						// カウントを進める
+						nCnt++;
+					}
 				}
 			}
 

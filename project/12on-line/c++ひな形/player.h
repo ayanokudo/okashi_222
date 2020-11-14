@@ -55,6 +55,13 @@ public:
 		TYPE_MAX
 	}PLAYERTYPE;
 
+	// 状態
+	typedef enum
+	{
+		STATE_NORMAL = 0,	//歩き
+		STATE_DAMAGE,		//ダッシュ
+		STATE_MAX
+	}STATE;
 	//メンバ関数
 	CPlayer();
 	~CPlayer();
@@ -103,6 +110,8 @@ private:
 	bool m_bMotion;                 // 移動を止める系のモーション判定用
 	bool m_bKeyboardMove;           // キーボードで移動しているかの判定用
 	CLife *m_pLife[PLAYER_LIFE];
+	int m_nCntState;                // ステート遷移用のカウント
+	STATE m_state;                  // 状態
 };
 
 #endif

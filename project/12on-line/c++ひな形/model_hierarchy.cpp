@@ -15,6 +15,7 @@ CModelHierarchy::CModelHierarchy(int nPriority) :CScene(nPriority)
 {
 	// 変数のクリア
 	memset(&m_model, 0, sizeof(m_model));
+	memset(&m_defMat, 0, sizeof(m_defMat));
 	m_nNumParts = 0;
 	m_rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	m_pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
@@ -104,9 +105,14 @@ HRESULT CModelHierarchy::Init(int nNumParts, CModel::Model * model,char*pPath)
 	for (int nCnt = 0; nCnt < nNumParts; nCnt++)
 	{
 		m_model[nCnt] = model[nCnt];
+
+		for (int nCntMat = 0; nCntMat < (int)m_model[nCnt].nNumMat; nCntMat++)
+		{
+			m_defMat[nCnt][nCntMat] = ((D3DXMATERIAL*)m_model[nCnt].pBuffMat->GetBufferPointer())[nCntMat];
+
+		}
 	}
 	
-
 	return S_OK;
 }
 
@@ -203,6 +209,8 @@ void CModelHierarchy::Draw(void)
 			pDevice->SetTexture(0, m_model[nCntParts].apTexture[nCntMat]);
 			//モデルパーツの描画
 			m_model[nCntParts].pMesh->DrawSubset(nCntMat);
+
+			pMat[nCntMat] = m_defMat[nCntParts][nCntMat];
 		}
 		//保持していたマテリアルを戻す
 		pDevice->SetMaterial(&matDef);

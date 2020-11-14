@@ -44,6 +44,14 @@ public:
 		ENEMY_MAX,
 	}ENEMY;
 
+	// 状態
+	typedef enum
+	{
+		STATE_NORMAL = 0,	//歩き
+		STATE_DAMAGE,		//ダッシュ
+		STATE_MAX
+	}STATE;
+
 	//メンバ関数
 	CEnemy();
 	~CEnemy();
@@ -89,6 +97,9 @@ private:
 	int m_nCountRand;
 	bool m_bRoute;             // 逃げるとき壁ののほうに永遠といかないようにする
 	CMotion*m_pMotion[MOTION_MAX];  // アニメーションポインタ
+
+	int m_nCntState;                // ステート遷移用のカウント
+	STATE m_state;                  // 状態
 };
 
 #endif

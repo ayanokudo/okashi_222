@@ -45,6 +45,10 @@
 #define PLAYER_SPEED_MAX 5
 #define PLAYER_DASH_SPEED PLAYER_SPEED * 1.5f                 // ダッシュ時のスピード
 
+#define STATE_COUNT_DAMAGE 20                               // ダメージ状態のカウント
+#define DAMAGE_STATE_COLOR D3DXCOLOR(0.7f,0.0f,0.0f,1.0f)   // ダメージ状態のカラー
+
+
 //*****************************
 // 静的メンバ変数宣言
 //*****************************
@@ -79,6 +83,8 @@ CPlayer::CPlayer() :CModelHierarchy(OBJTYPE_PLAYER)
 	m_nLife = 0;
 	m_bKeyboardMove = false;
 	m_posOld = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	m_state = STATE_NORMAL;
+	m_nCntState = 0;
 }
 
 //******************************
@@ -282,6 +288,10 @@ HRESULT CPlayer::Init(void)
 
 	// 攻撃フラグの初期化
 	m_bMotion = false;
+	// 状態の初期化
+	m_state = STATE_NORMAL;
+	// カウントの初期化
+	m_nCntState = 0;
 
 	return S_OK;
 }
@@ -305,6 +315,15 @@ void CPlayer::Uninit(void)
 			m_pLife[nCount]->Uninit();
 			delete m_pLife[nCount];
 			m_pLife[nCount] = NULL;
+		}
+	}
+	// モーションの削除
+	for (int nCntAnim = 0; nCntAnim < MOTION_MAX; nCntAnim++)
+	{
+		if (m_pMotion[nCntAnim] != NULL)
+		{
+			m_pMotion[nCntAnim]->Uninit();
+			m_pMotion[nCntAnim] = NULL;
 		}
 	}
 
@@ -393,9 +412,25 @@ void CPlayer::Update(void)
 		if (CGame::GetGameMode() == CGame::GAME_NORMAL)
 		{
 			CGame::SetGameMode(CGame::GAME_BOSS);
-
 		}
 
+	}
+
+	// 状態の管理
+
+	if (m_state == STATE_DAMAGE)
+	{// ダメージ状態の時
+
+	 // カウントを進める
+		m_nCntState++;
+		if (m_nCntState > STATE_COUNT_DAMAGE)
+		{// カウントが規定値を超えたら
+
+		 // カウントの初期化
+			m_nCntState = 0;
+			// 状態をノーマルに戻す
+			m_state = STATE_NORMAL;
+		}
 	}
 
 #ifdef _DEBUG
@@ -423,7 +458,22 @@ void CPlayer::Update(void)
 //******************************
 void CPlayer::Draw(void)
 {
+	if (m_state == STATE_DAMAGE)
+	{// ダメージ状態の時
+
+		// すべてのパーツを赤色にする
+		for (int nCnt = 0; nCnt < m_nNumModel; nCnt++)
+		{
+			D3DXMATERIAL*pMat = (D3DXMATERIAL*)GetModelData()[nCnt].pBuffMat->GetBufferPointer();
+			for (int nCntMat = 0; nCntMat < GetModelData()[nCnt].nNumMat; nCntMat++)
+			{
+				pMat[nCntMat].MatD3D.Diffuse = DAMAGE_STATE_COLOR;
+			}
+		}
+	}
+
     CModelHierarchy::Draw();
+
 	for (int nCount = 0; nCount < m_nLife; nCount++)
 	{
 		if (m_pLife[nCount] != NULL)
@@ -673,7 +723,6 @@ void CPlayer::Attack(void)
 
 			// 攻撃フラグを立てる
 			m_bMotion = true;
-
 		}
 	}
 	else
@@ -720,9 +769,15 @@ void CPlayer::Life(int nLife)
 //******************************
 void CPlayer::Hit(int nDamage)
 {
+
 	//サウンドのポインタ変数宣言
 	CSound*pSound = CManager::GetSound();
-	m_nLife -= nDamage;
+
+	if (m_state == STATE_NORMAL)
+	{
+		m_nLife -= nDamage;
+		m_state = STATE_DAMAGE;
+	}
 
 	if (m_nLife <= 0)
 	{

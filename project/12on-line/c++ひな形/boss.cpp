@@ -265,6 +265,16 @@ void CBoss::Uninit(void)
 		m_pCollisionTail = NULL;
 	}
 
+	// ƒ‚[ƒVƒ‡ƒ“‚Ìíœ
+	for (int nCntAnim = 0; nCntAnim < MOTION_MAX; nCntAnim++)
+	{
+		if (m_pMotion[nCntAnim] != NULL)
+		{
+			m_pMotion[nCntAnim]->Uninit();
+			m_pMotion[nCntAnim] = NULL;
+		}
+	}
+
 	CModelHierarchy::Uninit();
 }
 

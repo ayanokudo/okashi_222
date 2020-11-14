@@ -9,6 +9,7 @@
 #include "enemy.h"
 #include "wall.h"
 #include "floor.h"
+#include "furniture.h"
 
 //*****************************************************************************
 // ƒ}ƒNƒ’è‹`
@@ -172,6 +173,14 @@ int CFile::GetObjectType(CScene* pScene)
 
     case CScene::OBJTYPE_WALL:
         nType = ((CWall*)pScene)->CWall::GetType();
+        break;
+
+    case CScene::OBJTYPE_FLOOR:
+        nType = ((CFloor*)pScene)->CFloor::GetType();
+        break;
+
+    case CScene::OBJTYPE_FURNITURE:
+        nType = ((CFumiture*)pScene)->CFumiture::GetType();
         break;
     }
     return nType;

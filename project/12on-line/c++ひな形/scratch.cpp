@@ -313,6 +313,7 @@ void CScratch::CollisionScratch(SCRATCHUSER user)
 	{
 		if (m_bAttackEnemy)
 		{
+
 			for (int nCount = 0; nCount < MAX_PLAYER; nCount++)
 			{
 				CPlayer*pPlayer = CGame::GetPlayer(nCount);
@@ -322,7 +323,9 @@ void CScratch::CollisionScratch(SCRATCHUSER user)
 					{
 						if (CCollision::CollisionSphere(m_pCollision, pPlayer->GetCollision()))
 						{
+
 							pPlayer->Hit(SCRATCH_ATTACK_ENEMY);
+
 							m_bAttackEnemy = false;
 							//Uninit();
 							//break;

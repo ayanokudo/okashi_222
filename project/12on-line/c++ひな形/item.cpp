@@ -20,6 +20,7 @@
 #include "score.h"
 #include "collect.h"
 #include "sound.h"
+#include "particle.h"
 
 //*****************************
 // マクロ定義
@@ -247,6 +248,31 @@ void CItem::CollisionItem(void)
 						// 回収率を増やす
 						CCollect::Collect();
 						pSound->Play(CSound::SOUND_SE_ITEM_CANDY);
+
+						// パーティクル生成
+						// 作る数ループ
+						for (int nCntPart = 0; nCntPart < 5; nCntPart++)
+						{
+							int nRandSize = rand() % 20 + 40;
+							// スピードのランダム
+							float fRandSpeed = (rand() % 200 + 200) / 100;
+							// 飛んでく角度のランダム
+							float fRandAngle = D3DXToRadian(rand() % 360);
+							D3DXVECTOR3 partMove;
+							partMove.x = cosf(fRandAngle)*fRandSpeed;
+							partMove.y = 0.0f;
+							partMove.z = sinf(fRandAngle)*fRandSpeed;
+							float fRandCol = (rand() % 4000 +4000) / 10000.0f;
+
+							// パーティクル生成
+							CParticle::Create(D3DXVECTOR3(GetPos().x, GetPos().y + 20, GetPos().z),
+								partMove,
+								D3DXVECTOR3(nRandSize, nRandSize, 0.0f),
+								40,
+								D3DXCOLOR(1.0f, fRandCol, fRandCol, 1.0f),
+								CParticle::PARTICLE_CANDY);
+						}
+
 						Uninit();
 						break;
 					}

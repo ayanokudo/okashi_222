@@ -466,15 +466,20 @@ void CEnemy::Hit(int nDamage)
 			break;
 		}
 
+		// パーティクル生成
+		// 作る数ループ
 		for (int nCntPart = 0; nCntPart < 5; nCntPart++)
 		{
 			int nRandSize = rand() % 10 + 20;
+			// スピードのランダム
 			int nRandSpeed = rand() % 2 + 2;
+			// 飛んでく角度のランダム
 			float fRandAngle = D3DXToRadian(rand() % 360);
 			D3DXVECTOR3 partMove;
 			partMove.x = cosf(fRandAngle)*nRandSpeed;
 			partMove.y = 0.0f;
 			partMove.z = sinf(fRandAngle)*nRandSpeed;
+			// パーティクル生成
 			CParticle::Create(D3DXVECTOR3(GetPos().x, GetPos().y+20, GetPos().z), partMove, D3DXVECTOR3(nRandSize, nRandSize, 0.0f), 50, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 		}
 

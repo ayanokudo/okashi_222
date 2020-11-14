@@ -20,9 +20,7 @@
 //*****************************
 
 // テクスチャのパス
-#define BG_TEXTURE_PATH1 "./data/Textures/bg001.png"
-#define BG_TEXTURE_PATH2 "./data/Textures/bg000.png"
-#define BG_TEXTURE_PATH3 "./data/Textures/bg002.png"
+#define BG_TEXTURE_PATH1 "./data/Textures/shibahu.png"
 
 //**********************************
 //静的メンバ変数宣言
@@ -74,8 +72,6 @@ HRESULT CBg::Load(void)
 	
 	// テクスチャの生成
 	D3DXCreateTextureFromFile(pDevice, BG_TEXTURE_PATH1, &m_apTexture[0]);
-	D3DXCreateTextureFromFile(pDevice, BG_TEXTURE_PATH2, &m_apTexture[1]);
-	D3DXCreateTextureFromFile(pDevice, BG_TEXTURE_PATH3, &m_apTexture[2]);
 
 	return S_OK;
 }
@@ -104,22 +100,31 @@ HRESULT CBg::Init(void)
 	for (int nCntBg = 0; nCntBg < BG_PARTS_NUM; nCntBg++)
 	{
 		
-		if (m_apScene3d[nCntBg] != NULL)
+		if (m_apScene3d[nCntBg] == NULL)
 		{
 			// ポリゴン生成
-			m_apScene3d[nCntBg] = CScene3d::Create(D3DXVECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 10), D3DXVECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0));
+			m_apScene3d[nCntBg] = CScene3d::Create(D3DXVECTOR3(-5900, -10, -8000), D3DXVECTOR3(800000, -10,800000));
 			// オブジェクトタイプの設定
 			m_apScene3d[nCntBg]->SetObjType(OBJTYPE_BG);
 
 			// テクスチャ割り当て
 			m_apScene3d[nCntBg]->BindTexture(m_apTexture[nCntBg]);
+
+			D3DXVECTOR2 UV[NUM_VERTEX];
+			UV[0] = D3DXVECTOR2(0.0f   , 0.0f);
+			UV[1] = D3DXVECTOR2(8000.0f, 0.0f);
+			UV[2] = D3DXVECTOR2(0.0f   , 8000.0f);
+			UV[3] = D3DXVECTOR2(8000.0f, 8000.0f);
+
+			m_apScene3d[nCntBg]->SetTextureUV(UV);
 		}
 		else
 		{
 			return E_FAIL;
 		}
 	}
-
+	
+	
 	return S_OK;
 }
 
@@ -154,4 +159,5 @@ void CBg::Update(void)
 //==================================
 void CBg::Draw(void)
 {
+
 }

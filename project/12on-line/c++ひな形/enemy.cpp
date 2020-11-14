@@ -29,6 +29,7 @@
 #include "sound.h"
 #include "file.h"
 #include "collect.h"
+#include "billboard.h"
 
 //*****************************
 // マクロ定義
@@ -37,6 +38,13 @@
 #define ENEMY_ESCORT_MODEL_PATH		"./data/Texts/MouseData_Red.txt"	//守りネズミのモデル情報
 
 #define WALK_ANIM_PATH  "data/Texts/nezumi_walk.txt"      // 歩きアニメーションのパス
+
+#define SWEAT_PATH "data/Textures/Sweat.png"              // 涙のテクスチャ
+#define SWEAT_SIZE D3DXVECTOR3(40.0f,80.0f,0.0f)          // 涙のサイズ
+#define ANIM_SPEED 7          // アニメーション速度
+#define MAX_ANIMATION_X 5      // アニメーション数 横
+#define MAX_ANIMATION_Y 1     // アニメーション数 縦
+
 
 #define ENEMY_SPEED 10
 #define ENEMY_RAND rand() % 8 + 1
@@ -59,6 +67,7 @@
 // 静的メンバ変数宣言
 //*****************************
 CModel::Model CEnemy::m_model[ENEMY_MAX][MAX_PARTS_NUM] = {};
+LPDIRECT3DTEXTURE9 CEnemy::m_pTexture = NULL;
 int CEnemy::m_nNumModel = 0;
 char CEnemy::m_achAnimPath[MOTION_MAX][64]
 {
@@ -70,6 +79,7 @@ char CEnemy::m_achAnimPath[MOTION_MAX][64]
 //******************************
 CEnemy::CEnemy() :CModelHierarchy(OBJTYPE_ENEMY)
 {
+	// 変数のクリア
 	m_move = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	m_moveDest = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	m_pCollision = NULL;
@@ -84,6 +94,10 @@ CEnemy::CEnemy() :CModelHierarchy(OBJTYPE_ENEMY)
 	m_bRoute = false;
 	m_state = STATE_NORMAL;
 	m_nCntState = 0;
+	m_pBilboard = NULL;
+	m_nCntAnim = 0;
+	m_nAnimX = 0;
+	m_nAnimY = 0;
 }
 
 //******************************
@@ -185,6 +199,9 @@ HRESULT CEnemy::Load(void)
 		}
 	}
 
+	// テクスチャの読み込み
+	D3DXCreateTextureFromFile(pDevice, SWEAT_PATH, &m_pTexture);
+
 	return S_OK;
 }
 
@@ -263,6 +280,7 @@ HRESULT CEnemy::Init(void)
 	m_state = STATE_NORMAL;
 	// カウントの初期化
 	m_nCntState = 0;
+	m_pBilboard = NULL;
 	return S_OK;
 }
 
@@ -280,6 +298,13 @@ void CEnemy::Uninit(void)
 	{
 		m_pRadiusColision->Uninit();
 	}
+
+	if (m_pBilboard != NULL)
+	{
+		m_pBilboard->Uninit();
+		m_pBilboard = NULL;
+	}
+
 	// モーションの削除
 	for (int nCntAnim = 0; nCntAnim < MOTION_MAX; nCntAnim++)
 	{
@@ -346,6 +371,7 @@ void CEnemy::Update(void)
 		shortrectPos.x = CCollision::OnRange(pos.x, CFile::BossRoomCollision()->GetPos().x - collsionSize.x / 2, CFile::BossRoomCollision()->GetPos().x + collsionSize.x / 2);
 		shortrectPos.y = CCollision::OnRange(pos.y, CFile::BossRoomCollision()->GetPos().y - collsionSize.y / 2, CFile::BossRoomCollision()->GetPos().y + collsionSize.y / 2);
 		shortrectPos.z = CCollision::OnRange(pos.z, CFile::BossRoomCollision()->GetPos().z - collsionSize.z / 2, CFile::BossRoomCollision()->GetPos().z + collsionSize.z / 2);
+
 		// ボックスからプレイヤーの方向ベクトル
 		pos = pos - shortrectPos;
 		// 正規化
@@ -374,6 +400,8 @@ void CEnemy::Update(void)
 			m_state = STATE_NORMAL;
 		}
 	}
+
+	Sweat();
 }
 
 //******************************
@@ -384,7 +412,7 @@ void CEnemy::Draw(void)
 	if (m_state == STATE_DAMAGE)
 	{// ダメージ状態の時
 
-	 // すべてのパーツを赤色にする
+		// すべてのパーツを赤色にする
 		for (int nCnt = 0; nCnt < m_nNumModel; nCnt++)
 		{
 			D3DXMATERIAL*pMat = (D3DXMATERIAL*)GetModelData()[nCnt].pBuffMat->GetBufferPointer();
@@ -393,7 +421,6 @@ void CEnemy::Draw(void)
 				pMat[nCntMat].MatD3D.Diffuse = DAMAGE_STATE_COLOR;
 			}
 		}
-	
 	}
 
 	CModelHierarchy::Draw();
@@ -484,6 +511,39 @@ void CEnemy::RangeDecisionCarrier(void)
 					//エネミーの移動をしなくする
 					m_bRd = true;
 					m_bCarrier = true;
+
+					// 涙の生成
+					if (m_pBilboard == NULL)
+					{// まだ生成されていないとき
+						// 涙の座標
+						D3DXVECTOR3 SweatPos;
+						SweatPos.x = GetPos().x + cosf(GetRot().y-D3DXToRadian(120)) * 100;
+						SweatPos.y = GetPos().y+20;				 
+						SweatPos.z = GetPos().z + sinf(GetRot().y-D3DXToRadian(120)) * 100;
+						// 涙の生成
+						m_pBilboard = CBillboard::Create(SweatPos, SWEAT_SIZE);
+						// テクスチャの設定
+						m_pBilboard->BindTexture(m_pTexture);
+						// 角度の設定
+						m_pBilboard->SetAngle(GetRot().y+ D3DXToRadian(180));
+
+						// テクスチャUV座標の初期化
+						m_nAnimX = 0;
+						m_nAnimY = 0;
+
+						// UV座標の設定
+						D3DXVECTOR2 uv[NUM_VERTEX];
+						float fu = 1.0f / MAX_ANIMATION_X;
+						float fv = 1.0f / MAX_ANIMATION_Y;
+
+						uv[0] = D3DXVECTOR2(fu*m_nAnimX, fv*m_nAnimY);
+						uv[1] = D3DXVECTOR2(fu*m_nAnimX + fu, fv*m_nAnimY);
+						uv[2] = D3DXVECTOR2(fu*m_nAnimX, fv*m_nAnimY + fv);
+						uv[3] = D3DXVECTOR2(fu*m_nAnimX + fu, fv*m_nAnimY + fv);
+
+						// UV座標セット
+						m_pBilboard->SetTextureUV(uv);
+					}
 				}
 			}
 		}
@@ -825,4 +885,61 @@ void CEnemy::Direction(void)
 	rot.y += (m_fRotYDist - rot.y)*ENEMY_DIRECTION_RATE;
 	// 向きの設定
 	SetRot(rot);
+}
+
+//******************************
+// 涙の管理
+//******************************
+void CEnemy::Sweat(void)
+{
+	// 涙の更新
+	if (m_pBilboard != NULL)
+	{
+		// 涙の座標
+		D3DXVECTOR3 SweatPos;
+		SweatPos.x = GetPos().x + cosf(GetRot().y - D3DXToRadian(120)) * 110;
+		SweatPos.y = GetPos().y + 100;
+		SweatPos.z = GetPos().z - sinf(GetRot().y - D3DXToRadian(120)) * 110;
+		// 位置の更新
+		m_pBilboard->SetPos(SweatPos);
+		// 角度の更新
+		m_pBilboard->SetAngle(D3DXToDegree(atan2f(m_moveDest.z, m_moveDest.x)) + 40);
+
+		// テクスチャアニメーション
+
+		// カウントを進める
+		m_nCntAnim++;
+		if (m_nCntAnim % ANIM_SPEED == 0)
+		{// 一定の間隔で
+			// アニメーションX軸の加算
+			m_nAnimX++;
+			if (m_nAnimX >= MAX_ANIMATION_X)
+			{// Xの最大値
+			 // アニメーションX軸の初期化
+				m_nAnimX = 0;
+				// アニメーションY軸の加算
+				m_nAnimY++;
+				if (m_nAnimY >= MAX_ANIMATION_X)
+				{// Yの最大値
+				 // アニメーションY軸の初期化
+					m_nAnimY = 0;
+				}
+			}
+
+			// UV座標の設定
+			D3DXVECTOR2 uv[NUM_VERTEX];
+
+			float fu = 1.0f / MAX_ANIMATION_X;
+			float fv = 1.0f / MAX_ANIMATION_Y;
+
+			uv[0] = D3DXVECTOR2(fu*m_nAnimX     , fv*m_nAnimY);
+			uv[1] = D3DXVECTOR2(fu*m_nAnimX + fu, fv*m_nAnimY);
+			uv[2] = D3DXVECTOR2(fu*m_nAnimX     , fv*m_nAnimY + fv);
+			uv[3] = D3DXVECTOR2(fu*m_nAnimX + fu, fv*m_nAnimY + fv);
+
+			// UV座標セット
+			m_pBilboard->SetTextureUV(uv);
+		}
+
+	}
 }

@@ -20,7 +20,7 @@
 //*****************************
 class CCollision;
 class CMotion;
-
+class CBillboard;
 //*****************************
 // クラス定義
 //*****************************
@@ -72,16 +72,19 @@ private:
 	void MotionEscort(void);
 	void Move(void);
 	void Direction(void);
+	void Sweat(void);
 
 	// メンバ変数
 	static CModel::Model m_model[ENEMY_MAX][MAX_PARTS_NUM]; // モデル情報
 	static int m_nNumModel;                      // モデル数
 	static char m_achAnimPath[MOTION_MAX][64];   // アニメーションテキストのパス格納用
+	static LPDIRECT3DTEXTURE9 m_pTexture;
 
 	//static LPD3DXMESH m_pMeshModel[ENEMY_MAX];	//メッシュ情報へのポインタ
 	//static LPD3DXBUFFER m_pBuffMatModel[ENEMY_MAX];	//マテリアル情報へのポインタ
 	//static DWORD m_nNumMatModel[ENEMY_MAX];	//マテリアル情報の数
 	//static LPDIRECT3DTEXTURE9 m_apTexture[ENEMY_MAX]; // テクスチャ
+
 	D3DXVECTOR3 m_move;        // 移動量
 	D3DXVECTOR3 m_moveDest;
 	CCollision *m_pCollision;    // 当たり判定
@@ -97,6 +100,12 @@ private:
 	int m_nCountRand;
 	bool m_bRoute;             // 逃げるとき壁ののほうに永遠といかないようにする
 	CMotion*m_pMotion[MOTION_MAX];  // アニメーションポインタ
+	
+	CBillboard*m_pBilboard;
+	// 猫のアニメーション用
+	int m_nCntAnim;       // アニメーションカウント
+	int m_nAnimX;         // アニメーションX軸
+	int m_nAnimY;         // アニメーションY軸
 
 	int m_nCntState;                // ステート遷移用のカウント
 	STATE m_state;                  // 状態

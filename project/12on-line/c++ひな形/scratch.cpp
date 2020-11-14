@@ -82,8 +82,27 @@ CScratch * CScratch::Create(const D3DXVECTOR3 pos, const float fAngle,  const  S
 	pScratch->SetObjType(OBJTYPE_ATTACK);              // オブジェクトタイプ
 	
 	pScratch->m_nPlayerNum = nPlayerNum;
-	// 当たり判定の生成
-	pScratch->m_pCollision = CCollision::CreateSphere(D3DXVECTOR3(pos.x, pos.y-SCRATCH_HEIGHT, pos.z), SCRATCH_COLLISION_SIZE);
+	switch (user)
+	{
+	case SCRATCHUSER_PLAYER:
+
+		// 当たり判定の生成
+		pScratch->m_pCollision = CCollision::CreateSphere(D3DXVECTOR3(pos.x, pos.y - SCRATCH_HEIGHT, pos.z), SCRATCH_COLLISION_SIZE_PLAYER);
+		break;
+	case SCRATCHUSER_ENEMY:
+		// 当たり判定の生成
+		pScratch->m_pCollision = CCollision::CreateSphere(D3DXVECTOR3(pos.x, pos.y - SCRATCH_HEIGHT, pos.z), SCRATCH_COLLISION_SIZE_ENEMY);
+
+		break;
+	case SCRATCHUSER_BOSS:
+		// 当たり判定の生成
+		pScratch->m_pCollision = CCollision::CreateSphere(D3DXVECTOR3(pos.x, pos.y - SCRATCH_HEIGHT, pos.z), SCRATCH_COLLISION_SIZE_PLAYER);
+		break;
+	default:
+		break;
+	}
+
+	
 
 	return pScratch;
 }

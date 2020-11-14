@@ -32,6 +32,7 @@
 #include "file.h"
 #include "lostpoint.h"
 #include "furniture.h"
+
 //=============================
 // 静的メンバ変数宣言
 //=============================
@@ -69,8 +70,10 @@ CGame * CGame::Create(void)
 {
 	// メモリの確保
 	CGame *pGame = new CGame;
+	
 	// 初期化
 	pGame->Init();
+
 	return pGame;
 }
 
@@ -102,7 +105,6 @@ HRESULT CGame::Init(void)
 		m_pPlayer[nCntPlayer] = CPlayer::Create(D3DXVECTOR3(0.0f,0.0f, 0.0f), nCntPlayer);
 	}
 	
-   
 	// アイテムの生成
 	m_pItem = CItem::Create(D3DXVECTOR3(200.0f, 0.0f, -800.0f),CItem::LIFE);
 	m_pItem = CItem::Create(D3DXVECTOR3(200.0f, 0.0f, -900.0f), CItem::CANDY);
@@ -126,6 +128,10 @@ HRESULT CGame::Init(void)
 
 	// ロストポイントの生成
 	m_pLostPoint = CLostPoint::Create();
+
+	// 背景
+	CBg::Create();
+
 	//CCollect::Create();
 	return S_OK;
 }

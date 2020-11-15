@@ -82,8 +82,27 @@ CScratch * CScratch::Create(const D3DXVECTOR3 pos, const float fAngle,  const  S
 	pScratch->SetObjType(OBJTYPE_ATTACK);              // オブジェクトタイプ
 	
 	pScratch->m_nPlayerNum = nPlayerNum;
-	// 当たり判定の生成
-	pScratch->m_pCollision = CCollision::CreateSphere(D3DXVECTOR3(pos.x, pos.y-SCRATCH_HEIGHT, pos.z), SCRATCH_COLLISION_SIZE);
+	switch (user)
+	{
+	case SCRATCHUSER_PLAYER:
+
+		// 当たり判定の生成
+		pScratch->m_pCollision = CCollision::CreateSphere(D3DXVECTOR3(pos.x, pos.y - SCRATCH_HEIGHT, pos.z), SCRATCH_COLLISION_SIZE_PLAYER);
+		break;
+	case SCRATCHUSER_ENEMY:
+		// 当たり判定の生成
+		pScratch->m_pCollision = CCollision::CreateSphere(D3DXVECTOR3(pos.x, pos.y - SCRATCH_HEIGHT, pos.z), SCRATCH_COLLISION_SIZE_ENEMY);
+
+		break;
+	case SCRATCHUSER_BOSS:
+		// 当たり判定の生成
+		pScratch->m_pCollision = CCollision::CreateSphere(D3DXVECTOR3(pos.x, pos.y - SCRATCH_HEIGHT, pos.z), SCRATCH_COLLISION_SIZE_PLAYER);
+		break;
+	default:
+		break;
+	}
+
+	
 
 	return pScratch;
 }
@@ -228,21 +247,24 @@ void CScratch::Update(void)
 		break;
 	case SCRATCHUSER_PLAYER:
 	{
-		// プレイヤーの取得
-		CPlayer*pPlayer = CGame::GetPlayer(m_nPlayerNum);
-		if (pPlayer != NULL)
+		if (!CPlayer::GetDeath(m_nPlayerNum))
 		{
-			// 座標の設定
-			D3DXVECTOR3 pos;
-			float fRotY = pPlayer->GetRot().y - D3DXToRadian(90);
-			pos.x = pPlayer->GetPos().x + cosf(fRotY) * -SCRATCH_SIZE_PLAYER;
-			pos.y = pPlayer->GetPos().y + SCRATCH_HEIGHT;
-			pos.z = pPlayer->GetPos().z + sinf(fRotY) * SCRATCH_SIZE_PLAYER;
-			SetPos(pos);
+			// プレイヤーの取得
+			CPlayer*pPlayer = CGame::GetPlayer(m_nPlayerNum);
+			if (pPlayer != NULL)
+			{
+				// 座標の設定
+				D3DXVECTOR3 pos;
+				float fRotY = pPlayer->GetRot().y - D3DXToRadian(90);
+				pos.x = pPlayer->GetPos().x + cosf(fRotY) * -SCRATCH_SIZE_PLAYER;
+				pos.y = pPlayer->GetPos().y + SCRATCH_HEIGHT;
+				pos.z = pPlayer->GetPos().z + sinf(fRotY) * SCRATCH_SIZE_PLAYER;
+				SetPos(pos);
 
-			// 角度
-			SetRot(D3DXVECTOR3(0.0f, fRotY, 0.0f));
-			m_pCollision->SetPos(D3DXVECTOR3(pos.x, pos.y - SCRATCH_HEIGHT, pos.z));
+				// 角度
+				SetRot(D3DXVECTOR3(0.0f, fRotY, 0.0f));
+				m_pCollision->SetPos(D3DXVECTOR3(pos.x, pos.y - SCRATCH_HEIGHT, pos.z));
+			}
 		}
 	}
 	break;
@@ -294,6 +316,7 @@ void CScratch::CollisionScratch(SCRATCHUSER user)
 	{
 		if (m_bAttackEnemy)
 		{
+
 			for (int nCount = 0; nCount < MAX_PLAYER; nCount++)
 			{
 				CPlayer*pPlayer = CGame::GetPlayer(nCount);
@@ -303,7 +326,9 @@ void CScratch::CollisionScratch(SCRATCHUSER user)
 					{
 						if (CCollision::CollisionSphere(m_pCollision, pPlayer->GetCollision()))
 						{
+
 							pPlayer->Hit(SCRATCH_ATTACK_ENEMY);
+
 							m_bAttackEnemy = false;
 							//Uninit();
 							//break;

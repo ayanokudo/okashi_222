@@ -37,7 +37,7 @@ LPDIRECT3DTEXTURE9 CTitle::m_apCatTex[CAT_MAX];        // テクスチャへのポインタ
 #define  TUTORIAL_TEXTURE_PATH "./data/Textures/Tutorial_button.png" // テクスチャ
 
 #define  MILK_TEXTURE_PATH  "./data/Textures/WhiteCatAnimation.png"		 // テクスチャ
-#define  CHOCO_TEXTURE_PATH "./data/Textures/ChocolateCatAnimation02.png"	 // テクスチャ
+#define  CHOCO_TEXTURE_PATH "./data/Textures/ChocolateCatAnimation02.png"//Sweat.png"	 // テクスチャ
 
 
 #define CAT_SIZE D3DXVECTOR3(750.0f,311.0f,0.0f)/3

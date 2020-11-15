@@ -20,7 +20,8 @@
 //*****************************
 #define SCRATCH_SIZE_PLAYER 180   // サイズ
 #define SCRATCH_SIZE_ENEMY 100   // サイズ
-#define SCRATCH_COLLISION_SIZE 150   // 当たり判定のサイズ
+#define SCRATCH_COLLISION_SIZE_PLAYER 150   // 当たり判定のサイズ
+#define SCRATCH_COLLISION_SIZE_ENEMY 100   // 当たり判定のサイズ
 #define SCRATCH_HEIGHT 75 // プレイヤーより高い位置に置く
 //*****************************
 // 前方宣言

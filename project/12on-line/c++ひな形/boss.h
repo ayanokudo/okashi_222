@@ -61,6 +61,14 @@ public:
 		TYPE_NUMB,					// 麻痺
 		TYPE_MAX
 	}BOSS;
+	
+	// 状態
+	typedef enum
+	{
+		STATE_NORMAL = 0,	//歩き
+		STATE_DAMAGE,		//ダッシュ
+		STATE_MAX
+	}STATE;
 
 	//メンバ関数
 	CBoss();
@@ -121,6 +129,9 @@ private:
 	CMotion*m_pMotion[MOTION_MAX];  // アニメーションポインタ
 	MOTION m_motionState;           // モーションステート
 	bool m_bMotion;                 // 移動を止める系のモーション判定用
+
+	int m_nCntState;                // ステート遷移用のカウント
+	STATE m_state;                  // 状態
 
 };
 

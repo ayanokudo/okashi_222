@@ -53,6 +53,9 @@
 
 #define MOVE_COUNT 100             // 移動時のカウント
 
+#define STATE_COUNT_DAMAGE 10                               // ダメージ状態のカウント
+#define DAMAGE_STATE_COLOR D3DXCOLOR(0.7f,0.0f,0.0f,1.0f)   // ダメージ状態のカラー
+
 //*****************************
 // 静的メンバ変数宣言
 //*****************************
@@ -92,6 +95,8 @@ CBoss::CBoss() :CModelHierarchy(OBJTYPE_BOSS)
 	memset(m_bHitTail, 0, sizeof(m_bHitTail));
 	m_nCntMove = 0;
 	m_nTargetNum = 0;
+	m_state = STATE_NORMAL;
+	m_nCntState = 0;
 	m_pUi = NULL;
 }
 
@@ -301,7 +306,9 @@ void CBoss::Update(void)
 	// 向きの管理
 	Direction();
 
+	// スクラッチ
 	Scratch();
+
 	// ブレス
 	Brearh();
 
@@ -335,6 +342,22 @@ void CBoss::Update(void)
 		GetCollision()->SetPos(pos);
 	}
 
+	// 状態の管理
+
+	if (m_state == STATE_DAMAGE)
+	{// ダメージ状態の時
+
+	 // カウントを進める
+		m_nCntState++;
+		if (m_nCntState > STATE_COUNT_DAMAGE)
+		{// カウントが規定値を超えたら
+
+		 // カウントの初期化
+			m_nCntState = 0;
+			// 状態をノーマルに戻す
+			m_state = STATE_NORMAL;
+		}
+	}
 }
 
 //******************************
@@ -342,6 +365,20 @@ void CBoss::Update(void)
 //******************************
 void CBoss::Draw(void)
 {
+	if (m_state == STATE_DAMAGE)
+	{// ダメージ状態の時
+
+	 // すべてのパーツを赤色にする
+		for (int nCnt = 0; nCnt < m_nNumModel; nCnt++)
+		{
+			D3DXMATERIAL*pMat = (D3DXMATERIAL*)GetModelData()[nCnt].pBuffMat->GetBufferPointer();
+			for (int nCntMat = 0; nCntMat < GetModelData()[nCnt].nNumMat; nCntMat++)
+			{
+				pMat[nCntMat].MatD3D.Diffuse = DAMAGE_STATE_COLOR;
+			}
+		}
+	}
+
 	CModelHierarchy::Draw();
 }
 
@@ -351,6 +388,12 @@ void CBoss::Draw(void)
 void CBoss::Hit(int nDamage)
 {
 	m_nLife -= nDamage;
+
+	if (m_state == STATE_NORMAL)
+	{
+		m_state = STATE_DAMAGE;
+		m_nCntState = 0;
+	}
 
 	if (m_nLife <= 0)
 	{
@@ -412,9 +455,10 @@ void CBoss::ChangeTarget(int nNum)
 		// カウントを進める
 		m_nCntMove++;
 
-		if (m_nCntMove%MOVE_COUNT == 0)
+		if (m_nCntMove>MOVE_COUNT)
 		{// 一定カウントで
 
+			m_nCntMove = rand() % 15 - 30;
 			// 攻撃する
 			Attack();
 		}
@@ -427,10 +471,11 @@ void CBoss::ChangeTarget(int nNum)
 		// カウントを進める
 		m_nCntMove++;
 
-		if (m_nCntMove%MOVE_COUNT == 0)
+		if (m_nCntMove>MOVE_COUNT)
 		{// 一定カウントで
 
-		 // 攻撃する
+			m_nCntMove = rand() % 15 - 30;
+			// 攻撃する
 			Attack();
 		}
 	}
@@ -450,13 +495,14 @@ void CBoss::ChangeTarget(int nNum)
 
 			// カウントを進める
 			m_nCntMove++;
-		
-			if (m_nCntMove%MOVE_COUNT == 0)
+
+			if (m_nCntMove>MOVE_COUNT)
 			{// 一定カウントで
+
+				m_nCntMove = rand() % 15 - 30;
 
 				// ターゲットをランダムに変更
 				m_nTargetNum = rand() % MAX_PLAYER;
-
 				// 攻撃する
 				Attack();
 			}

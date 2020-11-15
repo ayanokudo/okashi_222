@@ -24,7 +24,7 @@ class CBillboard : public CScene
 {
 public:
 	// ÉÅÉìÉoä÷êî
-	CBillboard(int nPliority = OBJTYPE_NONE);
+	CBillboard(int nPliority = OBJTYPE_ANIMATION);
 	~CBillboard();
 	static CBillboard *Create(D3DXVECTOR3 pos, D3DXVECTOR3 size);
 	HRESULT Init(void);

@@ -129,7 +129,7 @@ HRESULT CFurniture::Init(void)
 	CModel::Init();
 	CModel::BindModel(m_model[m_type].pMesh,m_model[m_type].pBuffMat,m_model[m_type].nNumMat);
 	// •Ç‚æ‚è‚¿‚å‚Á‚Æ‘å‚«‚ß‚É“–‚½‚è”»’è‚ğ‚Æ‚é
-	D3DXVECTOR3 collisionSize = m_size + D3DXVECTOR3(5.0f, 5.0f, 5.0f);
+    D3DXVECTOR3 collisionSize = { m_size.x / 2,m_size.y / 2,m_size.z / 2 };
 	if (m_rot.y == 0)
 	{
 		// “–‚½‚è”»’è‚Ì¶¬

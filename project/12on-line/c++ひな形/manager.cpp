@@ -363,6 +363,7 @@ void CManager::SetMode(MODE mode)
 	case MODE_ROGO:
 		// NULLクリア
 		m_pRogo = NULL;
+		m_pSound->Stop(CSound::SOUND_SE_ROGO_BGM);
 		break;
 	case MODE_TITLE:
 		// NULLクリア
@@ -380,7 +381,7 @@ void CManager::SetMode(MODE mode)
 		// NULLクリア
 		m_pGame = NULL;
 		// ゲームBGM停止
-		m_pSound->Stop(CSound::SOUND_BGM_GAME);
+		m_pSound->Stop();
 		break;
 	case MODE_WIN:
 		// NULLクリア

@@ -34,6 +34,7 @@
 #include "lostpoint.h"
 #include "furniture.h"
 #include "collision.h"
+#include "sound.h"
 
 //=============================
 // インクルード
@@ -122,7 +123,9 @@ HRESULT CGame::Init(void)
 	//スコアの初期化
 	m_pScore->ResetScore();
 	// スコアの生成
-	m_pScore = CScore::Create(D3DXVECTOR3(950.0f, 40.0f, 0.0f), D3DXVECTOR3(30.0f, 30.0f, 0.0f));
+	m_pScore = CScore::Create(
+		D3DXVECTOR3(950.0f, 80.0f, 0.0f), 
+		D3DXVECTOR3(30.0f, 30.0f, 0.0f));
 	// タイムの生成
 	m_pTime = CTime::Create();
 
@@ -219,9 +222,13 @@ void CGame::Draw(void)
 
 void CGame::SetGameMode(GAME_MODE mode)
 {
+	//サウンドのポインタ変数宣言
+	CSound*pSound = CManager::GetSound();
 	m_gameMode = mode;
 	if (m_gameMode == GAME_BOSS)
 	{
+		pSound->Stop(CSound::SOUND_BGM_GAME);
+		pSound->Play(CSound::SOUND_BGM_BOSS_GAME);
 		// ボスの生成
 		m_pBoss = CBoss::Create(D3DXVECTOR3(-15000.0f, 0.0f, -18000.0f));
 

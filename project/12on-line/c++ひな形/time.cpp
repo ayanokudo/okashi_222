@@ -31,7 +31,7 @@ int CTime::m_nPauseCurrentTime = 0;
 //=============================
 // コンストラクタ
 //=============================
-CTime::CTime() :CScene(OBJTYPE_TIME)
+CTime::CTime() :CScene(OBJTYPE_NUMBER)
 {
 	// ナンバーのクリア
 	memset(m_apNumber, 0, sizeof(m_apNumber));
@@ -169,9 +169,6 @@ void CTime::Draw(void)
 	//デバイスの取得
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
 	pDevice->SetRenderState(D3DRS_ALPHAREF, 200);
-
-	//m_pUi->Draw();
-
 	for (int nCntDigit = 0; nCntDigit < MAX_TIME_DIGIT; nCntDigit++)
 	{
 		m_apNumber[nCntDigit]->Draw();

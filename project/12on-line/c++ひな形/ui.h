@@ -28,6 +28,7 @@ public:
 	typedef enum
 	{
 		UI_TIME = 0,	//タイム
+		UI_SCORE,
 		UI_TITLE,		//タイトル
 		UI_ENTER,		//プレスエンター
 		UI_WARNING,		//危険

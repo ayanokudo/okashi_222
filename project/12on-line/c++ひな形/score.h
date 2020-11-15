@@ -19,6 +19,7 @@
 //前方宣言
 //*****************************
 class CNumber;
+class CUi;
 
 //*****************************
 //マクロ定義
@@ -53,6 +54,7 @@ private:
 	CNumber* m_apNumber[MAX_SCORE_DIGIT];
 	static int m_nRankingScore[MAX_RANKING];
 	static int m_nScore;
+	CUi *m_pUi;
 	D3DXVECTOR3 m_pos;
 	D3DXVECTOR3 m_size;
 };

@@ -21,13 +21,14 @@
 //*****************************
 
 //UIクラス
-class CUi
+class CUi :public CScene
 {
 public:
 	//UIの種類
 	typedef enum
 	{
 		UI_TIME = 0,	//タイム
+		UI_SCORE,
 		UI_TITLE,		//タイトル
 		UI_ENTER,		//プレスエンター
 		UI_WARNING,		//危険
@@ -48,6 +49,7 @@ public:
 	static HRESULT Load(void);
 	static void Unload(void);
 
+	HRESULT Init(void);
 	HRESULT Init(const D3DXVECTOR3 pos, const D3DXVECTOR3 size, const D3DXCOLOR col, const UI type);
 	void Uninit(void);
 	void Update(void);

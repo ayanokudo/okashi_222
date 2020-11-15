@@ -79,7 +79,8 @@ public:
 	CCollision*GetCollision(void) { return m_pCollision; }
 	D3DXVECTOR3 GetMove(void) { return m_move; }
 	D3DXVECTOR3 GetPosOld(void) { return m_posOld; }
-	void GetMove(D3DXVECTOR3 move) { m_move = move; }
+	void SetMove(D3DXVECTOR3 move) { m_move = move; }
+	void SetMotion(MOTION motionState);
 	int GetPlayerNum(void) { return m_nPlayerNum; }
 private:
 	void MoveKeyboard(void);
@@ -88,7 +89,7 @@ private:
 	void Attack(void);
 	void MotionManager(void);
 	void MotionFalse(void);
-	void SetMotion(MOTION motionState);
+	
 	void Dash(void);
 
 	// ÉÅÉìÉoïœêî

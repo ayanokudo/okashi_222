@@ -32,6 +32,7 @@
 #include "file.h"
 #include "lostpoint.h"
 #include "furniture.h"
+#include "sound.h"
 
 //=============================
 // 静的メンバ変数宣言
@@ -110,15 +111,16 @@ HRESULT CGame::Init(void)
 	//m_pItem = CItem::Create(D3DXVECTOR3(200.0f, 0.0f, -900.0f), CItem::CANDY);
 	//m_pItem = CItem::Create(D3DXVECTOR3(200.0f, 0.0f, -1000.0f), CItem::KOBAN);
 
+	//UIの生成
+	Ui();
 	//スコアの初期化
 	m_pScore->ResetScore();
 	// スコアの生成
-	m_pScore = CScore::Create(D3DXVECTOR3(950.0f, 40.0f, 0.0f), D3DXVECTOR3(30.0f, 30.0f, 0.0f));
+	m_pScore = CScore::Create(
+		D3DXVECTOR3(950.0f, 80.0f, 0.0f), 
+		D3DXVECTOR3(30.0f, 30.0f, 0.0f));
 	// タイムの生成
 	m_pTime = CTime::Create();
-
-	//UIの生成
-	Ui();
 
     // ステージファイルの読み込み
     CFile::Read();
@@ -153,10 +155,10 @@ void CGame::Uninit(void)
 	}
 	for (int nCount = 0; nCount <= 5; nCount++)
 	{
-		if (m_pUi != NULL)
+		if (m_pUi[nCount] != NULL)
 		{
 			m_pUi[nCount]->Uninit();
-			delete m_pUi[nCount];
+			//delete m_pUi[nCount];
 			m_pUi[nCount] = NULL;
 		}
 	}
@@ -196,20 +198,24 @@ void CGame::Draw(void)
 	{
 		m_pCamera->SetCamera();
 	}
-	for (int nCount = 0; nCount <= 5; nCount++)
+	/*for (int nCount = 0; nCount <= 5; nCount++)
 	{
 		if (m_pUi != NULL)
 		{
 			m_pUi[nCount]->Draw();
 		}
-	}
+	}*/
 }
 
 void CGame::SetGameMode(GAME_MODE mode)
 {
+	//サウンドのポインタ変数宣言
+	CSound*pSound = CManager::GetSound();
 	m_gameMode = mode;
 	if (m_gameMode == GAME_BOSS)
 	{
+		pSound->Stop(CSound::SOUND_BGM_GAME);
+		pSound->Play(CSound::SOUND_BGM_BOSS_GAME);
 		// ボスの生成
 		m_pBoss = CBoss::Create(D3DXVECTOR3(-15000.0f, 0.0f, -18000.0f));
 
@@ -218,9 +224,40 @@ void CGame::SetGameMode(GAME_MODE mode)
 		{
 			if (!CPlayer::GetDeath(nCnt))
 			{
-				m_pPlayer[nCnt]->SetPos(D3DXVECTOR3(-15000.0f - (400 - nCnt * 800), 0.0f, -16500.0f));
+				m_pPlayer[nCnt]->SetPos(D3DXVECTOR3(-15000.0f - (400 - nCnt * 800), 0.0f, -16900.0f));
+				m_pPlayer[nCnt]->SetMotion(CPlayer::WAIT);
 			}
 		}
+
+		// 敵をいったん全部消す
+		CEnemy*pEnemy = (CEnemy*)GetTop(OBJTYPE_ENEMY);
+
+		while (pEnemy != NULL)
+		{
+			// ネクストの保存
+			CEnemy*pNext = (CEnemy*)pEnemy->GetNext();
+			// 消す
+			pEnemy->Uninit();
+			// ネクストにする
+			pEnemy = pNext;
+		}
+
+		// 敵の配置
+		// 何体敵を沸かすか
+		const int c_nNumEnemy = 10;
+
+		for (int nCnt = 0; nCnt < c_nNumEnemy; nCnt++)
+		{
+			// 敵を沸かす位置
+			D3DXVECTOR3 enemyPos;
+			enemyPos.x = -15000.0f + (-600+(nCnt % 5)*300);
+			enemyPos.y = 0;
+			enemyPos.z = -19000.0f - ((nCnt / 5) * 200);
+			// 敵の生成
+			CEnemy::Create(enemyPos, CEnemy::ENEMY_ESCORT);
+		}
+		//// ボスの生成
+		//m_pBoss = CBoss::Create(D3DXVECTOR3(-15000.0f, 0.0f, -18000.0f));
 	}
 }
 
@@ -232,25 +269,25 @@ void CGame::Ui(void)
 	// ダッシュのUIの生成
 	m_pUi[0] = CUi::Create(D3DXVECTOR3(640.0f, 660.0f, 0.0f),
 		D3DXVECTOR3(135, 50, 0),
-		D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
+		D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.5f),
 		CUi::UI_ATTACK);
 
 	// アタックのUIの生成
 	m_pUi[1] = CUi::Create(D3DXVECTOR3(550.0f, 660.0f, 0.0f),
 		D3DXVECTOR3(45, 45, 0),
-		D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.8f),
+		D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.7f),
 		CUi::UI_ATTACK_NAIL);
 
 	// ダッシュのUIの生成
 	m_pUi[2] = CUi::Create(D3DXVECTOR3(640.0f, 660.0f, 0.0f),
 		D3DXVECTOR3(45, 45, 0),
-		D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.8f),
+		D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.7f),
 		CUi::UI_ATTACK_CRY);
 
 	// ダッシュのUIの生成
 	m_pUi[3] = CUi::Create(D3DXVECTOR3(730.0f, 660.0f, 0.0f),
 		D3DXVECTOR3(45, 45, 0),
-		D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.8f),
+		D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.7f),
 		CUi::UI_DASH);
 
 	// アタックのUIの生成

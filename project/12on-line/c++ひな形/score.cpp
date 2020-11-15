@@ -13,6 +13,7 @@
 #include "renderer.h"
 #include "manager.h"
 #include "game.h"
+#include "ui.h"
 //==============================
 //静的メンバ変数宣言
 //==============================
@@ -27,10 +28,11 @@ int CScore::m_nRankingScore[MAX_RANKING] = {};
 //==================================
 // コンストラクタ
 //==================================
-CScore::CScore()
+CScore::CScore() :CScene(OBJTYPE_NUMBER)
 {
 	// ナンバーのクリア
 	memset(m_apNumber, 0, sizeof(m_apNumber));
+	m_pUi = NULL;
 	m_pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	m_size = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 }
@@ -56,10 +58,9 @@ CScore * CScore::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 size)
 		pScore->m_size = size;
 		// 初期化処理
 		pScore->Init();
+		// オブジェクトタイプの設定
+		pScore->SetObjType(OBJTYPE_UI);
 	}
-
-	// オブジェクトタイプの設定
-	pScore->SetObjType(OBJTYPE_UI);
 
 	return pScore;
 }
@@ -74,10 +75,16 @@ HRESULT CScore::Init(void)
 	for (int nCntDigit = 0; nCntDigit < MAX_SCORE_DIGIT; nCntDigit++)
 	{
 		m_apNumber[nCntDigit] = CNumber::Create(0,
-			D3DXVECTOR3(m_pos.x + nCntDigit * 30 * 2, m_pos.y, m_pos.y),
+			D3DXVECTOR3(m_pos.x + nCntDigit * 27 * 2, m_pos.y, m_pos.y),
 			D3DXVECTOR3(m_size),
 			D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 	}
+
+	//タイムの文字表示
+	m_pUi = CUi::Create(D3DXVECTOR3(1070.0f, 80.0f, 0.0f),
+		D3DXVECTOR3(200, 90, 0),
+		D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
+		CUi::UI_SCORE);
 
 	return S_OK;
 }
@@ -97,6 +104,16 @@ void CScore::Uninit(void)
 		}
 	}
 
+	if (m_pUi != NULL)
+	{
+		if (!m_pUi->GetReleaseFlag())
+		{
+			m_pUi->Uninit();
+			//delete m_pUi;
+			m_pUi = NULL;
+		}
+	}
+
 	// 開放処理
 	Release();
 }
@@ -112,6 +129,7 @@ void CScore::Update(void)
 
 		m_apNumber[nCntDigit]->SetNumber((m_nScore % (int)(powf(10.0f, (MAX_SCORE_DIGIT - nCntDigit)))) / (float)(powf(10.0, (MAX_SCORE_DIGIT - nCntDigit - 1))));
 	}
+	m_pUi->Update();
 }
 
 //==================================
@@ -121,7 +139,7 @@ void CScore::Draw(void)
 {
 	//デバイスの取得
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
-	pDevice->SetRenderState(D3DRS_ALPHAREF, 200);
+	pDevice->SetRenderState(D3DRS_ALPHAREF, 200);	
 	for (int nCntDigit = 0; nCntDigit < MAX_SCORE_DIGIT; nCntDigit++)
 	{
 		m_apNumber[nCntDigit]->Draw();

@@ -18,6 +18,7 @@
 // マクロ定義
 //**********************************
 #define UI_TIME_TEXTURE_PATH		"./data/Textures/TIME.png"			// タイムのパス
+#define UI_SCORE_TEXTURE_PATH		"./data/Textures/Score.png"			// タイムのパス
 #define UI_TITLE_TEXTURE_PATH		"./data/Textures/title000.png"		// タイトルのパス
 #define UI_ENTER_TEXTURE_PATH		"./data/Textures/title000.png"		// エンターのパス
 #define UI_WARNING_TEXTURE_PATH		"./data/Textures/TIME.png"			// ワーニングのパス
@@ -38,7 +39,7 @@ LPDIRECT3DTEXTURE9 CUi::m_apTexture[UI_MAX] = {};
 //==================================
 // コンストラクタ
 //==================================
-CUi::CUi()
+CUi::CUi() :CScene(OBJTYPE_UI)
 {
 	m_pVtxBuff = NULL;
 	m_col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
@@ -81,6 +82,7 @@ HRESULT CUi::Load(void)
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
 	// テクスチャの生成
 	D3DXCreateTextureFromFile(pDevice, UI_TIME_TEXTURE_PATH, &m_apTexture[UI_TIME]);
+	D3DXCreateTextureFromFile(pDevice, UI_SCORE_TEXTURE_PATH, &m_apTexture[UI_SCORE]);
 	D3DXCreateTextureFromFile(pDevice, UI_TITLE_TEXTURE_PATH, &m_apTexture[UI_TITLE]);
 	D3DXCreateTextureFromFile(pDevice, UI_ENTER_TEXTURE_PATH, &m_apTexture[UI_ENTER]);
 	D3DXCreateTextureFromFile(pDevice, UI_WARNING_TEXTURE_PATH, &m_apTexture[UI_WARNING]);
@@ -108,6 +110,11 @@ void CUi::Unload(void)
 			m_apTexture[nCount] = NULL;
 		}
 	}
+}
+
+HRESULT CUi::Init(void)
+{
+	return E_NOTIMPL;
 }
 
 //==================================
@@ -162,6 +169,8 @@ void CUi::Uninit(void)
 		m_pVtxBuff->Release();
 		m_pVtxBuff = NULL;
 	}
+
+	Release();
 }
 
 //==================================

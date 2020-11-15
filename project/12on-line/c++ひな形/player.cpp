@@ -411,6 +411,7 @@ void CPlayer::Update(void)
 
 		if (CGame::GetGameMode() == CGame::GAME_NORMAL)
 		{
+
 			CGame::SetGameMode(CGame::GAME_BOSS);
 		}
 
@@ -790,10 +791,13 @@ void CPlayer::Hit(int nDamage)
 	//サウンドのポインタ変数宣言
 	CSound*pSound = CManager::GetSound();
 
-	if (m_state == STATE_NORMAL)
+	if (CGame::GetGameMode() == CGame::GAME_NORMAL || ((CBoss*)GetTop(OBJTYPE_BOSS))->GetMotion() != CBoss::SPAWN)
 	{
-		m_nLife -= nDamage;
-		m_state = STATE_DAMAGE;
+		if (m_state == STATE_NORMAL)
+		{
+			m_nLife -= nDamage;
+			m_state = STATE_DAMAGE;
+		}
 	}
 
 	if (m_nLife <= 0)

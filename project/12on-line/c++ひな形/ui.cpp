@@ -25,6 +25,7 @@
 #define UI_ATTACK_CRY_TEXTURE_PATH	"./data/Textures/Voice.png"			// 鳴き声のパス
 #define UI_DASH_TEXTURE_PATH		"./data/Textures/Dash.png"			// ダッシュのパス
 #define UI_END_TEXTURE_PATH			"./data/Textures/Dash.png"			// 終わりのパス
+#define UI_ATTACK_TEXTURE_PATH		"./data/Textures/d224580adc1be0d4943225f3efb27d7f_t.png"			// 終わりのパス
 #define UI_CHOCO_TEXTURE_PATH		"./data/Textures/chocolate_HPicon.png"	// チョコのパス
 #define UI_MILK_TEXTURE_PATH		"./data/Textures/Milk_HPicon.png"		// ミルクのパス
 
@@ -87,6 +88,7 @@ HRESULT CUi::Load(void)
 	D3DXCreateTextureFromFile(pDevice, UI_ATTACK_NAIL_TEXTURE_PATH, &m_apTexture[UI_ATTACK_CRY]);
 	D3DXCreateTextureFromFile(pDevice, UI_DASH_TEXTURE_PATH, &m_apTexture[UI_DASH]);
 	D3DXCreateTextureFromFile(pDevice, UI_END_TEXTURE_PATH, &m_apTexture[UI_END]);
+	D3DXCreateTextureFromFile(pDevice, UI_ATTACK_TEXTURE_PATH, &m_apTexture[UI_ATTACK]);
 	D3DXCreateTextureFromFile(pDevice, UI_CHOCO_TEXTURE_PATH, &m_apTexture[UI_CHOCO]);
 	D3DXCreateTextureFromFile(pDevice, UI_MILK_TEXTURE_PATH, &m_apTexture[UI_MILK]);
 
@@ -180,25 +182,6 @@ void CUi::Update(void)
 		if (pos.y == 200.0f)
 		{
 			m_move.y = 0.0f;
-		}
-	}
-
-	if (m_type == UI_END)
-	{
-		m_nCount++;
-		m_move.x = 2.0f;
-		if (pos.x == 650.0f)
-		{
-			m_move.x = 0.0f;
-			//if (m_nCount >= 120)
-			//{
-			//	m_move.x = 2.0f;
-			//	if (pos.x == 1350.0f)
-			//	{
-			//		Uninit();
-			//		return;
-			//	}
-			//}
 		}
 	}
 

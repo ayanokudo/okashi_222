@@ -47,12 +47,13 @@
 #include "lose.h"
 #include "time.h"
 #include "furniture.h"
+#include "rogo.h"
 
 
 //=============================
 // 静的メンバ変数宣言
 //=============================
-CManager::MODE   CManager::m_mode = MODE_TITLE;      // ゲームモード
+CManager::MODE   CManager::m_mode = MODE_ROGO;      // ゲームモード
 CRenderer       *CManager::m_pRenderer = NULL;       // レンダラーポインタ
 CInputKeyboard  *CManager::m_pInputKeyboard = NULL;  // キーボード
 CInputJoypad    *CManager::m_pJoypad = NULL;         // ジョイパッド
@@ -65,6 +66,7 @@ CFade           *CManager::m_pFade = NULL;           // フェード
 CTutorial       *CManager::m_pTutorial = NULL;       // チュートリアル
 CWin            *CManager::m_pWin = NULL;            // フェード
 CLose           *CManager::m_pLose = NULL;			 // チュートリアル
+CRogo		    *CManager::m_pRogo = NULL;
 CPause          *CManager::m_pPause = NULL;          // ポーズポインタ
 bool             CManager::m_bPause = false;         // ポーズフラグ
 
@@ -140,6 +142,7 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, bool bWindow)
 
 	// テクスチャの読み込み
 	CBg::Load();        // 背景
+	CUi::Load();		// ui
 	CNumber::Load();	// ナンバー
 	CParticle::Load();	// パーティクル
 	CPause::Load();		// ポーズ
@@ -151,12 +154,12 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, bool bWindow)
     CBoss::Load();      // ボス
 	CItem::Load();		// アイテム
 	CScratch::Load();	// ひっかき
-	CUi::Load();		// ui
 	CBoss::Load();      // ボス
 	CCollect::Load();   // コレクト
 	CLife::Load();		//
 	CTitle::Load();		//
     CFurniture::Load();
+	CRogo::Load();
 
 	// ポーズ状態の時
 	return S_OK;
@@ -172,6 +175,7 @@ void CManager::Uninit(void)
 
 	// テクスチャのアンロード
 	CBg::Unload();       // 背景
+	CUi::Unload();		 // ui
 	CNumber::Unload();	 // ナンバー
 	CParticle::Unload(); // パーティクル
 	CPause::UnLoad();	 // ポーズ
@@ -183,12 +187,12 @@ void CManager::Uninit(void)
     CBoss::Unload();     // ボス
 	CItem::Unload();	 //	アイテム
 	CScratch::Unload();  // ひっかき
-	CUi::Unload();		 // ui
 	CBoss::Unload();     // ボス
 	CCollect::Unload();  // コレクト
 	CLife::Unload();
 	CTitle::Unload();
     CFurniture::Unload();
+	CRogo::Unload();
 
 	if (m_pSound != NULL)
 	{
@@ -354,6 +358,10 @@ void CManager::SetMode(MODE mode)
 {
 	switch (m_mode)
 	{
+	case MODE_ROGO:
+		// NULLクリア
+		m_pRogo = NULL;
+		break;
 	case MODE_TITLE:
 		// NULLクリア
 		m_pTitle = NULL;
@@ -401,6 +409,12 @@ void CManager::SetMode(MODE mode)
 
 	switch (m_mode)
 	{
+	case MODE_ROGO:
+		// タイトル生成
+		m_pRogo = CRogo::Create();
+		// タイトルBGM再生
+		m_pSound->Play(CSound::SOUND_SE_ROGO_BGM);
+		break;
 	case MODE_TITLE:
 		// タイトル生成
 		m_pTitle = CTitle::Create();

@@ -30,6 +30,7 @@ class CTutorial;
 class CPause;
 class CWin;
 class CLose;
+class CRogo;
 
 //=============================
 // クラス定義
@@ -42,6 +43,7 @@ public:
 	typedef enum
 	{
 		MODE_TITLE=0,
+		MODE_ROGO,
 		MODE_TUTORIAL,
 		MODE_GAME,
 		MODE_RESULT,
@@ -70,6 +72,7 @@ public:
 	static CPause * GetPause(void) { return m_pPause; }                       // ポーズの取得処理
 	static CWin * GetWin(void) { return m_pWin; }                       // フェードの取得処理
 	static CLose * GetLose(void) { return m_pLose; }                       // ポーズの取得処理
+	static CRogo * GetRogo(void) { return m_pRogo; }                       // ポーズの取得処理
 	static void SetActivePause(bool bPause) { m_bPause = bPause; }               // ポーズのセット
 	static bool GetActivePause(void) { return m_bPause; }                        // フェードの取得処理
 
@@ -88,6 +91,7 @@ private:
 	static CTutorial*m_pTutorial;            // チュートリアル
 	static CWin*m_pWin;                    // フェードポインタ
 	static CLose*m_pLose;            // チュートリアル
+	static CRogo*m_pRogo;
 	static CPause*m_pPause;                    // ポーズポインタ
 	static bool m_bPause;                    // ポーズフラグ
 };

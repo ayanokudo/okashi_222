@@ -196,6 +196,7 @@
     <ClCompile Include="score.cpp" />
     <ClCompile Include="scratch.cpp" />
     <ClCompile Include="sound.cpp" />
+    <ClCompile Include="rogo.cpp" />
     <ClCompile Include="time.cpp" />
     <ClCompile Include="title.cpp" />
     <ClCompile Include="tutorial.cpp" />
@@ -240,6 +241,7 @@
     <ClInclude Include="ranking.h" />
     <ClInclude Include="renderer.h" />
     <ClInclude Include="result.h" />
+    <ClInclude Include="rogo.h" />
     <ClInclude Include="scene.h" />
     <ClInclude Include="scene2d.h" />
     <ClInclude Include="scene3d.h" />

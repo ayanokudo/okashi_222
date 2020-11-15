@@ -34,7 +34,8 @@ public:
 		UI_ATTACK_NAIL,	//攻撃爪
 		UI_ATTACK_CRY,	//攻撃鳴き声
 		UI_DASH,		//ダッシュ
-		UI_END,
+		UI_END,			//おわり！
+		UI_ATTACK,		//アタックUI
 		UI_CHOCO,		//チョコ
 		UI_MILK,		//ミルク
 		UI_MAX

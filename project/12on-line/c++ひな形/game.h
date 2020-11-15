@@ -38,7 +38,7 @@ class CFurniture;
 // マクロ定義
 //*****************************
 #define MAX_PLAYER 2
-#define UI_PLAYER 5
+#define UI_PLAYER 6
 
 //*****************************
 //クラス定義

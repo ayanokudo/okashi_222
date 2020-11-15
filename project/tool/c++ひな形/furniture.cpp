@@ -145,17 +145,32 @@ void CFumiture::Draw(void)
         {
         case TYPE_000:
             //マテリアルのアンビエントにディフューズカラーを設定
-            pMat[nCntMat].MatD3D.Diffuse = { 0,0,255,255 };
+            pMat[nCntMat].MatD3D.Diffuse = { 255,0,0,255 };
             break;
 
         case TYPE_001:
             //マテリアルのアンビエントにディフューズカラーを設定
-            pMat[nCntMat].MatD3D.Diffuse = { 255,0,0,255 };
+            pMat[nCntMat].MatD3D.Diffuse = { 0,0,255,255 };
             break;
 
         case TTPE_002:
             //マテリアルのアンビエントにディフューズカラーを設定
-            pMat[nCntMat].MatD3D.Diffuse = { 255,0,0,255 };
+            pMat[nCntMat].MatD3D.Diffuse = { 255,255,0,255 };
+            break;
+
+        case TYPE_003:
+            //マテリアルのアンビエントにディフューズカラーを設定
+            pMat[nCntMat].MatD3D.Diffuse = { 0,255,0,255 };
+            break;
+
+        case TYPE_004:
+            //マテリアルのアンビエントにディフューズカラーを設定
+            pMat[nCntMat].MatD3D.Diffuse = { 255,128,0,255 };
+            break;
+
+        case TYPE_005:
+            //マテリアルのアンビエントにディフューズカラーを設定
+            pMat[nCntMat].MatD3D.Diffuse = { 120,120,255,255 };
             break;
         }
     }

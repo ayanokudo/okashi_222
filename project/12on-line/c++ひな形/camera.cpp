@@ -23,7 +23,7 @@
 // マクロ定義
 //******************************
 #define CAMERA_DISTANCE 250    // カメラの距離
-#define CAMERA_LOCAL_POS D3DXVECTOR3(0.0f, 2300.0f, 200.0f) // 注視点からのローカル座標
+#define CAMERA_LOCAL_POS D3DXVECTOR3(0.0f, 2600.0f, 200.0f) // 注視点からのローカル座標
 #define CAMERA_LOOK_RATE 0.5f  // 注視点を少しずつ変えるときの係数
 #define PLAYER_DEATH_COUNT 40  // プレイヤーが死んでから生きてるプレイヤーの方に少しずつ注視点を変える用
 #define BOSS_MODE_POS_R D3DXVECTOR3(-15000.0f, 0.0f, -17700.0f)
@@ -167,10 +167,10 @@ void CCamera::Update(void)
 			m_posR.x = playerPos[0].x + cosf(fAngle)*(fDistance / 2);
 			m_posR.z = playerPos[0].z + sinf(fAngle)*(fDistance / 2);
 
-			if (fDistance >= 500 && fDistance <= 2000)
+			if (fDistance >= 1000 && fDistance <= 2000)
 			{
 				// 距離でカメラを引く
-				m_fViewExtent = fDistance - 500;
+				m_fViewExtent = fDistance - 1000;
 			}
 
 			// カメラ位置の設定
@@ -359,8 +359,8 @@ void CCamera::Update(void)
 				if (!CPlayer::GetDeath(nCntPlayer))
 				{
 					// カメラの外側からどれくらい外判定か
-					const float c_fAdjust_X = 800.0f;
-					const float c_fAdjust_Y = 400.0f;
+					const float c_fAdjust_X = 1000.0f;
+					const float c_fAdjust_Y = 700.0f;
 
 					// プレイヤーの位置の取得
 					D3DXVECTOR3 playerPos = CGame::GetPlayer(nCntPlayer)->GetPos();

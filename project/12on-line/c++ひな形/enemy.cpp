@@ -349,8 +349,11 @@ void CEnemy::Update(void)
 		MotionEscort();
 		break;
 	}
-	if (CGame::GetGameMode() == CGame::GAME_NORMAL || ((CBoss*)GetTop(OBJTYPE_BOSS))->GetMotion() != CBoss::SPAWN)
-	{// ボス戦以外かボスがスポーンモーション中じゃないとき
+
+	CBoss*pBoss = (CBoss*)GetTop(OBJTYPE_BOSS);
+	if (CGame::GetGameMode() == CGame::GAME_NORMAL)// != CBoss::SPAWN)
+	{// ボス戦以外
+
 		// 慣性
 		m_move += (m_moveDest - m_move) * ENEMY_MOVE_RATE;
 
@@ -359,6 +362,25 @@ void CEnemy::Update(void)
 
 		// 座標のセット
 		SetPos(pos);
+	}
+	else if (pBoss != NULL)
+	{// ボスがスポーンモーション中じゃないとき
+
+		if (pBoss->GetMotion() != CBoss::SPAWN)
+		{
+			// 慣性
+			m_move += (m_moveDest - m_move) * ENEMY_MOVE_RATE;
+
+			// 移動量を足す
+			pos += m_move;
+
+			// 座標のセット
+			SetPos(pos);
+		}
+		else
+		{
+			m_fRotYDist = D3DXToRadian(180.0f);
+		}
 	}
 	else
 	{

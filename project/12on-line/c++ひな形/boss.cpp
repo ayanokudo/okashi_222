@@ -26,6 +26,7 @@
 #include "sound.h"
 #include "file.h"
 #include "ui.h"
+#include"gage.h"
 
 //*****************************
 // マクロ定義
@@ -47,7 +48,6 @@
 
 #define ATTACK_PATTARN 3            // 攻撃パターン
 #define ATTACK_BASE 200             // 攻撃するタイミングのベース値
-#define BOSS_LIFE 4000              // ボスのライフ
 #define BULLET_INTERVAL 15          // 弾のインターバル
 #define BOSS_SCORE_UP 15000
 
@@ -248,6 +248,10 @@ HRESULT CBoss::Init(void)
 	// 初期の向きの設定
 	SetRot(D3DXVECTOR3(0.0f, D3DXToRadian(180.0f), 0.0f));
 	m_fRotYDist = D3DXToRadian(180.0f);
+
+	// HPゲージの生成
+	CGage::Create();
+
 	return S_OK;
 }
 
@@ -375,7 +379,7 @@ void CBoss::Draw(void)
 		for (int nCnt = 0; nCnt < m_nNumModel; nCnt++)
 		{
 			D3DXMATERIAL*pMat = (D3DXMATERIAL*)GetModelData()[nCnt].pBuffMat->GetBufferPointer();
-			for (int nCntMat = 0; nCntMat < GetModelData()[nCnt].nNumMat; nCntMat++)
+			for (int nCntMat = 0; nCntMat < (int)GetModelData()[nCnt].nNumMat; nCntMat++)
 			{
 				pMat[nCntMat].MatD3D.Diffuse = DAMAGE_STATE_COLOR;
 			}

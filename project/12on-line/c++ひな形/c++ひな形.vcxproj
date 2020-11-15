@@ -156,6 +156,7 @@
   <ItemGroup>
     <ClCompile Include="collect.cpp" />
     <ClCompile Include="furniture.cpp" />
+    <ClCompile Include="gage.cpp" />
     <ClCompile Include="life.cpp" />
     <ClCompile Include="file.cpp" />
     <ClCompile Include="lostpoint.cpp" />
@@ -218,6 +219,7 @@
     <ClInclude Include="collect.h" />
     <ClInclude Include="floor.h" />
     <ClInclude Include="furniture.h" />
+    <ClInclude Include="gage.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="input.h" />
     <ClInclude Include="item.h" />

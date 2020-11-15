@@ -47,9 +47,9 @@ CWall * CWall::Create(D3DXVECTOR3 pos, TYPE ntype)
     {
         pObject = new CWall;
         // 初期化
-        pObject->Init();
-        pObject->SetPos(pos);
         pObject->m_type = ntype;
+        pObject->SetPos(pos);
+        pObject->Init();
         // 各値の代入・セット
         pObject->SetObjType(OBJTYPE_WALL); // オブジェクトタイプ
     }

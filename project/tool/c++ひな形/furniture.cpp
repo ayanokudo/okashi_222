@@ -41,13 +41,13 @@ CFumiture::~CFumiture()
 //=============================================================================
 // [Create] オブジェクトの生成
 //=============================================================================
-CFumiture * CFumiture::Create(D3DXVECTOR3 pos)
+CFumiture * CFumiture::Create(D3DXVECTOR3 pos,TYPE ntype)
 {
     CFumiture *pObject = NULL;
     if (!pObject)
     {
         pObject = new CFumiture;
-        pObject->Init();
+        pObject->SetType(ntype);
         // 初期化
         pObject->Init();
         pObject->SetPos(pos);

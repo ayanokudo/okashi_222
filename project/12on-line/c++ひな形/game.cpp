@@ -110,15 +110,14 @@ HRESULT CGame::Init(void)
 	//m_pItem = CItem::Create(D3DXVECTOR3(200.0f, 0.0f, -900.0f), CItem::CANDY);
 	//m_pItem = CItem::Create(D3DXVECTOR3(200.0f, 0.0f, -1000.0f), CItem::KOBAN);
 
+	//UIの生成
+	Ui();
 	//スコアの初期化
 	m_pScore->ResetScore();
 	// スコアの生成
 	m_pScore = CScore::Create(D3DXVECTOR3(950.0f, 40.0f, 0.0f), D3DXVECTOR3(30.0f, 30.0f, 0.0f));
 	// タイムの生成
 	m_pTime = CTime::Create();
-
-	//UIの生成
-	Ui();
 
     // ステージファイルの読み込み
     CFile::Read();

@@ -48,6 +48,7 @@ public:
 		OBJTYPE_BOMB,       // ボム
 		OBJTYPE_UI,         // UI
 		OBJTYPE_FURNITURE,	// 家具
+		OBJTYPE_TIME,       // 時間
 		OBJTYPE_COLLISION,  // コリジョン*一番下においてーーーーーーーーーーーーーーーー！！！
 		OBJTYPE_MAX,        // タイプの最大数
 	}OBJTYPE;

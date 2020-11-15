@@ -31,7 +31,7 @@ int CTime::m_nPauseCurrentTime = 0;
 //=============================
 // コンストラクタ
 //=============================
-CTime::CTime()
+CTime::CTime() :CScene(OBJTYPE_TIME)
 {
 	// ナンバーのクリア
 	memset(m_apNumber, 0, sizeof(m_apNumber));
@@ -84,6 +84,7 @@ HRESULT CTime::Init(void)
 		D3DXVECTOR3(130, 60, 0),
 		D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
 		CUi::UI_TIME);
+
 	// TIMEの初期化
 	m_nTime = MAX_TIME;
 
@@ -106,9 +107,12 @@ void CTime::Uninit(void)
 	}
 	if (m_pUi != NULL)
 	{
-		m_pUi->Uninit();
-		//delete m_pUi;
-		m_pUi = NULL;
+		if (!m_pUi->GetReleaseFlag())
+		{
+			m_pUi->Uninit();
+			//delete m_pUi;
+			m_pUi = NULL;
+		}
 	}
 
 	// 開放処理
@@ -166,7 +170,7 @@ void CTime::Draw(void)
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
 	pDevice->SetRenderState(D3DRS_ALPHAREF, 200);
 
-	m_pUi->Draw();
+	//m_pUi->Draw();
 
 	for (int nCntDigit = 0; nCntDigit < MAX_TIME_DIGIT; nCntDigit++)
 	{

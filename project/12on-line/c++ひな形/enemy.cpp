@@ -30,6 +30,7 @@
 #include "file.h"
 #include "collect.h"
 #include "billboard.h"
+#include "boss.h"
 
 //*****************************
 // マクロ定義
@@ -84,7 +85,7 @@ CEnemy::CEnemy() :CModelHierarchy(OBJTYPE_ENEMY)
 	m_moveDest = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	m_pCollision = NULL;
 	m_pRadiusColision = NULL;
-	m_fRotYDist = 0.0f;
+	m_fRotYDist = D3DXToRadian(180.0f);
 	m_nCount = 0;
 	m_nCountMotion = 0;
 	m_bRd = false;
@@ -281,6 +282,7 @@ HRESULT CEnemy::Init(void)
 	// カウントの初期化
 	m_nCntState = 0;
 	m_pBilboard = NULL;
+	m_fRotYDist = D3DXToRadian(180.0f);
 	return S_OK;
 }
 
@@ -329,9 +331,6 @@ void CEnemy::Update(void)
 	// 座標
 	D3DXVECTOR3 pos = GetPos();
 
-	// 向きの管理
-	Direction();
-
 	// コリジョンの位置更新
 	m_pCollision->SetPos(GetPos());
 	m_pRadiusColision->SetPos(GetPos());
@@ -350,15 +349,24 @@ void CEnemy::Update(void)
 		MotionEscort();
 		break;
 	}
-	// 慣性
-	m_move += (m_moveDest - m_move) * ENEMY_MOVE_RATE;
+	if (CGame::GetGameMode() == CGame::GAME_NORMAL || ((CBoss*)GetTop(OBJTYPE_BOSS))->GetMotion() != CBoss::SPAWN)
+	{// ボス戦以外かボスがスポーンモーション中じゃないとき
+		// 慣性
+		m_move += (m_moveDest - m_move) * ENEMY_MOVE_RATE;
 
-	// 移動量を足す
-	pos += m_move;
+		// 移動量を足す
+		pos += m_move;
 
-	// 座標のセット
-	SetPos(pos);
+		// 座標のセット
+		SetPos(pos);
+	}
+	else
+	{
+		m_fRotYDist = D3DXToRadian(180.0f);
+	}
 
+	// 向きの管理
+	Direction();
 	if (CCollision::CollisionSphereToBox(m_pCollision, CFile::BossRoomCollision()))
 	{
 		// プレイヤー座標の取得

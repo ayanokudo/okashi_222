@@ -218,9 +218,40 @@ void CGame::SetGameMode(GAME_MODE mode)
 		{
 			if (!CPlayer::GetDeath(nCnt))
 			{
-				m_pPlayer[nCnt]->SetPos(D3DXVECTOR3(-15000.0f - (400 - nCnt * 800), 0.0f, -16500.0f));
+				m_pPlayer[nCnt]->SetPos(D3DXVECTOR3(-15000.0f - (400 - nCnt * 800), 0.0f, -16900.0f));
+				m_pPlayer[nCnt]->SetMotion(CPlayer::WAIT);
 			}
 		}
+
+		// 敵をいったん全部消す
+		CEnemy*pEnemy = (CEnemy*)GetTop(OBJTYPE_ENEMY);
+
+		while (pEnemy != NULL)
+		{
+			// ネクストの保存
+			CEnemy*pNext = (CEnemy*)pEnemy->GetNext();
+			// 消す
+			pEnemy->Uninit();
+			// ネクストにする
+			pEnemy = pNext;
+		}
+
+		// 敵の配置
+		// 何体敵を沸かすか
+		const int c_nNumEnemy = 10;
+
+		for (int nCnt = 0; nCnt < c_nNumEnemy; nCnt++)
+		{
+			// 敵を沸かす位置
+			D3DXVECTOR3 enemyPos;
+			enemyPos.x = -15000.0f + (-600+(nCnt % 5)*300);
+			enemyPos.y = 0;
+			enemyPos.z = -19000.0f - ((nCnt / 5) * 200);
+			// 敵の生成
+			CEnemy::Create(enemyPos, CEnemy::ENEMY_ESCORT);
+		}
+		//// ボスの生成
+		//m_pBoss = CBoss::Create(D3DXVECTOR3(-15000.0f, 0.0f, -18000.0f));
 	}
 }
 

@@ -98,6 +98,7 @@ private:
 	void MotionManager(void);
 	void MotionFalse(void);
 	void SetMotion(MOTION motionState);
+	void CollisionPlayer(void);
 
 	// ƒƒ“ƒo•Ï”
 	static CModel::Model m_model[MAX_PARTS_NUM]; // ƒ‚ƒfƒ‹î•ñ

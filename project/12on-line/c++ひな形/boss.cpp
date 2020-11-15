@@ -342,6 +342,9 @@ void CBoss::Update(void)
 		GetCollision()->SetPos(pos);
 	}
 
+	// プレイヤーとの当たり判定
+	CollisionPlayer();
+
 	// 状態の管理
 
 	if (m_state == STATE_DAMAGE)
@@ -718,6 +721,44 @@ void CBoss::SetMotion(MOTION motionState)
 		{
 			// しっぽのヒット確認の初期化
 			memset(m_bHitTail, 0, sizeof(m_bHitTail));
+		}
+	}
+}
+
+//******************************
+// プレイヤーとの当たり判定
+//******************************
+void CBoss::CollisionPlayer(void)
+{
+	// プレイヤー数分ループ
+	for (int nCnt = 0; nCnt < MAX_PLAYER; nCnt++)
+	{
+		// プレイヤーの死亡確認
+		if (!CPlayer::GetDeath(nCnt))
+		{// 生きてた時
+
+		 // プレイヤーの取得
+			CPlayer*pPlayer = CGame::GetPlayer(nCnt);
+			if (pPlayer != NULL)
+			{
+				// 当たり判定
+				if (CCollision::CollisionSphere(m_pCollision, pPlayer->GetCollision()))
+				{// 当たってた時
+
+				 // プレイヤーの外に押し出す
+					D3DXVECTOR3 vec = (GetPos() - pPlayer->GetPos());
+					D3DXVec3Normalize(&vec, &vec);
+					vec *= (m_pCollision->GetCollisionRadius() + pPlayer->GetCollision()->GetCollisionRadius());
+
+					D3DXVECTOR3 pos = GetPos();
+					SetPos(pPlayer->GetPos() + vec);
+					pPlayer->SetPos(pos - vec);
+
+					// ダメージ判定
+					pPlayer->Hit(1);
+				}
+			}
+
 		}
 	}
 }

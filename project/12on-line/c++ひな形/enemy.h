@@ -74,6 +74,8 @@ private:
 	void Direction(void);
 	void Sweat(void);
 	void CollisionPlayer(void);
+	void CollisionEnemy(void);
+	void COllisionBoss(void);
 
 	// ƒƒ“ƒo•Ï”
 	static CModel::Model m_model[ENEMY_MAX][MAX_PARTS_NUM]; // ƒ‚ƒfƒ‹î•ñ

@@ -148,7 +148,9 @@
     <ClCompile Include="rogo.cpp">
       <Filter>ソースファイル</Filter>
     </ClCompile>
-    <ClCompile Include="gage.cpp" />
+    <ClCompile Include="gage.cpp">
+      <Filter>ソースファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="file.h">
@@ -298,7 +300,9 @@
     <ClInclude Include="rogo.h">
       <Filter>ヘッダーファイル</Filter>
     </ClInclude>
-    <ClInclude Include="gage.h" />
+    <ClInclude Include="gage.h">
+      <Filter>ヘッダーファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ヘッダーファイル">

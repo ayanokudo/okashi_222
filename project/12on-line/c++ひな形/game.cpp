@@ -9,6 +9,7 @@
 // インクルード
 //=============================
 #include "game.h"
+#include "renderer.h"
 #include "bg.h"
 #include "number.h"
 #include "score.h" 
@@ -32,6 +33,12 @@
 #include "file.h"
 #include "lostpoint.h"
 #include "furniture.h"
+#include "collision.h"
+
+//=============================
+// インクルード
+//=============================
+#define BOSS_MARK_PATH "./data/Textures/BOSS_mark.png"    //モデルのパス
 
 //=============================
 // 静的メンバ変数宣言
@@ -131,6 +138,12 @@ HRESULT CGame::Init(void)
 	// 背景
 	CBg::Create();
 
+	// テクスチャの読み込み
+	LPDIRECT3DTEXTURE9 pTexture;
+	D3DXCreateTextureFromFile(CManager::GetRenderer()->GetDevice(), BOSS_MARK_PATH, &pTexture);
+	// ボス前のマークの生成
+	CScene3d::Create(D3DXVECTOR3(CFile::BossRoomCollision()->GetPos().x, 20.0f, CFile::BossRoomCollision()->GetPos().z + 400), D3DXVECTOR3(200.0f, 0.0f, 200.0f))->BindTexture(pTexture);
+	
 	//CCollect::Create();
 	return S_OK;
 }

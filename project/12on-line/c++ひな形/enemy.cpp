@@ -435,6 +435,10 @@ void CEnemy::Update(void)
 
 	// プイレイヤーとの当たり判定
 	CollisionPlayer();
+	// 別の敵との当たり判定
+	CollisionEnemy();
+	// ボスとの当たり判定
+	COllisionBoss();
 }
 
 //******************************
@@ -1018,5 +1022,61 @@ void CEnemy::CollisionPlayer(void)
 			}
 
 		}
+	}
+}
+
+//******************************
+// 敵同士の当たり判定
+//******************************
+void CEnemy::CollisionEnemy(void)
+{
+	// プレイヤーの取得
+	CEnemy*pEnemy = (CEnemy*)GetTop(OBJTYPE_ENEMY);
+	while (pEnemy != NULL)
+	{
+
+		if (pEnemy->GetID() != GetID())
+		{
+			// 当たり判定
+			if (CCollision::CollisionSphere(m_pCollision, pEnemy->GetCollision()))
+			{// 当たってた時
+
+				// 外に押し出す
+				D3DXVECTOR3 vec = (GetPos() - pEnemy->GetPos());
+				D3DXVec3Normalize(&vec, &vec);
+				vec *= (m_pCollision->GetCollisionRadius() + pEnemy->GetCollision()->GetCollisionRadius());
+
+				D3DXVECTOR3 pos = GetPos();
+				SetPos(pEnemy->GetPos() + vec);
+				pEnemy->SetPos(pos - vec);
+			}
+		}
+
+		pEnemy = (CEnemy*)pEnemy->GetNext();
+	}
+}
+
+//******************************
+// ボスとの当たり判定
+//******************************
+void CEnemy::COllisionBoss(void)
+{
+	// プレイヤーの取得
+	CBoss*pBoss = (CBoss*)GetTop(OBJTYPE_BOSS);
+	while (pBoss != NULL)
+	{
+		// 当たり判定
+		if (CCollision::CollisionSphere(m_pCollision, pBoss->GetCollision()))
+		{// 当たってた時
+
+		 // 外に押し出す
+			D3DXVECTOR3 vec = (GetPos() - pBoss->GetPos());
+			D3DXVec3Normalize(&vec, &vec);
+			vec *= (m_pCollision->GetCollisionRadius() + pBoss->GetCollision()->GetCollisionRadius());
+
+			D3DXVECTOR3 pos = GetPos();
+			SetPos(pBoss->GetPos() + vec);
+		}
+		pBoss = (CBoss*)pBoss->GetNext();
 	}
 }

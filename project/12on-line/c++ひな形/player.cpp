@@ -40,7 +40,7 @@
 
 #define PLAYER_SPEED 20                          // 移動スピード
 #define PLAYER_MOVE_RATE 0.2f                   // 移動の慣性の係数
-#define PLAYER_DIRECTION_RATE 0.1f              // 向きを変えるときの係数
+#define PLAYER_DIRECTION_RATE 0.2f              // 向きを変えるときの係数
 #define PLAYER_RADIUS 100                       // プレイヤーの半径
 #define PLAYER_SPEED_MAX 5
 #define PLAYER_DASH_SPEED PLAYER_SPEED * 1.5f                 // ダッシュ時のスピード

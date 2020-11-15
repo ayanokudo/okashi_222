@@ -31,10 +31,12 @@ public:
 	//床のテクスチャの種類
 	typedef enum
 	{
-		FURNITURE_CHAIR = 0,	//フローリング
+		FURNITURE_CHAIR = 0,	//椅子
 		FURNITURE_TABLE,		//マット
 		FURNITURE_CHEST,		//キッチン
+		FURNITURE_TLEX,		//キッチン
 		FURNITURE_MAX,
+
 	}FURNITURE;
 
 	//メンバ関数

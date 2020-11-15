@@ -21,7 +21,7 @@
 //*****************************
 
 //UIƒNƒ‰ƒX
-class CUi
+class CUi :public CScene
 {
 public:
 	//UI‚ÌŽí—Þ
@@ -48,6 +48,7 @@ public:
 	static HRESULT Load(void);
 	static void Unload(void);
 
+	HRESULT Init(void);
 	HRESULT Init(const D3DXVECTOR3 pos, const D3DXVECTOR3 size, const D3DXCOLOR col, const UI type);
 	void Uninit(void);
 	void Update(void);

@@ -38,7 +38,7 @@ LPDIRECT3DTEXTURE9 CUi::m_apTexture[UI_MAX] = {};
 //==================================
 // コンストラクタ
 //==================================
-CUi::CUi()
+CUi::CUi() :CScene(OBJTYPE_UI)
 {
 	m_pVtxBuff = NULL;
 	m_col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
@@ -110,6 +110,11 @@ void CUi::Unload(void)
 	}
 }
 
+HRESULT CUi::Init(void)
+{
+	return E_NOTIMPL;
+}
+
 //==================================
 // 初期化処理
 //==================================
@@ -162,6 +167,8 @@ void CUi::Uninit(void)
 		m_pVtxBuff->Release();
 		m_pVtxBuff = NULL;
 	}
+
+	Release();
 }
 
 //==================================

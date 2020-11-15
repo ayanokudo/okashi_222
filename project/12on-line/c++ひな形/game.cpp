@@ -153,10 +153,10 @@ void CGame::Uninit(void)
 	}
 	for (int nCount = 0; nCount <= 5; nCount++)
 	{
-		if (m_pUi != NULL)
+		if (m_pUi[nCount] != NULL)
 		{
 			m_pUi[nCount]->Uninit();
-			delete m_pUi[nCount];
+			//delete m_pUi[nCount];
 			m_pUi[nCount] = NULL;
 		}
 	}
@@ -196,13 +196,13 @@ void CGame::Draw(void)
 	{
 		m_pCamera->SetCamera();
 	}
-	for (int nCount = 0; nCount <= 5; nCount++)
+	/*for (int nCount = 0; nCount <= 5; nCount++)
 	{
 		if (m_pUi != NULL)
 		{
 			m_pUi[nCount]->Draw();
 		}
-	}
+	}*/
 }
 
 void CGame::SetGameMode(GAME_MODE mode)
@@ -263,25 +263,25 @@ void CGame::Ui(void)
 	// ダッシュのUIの生成
 	m_pUi[0] = CUi::Create(D3DXVECTOR3(640.0f, 660.0f, 0.0f),
 		D3DXVECTOR3(135, 50, 0),
-		D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
+		D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.5f),
 		CUi::UI_ATTACK);
 
 	// アタックのUIの生成
 	m_pUi[1] = CUi::Create(D3DXVECTOR3(550.0f, 660.0f, 0.0f),
 		D3DXVECTOR3(45, 45, 0),
-		D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.8f),
+		D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.7f),
 		CUi::UI_ATTACK_NAIL);
 
 	// ダッシュのUIの生成
 	m_pUi[2] = CUi::Create(D3DXVECTOR3(640.0f, 660.0f, 0.0f),
 		D3DXVECTOR3(45, 45, 0),
-		D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.8f),
+		D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.7f),
 		CUi::UI_ATTACK_CRY);
 
 	// ダッシュのUIの生成
 	m_pUi[3] = CUi::Create(D3DXVECTOR3(730.0f, 660.0f, 0.0f),
 		D3DXVECTOR3(45, 45, 0),
-		D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.8f),
+		D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.7f),
 		CUi::UI_DASH);
 
 	// アタックのUIの生成

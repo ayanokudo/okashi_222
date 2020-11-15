@@ -210,8 +210,8 @@ void CTitle::Uninit(void)
 		// ƒ|ƒŠƒSƒ“‚ÌI—¹ˆ—
 		m_pUi->Uninit();
 
-		// ƒƒ‚ƒŠ‚Ì‰ğ•ú
-		delete m_pUi;
+		//// ƒƒ‚ƒŠ‚Ì‰ğ•ú
+		//delete m_pUi;
 		m_pUi = NULL;
 	}
 

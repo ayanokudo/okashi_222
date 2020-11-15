@@ -107,7 +107,7 @@ void CTime::Uninit(void)
 	if (m_pUi != NULL)
 	{
 		m_pUi->Uninit();
-		delete m_pUi;
+		//delete m_pUi;
 		m_pUi = NULL;
 	}
 

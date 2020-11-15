@@ -466,7 +466,7 @@ void CPlayer::Draw(void)
 		for (int nCnt = 0; nCnt < m_nNumModel; nCnt++)
 		{
 			D3DXMATERIAL*pMat = (D3DXMATERIAL*)GetModelData()[nCnt].pBuffMat->GetBufferPointer();
-			for (int nCntMat = 0; nCntMat < GetModelData()[nCnt].nNumMat; nCntMat++)
+			for (int nCntMat = 0; nCntMat < (int)GetModelData()[nCnt].nNumMat; nCntMat++)
 			{
 				pMat[nCntMat].MatD3D.Diffuse = DAMAGE_STATE_COLOR;
 			}
@@ -728,7 +728,7 @@ void CPlayer::Attack(void)
 	}
 	else
 	{
-		if (m_pMotion[VOICE]->GetKey() == 2&& m_pMotion[VOICE]->GetFrame()==0)
+		if (m_motionState == VOICE&& m_pMotion[VOICE]->GetKey() == 2 && m_pMotion[VOICE]->GetFrame() == 0)
 		{// モーションのキーフレームが2の時
 
 			D3DXVECTOR3 bulletMove = D3DXVECTOR3(0.0f, 0.0f, 0.0f);

@@ -48,7 +48,7 @@
 #include "time.h"
 #include "furniture.h"
 #include "rogo.h"
-
+#include "gage.h"
 
 //=============================
 // 静的メンバ変数宣言
@@ -160,6 +160,7 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, bool bWindow)
 	CTitle::Load();		//
     CFurniture::Load();
 	CRogo::Load();
+	CGage::Load();      // ボスのHPゲージ
 
 	// ポーズ状態の時
 	return S_OK;
@@ -193,6 +194,7 @@ void CManager::Uninit(void)
 	CTitle::Unload();
     CFurniture::Unload();
 	CRogo::Unload();
+	CGage::Unload();     // ボスのHPゲージ
 
 	if (m_pSound != NULL)
 	{

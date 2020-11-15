@@ -16,6 +16,12 @@
 #include "model_hierarchy.h"
 #include "player.h"
 
+
+//*****************************
+// マクロ定義
+//*****************************
+#define BOSS_LIFE 3000              // ボスのライフ
+
 //*****************************
 // 前方宣言
 //*****************************
@@ -83,6 +89,7 @@ public:
 	void Hit(int nDamage);
 	CCollision *GetCollision(void) { return m_pCollision; }
 	MOTION      GetMotion(void) { return m_motionState; }
+	int GetLife(void) { return m_nLife; }
 
 private:
 	//各敵キャラの動きの処理

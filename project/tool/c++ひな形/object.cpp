@@ -406,7 +406,7 @@ void CObject::SetObject(D3DXVECTOR3 pos, D3DXVECTOR3 rot, CModel::OBJTYPE type ,
         break;
 
     case CModel::OBJTYPE_FURNITURE:
-        m_pModel = CFumiture::Create(pos);
+        m_pModel = CFumiture::Create(pos,(CFumiture::TYPE) ntype);
         break;
 
     case CModel::OBJTYPE_COLLISION:

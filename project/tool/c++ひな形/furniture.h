@@ -33,7 +33,7 @@ public:
     CFumiture();
     ~CFumiture();       
 
-    static CFumiture *Create(D3DXVECTOR3 pos);
+    static CFumiture *Create(D3DXVECTOR3 pos,TYPE ntype);
     static HRESULT Load(void);
     static void Unload(void);
     HRESULT Init(void);

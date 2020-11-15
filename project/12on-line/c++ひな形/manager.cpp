@@ -50,6 +50,7 @@
 #include "rogo.h"
 #include "gage.h"
 #include "explosion.h"
+#include "start.h"
 
 //=============================
 // 静的メンバ変数宣言
@@ -163,6 +164,8 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, bool bWindow)
 	CRogo::Load();
 	CGage::Load();      // ボスのHPゲージ
 	CExplosion::Load(); // 爆発
+	CStart::Load();     // スタートロゴ
+
 	// ポーズ状態の時
 	return S_OK;
 }
@@ -197,6 +200,7 @@ void CManager::Uninit(void)
 	CRogo::Unload();
 	CGage::Unload();      // ボスのHPゲージ
 	CExplosion::Unload(); // 爆発
+	CStart::Unload();     // スタートロゴ
 
 	if (m_pSound != NULL)
 	{

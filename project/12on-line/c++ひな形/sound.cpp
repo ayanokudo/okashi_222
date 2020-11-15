@@ -33,6 +33,7 @@ CSound::SOUNDPARAM CSound::m_aParam[SOUND_LABEL_MAX]
 	{ "data/SE/player/Koban.wav", 0 },					// 小判獲得時SE
 	{ "data/SE/player/HeartSe.wav", 0 },				// 回復アイテム獲得時SE
 	{ "data/SE/player/buun1.wav",0},
+	{ "data/SE/player/Start_SE.wav",0 },                // 開始時SE
 };
 
 //=============================================================================

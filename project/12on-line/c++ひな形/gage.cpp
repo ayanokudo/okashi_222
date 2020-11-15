@@ -23,8 +23,8 @@
 #define  ICON_TEXTURE_PATH "./data/Textures/BossHP.png" //テクスチャ
 
 // ボス
-#define BOSS_HP_WIDTH 500.0f                               // HPバーの横幅の最大
-#define BOSS_HP_HEGHT 10                                   // HPバーの縦幅
+#define BOSS_HP_WIDTH 450.0f                               // HPバーの横幅の最大
+#define BOSS_HP_HEGHT 15                                   // HPバーの縦幅
 #define BOSS_HP_POS_X SCREEN_WIDTH/2 - (BOSS_HP_WIDTH/2) // X位置
 #define BOSS_HP_POS_Y 50.0f                               // Y位置
 

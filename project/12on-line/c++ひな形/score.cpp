@@ -80,12 +80,14 @@ HRESULT CScore::Init(void)
 			D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 	}
 
-	//タイムの文字表示
-	m_pUi = CUi::Create(D3DXVECTOR3(1070.0f, 80.0f, 0.0f),
-		D3DXVECTOR3(200, 90, 0),
-		D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
-		CUi::UI_SCORE);
-
+	if (CManager::GetMode() == CManager::MODE_GAME)
+	{
+		//タイムの文字表示
+		m_pUi = CUi::Create(D3DXVECTOR3(1070.0f, 80.0f, 0.0f),
+			D3DXVECTOR3(200, 90, 0),
+			D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
+			CUi::UI_SCORE);
+	}
 	return S_OK;
 }
 
@@ -129,7 +131,6 @@ void CScore::Update(void)
 
 		m_apNumber[nCntDigit]->SetNumber((m_nScore % (int)(powf(10.0f, (MAX_SCORE_DIGIT - nCntDigit)))) / (float)(powf(10.0, (MAX_SCORE_DIGIT - nCntDigit - 1))));
 	}
-	m_pUi->Update();
 }
 
 //==================================

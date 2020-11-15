@@ -35,6 +35,7 @@
 #include "furniture.h"
 #include "collision.h"
 #include "sound.h"
+#include "start.h"
 
 //=============================
 // インクルード
@@ -146,7 +147,8 @@ HRESULT CGame::Init(void)
 	D3DXCreateTextureFromFile(CManager::GetRenderer()->GetDevice(), BOSS_MARK_PATH, &pTexture);
 	// ボス前のマークの生成
 	CScene3d::Create(D3DXVECTOR3(CFile::BossRoomCollision()->GetPos().x, 20.0f, CFile::BossRoomCollision()->GetPos().z + 400), D3DXVECTOR3(200.0f, 0.0f, 200.0f))->BindTexture(pTexture);
-	
+	// スタートの生成
+	CStart::Create();
 	//CCollect::Create();
 	return S_OK;
 }
@@ -166,7 +168,7 @@ void CGame::Uninit(void)
 		delete m_pLight;
 		m_pLight = NULL;
 	}
-	for (int nCount = 0; nCount <= 5; nCount++)
+	for (int nCount = 0; nCount < 5; nCount++)
 	{
 		if (m_pUi[nCount] != NULL)
 		{

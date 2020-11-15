@@ -154,6 +154,9 @@
     <ClCompile Include="explosion.cpp">
       <Filter>ソースファイル</Filter>
     </ClCompile>
+    <ClCompile Include="start.cpp">
+      <Filter>ソースファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="file.h">
@@ -307,6 +310,9 @@
       <Filter>ヘッダーファイル</Filter>
     </ClInclude>
     <ClInclude Include="explosion.h">
+      <Filter>ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="start.h">
       <Filter>ヘッダーファイル</Filter>
     </ClInclude>
   </ItemGroup>

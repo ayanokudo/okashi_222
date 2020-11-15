@@ -36,6 +36,7 @@ public:
 		FURNITURE_CHEST,		//キッチン
 		FURNITURE_TLEX,		//キッチン
 		FURNITURE_WOOD,		//キッチン
+		FURNITURE_BENCH,		//キッチン
 		FURNITURE_MAX,
 
 	}FURNITURE;

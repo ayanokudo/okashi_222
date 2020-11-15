@@ -126,7 +126,7 @@ void CResult::Update(void)
 		CManager::GetMouse()->GetMouseTrigger(0) || 
 		CManager::GetJoypad()->GetJoystickTrigger(3, 0))
 	{
-		CManager::GetFade()->SetFade(CManager::MODE_TITLE);
+		CManager::GetFade()->SetFade(CManager::MODE_ROGO);
 	}
 }
 

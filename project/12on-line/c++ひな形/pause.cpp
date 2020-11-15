@@ -210,7 +210,7 @@ void CPause::Update(void)
 			break;
 		case EXIT:
 			// EXIT
-			CManager::GetFade()->SetFade(CManager::MODE_TITLE);
+			CManager::GetFade()->SetFade(CManager::MODE_ROGO);
 			break;
 		default:
 			break;

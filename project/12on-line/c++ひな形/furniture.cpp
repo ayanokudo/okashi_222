@@ -28,6 +28,7 @@ char *CFurniture::m_apTextureName[FURNITURE_MAX] =
     "./data/Models/furniture/tance.x",
     "./data/Models/furniture/isu.x",
 	"./data/Models/furniture/Trex_DustBox.x"
+	"./data/Models/furniture/Wo0d.x"
 };
 
 //==================================

@@ -795,6 +795,8 @@ void CPlayer::Hit(int nDamage)
 	{
 		if (m_state == STATE_NORMAL)
 		{
+			// SE
+			CManager::GetSound()->Play(CSound::SOUND_SE_PL_DAMAGE);
 			m_nLife -= nDamage;
 			m_state = STATE_DAMAGE;
 		}
@@ -873,6 +875,8 @@ void CPlayer::Dash(void)
 			m_bMotion = true;
 			// モーションセット
 			SetMotion(DASH);
+			// SE
+			CManager::GetSound()->Play(CSound::SOUND_SE_PL_DASH);
 		}
 	}
 	else

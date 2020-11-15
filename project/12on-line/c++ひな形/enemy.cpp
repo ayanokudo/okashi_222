@@ -31,6 +31,7 @@
 #include "collect.h"
 #include "billboard.h"
 #include "boss.h"
+#include "explosion.h"
 
 //*****************************
 // マクロ定義
@@ -503,21 +504,29 @@ void CEnemy::Hit(int nDamage)
 			break;
 		}
 
+		// 爆発生成
+		CExplosion::Create(D3DXVECTOR3(GetPos().x, GetPos().y + 30, GetPos().z), D3DXCOLOR(1.0f, 1.0f, 0.7, 0.4f));
+
 		// パーティクル生成
 		// 作る数ループ
 		for (int nCntPart = 0; nCntPart < 5; nCntPart++)
 		{
-			int nRandSize = rand() % 10 + 20;
+			int nRandSize = rand() % 30 + 20;
 			// スピードのランダム
-			int nRandSpeed = rand() % 2 + 2;
+			float fRandSpeed = (rand() % 200 + 400) / 100;
 			// 飛んでく角度のランダム
 			float fRandAngle = D3DXToRadian(rand() % 360);
 			D3DXVECTOR3 partMove;
-			partMove.x = cosf(fRandAngle)*nRandSpeed;
+			partMove.x = cosf(fRandAngle)*fRandSpeed;
 			partMove.y = 0.0f;
-			partMove.z = sinf(fRandAngle)*nRandSpeed;
+			partMove.z = sinf(fRandAngle)*fRandSpeed;
 			// パーティクル生成
-			CParticle::Create(D3DXVECTOR3(GetPos().x, GetPos().y+20, GetPos().z), partMove, D3DXVECTOR3(nRandSize, nRandSize, 0.0f), 50, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+			CParticle::Create(D3DXVECTOR3(GetPos().x, GetPos().y + 20, GetPos().z),
+				partMove,
+				D3DXVECTOR3(nRandSize, nRandSize, 0.0f),
+				30,
+				D3DXCOLOR((float)(rand() % 100) / 100.0f, (float)(rand() % 100) / 100.0f, (float)(rand() % 100) / 100.0f, 1.0f))->SetAddMode(true);
+
 		}
 
 		Uninit();

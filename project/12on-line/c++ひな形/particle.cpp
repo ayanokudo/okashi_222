@@ -15,7 +15,7 @@
 //*****************************
 // マクロ定義
 //*****************************
-#define PARTICLE_PAD_TEXTURE_PATH    "./data/Textures/pad.png"    //テクスチャのパス
+#define PARTICLE_PAD_TEXTURE_PATH    "./data/Textures/Particle_Star.png"    //テクスチャのパス
 #define PARTICLE_SMOKE_TEXTURE_PATH    "./data/Textures/kwmuri.png"    //テクスチャのパス
 #define PARTICLE_CANDY_TEXTURE_PATH    "./data/Textures/Particle_Candy.png"    //テクスチャのパス
 

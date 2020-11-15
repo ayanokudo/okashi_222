@@ -34,10 +34,10 @@ public:
 		FURNITURE_CHAIR = 0,	//椅子
 		FURNITURE_TABLE,		//マット
 		FURNITURE_CHEST,		//キッチン
-		FURNITURE_TLEX,		//キッチン
-		FURNITURE_WOOD,		//キッチン
+		FURNITURE_TLEX,		    //キッチン
+		FURNITURE_WOOD,		    //キッチン
 		FURNITURE_BENCH,		//キッチン
-		FURNITURE_APEC,		//キッチン
+		FURNITURE_APEC,		    //キッチン
 		FURNITURE_MAX,
 
 	}FURNITURE;

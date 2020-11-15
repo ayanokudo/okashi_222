@@ -26,11 +26,13 @@ char *CFurniture::m_apTextureName[FURNITURE_MAX] =
 {
     "./data/Models/furniture/ueki.x",
     "./data/Models/furniture/tance.x",
-   // "./data/Models/furniture/isu.x",
+    //"./data/Models/furniture/isu.x",
 	"./data/Models/furniture/Trex_DustBox.x",
 	"./data/Models/furniture/Wood.x",
 	"./data/Models/furniture/",
+	"./data/Models/furniture/Apec.x",
 	"./data/Models/furniture/Apec.x"
+
 };
 
 //==================================
@@ -84,18 +86,33 @@ HRESULT CFurniture::Load(void)
 	// デバイスの取得
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
 
-    for (int nCount = 0; nCount < FURNITURE_MAX; nCount++)
-    {
-	// Xファイルの読み込み
-	D3DXLoadMeshFromX(m_apTextureName[nCount],
-		D3DXMESH_SYSTEMMEM,
-		pDevice,
-		NULL,
-		&m_model[nCount].pBuffMat,
-		NULL,
-		&m_model[nCount].nNumMat,
-		&m_model[nCount].pMesh);
-    }
+	for (int nCount = 0; nCount < FURNITURE_MAX; nCount++)
+	{
+		// Xファイルの読み込み
+		D3DXLoadMeshFromX(m_apTextureName[nCount],
+			D3DXMESH_SYSTEMMEM,
+			pDevice,
+			NULL,
+			&m_model[nCount].pBuffMat,
+			NULL,
+			&m_model[nCount].nNumMat,
+			&m_model[nCount].pMesh);
+		if (m_model[nCount].nNumMat != 0)
+		{
+			D3DXMATERIAL*pMat = (D3DXMATERIAL*)m_model[nCount].pBuffMat->GetBufferPointer();
+			for (int nCnt = 0; nCnt < (int)m_model[nCount].nNumMat; nCnt++)
+			{
+				if (pMat[nCnt].pTextureFilename != NULL)
+				{
+					char cPath[64] = {};
+					sprintf(cPath, "./data/Textures/%s", pMat[nCnt].pTextureFilename);
+					// テクスチャの生成
+					D3DXCreateTextureFromFile(pDevice, cPath, &m_model[nCount].apTexture[nCnt]);
+				}
+			}
+		}
+
+	}
 
 	
 	return S_OK;
@@ -130,6 +147,12 @@ HRESULT CFurniture::Init(void)
 {
 	CModel::Init();
 	CModel::BindModel(m_model[m_type].pMesh,m_model[m_type].pBuffMat,m_model[m_type].nNumMat);
+
+	for (int nCnt = 0; nCnt < (int)m_model[m_type].nNumMat; nCnt++)
+	{
+		BindTexture(nCnt, m_model[m_type].apTexture[nCnt]);
+	}
+
 	// 壁よりちょっと大きめに当たり判定をとる
     D3DXVECTOR3 collisionSize = { m_size.x / 2,m_size.y / 2,m_size.z / 2 };
 	if (m_rot.y == 0)

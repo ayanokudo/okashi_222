@@ -15352,6 +15352,13 @@ SCRIPT          // スクリプト開始
 	END_OBJ_SET
 
 	OBJ_SET
+		 POS -12180.0 0.0 -17520.0 
+		 ROT 0.0 270.0 0.0 
+		 TYPE 17 
+		 OBJ_TYPE 6 
+	END_OBJ_SET
+
+	OBJ_SET
 		 POS -15000.0 0.0 -15960.0 
 		 ROT 0.0 0.0 0.0 
 		 TYPE 19

@@ -163,7 +163,7 @@ void CRogo::Update(void)
 	//サウンドのポインタ変数宣言
 	CSound*pSound = CManager::GetSound();
 	m_nCount++;
-	if (m_nCount >= 1000 ||
+	if (m_nCount >= 500 ||
 		CManager::GetKeyboard()->GetKeyTrigger(DIK_RETURN) ||
 		CManager::GetJoypad()->GetJoystickTrigger(3, 0) ||
 		CManager::GetJoypad()->GetJoystickTrigger(3, 1))

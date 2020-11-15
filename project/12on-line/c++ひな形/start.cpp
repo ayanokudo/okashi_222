@@ -126,9 +126,9 @@ void CStart::Update(void)
 		{// SE
 			CManager::GetSound()->Play(CSound::SOUND_SE_START);
 		}
-		if (m_nCntLost >= 20)
+		if (m_nCntLost >= 30)
 		{
-			D3DXCOLOR minasCol =D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.01f);
+			D3DXCOLOR minasCol =D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.03f);
 			SetColor(GetColor() - minasCol);
 		}
 	}

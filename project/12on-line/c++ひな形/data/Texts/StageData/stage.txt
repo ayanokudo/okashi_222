@@ -15354,7 +15354,7 @@ SCRIPT          // スクリプト開始
 	OBJ_SET
 		 POS -15000.0 0.0 -15960.0 
 		 ROT 0.0 0.0 0.0 
-		 TYPE 19 
+		 TYPE 19
 		 OBJ_TYPE 0 
 	END_OBJ_SET
 

@@ -25,12 +25,13 @@ public:
         TYPE_003,       // Tレックス
         TYPE_004,       // 木のモデル
         TYPE_005,       // ベンチ
+        TYPE_006,       // 
         TYPE_MAX,
     }TYPE;
 
     // メンバ関数
     CFumiture();
-    ~CFumiture();
+    ~CFumiture();       
 
     static CFumiture *Create(D3DXVECTOR3 pos);
     static HRESULT Load(void);

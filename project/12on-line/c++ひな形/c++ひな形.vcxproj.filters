@@ -145,6 +145,9 @@
     <ClCompile Include="furniture.cpp">
       <Filter>ソースファイル</Filter>
     </ClCompile>
+    <ClCompile Include="rogo.cpp">
+      <Filter>ソースファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="file.h">
@@ -289,6 +292,9 @@
       <Filter>ヘッダーファイル</Filter>
     </ClInclude>
     <ClInclude Include="furniture.h">
+      <Filter>ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="rogo.h">
       <Filter>ヘッダーファイル</Filter>
     </ClInclude>
   </ItemGroup>

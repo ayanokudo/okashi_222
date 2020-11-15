@@ -75,19 +75,18 @@ HRESULT CTime::Init(void)
 	for (int nCntDigit = 0; nCntDigit < MAX_TIME_DIGIT; nCntDigit++)
 	{
 		m_apNumber[nCntDigit] = CNumber::Create(0,
-			D3DXVECTOR3(55 + nCntDigit * 25 * 2, 75.0f, 0.0f),
+			D3DXVECTOR3(65 + nCntDigit * 27 * 2, 80.0f, 0.0f),
 			D3DXVECTOR3(30, 25, 0),
 			D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 	}
-
 	//タイムの文字表示
-	m_pUi = CUi::Create(D3DXVECTOR3(100.0f, 30.0f, 0.0f),
-		D3DXVECTOR3(50, 20, 0),
+	m_pUi = CUi::Create(D3DXVECTOR3(140.0f, 70.0f, 0.0f),
+		D3DXVECTOR3(130, 60, 0),
 		D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
 		CUi::UI_TIME);
-
 	// TIMEの初期化
 	m_nTime = MAX_TIME;
+
 	return S_OK;
 }
 
@@ -166,11 +165,13 @@ void CTime::Draw(void)
 	//デバイスの取得
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
 	pDevice->SetRenderState(D3DRS_ALPHAREF, 200);
+
+	m_pUi->Draw();
+
 	for (int nCntDigit = 0; nCntDigit < MAX_TIME_DIGIT; nCntDigit++)
 	{
 		m_apNumber[nCntDigit]->Draw();
 	}
-	m_pUi->Draw();
 
 	pDevice->SetRenderState(D3DRS_ALPHAREF, 50);
 }

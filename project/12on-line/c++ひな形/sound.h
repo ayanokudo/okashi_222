@@ -42,6 +42,7 @@ public:
 		SOUND_SE_ITEM_CANDY,			//キャンディ獲得時SE
 		SOUND_SE_ITEM_KOBAN,			//小判獲得時SE
 		SOUND_SE_ITEM_LIFE,				//回復アイテム獲得時SE
+		SOUND_SE_ROGO_BGM,
 		SOUND_LABEL_MAX,
 	}LABEL;
 

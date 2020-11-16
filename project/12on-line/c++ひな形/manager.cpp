@@ -414,6 +414,7 @@ void CManager::SetMode(MODE mode)
 
 	m_mode = mode;
 	// ŠJ•úˆ—
+
 	CScene::ReleaseAll();
 
 	switch (m_mode)

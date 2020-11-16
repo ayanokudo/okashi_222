@@ -1057,7 +1057,6 @@ void CEnemy::CollisionEnemy(void)
 
 				D3DXVECTOR3 pos = GetPos();
 				SetPos(pEnemy->GetPos() + vec);
-				pEnemy->SetPos(pos - vec);
 			}
 		}
 

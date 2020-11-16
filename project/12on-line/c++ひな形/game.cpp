@@ -91,6 +91,7 @@ CGame * CGame::Create(void)
 //=============================
 HRESULT CGame::Init(void)
 {	
+	CCollect::InitVariable();
 	// ゲームモードの初期化
 	m_gameMode = GAME_NORMAL;
 
@@ -113,11 +114,6 @@ HRESULT CGame::Init(void)
 		// プレイヤーの生成
 		m_pPlayer[nCntPlayer] = CPlayer::Create(D3DXVECTOR3(100.0f + (300 - (nCntPlayer * 600)), 0.0f, 1200.0f), nCntPlayer);
 	}
-	
-	//// アイテムの生成
-	//m_pItem = CItem::Create(D3DXVECTOR3(200.0f, 0.0f, -800.0f),CItem::LIFE);
-	//m_pItem = CItem::Create(D3DXVECTOR3(200.0f, 0.0f, -900.0f), CItem::CANDY);
-	//m_pItem = CItem::Create(D3DXVECTOR3(200.0f, 0.0f, -1000.0f), CItem::KOBAN);
 
 	//UIの生成
 	Ui();
@@ -149,7 +145,6 @@ HRESULT CGame::Init(void)
 	CScene3d::Create(D3DXVECTOR3(CFile::BossRoomCollision()->GetPos().x, 20.0f, CFile::BossRoomCollision()->GetPos().z + 400), D3DXVECTOR3(200.0f, 0.0f, 200.0f))->BindTexture(pTexture);
 	// スタートの生成
 	CStart::Create();
-	//CCollect::Create();
 	return S_OK;
 }
 

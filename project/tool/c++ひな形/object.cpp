@@ -446,7 +446,7 @@ void CObject::Move(void)
     }
 
     if (CManager::GetKeyboard()->GetKeyPress(DIK_W) || js.lY <= -600)
-    {// ªˆÚ“®
+    {// ‰œˆÚ“®
         moveDest.z = -fMove;
         if (!m_bGridMode)
         {
@@ -463,7 +463,7 @@ void CObject::Move(void)
         }
     }
     else if (CManager::GetKeyboard()->GetKeyPress(DIK_S) || js.lY >= 600)
-    {// «ˆÚ“®
+    {// Žè‘OˆÚ“®
 
         moveDest.z = fMove;
         if (!m_bGridMode)
@@ -481,15 +481,23 @@ void CObject::Move(void)
         }
     }
     else if (CManager::GetKeyboard()->GetKeyPress(DIK_A) || js.lX <= -600)
-    {// ©ˆÚ“®
+    {// ¶ˆÚ“®
         moveDest.x = fMove;
 
     }
     else if (CManager::GetKeyboard()->GetKeyPress(DIK_D) || js.lX >= 600)
-    {// ¨ˆÚ“®
+    {// ‰EˆÚ“®
         moveDest.x = -fMove;
     }
+    else if (CManager::GetKeyboard()->GetKeyPress(DIK_Q))
+    {// ãˆÚ“®
+        moveDest.y = fMove;
 
+    }
+    else if (CManager::GetKeyboard()->GetKeyPress(DIK_E))
+    {// ‰ºˆÚ“®
+        moveDest.y = -fMove;
+    }
     // ˆÚ“®—Ê‚ð‘«‚·
     m_pos += moveDest;
     m_pPlayer->SetPos(m_pos);

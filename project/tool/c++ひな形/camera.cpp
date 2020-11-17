@@ -19,8 +19,10 @@
 //******************************
 // マクロ定義
 //******************************
-#define CAMERA_DISTANCE 250    // カメラの距離
-#define CAMERA_LOCAL_POS D3DXVECTOR3(0.0f, 1500.0f, 100.0f);
+#define CAMERA_DISTANCE (250)    // カメラの距離
+#define CAMERA_LOCAL_POS D3DXVECTOR3(0.0f, 1000.0f, 0.0f);
+#define CAMERA_ROTATION (1.0f) // カメラの回転角度
+
 //******************************
 // 静的メンバ変数宣言
 //******************************
@@ -102,26 +104,7 @@ void CCamera::Uninit(void)
 void CCamera::Update(void)
 {
 	m_posV = CObject::GetPlayer()->GetPos() + CAMERA_LOCAL_POS;
-	m_posR = CObject::GetPlayer()->GetPos();
-
-#ifdef _DEBUG
-	if (CManager::GetKeyboard()->GetKeyPress(DIK_UP))
-	{
-		m_posV.y += 10;
-	}
-	if (CManager::GetKeyboard()->GetKeyPress(DIK_DOWN))
-	{
-		m_posV.y -= 10;
-	}
-	if (CManager::GetKeyboard()->GetKeyPress(DIK_LEFT))
-	{
-		m_posV.z += 10;
-	}
-	if (CManager::GetKeyboard()->GetKeyPress(DIK_RIGHT))
-	{
-		m_posV.z -= 10;
-	}
-#endif
+    RotateCamera();
 }
 
 //******************************
@@ -152,5 +135,37 @@ void CCamera::SetCamera(void)
 
 	pDevice->Clear(0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, D3DCOLOR_RGBA(0, 255, 0, 255), 1.0f, 0);
 
-	
+}
+
+//===============================================================
+// [RotateCamera] カメラの回転　Author : AYANO KUDO
+//===============================================================
+void CCamera::RotateCamera(void)
+{
+    // 変数宣言
+    m_posR = CObject::GetPlayer()->GetPos();
+    D3DXVECTOR3 rot = { 0.0f,0.0f,0.0f };
+
+    //カメラ座標の回転
+    if (CManager::GetKeyboard()->GetKeyPress(DIK_LEFT))
+    {
+        m_fTheta += D3DXToRadian(CAMERA_ROTATION);
+    }
+    if (CManager::GetKeyboard()->GetKeyPress(DIK_RIGHT))
+    {
+        m_fTheta -= D3DXToRadian(CAMERA_ROTATION);
+
+    }
+    if (CManager::GetKeyboard()->GetKeyPress(DIK_UP))
+    {
+        m_fPhi -= D3DXToRadian(CAMERA_ROTATION);
+    }
+    if (CManager::GetKeyboard()->GetKeyPress(DIK_DOWN))
+    {
+        m_fPhi += D3DXToRadian(CAMERA_ROTATION);
+    }
+
+        m_posV.x = m_posR.x + 1500 * sinf(m_fPhi) * cosf(m_fTheta);
+        m_posV.y = m_posR.y + 1500 * cosf(m_fPhi);
+        m_posV.z = m_posR.z + 1500 * sinf(m_fPhi) * sinf(m_fTheta);
 }

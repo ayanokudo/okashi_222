@@ -18,8 +18,7 @@
 //*****************************
 // クラス定義
 //*****************************
-
-//プレイヤークラス
+//カメラクラス
 class CCamera
 {
 public:
@@ -38,6 +37,7 @@ public:
 	D3DXMATRIX GetViewMtx(void) { return m_mtxView; }
 	D3DXMATRIX GetProjectionMtx(void) { return m_mtxProjection; }
 
+    void RotateCamera(void);
 private:
 	// メンバ変数
 	static CCamera *m_pCamera;

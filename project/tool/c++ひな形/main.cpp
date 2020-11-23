@@ -12,7 +12,7 @@
 #include "main.h"
 #include "manager.h"
 #include <time.h>
-
+#include "ui.h"
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_dx9.h"
 #include "imgui/imgui_impl_win32.h"
@@ -35,7 +35,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 #ifdef _DEBUG
 int					g_nCountFPS;			// FPSカウンタ
 #endif
-
+#ifdef IMGUI_ON
+// IMGUIの設定
+extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+#endif
 //=============================================================================
 // メイン関数
 //=============================================================================
@@ -181,10 +184,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	return (int)msg.wParam;
 }
-#ifdef IMGUI_ON
-// IMGUIの設定
-extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
-#endif
+
 //=============================================================================
 // ウインドウプロシージャ
 //=============================================================================

@@ -24,7 +24,6 @@
 #include "stage.h"
 #include "object.h"
 #include "file.h"
-#include "debug.h"
 #include "ui.h"
 
 //=============================
@@ -97,10 +96,6 @@ HRESULT CGame::Init(void)
 	// ポーズの初期化
 	CManager::SetActivePause(false);
 
-#if _DEBUG
-    m_pDebug = CDebug::Create();
-#endif // _DEBUG
-
 	return S_OK;
 }
 
@@ -118,9 +113,6 @@ void CGame::Uninit(void)
 		m_pLight = NULL;
 	}
 
-#if _DEBUG
-    m_pDebug->Uninit();
-#endif // _DEBUG
 	// 開放処理
 	Release();
 }
@@ -145,10 +137,4 @@ void CGame::Draw(void)
 	{
 		m_pCamera->SetCamera();
 	}
-#if _DEBUG
-    if (m_pDebug)
-    {
-        m_pDebug->Draw();
-    }
-#endif // _DEBUG
 }

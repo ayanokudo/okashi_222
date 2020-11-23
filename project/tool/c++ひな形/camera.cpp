@@ -81,12 +81,12 @@ void CCamera::Release(void)
 HRESULT CCamera::Init(void)
 {
 	// èâä˙âª
-	m_posV = D3DXVECTOR3(0.0f, 500.0f, 100.0f);
+	m_posV = D3DXVECTOR3(100.0f, 500.0f, 100.0f);
 	m_posR = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	m_vecU = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
 
 	m_fRad = CAMERA_DISTANCE;
-	m_fTheta = D3DXToRadian(-90);
+	m_fTheta = D3DXToRadian(90);
 	m_fPhi = atanf(m_posV.z / m_posV.x);
 	return S_OK;
 }

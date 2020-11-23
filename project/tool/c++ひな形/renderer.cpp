@@ -215,9 +215,6 @@ void CRenderer::Draw(void)
 		DrawFPS();
 #endif
 
-		//フェードの描画
-		CManager::GetFade()->Draw();
-
 		// Direct3Dによる描画の終了
 		m_pD3DDevice->EndScene();
 	}

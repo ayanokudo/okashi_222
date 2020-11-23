@@ -11,7 +11,7 @@
 
 //インクルード
 #include "main.h"
-
+#include "ui.h"
 
 //=============================
 //前方宣言
@@ -25,6 +25,7 @@ class CUI;
 class CRenderer
 {
 public:
+
 	//メンバ関数
 	CRenderer();
 	~CRenderer();

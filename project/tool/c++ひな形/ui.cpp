@@ -7,11 +7,13 @@
 #include "ui.h"
 
 #ifdef IMGUI_ON     // ImGuiをオンにしているか
-#include "imgui/imgui.h"
+
 #include "imgui/imgui_impl_dx9.h"
 #include "imgui/imgui_impl_win32.h"
 #include "manager.h"
 #include "renderer.h"
+#include "object.h"
+#include "file.h"
 
 //=============================================================================
 // [CUI] コンストラクタ
@@ -49,7 +51,10 @@ void CUI::Init(HWND hWnd)
     // IMGUIの設定
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
-    ImGuiIO& io = ImGui::GetIO(); (void)io;
+
+    ImGuiIO& io = ImGui::GetIO();
+    //// 日本語対応
+    //io.Fonts->AddFontFromFileTTF(NULL, 10.0f, nullptr, io.Fonts->GetGlyphRangesJapanese());
 
     ImGui::StyleColorsDark();
 
@@ -73,27 +78,50 @@ void CUI::Uninit(void)
 //=============================================================================
 void CUI::Update(void)
 {
+
     // Start the Dear ImGui frame
     ImGui_ImplDX9_NewFrame();
     ImGui_ImplWin32_NewFrame();
     ImGui::NewFrame();
 
-    bool show_demo_window = true;//サンプルのウィンドウ
-    bool show_another_window = false;
-    ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
+    // IMGUI開始
+    ImGui::Begin("Test");
 
-    // 1. Show the big demo window (Most of the sample code is in ImGui::ShowDemoWindow()! You can browse its code to learn more about Dear ImGui!).
-    if (show_demo_window)
-        ImGui::ShowDemoWindow(&show_demo_window);
+    static int Value = 0;
+    static int Count = 0;
 
-    ImGui::SetNextWindowSize(ImVec2(320, 100), 0);
-    ImGui::Begin("Another Window", &show_another_window);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked)
-    ImGui::Text("Hello from another window!");
-    if (ImGui::Button("Close Me"))
-        show_another_window = false;
-    ImGui::End();
+    static D3DXVECTOR3 pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+    bool bGridMode = CObject::GetGridMode();
 
+
+
+        // ボタン
+        if (ImGui::Button(" SAVE 保存ほぞん"))
+        {
+            CFile::Writing();
+        }
+        //ImGui::InputInt("value", &Value);// カウンタ
+
+        ImGui::DragFloat3("POS", pos, 0.1f, 0.0f, 500.0f);      // 位置
+        ImGui::DragFloat3("ROT", pos, 0.1f, 0.0f, 500.0f);      // 角度
+
+        // グリッドモード変更
+        if (ImGui::Checkbox("GridMode", &bGridMode))
+        {
+            CObject::GridTransform();
+        }
+
+        ImGui::Text("%d", Count);
+
+        ImGui::DragInt("Value", &Value, 1, 0, 100);// バーのやつ
+
+        Manual();// 操作方法表示
+
+    ImGui::End();// 終わり
     ImGui::EndFrame();
+
+    // 値の設定
+    CObject::SetGridMode(bGridMode);
 }
 
 //=============================================================================
@@ -103,5 +131,19 @@ void CUI::Draw(void)
 {
     ImGui::Render();
     ImGui_ImplDX9_RenderDrawData(ImGui::GetDrawData());
+}
+
+
+//=============================================================================
+// [Manual] 操作方法
+//=============================================================================
+void CUI::Manual(void)
+{
+    // IMGUI開始
+    ImGui::Begin("Manual");
+    ImGui::Text("F1:SAVE");
+    ImGui::Text("W.A,S,D:MOVE");
+    ImGui::Text("ArrowKey:CAMERA");
+    ImGui::End();// 終わり
 }
 #endif // IMGUI_ON

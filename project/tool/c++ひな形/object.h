@@ -51,7 +51,7 @@ public:
     // 配置用にタイプ変換
     CModel::OBJTYPE changeType(void);
 
-    void GridTransform(void);
+    static void GridTransform(void);
 
     void Rotation(void);
 
@@ -75,20 +75,24 @@ public:
     // 位置情報のゲッタ
     D3DXVECTOR3 GetPos(void) { return m_pos; }
 
+    // グリッドモードのセッタ/ゲッタ
+    static void SetGridMode(bool bGridMode) { m_bGridMode = bGridMode; }
+    static bool GetGridMode(void) { return m_bGridMode; }
+
 private:
     // メンバ関数
     void Move(void);
 
     // メンバ変数
     static MODEL m_type;                // 現在選択中のモデルの種類
-    D3DXVECTOR3 m_pos;                             // オブジェクトの位置
+    static D3DXVECTOR3 m_pos;                             // オブジェクトの位置
     static int      m_ObjctNum;                    // オブジェクトの数
     static CPlayer*m_pPlayer;                      // プレイヤー
     static CCursor *m_pCursor;                     // カーソルへのポインタ
     static CModel  *m_pModel;                      // シーン
     CCollision *m_pCollision;                      // 当たり判定
 
-     bool           m_bGridMode;                   //グリッドモードがどうか
+    static bool     m_bGridMode;                   //グリッドモードがどうか
      int            m_nCountInterval;              // 操作を受け付けるまでの間隔
 };
 #endif      // _OBJECT_H_

@@ -38,6 +38,8 @@ int CObject::m_ObjctNum = 0;
 CModel *CObject::m_pModel = NULL;
 CPlayer *CObject::m_pPlayer = NULL;
 CCursor *CObject::m_pCursor = NULL;                     // カーソルへのポインタ
+bool CObject::m_bGridMode = false;                       // グリッドモードがどうか
+D3DXVECTOR3 CObject::m_pos = { GRID_SIZE,0.0f,GRID_SIZE };// 位置
 
 //=============================================================================
 // [CObject] コンストラクタ
@@ -47,7 +49,6 @@ CObject::CObject()
     m_type = MODEL_PLAYER;
     m_pos = { GRID_SIZE,0.0f,GRID_SIZE };
     m_ObjctNum = 0;
-    m_bGridMode = true;
     m_nCountInterval = INTERVAL;
     m_pCollision = NULL;
 }
@@ -149,7 +150,7 @@ void CObject::Update(void)
     // モード切替
     if (CManager::GetKeyboard()->GetKeyTrigger(DIK_F2))
     {
-        m_bGridMode ^= true;
+
         GridTransform();
     }
 
@@ -218,6 +219,7 @@ CModel::OBJTYPE CObject::changeType(void)
 //=============================================================================
 void CObject::GridTransform(void)
 {
+    m_bGridMode ^= true;
     m_pos = { GRID_SIZE,0.0f,GRID_SIZE };
 }
 
